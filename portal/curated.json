@@ -1,0 +1,2583 @@
+{
+  "chapters": {
+    "0": {
+      "shortTitle": "Setup & tools",
+      "project": "Compile and run C on your Mac and in an ARM64 Linux VM.",
+      "core": "A working toolchain and a repeatable build script. Performance counters can wait.",
+      "checks": [
+        "Compile a warning-clean hello program on the Mac",
+        "Compile and run the same program in the Linux VM",
+        "Explain working directory, stdout, stderr and exit status"
+      ],
+      "rationale": "Setup and the tool loop are already substantially complete per LEARNING.md. Do not repeat talks or reinstall tools. Only close the Linux-guest gap if it remains open; otherwise move on.",
+      "units": [
+        {
+          "title": "Verify the ARM64 Linux guest only if missing",
+          "outcome": "Confirm a Linux environment with uname, compiler and basic tool availability, then record what it is and is not suitable for.",
+          "read": {
+            "title": "OrbStack Linux machines",
+            "url": "https://docs.orbstack.dev/machines/",
+            "scope": "Machine creation and entering a Linux machine; skip if an ARM64 guest already works.",
+            "why": "The roadmap needs Linux APIs, not a second host setup or x86 performance environment.",
+            "platform": "OrbStack documentation",
+            "access": "Public documentation; software licensing may differ"
+          },
+          "visual": null,
+          "build": "If there is no guest, create an Ubuntu ARM64 guest and verify uname -m, clang or gcc, and a trivial compiled program. Otherwise skip this unit.",
+          "stop": "Stop when the existing Mac build loop remains clean and a Linux guest can compile and run a hello program. Do not revisit the mindset talks or performance counters here."
+        }
+      ],
+      "lookups": [
+        {
+          "title": "Missing Semester: The Shell",
+          "url": "https://missing.csail.mit.edu/2020/course-shell/",
+          "scope": "Only the sections needed to resolve a concrete gap in paths, pipes, redirection, or shell execution.",
+          "why": "A just-in-time lookup; the learner already has a build loop.",
+          "platform": "MIT Missing Semester",
+          "access": "Free"
+        },
+        {
+          "title": "Dive Into Systems: GDB",
+          "url": "https://diveintosystems.org/book/C3-C_debug/gdb.html",
+          "scope": "Section 3.1: break, step, locals, memory and backtrace only if the Linux debugger is still unfamiliar. Keep LLDB for the native Mac.",
+          "why": "Linux tool orientation repairs a concrete gap; do not repeat the C course.",
+          "platform": "Dive Into Systems",
+          "access": "Free"
+        }
+      ],
+      "excluded": [
+        {
+          "title": "Clean Code, Horrible Performance and Data-Oriented Design talks",
+          "reason": "Viewpoints, not toolchain prerequisites. They remain in the original archive; no talk queue blocks starting the C project."
+        },
+        {
+          "title": "Repeat the full machine installation checklist",
+          "reason": "LEARNING.md records a working local clang loop; repeat setup only to fix a concrete missing capability."
+        }
+      ]
+    },
+    "1": {
+      "shortTitle": "Gates to CPU",
+      "project": "Build the Hack CPU in HDL and an assembler.",
+      "core": "Nand2Tetris projects 1–6 pass their supplied tests. A Hack emulator is stretch.",
+      "rationale": "Nand2Tetris Part I is the only CPU build track. Each specification and its tests define a small deliverable; physical hardware videos are optional context, not a second computer to build.",
+      "units": [
+        {
+          "title": "Gates and truth tables",
+          "outcome": "Build combinational gates from NAND and trace a mux.",
+          "read": {
+            "title": "Nand2Tetris: Boolean Logic",
+            "url": "https://www.nand2tetris.org/project01",
+            "scope": "Project 1 specification and supplied chip tests.",
+            "why": "One concrete interface per chip, with tests rather than another logic course.",
+            "platform": "Nand2Tetris",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Implement the required gates and muxes in HDL. Trace two input cases by hand.",
+          "stop": "All project 1 test scripts pass; you can explain why outputs have no clocked state."
+        },
+        {
+          "title": "Adders and the ALU",
+          "outcome": "Turn gates into arithmetic and a configurable ALU.",
+          "read": {
+            "title": "Nand2Tetris: Boolean Arithmetic",
+            "url": "https://www.nand2tetris.org/project02",
+            "scope": "Project 2: half adder, full adder, incrementer and ALU.",
+            "why": "Continues the same build instead of introducing another CPU design.",
+            "platform": "Nand2Tetris",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "Ben Eater: arithmetic logic unit",
+            "url": "https://eater.net/8bit/alu",
+            "scope": "Only the ALU demonstration videos on this page. No kit purchase or breadboard build.",
+            "why": "Physical wiring helps you see signals that the HDL simulator abstracts.",
+            "platform": "Ben Eater",
+            "access": "Free"
+          },
+          "build": "Build the chips and trace one add, one AND and one zero/negative result.",
+          "stop": "The official ALU tests pass and you can derive each control bit’s effect."
+        },
+        {
+          "title": "Clocked state and machine instructions",
+          "outcome": "Distinguish combinational output from stored state.",
+          "read": {
+            "title": "Nand2Tetris: Sequential Logic",
+            "url": "https://www.nand2tetris.org/project03",
+            "scope": "Project 3: registers, RAM and program counter. Use the supplied D flip-flop primitive.",
+            "why": "This is the actual boundary between logic and a computer that remembers.",
+            "platform": "Nand2Tetris",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Complete project 3. Then do project 4’s small machine-language exercises from the same Part I navigation before CPU assembly.",
+          "stop": "Stateful chips pass tests and you can predict their output before and after a clock edge."
+        },
+        {
+          "title": "CPU and computer",
+          "outcome": "Trace one instruction through fetch, ALU, register write and next PC.",
+          "read": {
+            "title": "Nand2Tetris: Computer Architecture",
+            "url": "https://www.nand2tetris.org/project05",
+            "scope": "Project 5 specification, CPU and computer tests. Review the linked project 4 instruction contract only if needed.",
+            "why": "Reuses the chips you built; no separate CPU curriculum.",
+            "platform": "Nand2Tetris",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Wire the CPU and computer. Run supplied programs and trace one conditional jump.",
+          "stop": "Project 5 tests pass and you can explain where one instruction’s bits affect the hardware."
+        },
+        {
+          "title": "Assembler and byte-identical output",
+          "outcome": "Translate symbols and mnemonics into the machine’s 16-bit words.",
+          "read": {
+            "title": "Nand2Tetris: Assembler",
+            "url": "https://www.nand2tetris.org/project06",
+            "scope": "Project 6 only. Two-pass symbol resolution and the official comparison programs.",
+            "why": "This is the reverse encoding problem used again in phase 3.",
+            "platform": "Nand2Tetris",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Write the assembler in C or Python. Compare Pong output byte-for-byte with the supplied assembler.",
+          "stop": "Pong.hack matches. Stop Part I here; Part II and a second CPU build are not prerequisites."
+        }
+      ],
+      "lookups": [
+        {
+          "title": "Nand2Tetris: Machine Language",
+          "url": "https://www.nand2tetris.org/project04",
+          "scope": "Use the Hack instruction and memory-map contract while doing projects 4–6.",
+          "why": "The one machine-language reference for this CPU.",
+          "platform": "Nand2Tetris",
+          "access": "Free"
+        }
+      ],
+      "excluded": [
+        {
+          "title": "Nand2Tetris Part II",
+          "reason": "Jack compiler/OS overlaps later compiler study; phase 1 is explicitly Part I projects 1-6."
+        },
+        {
+          "title": "Build Ben Eater's separate breadboard CPU",
+          "reason": "Video is optional visual context; a second full CPU build duplicates the Nand2Tetris outcome."
+        }
+      ]
+    },
+    "2": {
+      "shortTitle": "C, ownership & arenas",
+      "project": "An arena-based string/container library and a tested JSON parser.",
+      "core": "Correct ownership, checked allocation arithmetic, alignment and JSON accept/reject results. Do not grow a general-purpose library.",
+      "rationale": "The phase is an applied C/library project, not a survey of every C resource. Use Modern C and CS:APP where they specify language and representation; add only the arena lifetime article and RFC where they directly support the build.",
+      "units": [
+        {
+          "title": "C object model, bits, and undefined behavior",
+          "outcome": "Explain valid object bounds/lifetimes, integer and floating representations, and test small C code with sanitizers.",
+          "read": {
+            "title": "Modern C: object and pointer rules",
+            "url": "https://gustedt.gitlabpages.inria.fr/modern-c/",
+            "scope": "Modern C level 2 sections on pointers, object bounds, structs, alignment and lifetime. Review a level 0/1 rule only if a test exposes a gap. Keep the C11 baseline; level 3 waits for concurrency.",
+            "why": "Primary language reference without taking a second introductory programming course.",
+            "platform": "Jens Gustedt / Modern C",
+            "access": "Free author-hosted book; site fetch was unavailable during research, so confirm current PDF navigation"
+          },
+          "visual": null,
+          "build": "Inspect a struct's size, alignment and bytes in LLDB. Test object bounds and lifetime failures with address/undefined-behavior sanitizers where supported. Representation exercises are in the next step.",
+          "stop": "Stop once bounds, lifetime, padding, integer representation, and sanitizer limits are understood for code actually used; do not read level 3 threads/atomics."
+        },
+        {
+          "title": "Data Lab and representation practice",
+          "outcome": "Use bit-level reasoning to explain two's complement and IEEE-754 representations rather than rely on casts or intuition.",
+          "read": {
+            "title": "CS:APP: Data Lab",
+            "url": "https://csapp.cs.cmu.edu/3e/labs.html",
+            "scope": "Read the Data Lab handout and implement the integer/float puzzles. If you own CS:APP, chapter 2 is a reference for a stuck representation question, not another required reading queue.",
+            "why": "This bounded exercise connects C integer rules to actual machine representations and supports phase 4 later.",
+            "platform": "CMU CS:APP",
+            "access": "Book access varies; Data Lab materials publicly listed"
+          },
+          "visual": null,
+          "build": "Complete the Data Lab exercises appropriate to chapter 2 and dump float/integer bits using memcpy-safe representation inspection.",
+          "stop": "Stop when each representation exercise has a passing test and explanation. Do not start CS:APP chapters 3+ here."
+        },
+        {
+          "title": "Arena allocation, strings, and ownership",
+          "outcome": "Implement an arena with checked size/alignment, length-carrying string views, and a clear owner/expiry model.",
+          "read": {
+            "title": "Untangling Lifetimes: The Arena Allocator",
+            "url": "https://www.dgtlgrove.com/p/untangling-lifetimes-the-arena-allocator",
+            "scope": "The article's arena lifetime and permanent/scratch ownership discussion; read alongside the actual arena implementation, not as a full allocator survey.",
+            "why": "It gives a visual/operational lifetime model that complements the precise C language rules.",
+            "platform": "Ryan Fleury / Digital Grove",
+            "access": "Public article"
+          },
+          "visual": {
+            "title": "Handmade Hero day 034: Tile Map Memory",
+            "url": "https://guide.handmadehero.org/code/day034/",
+            "scope": "Only 49:50–54:58: memory_index, InitializeArena and PushStruct. Compare with your aligned arena; skip the preceding tile-map build and Win32 calls.",
+            "why": "A short visible allocation walkthrough complements the arena-lifetime text.",
+            "platform": "Handmade Hero",
+            "access": "Free"
+          },
+          "build": "Build arena, Str, growable array and the parser’s open-addressed hash map. Test zero count, exact fit, exhaustion, alignment, overflow and container boundaries. Document views invalidated by reset or array growth. The formatter is the next step.",
+          "stop": "Stop when all allocation invariants have tests and no returned view outlives its backing storage. No malloc-per-object redesign."
+        },
+        {
+          "title": "Bounded formatting and output",
+          "outcome": "Append formatted bytes into a buffer with explicit capacity and error handling.",
+          "read": {
+            "title": "Wellons: Buffered, formatted output",
+            "url": "https://nullprogram.com/blog/2023/02/13/",
+            "scope": "The append-buffer/error model and integer formatting only. Build the formatter your library and serializer need, not a full printf clone.",
+            "why": "This covers a distinct required library mechanism instead of adding another general C course.",
+            "platform": "nullprogram",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Implement bounded append and integer formatting; test empty/full/exact-fit buffers, negative values and sticky failure. Handle partial file writes at the output boundary.",
+          "stop": "The formatter passes its focused driver, reports insufficient capacity and never loses a partial-write suffix."
+        },
+        {
+          "title": "JSON parser and conformance tests",
+          "outcome": "Build a bounded recursive-descent JSON parser with explicit error offsets and documented number/string behavior.",
+          "read": {
+            "title": "RFC 8259 sections 2-7",
+            "url": "https://www.rfc-editor.org/rfc/rfc8259",
+            "scope": "Sections 2-7 only: JSON grammar, values, strings, numbers, objects and arrays.",
+            "why": "The RFC is the syntax contract for the parser, not another programming curriculum.",
+            "platform": "IETF RFC Editor",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Build both parser and serializer on your library. Add arrays, objects, strings/escapes and numbers incrementally. Test JSONTestSuite y_ accept and n_ reject cases, depth/bounds/truncation, trailing junk and round trips. Use an independent parser or known fixtures too: a round trip alone can hide shared bugs.",
+          "stop": "JSONTestSuite accept/reject cases and serializer fixtures pass, and implementation-dependent outcomes are documented. Do not grow a general-purpose framework beyond these callers."
+        }
+      ],
+      "lookups": [
+        {
+          "title": "JSONTestSuite",
+          "url": "https://github.com/nst/JSONTestSuite",
+          "scope": "Run y_ cases as accepted and n_ cases as rejected; document i_ outcomes.",
+          "why": "External test corpus supplements hand-written tests without duplicating tutorial coverage.",
+          "platform": "GitHub",
+          "access": "Free"
+        }
+      ],
+      "excluded": [
+        {
+          "title": "Advanced C Programming course",
+          "reason": "Optional and broad; it duplicates the concrete Modern C, arena, and parser work. Consult a specific lesson only if a gap appears."
+        },
+        {
+          "title": "Modern C level 3 and concurrency topics",
+          "reason": "The roadmap defers threads and atomics to phase 6."
+        }
+      ]
+    },
+    "3": {
+      "shortTitle": "Assembly & linking",
+      "project": "ARM64 and x86-64 programs, then an 8086 decoder and simulator.",
+      "core": "Correct ABI boundaries and round-trip decoding first. Benchmark only on the matching native ISA.",
+      "rationale": "Learn calling conventions and emitted code from short exercises, then do one real decoder/simulator track. Preserve the phase's ARM64 and x86 contrast without adding more introductory assembly courses.",
+      "units": [
+        {
+          "title": "ARM64 function and ABI on the Mac",
+          "outcome": "Write and call small assembly functions from C, preserving registers and explaining argument/return registers and stack alignment.",
+          "read": {
+            "title": "HelloSilicon examples",
+            "url": "https://github.com/below/HelloSilicon",
+            "scope": "Examples matching Stephen Smith chapters 1-7: registers, arithmetic, branches, memory, calls/stack, and OS calls. Select one example per operation; do not read the whole book independently of the repo.",
+            "why": "The repository adapts examples to Apple Silicon and calls out macOS differences.",
+            "platform": "GitHub",
+            "access": "Free source repository; referenced book may require purchase"
+          },
+          "visual": null,
+          "build": "Start with an ARM64 add called from C, then a nested call. Continue the roadmap’s small strlen, memcpy, array sum, fib and hello exercises; step with LLDB and verify saved registers and 16-byte stack alignment.",
+          "stop": "The small programs and nested call work through the C ABI, and the register/stack protocol is explainable. Do not add a large assembly program."
+        },
+        {
+          "title": "Repeat the ABI exercise on x86-64 Linux",
+          "outcome": "Compare the two ISAs' argument registers, return address handling, saved registers, and stack frames.",
+          "read": {
+            "title": "Dive Into Systems: 64-bit x86 Assembly",
+            "url": "https://diveintosystems.org/book/C7-x86_64/index.html",
+            "scope": "Read 7.2 common instructions and the function/calling-convention sections for the existing add/nested-call exercise. Consult arrays/structs only when annotating that function; do not read all of chapter 7.",
+            "why": "A free, bounded online text with independently addressable x86-64 topics. It replaces the older broad UNLV PDF as the reading reference while retaining the existing small add/nested-call build.",
+            "platform": "Dive Into Systems",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Repeat the small ARM64 exercises and nested call in an explicitly x86-64 Linux environment. Annotate argument/return registers and stack behavior beside the ARM versions.",
+          "stop": "The same small programs and nested call run on both targets and the ABI contrast is clear. An ARM64 VM is not x86-64 execution."
+        },
+        {
+          "title": "Compiler output and linking",
+          "outcome": "Read one C function at -O0/-O2, identify common transformations, and explain objects, symbols, and relocations.",
+          "read": {
+            "title": "CS:APP chapter 7: Linking",
+            "url": "https://csapp.cs.cmu.edu/3e/",
+            "scope": "Chapter 7 only: object files, symbols, relocations and linking. Reuse the preceding Dive Into Systems instruction/ABI explanation when inspecting compiler output; do not repeat CS:APP chapter 3. The lab handouts follow the decoder step.",
+            "why": "Linking adds a distinct binary-toolchain mechanism; the assembly explanation was already assigned in the previous step.",
+            "platform": "CMU CS:APP",
+            "access": "Book access varies; course/lab pages public"
+          },
+          "visual": {
+            "title": "Compiler Explorer",
+            "url": "https://godbolt.org/",
+            "scope": "Compile a tiny C function at -O0 and -O2 for explicit ARM64 and x86-64 targets; inspect emitted code, not a playlist.",
+            "why": "Live source-to-assembly comparison is directly visual and does not introduce a competing assembly curriculum.",
+            "platform": "Compiler Explorer",
+            "access": "Free web tool"
+          },
+          "build": "Inspect a C function in Compiler Explorer; compile two translation units with clang and use nm/objdump or readelf to identify symbols and relocations.",
+          "stop": "Stop when one optimization and one relocation can be explained. Do not try to memorize the ISA."
+        },
+        {
+          "title": "8086 decoding and simulation",
+          "outcome": "Decode real 8086 bytes and round-trip course examples, then practice reading compiler-generated x86 disassembly.",
+          "read": {
+            "title": "Computer Enhance: 8086 input listings",
+            "url": "https://github.com/cmuratori/computer_enhance/tree/main/perfaware/part1",
+            "scope": "Listings 0037–0057, decoded incrementally: MOV, arithmetic, flags, jumps and memory. Leave later performance listings for phase 4.",
+            "why": "Actual binary/assembly pairs give the decoder a test corpus. Do not copy the reference decoder before writing yours.",
+            "platform": "GitHub",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "Computer Enhance: 8086 interlude",
+            "url": "https://www.computerenhance.com/",
+            "scope": "Select decoding/simulation lessons corresponding to the listing you are implementing. Subscriber index, not a verified episode deep link.",
+            "why": "The live instruction-encoding reasoning supports this exact project; do not add a second assembly course.",
+            "platform": "Computer Enhance",
+            "access": "Existing subscription; lesson access not tested"
+          },
+          "build": "Decode the selected course listings, reassemble with nasm and compare bytes. Add registers, flags, memory and jumps, then compare final CPU state.",
+          "stop": "Course examples round-trip and CPU state matches. Continue with the existing disassembly labs, not another assembly course."
+        },
+        {
+          "title": "Disassembly and stack-boundary labs",
+          "outcome": "Use emitted instructions to recover behavior and inspect the intentionally vulnerable stack boundary.",
+          "read": {
+            "title": "CS:APP: Bomb and Attack Lab handouts",
+            "url": "https://csapp.cs.cmu.edu/3e/labs.html",
+            "scope": "Only the two lab handouts and intended x86-64 Linux setup. Do not add a general security course.",
+            "why": "These are existing project tests, not duplicate explanations of the ABI lesson.",
+            "platform": "CMU CS:APP",
+            "access": "Free lab materials"
+          },
+          "visual": null,
+          "build": "Complete Bomb Lab’s six phases and Attack Lab through level 3 using disassembly and the debugger in the isolated lab environment. Draw the recursive stack frame and document how each result follows from instructions.",
+          "stop": "The original lab checks pass and each stack/register transition is explained. Additional exploit research is out of scope."
+        }
+      ],
+      "lookups": [
+        {
+          "title": "LLDB / GDB command map",
+          "url": "https://lldb.llvm.org/use/map.html",
+          "scope": "Only when a debugger command differs between LLDB and GDB.",
+          "why": "A reference to unblock inspection, not another study sequence.",
+          "platform": "LLVM documentation",
+          "access": "Free"
+        },
+        {
+          "title": "ARM A64 Instruction Set guide",
+          "url": "https://developer.arm.com/documentation/102374/latest/",
+          "scope": "Look up registers, load/store, branches, or a specific instruction encountered in code.",
+          "why": "Reference individual instructions rather than memorize a handbook.",
+          "platform": "Arm developer documentation",
+          "access": "Free; URL/edition may redirect by region"
+        }
+      ],
+      "excluded": [
+        {
+          "title": "Second introductory assembly course on each ISA",
+          "reason": "HelloSilicon and Dive Into Systems compare the same small ABI exercises on two targets. Do not add another assembly course or repeat CS:APP chapter 3 after that reading."
+        },
+        {
+          "title": "A security course alongside the existing labs",
+          "reason": "Bomb and Attack Lab remain project exercises. A separate exploit-development curriculum does not help this phase’s required disassembly checks."
+        }
+      ]
+    },
+    "4": {
+      "shortTitle": "Performance & SIMD",
+      "project": "A measured haversine pipeline, SoA hash table and blocked SIMD matmul.",
+      "core": "Correct outputs, repeatable measurements and one explained improvement. Speedup ratios are experiments, not grades.",
+      "rationale": "Algorithmica supplies the bounded written model. Use Computer Enhance demonstrations only for the tool or probe you are building. MIT and conference talks are excluded from the default path because they repeat those outcomes.",
+      "units": [
+        {
+          "title": "Baseline, timing, and profiling",
+          "outcome": "Measure a correct baseline reproducibly, report inputs/compiler/hardware, and identify the hot stage before changing code.",
+          "read": {
+            "title": "Algorithmica: Instrumentation",
+            "url": "https://en.algorithmica.org/hpc/profiling/instrumentation/",
+            "scope": "Timing code regions, instrumentation costs and performance counters. Use a monotonic OS clock before attempting raw counters.",
+            "why": "A written measurement method you can implement and test on your Mac.",
+            "platform": "Algorithmica",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "Computer Enhance: profiler demonstrations",
+            "url": "https://www.computerenhance.com/",
+            "scope": "Select the initial profiler/repetition-tester material for your haversine stage. The link is the subscriber index, not a guessed episode URL.",
+            "why": "Watch the tool being built only if the measurement text leaves an implementation gap.",
+            "platform": "Computer Enhance",
+            "access": "Existing subscription; lesson access not tested"
+          },
+          "build": "Build the haversine generator/parser baseline, repetition tester and simple block profiler. Record CPU, OS, compiler, flags, data size, checksum, median and minimum.",
+          "stop": "Stop before optimization until output is checked and the measured hot stage is named. Do not time sanitizer builds or include file I/O accidentally."
+        },
+        {
+          "title": "Cache hierarchy and memory access",
+          "outcome": "Measure cache/DRAM behavior on native hardware and explain locality and bandwidth with measured data.",
+          "read": {
+            "title": "Algorithms for Modern Hardware: Memory Hierarchy",
+            "url": "https://en.algorithmica.org/hpc/external-memory/hierarchy/",
+            "scope": "Read the Memory Hierarchy chapter; use it only for the cache and memory hierarchy concepts measured in phase probes.",
+            "why": "It is a concise written model to compare against measured Apple Silicon and native x86 results.",
+            "platform": "Algorithms for Modern Hardware",
+            "access": "Free online text; chapter navigation is on the linked index"
+          },
+          "visual": null,
+          "build": "Write sequential bandwidth and dependent pointer-chase probes; measure cache working sets on the Mac and, only on native x86 hardware, the x86 laptop.",
+          "stop": "Stop with plotted measurements and a stated machine/compiler setup. Do not treat illustrative latency tables as hardware specifications or use emulation for performance claims."
+        },
+        {
+          "title": "Branch behavior",
+          "outcome": "Explain predictable and unpredictable branch costs using measured results.",
+          "read": {
+            "title": "Algorithms for Modern Hardware: The Cost of Branching",
+            "url": "https://en.algorithmica.org/hpc/pipelining/branching/",
+            "scope": "The Cost of Branching only. Compare predictable and unpredictable input; inspect whether clang actually emitted a branch.",
+            "why": "The text gives a model for why branch predictability changes performance without adding another full course.",
+            "platform": "Algorithms for Modern Hardware",
+            "access": "Free online text; chapter navigation is on the linked index"
+          },
+          "visual": null,
+          "build": "Compare sorted and randomized input with branchful and branchless variants. Inspect optimized code, benchmark identical inputs and explain wins or regressions.",
+          "stop": "Stop when the measurement has a plausible bottleneck explanation. Do not adopt branchless code or SoA on style alone."
+        },
+        {
+          "title": "Data layout on the same workload",
+          "outcome": "Choose AoS or SoA based on which fields the operation touches.",
+          "read": {
+            "title": "Algorithmica: AoS and SoA",
+            "url": "https://en.algorithmica.org/hpc/cpu-cache/aos-soa/",
+            "scope": "This one case study. Compare its pointer-chasing workload with your linear scans rather than assuming SoA always wins.",
+            "why": "The contrasting result forces you to reason about access patterns, not style.",
+            "platform": "Algorithmica",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Convert your phase 2 hash table to contiguous metadata/indices. Compare hit and miss probes at a fixed load factor and key distribution. Also compare a scan using all fields with one using a single field.",
+          "stop": "State bytes touched, measured timings and why each layout won or lost on this workload."
+        },
+        {
+          "title": "SIMD and the final measured project",
+          "outcome": "Vectorize array addition and the chosen hot loop while preserving a scalar oracle and testing tail lengths.",
+          "read": {
+            "title": "Algorithmica: Intrinsics and Vector Types",
+            "url": "https://en.algorithmica.org/hpc/simd/intrinsics/",
+            "scope": "Vector lanes, loads/stores and intrinsic examples. Its code is x86-oriented: translate the lane model to ARM NEON rather than copying AVX on your Mac.",
+            "why": "A bounded written SIMD model; use native-ISA documentation for the exact operations.",
+            "platform": "Algorithmica",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "Computer Enhance: data movement and SIMD",
+            "url": "https://www.computerenhance.com/",
+            "scope": "Only the demonstration matching your current cache/SIMD probe. Skip already-understood measurement lessons.",
+            "why": "Connects the measured bottleneck to emitted loads and instructions on the same project.",
+            "platform": "Computer Enhance",
+            "access": "Existing subscription; lesson access not tested"
+          },
+          "build": "First add two arrays with scalar and SIMD versions; test lengths around the lane width. Then optimize the haversine hot loop with NEON on Mac; use AVX2 only on supporting native x86 hardware. Record correctness, error policy, and before/after timings. Finish a scalar matrix multiply, add cache blocking, then SIMD; test irregular dimensions against the scalar oracle.",
+          "stop": "Stop when the scalar oracle agrees within the stated error policy, tails are safe, and results are reproducible. Treat 100x and matmul peak targets as stretch goals, not gates."
+        }
+      ],
+      "lookups": [
+        {
+          "title": "Clang loop vectorizer",
+          "url": "https://llvm.org/docs/Vectorizers.html",
+          "scope": "Only vectorization diagnostics, aliasing and loop limitations encountered in your own hot loop.",
+          "why": "Check whether the compiler vectorized the intended work before replacing it with intrinsics.",
+          "platform": "LLVM documentation",
+          "access": "Free"
+        },
+        {
+          "title": "Arm NEON intrinsics",
+          "url": "https://developer.arm.com/architectures/instruction-sets/intrinsics/",
+          "scope": "Find the load, add and multiply intrinsic you are actually using; select Neon.",
+          "why": "Exact ARM contracts for translating x86-oriented examples.",
+          "platform": "Arm documentation",
+          "access": "Free"
+        },
+        {
+          "title": "Dive Into Systems: Cachegrind",
+          "url": "https://diveintosystems.org/book/C11-MemHierarchy/cachegrind.html",
+          "scope": "Section 11.5: running Cachegrind and interpreting counts for one existing locality experiment. Use a supported Linux/x86 environment; simulated cache counts are not native Apple performance counters.",
+          "why": "An instrument manual, not a second memory-hierarchy explanation.",
+          "platform": "Dive Into Systems",
+          "access": "Free"
+        },
+        {
+          "title": "CMU Cache Lab specification",
+          "url": "https://csapp.cs.cmu.edu/3e/labs.html",
+          "scope": "Cache Lab self-study writeup: use cache-simulator/transpose checks only as a repair exercise if your existing cache probes do not establish the model. Do not start another performance course.",
+          "why": "A written spec with independent checks for a demonstrated cache gap.",
+          "platform": "CMU CS:APP",
+          "access": "Free"
+        }
+      ],
+      "excluded": [
+        {
+          "title": "Full MIT 6.172 course alongside all Computer Enhance parts",
+          "reason": "Duplicates the measurement, cache, branch and SIMD outcomes. Use the selected Algorithmica sections and Computer Enhance demonstrations on one project."
+        },
+        {
+          "title": "Full Algorithmica HPC curriculum as a parallel track",
+          "reason": "Use only its written chapters needed by the current probe; the project and Computer Enhance already cover the sequence."
+        },
+        {
+          "title": "Acton, Kelley and refterm talk queue",
+          "reason": "These are alternate explanations of the measured layout/performance work, not additional assignments after the selected text and demonstrations."
+        }
+      ]
+    },
+    "5": {
+      "shortTitle": "Operating systems",
+      "project": "Selected xv6 labs, a shell, allocator and bounded nonblocking server.",
+      "core": "Match the xv6 course year's book, lab repo and grading scripts. Slow/disconnected clients must not block other clients. The required traps and mmap integration tests also pass; xv6 scheduling work follows the user-space queue in phase 6.",
+      "rationale": "Keep OSTEP as the only conceptual OS text and xv6 as the implementation track. OSTEP chapters are short, public PDFs; assigning Educative's same OS topics or the broad Udemy course would add another pass over processes and paging without replacing the xv6 labs. Narrow the shell, allocator, and network work to one demonstrable mechanism at a time.",
+      "units": [
+        {
+          "title": "Processes, traps, and system calls",
+          "outcome": "Explain the user/kernel boundary and implement one xv6 system call; make a foreground shell run a command with fork, exec, and wait.",
+          "read": {
+            "title": "OSTEP: Process API",
+            "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-api.pdf",
+            "scope": "Read the process creation and control API sections, then stop before scheduling.",
+            "why": "A short primary-text account of fork/exec/wait gives the shell a model; the xv6 lab then shows the kernel side.",
+            "platform": "OSTEP PDF",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "xv6 book: Traps and system calls",
+            "url": "https://pdos.csail.mit.edu/6.1810/2025/xv6.html",
+            "scope": "Use the trap/system-call diagrams and the matching xv6 RISC-V book section; do not read the full book in advance.",
+            "why": "The trap path and register handoff are distinct from OSTEP's API narrative and connect directly to the lab code.",
+            "platform": "MIT 6.1810",
+            "access": "Free"
+          },
+          "build": "Run the matching Fall 2025 syscall lab and write a foreground shell for one external command. Once it works, draw descriptor ownership and add redirection plus a two-command pipeline; close unused pipe ends after fork. Then complete the matching traps lab and annotate saved registers and the user/supervisor return boundary; a scheduler experiment follows in phase 6 once the pthread queue is working.",
+          "stop": "The selected xv6 tests pass, the shell reaps children, and pipeline EOF/redirection behave correctly. Full background-job control remains stretch."
+        },
+        {
+          "title": "Virtual memory and copy-on-write",
+          "outcome": "Trace virtual-to-physical translation and explain why copy-on-write fork delays copying pages.",
+          "read": {
+            "title": "OSTEP: Introduction to Paging",
+            "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/vm-paging.pdf",
+            "scope": "Chapter 18: page/frame translation and page-table entries. Use the matching xv6 book figures for Sv39 and COW implementation.",
+            "why": "Adds the concrete paging model missing from a general address-space introduction.",
+            "platform": "OSTEP",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "xv6 book: Page tables",
+            "url": "https://pdos.csail.mit.edu/6.1810/2025/xv6.html",
+            "scope": "Use the Sv39 page-table walk and address-space figures alongside the pgtbl/cow lab.",
+            "why": "The concrete RISC-V address fields and xv6 mappings add architecture-specific visual context rather than repeating the OSTEP abstraction.",
+            "platform": "MIT 6.1810",
+            "access": "Free"
+          },
+          "build": "Complete the selected pgtbl and cow exercises; diagram one translation and the page reference/copy path for fork.",
+          "stop": "Stop after the course-year tests pass and the COW explanation matches the code. Do not implement a general-purpose allocator here."
+        },
+        {
+          "title": "Filesystems and crash consistency",
+          "outcome": "Follow a file operation through inode, block mapping, and log, and explain what the log protects across a crash.",
+          "read": {
+            "title": "OSTEP: File System Implementation (chapter 40)",
+            "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/file-implementation.pdf",
+            "scope": "Read the inode, directory, and block mapping discussion; use journaling only to understand xv6's log.",
+            "why": "It supplies vocabulary for the xv6 fs lab without requiring all OSTEP persistence chapters.",
+            "platform": "OSTEP PDF",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "xv6 book: File system",
+            "url": "https://pdos.csail.mit.edu/6.1810/2025/xv6.html",
+            "scope": "Follow the filesystem layering and logging figures around the matching book section.",
+            "why": "The xv6-specific layers and transaction path are useful diagrams not covered by the generic OSTEP chapter.",
+            "platform": "MIT 6.1810",
+            "access": "Free"
+          },
+          "build": "Complete the selected xv6 fs exercise and annotate one create/write path from syscall to on-disk blocks.",
+          "stop": "Stop at the selected lab's tests. Do not build a filesystem or read Linux block-layer source as a prerequisite."
+        },
+        {
+          "title": "Lazy file mappings and their lifetime",
+          "outcome": "Tie page faults, file references, permissions, unmapping and fork together in xv6.",
+          "read": {
+            "title": "xv6 Fall 2025: mmap lab",
+            "url": "https://pdos.csail.mit.edu/6.1810/2025/labs/mmap.html",
+            "scope": "The required mmap/munmap subset and hints only. Skip optional shared-physical-page/unified-buffer-cache challenges.",
+            "why": "This is a new VM/filesystem integration build; it does not repeat the userspace mmap allocator.",
+            "platform": "MIT 6.1810",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Implement lazy file-backed mmap/munmap, permission checks, MAP_SHARED writeback, and exit/fork reference handling. Run mmaptest and usertests -q; add a protection or reference-lifetime regression test.",
+          "stop": "Both test programs pass and you can trace one fault from VMA lookup to file data and PTE; file references survive descriptor close and are released on unmap/exit."
+        },
+        {
+          "title": "A tested userspace allocator",
+          "outcome": "Split and coalesce free blocks without violating alignment or allocation ownership.",
+          "read": {
+            "title": "OSTEP: Free-Space Management",
+            "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/vm-freespace.pdf",
+            "scope": "Chapter 17: tracking free space, splitting, coalescing and placement policies. Skip kernel-specific policy detours.",
+            "why": "This is the allocator mechanism needed by the existing project, not another C memory introduction.",
+            "platform": "OSTEP",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Build malloc/free over an mmap-backed region in a dedicated test driver. Test alignment, splitting, coalescing, allocation failure and realloc semantics before attempting interposition.",
+          "stop": "The isolated driver passes without lost or overlapping blocks. LD_PRELOAD and replacement of a production allocator remain stretch."
+        },
+        {
+          "title": "Bounded nonblocking I/O",
+          "outcome": "Write an echo server that handles partial I/O, a slow reader, and disconnects without blocking other clients.",
+          "read": {
+            "title": "Beej's Guide to Network Programming",
+            "url": "https://beej.us/guide/bgnet/html/split/",
+            "scope": "Use the client/server, select/poll, and partial-send discussions; skip unrelated protocol examples.",
+            "why": "A focused sockets reference is more useful here than the broad TLPI volume; the project exercises the actual API contract.",
+            "platform": "Beej's Guide",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Implement a level-triggered epoll echo loop with bounded per-client buffers, then test one-byte writes, stalled readers, and mid-message closes. After echo passes, implement the roadmap’s bounded HTTP subset for preloaded fixtures; reject unsupported framing.",
+          "stop": "Slow/disconnected clients do not block others and the documented HTTP subset passes framing/bounds tests. kqueue portability and load targets are follow-ons."
+        }
+      ],
+      "lookups": [
+        {
+          "title": "MIT 6.1810 Fall 2025 xv6 course and book",
+          "url": "https://pdos.csail.mit.edu/6.1810/2025/",
+          "scope": "Use that year's book, lab repository, and scripts as one pinned set.",
+          "why": "Lab names and contracts vary by offering; mixing years can make correct work fail tests.",
+          "platform": "MIT",
+          "access": "Free"
+        },
+        {
+          "title": "epoll(7)",
+          "url": "https://man7.org/linux/man-pages/man7/epoll.7.html",
+          "scope": "Read readiness semantics and level-triggered operation; return for edge triggering only if needed.",
+          "why": "The API man page is the contract for the Linux event-loop project.",
+          "platform": "Linux man-pages",
+          "access": "Free"
+        },
+        {
+          "title": "HTTP/1.1 framing: RFC 9112",
+          "url": "https://www.rfc-editor.org/rfc/rfc9112",
+          "scope": "Sections 2, 3 and 6 only while adding the HTTP subset.",
+          "why": "A parsing/framing contract, not an additional web course.",
+          "platform": "RFC Editor",
+          "access": "Free"
+        },
+        {
+          "title": "CMU Malloc Lab specification",
+          "url": "https://csapp.cs.cmu.edu/3e/labs.html",
+          "scope": "Malloc Lab writeup and trace-driver conventions only. Choose the existing mmap-backed allocator; the lab memlib scaffold is an alternative harness, not a second allocator assignment. Driver portability to ARM64 is untested.",
+          "why": "Adds invariant/test ideas without changing the allocator client or repeating allocation theory.",
+          "platform": "CMU CS:APP",
+          "access": "Free"
+        },
+        {
+          "title": "xv6 Fall 2025: Traps lab",
+          "url": "https://pdos.csail.mit.edu/6.1810/2025/labs/traps.html",
+          "scope": "Backtrace and alarm exercises after the syscall path. Use the same course-year lab repository.",
+          "why": "An implementation contract for the trap work, not another OS text.",
+          "platform": "MIT 6.1810",
+          "access": "Free"
+        }
+      ],
+      "excluded": [
+        {
+          "title": "Educative Operating Systems course lessons on fork and paging",
+          "reason": "They overlap the assigned free OSTEP chapters and xv6 book/labs. Keep them as an on-demand alternate explanation only, not parallel required reading."
+        },
+        {
+          "title": "Fundamentals of Operating Systems (full course)",
+          "reason": "A broad second course would duplicate the selected OSTEP and xv6 sequence; no specific distinct lesson is needed for these checkpoints."
+        }
+      ],
+      "checks": [
+        "The selected xv6 labs pass their matching course-year grading scripts; record any deferred labs",
+        "Shell runs `ls | grep c | wc -l > out.txt &` correctly",
+        "Allocator passes its test driver; running `python3` or `sqlite3` via `LD_PRELOAD` is stretch",
+        "HTTP server passes slow-client and disconnect tests; record load-test limits, descriptor limits and latency. 10k connections is stretch",
+        "You can draw, from memory, the syscall path, the page table walk and a context switch",
+        "Pass the pinned traps and mmap labs, including mmaptest and usertests -q"
+      ]
+    },
+    "6": {
+      "shortTitle": "Concurrency & jobs",
+      "project": "A tested lock-based work-stealing job system and bounded SPSC queue.",
+      "core": "Exactly-once completion, wraparound, shutdown and timeout tests. Lock-free MPMC and weak-memory deques are stretch. Complete the small measured xv6 scheduling experiment after the user-space queue works.",
+      "rationale": "Teach the needed concurrency concepts directly, in C, without making Rust fluency a prerequisite. Bos's freely readable chapters explain atomics and synchronization exceptionally well; use only the sections that support the staged queue/job-system project. CS149 videos add distinct visual explanations of parallel workload behavior, not a second implementation track.",
+      "units": [
+        {
+          "title": "Threads, races, and publication",
+          "outcome": "Create and join pthreads and distinguish thread-local work from unsynchronized shared state.",
+          "read": {
+            "title": "OSTEP: Thread API",
+            "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/threads-api.pdf",
+            "scope": "Chapter 27: create/join and pthread API examples. Skip the already-known process API.",
+            "why": "One short C-based introduction avoids learning Rust syntax before using threads.",
+            "platform": "OSTEP",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Write a parallel sum with private partial results and join before combining them. Run a separate ThreadSanitizer build; do not benchmark deliberately racy code.",
+          "stop": "Each worker owns its partial result until join, the sum matches a scalar oracle and shutdown cannot leave live threads."
+        },
+        {
+          "title": "Mutexes, condition variables, and waiting",
+          "outcome": "Build a bounded mutex/condition-variable queue and state its empty/full and shutdown invariants.",
+          "read": {
+            "title": "OSTEP: Condition Variables",
+            "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/threads-cv.pdf",
+            "scope": "Chapter 30: predicate loops and producer/consumer example. Do not implement a futex or custom mutex yet.",
+            "why": "A direct pthread-based sleep/wake pattern for the bounded queue.",
+            "platform": "OSTEP",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Implement a small-capacity pthread queue; test empty waits, full queues, wraparound, and shutdown while workers are idle or have pending work.",
+          "stop": "Stop when timeout-bounded tests complete and each submitted item is handled exactly once. A lock-free MPMC queue is not needed."
+        },
+        {
+          "title": "Parallel work and load balance",
+          "outcome": "Measure static chunking, false sharing, and imbalance, and explain why thread count does not translate directly to speedup.",
+          "read": {
+            "title": "Rust Atomics and Locks: Understanding the Processor (chapter 7)",
+            "url": "https://marabos.nl/atomics/hardware.html",
+            "scope": "Read the hardware/cache-coherence sections that explain why writes to shared cache lines contend.",
+            "why": "This is a bounded hardware explanation for the false-sharing measurement, separate from the earlier ordering and lock chapters.",
+            "platform": "Mara Bos, free online book",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "Stanford CS149: work distribution (index)",
+            "url": "https://gfxcourses.stanford.edu/cs149/fall25/",
+            "scope": "From the pinned schedule, choose only the lecture about work distribution/load balance that matches your static-chunking experiment. Do not watch lectures 1–6 as another queue.",
+            "why": "The lecture demonstrations add visual execution and workload examples alongside the written cache-coherence explanation.",
+            "platform": "Stanford CS149",
+            "access": "Free videos and materials"
+          },
+          "build": "Compare adjacent and padded per-thread counters, then parallelize a phase 4 workload with static chunks. Record machine, inputs, and timings. After the user-space scaling tests, instrument the pinned xv6 scheduler for runnable/wait time and try one small policy change. Use kernel locks and timer interrupts already studied in phase 5; compare the behavior on a fixed workload, not a host-thread speed claim.",
+          "stop": "Stop when you can account for the observed scaling and false-sharing result, even if the hardware shows no large speed gap."
+        },
+        {
+          "title": "Publication and the bounded SPSC ring",
+          "outcome": "Explain how an acquire observation makes a producer’s preceding writes visible.",
+          "read": {
+            "title": "Rust Atomics and Locks: Memory Ordering",
+            "url": "https://marabos.nl/atomics/memory-ordering.html",
+            "scope": "Chapter 3: relaxed versus release/acquire and happens-before. Read enough of the introduction to understand examples; implement in C11.",
+            "why": "Adds the ordering argument needed to replace the simple single-producer/single-consumer path, not another Rust course.",
+            "platform": "Mara Bos",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "First test one-time publication. Then build a bounded SPSC ring with one producer and one consumer; test tiny capacity, wraparound, full/empty transitions and timeout-bounded shutdown.",
+          "stop": "Write the release/acquire and storage-lifetime argument, then pass exactly-once and wraparound stress tests. A clean TSan run is not a proof."
+        },
+        {
+          "title": "Locked work stealing",
+          "outcome": "Build a job system with worker-local deques, stealing, wait-helping, and explicit shutdown without guessing weak-memory fences.",
+          "read": {
+            "title": "Rust Atomics and Locks: Building Our Own Channels (chapter 5), selected",
+            "url": "https://marabos.nl/atomics/building-channels.html",
+            "scope": "Read the channel ownership and synchronization examples only where they clarify job publication and completion.",
+            "why": "The existing book provides targeted patterns; the phase project intentionally keeps deque synchronization with locks.",
+            "platform": "Mara Bos, free online book",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Start with a locked deque per worker and a configurable pool; run exactly-once, uneven-job, waiting-parent, and idle-shutdown tests.",
+          "stop": "Stop when correctness and measured comparison against static chunking are complete. Chase-Lev and lock-free MPMC are stretch work."
+        }
+      ],
+      "lookups": [
+        {
+          "title": "ThreadSanitizer documentation",
+          "url": "https://clang.llvm.org/docs/ThreadSanitizer.html",
+          "scope": "Use a separate -fsanitize=thread build for executed data-race checks.",
+          "why": "A useful detector, but it does not prove deadlock freedom or algorithm correctness.",
+          "platform": "Clang documentation",
+          "access": "Free"
+        }
+      ],
+      "excluded": [
+        {
+          "title": "Full Rust course before concurrency",
+          "reason": "The phase uses Rust Atomics and Locks as a concept text and implements in C. Rust syntax is not a prerequisite for pthreads or the C11 memory model."
+        },
+        {
+          "title": "Full McKenney book and full CS149 course",
+          "reason": "Both are substantial references. Select only CS149 lectures for the distinct parallel-performance perspective; consult McKenney only if a concrete coherence question remains."
+        }
+      ],
+      "checks": [
+        "Speedup plots for every experiment; explain the adjacent/padded counter result even if this hardware shows no dramatic cliff",
+        "Ring buffer and queue pass exactly-once, wraparound, shutdown and timeout tests, plus ThreadSanitizer stress with zero reports; record that this is testing, not a correctness proof",
+        "Job system runs the matmul within 10% of the hand-split version and handles uneven jobs better",
+        "You can explain acquire/release with the diagram above, from memory, and name where your job system needs each",
+        "Measure and explain one small xv6 scheduling experiment after the user-space queue works"
+      ]
+    },
+    "7": {
+      "shortTitle": "Rust & ownership",
+      "project": "Port the hash table and event loop to Rust, with behavior tests and benchmarks.",
+      "core": "Safe containers before unsafe infrastructure. Preserve the C tests and document every unsafe invariant.",
+      "rationale": "The existing phase project is a port of known C behavior, not a demand to finish several Rust courses. Assign small official Rust Book sections at the point of need, then use one bounded linked-list exercise to make ownership constraints concrete. Skip an unsafe arena until the safe port is done.",
+      "units": [
+        {
+          "title": "Ownership, borrowing, and slices",
+          "outcome": "Port one small tested C container operation using owned values and shared/mutable references without cloning to appease the compiler.",
+          "read": {
+            "title": "The Rust Book: Understanding Ownership (chapter 4)",
+            "url": "https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html",
+            "scope": "Read sections 4.1–4.3, especially references, borrowing, and slices.",
+            "why": "This is the minimum official explanation for moving from manual C ownership to Rust's static rules.",
+            "platform": "The Rust Programming Language",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Port a small hash-table lookup/insert behavior using Vec and slices; retain the C tests as the behavior contract.",
+          "stop": "Stop when tests pass and you can explain each owner and borrow. Do not start an unsafe container to avoid a borrow-checker error."
+        },
+        {
+          "title": "Errors at the port boundary",
+          "outcome": "Return failures explicitly and handle them at the program boundary.",
+          "read": {
+            "title": "Rust Book: Error Handling",
+            "url": "https://doc.rust-lang.org/book/ch09-00-error-handling.html",
+            "scope": "Chapter 9, especially recoverable errors with Result and propagation with ?. Review enums/match only if needed to understand these examples.",
+            "why": "A single language mechanism needed by your port’s actual failure paths.",
+            "platform": "Rust Book",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Port one parser or container API boundary so errors are returned as Result and handled at the CLI/test boundary.",
+          "stop": "Stop when the port preserves the C behavior and makes failure paths visible. Do not add traits or abstractions without a caller that needs them."
+        },
+        {
+          "title": "Lifetimes and safe APIs",
+          "outcome": "Explain why a borrowed view cannot outlive its backing allocation and use safe APIs for the hash-table port.",
+          "read": {
+            "title": "The Rust Book: Validating References with Lifetimes (chapter 10.3)",
+            "url": "https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html",
+            "scope": "Read lifetime syntax and the returned-reference example; use lifetimes only when the compiler asks for the relationship.",
+            "why": "A narrow bridge from the phase 2 string-view/arena model to Rust reference validity.",
+            "platform": "The Rust Programming Language",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "Crust of Rust: Lifetime Annotations",
+            "url": "https://www.youtube.com/watch?v=rAl-9HwD858",
+            "scope": "Optional worked lifetime example only when a concrete returned-view error blocks the safe port. Do not follow the whole playlist.",
+            "why": "Watch the compiler constrain the same ownership relationship you have already drawn in C.",
+            "platform": "YouTube",
+            "access": "Free"
+          },
+          "build": "Port the SoA hash table with owned Vec storage and indices where that gives a clearer invariant; benchmark only after equivalent tests pass.",
+          "stop": "Stop with a safe implementation. The optional arena requires a written alignment, stability, aliasing, reset, and destructor contract first."
+        },
+        {
+          "title": "Unsafe boundary for the event loop",
+          "outcome": "Keep unsafe code at narrow syscall boundaries and document descriptor, buffer, and lifetime invariants for each block.",
+          "read": {
+            "title": "The Rustonomicon: Working with Unsafe",
+            "url": "https://doc.rust-lang.org/nomicon/working-with-unsafe.html",
+            "scope": "Read the unsafe contract and aliasing material relevant to raw pointers and FFI; do not read the whole Nomicon as a prerequisite.",
+            "why": "Unsafe is an explicit contract with callers, not a relaxation of the need to uphold invariants.",
+            "platform": "The Rustonomicon",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Port the existing event loop and bounded HTTP subset with only the raw libc wrappers they need. Compare behavior tests against the C version; keep descriptor cleanup and buffer ownership visible.",
+          "stop": "The Rust event-loop/server passes the same behavior tests, each unsafe block has a concrete safety comment, and timings are compared with the C version. Async Rust and a full unsafe allocator are out of scope."
+        }
+      ],
+      "lookups": [
+        {
+          "title": "Too Many Linked Lists: Learning Ownership",
+          "url": "https://rust-unofficial.github.io/too-many-lists/first.html",
+          "scope": "Use the first ownership-focused chapters as one optional worked example; stop before the book becomes a second full project.",
+          "why": "It gives concrete examples of ownership and mutation tradeoffs, but the roadmap's main deliverable remains the C project port.",
+          "platform": "Rust community book",
+          "access": "Free"
+        },
+        {
+          "title": "Bumpalo Bump allocation/reset contract",
+          "url": "https://docs.rs/bumpalo/latest/bumpalo/struct.Bump.html",
+          "scope": "Look up allocation and reset semantics only if implementing the optional arena.",
+          "why": "Compare a real safe API contract before designing unsafe arena internals.",
+          "platform": "docs.rs",
+          "access": "Free"
+        }
+      ],
+      "excluded": [
+        {
+          "title": "Read TRPL chapters 1–19 cover to cover plus Rustlings before porting",
+          "reason": "That duplicates syntax practice and delays the project's concrete ownership questions. Read selected official chapters as the port needs them; use Rustlings only for a specific syntax gap."
+        },
+        {
+          "title": "Too Many Linked Lists entire guide and Rust for Rustaceans",
+          "reason": "Both are valuable but amount to additional courses. Keep the safe port primary; select a linked-list chapter or advanced reference only to answer a current question."
+        }
+      ]
+    },
+    "8": {
+      "shortTitle": "GPU & CUDA",
+      "project": "Verified reductions and tiled matmul, then optional tensor cores and attention.",
+      "core": "Use the NVIDIA laptop. Compare matched dtype/layout/math modes on your own GPU; no CUDA on macOS.",
+      "rationale": "Use CUDA’s written execution and memory contracts, a tested reduction and Boehm’s first three matmul kernels. Specific GPU MODE profiling/checklist videos add tool context. Do not add PMPP or another full CUDA course; deeper tuning and attention follow the core checkpoint on your NVIDIA laptop.",
+      "units": [
+        {
+          "title": "Threads, blocks, and indexing",
+          "outcome": "Map output elements to threads and blocks and validate the mapping on irregular dimensions.",
+          "read": {
+            "title": "CUDA C++ Programming Guide: Programming Model",
+            "url": "https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#programming-model",
+            "scope": "Read the grid/block/thread model and kernel launch sections needed for vector add and GPU Puzzles.",
+            "why": "The official guide defines CUDA execution semantics and avoids paying for another broad GPU course.",
+            "platform": "NVIDIA documentation",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "GPU Puzzles",
+            "url": "https://github.com/srush/GPU-Puzzles",
+            "scope": "Complete the indexing puzzles for elementwise work and reductions; inspect the supplied visual/test feedback.",
+            "why": "Interactive small tasks make lane and block indexing visible in a way the reference guide does not.",
+            "platform": "GitHub",
+            "access": "Free"
+          },
+          "build": "Run deviceQuery, then write a vector add and test non-multiple sizes against a CPU result.",
+          "stop": "Stop when indexing, bounds, launch errors, and result checks are covered. Skip puzzle repetitions you already solve reliably."
+        },
+        {
+          "title": "Memory access and profiling",
+          "outcome": "Measure coalesced versus strided access and use profiler evidence to identify the bottleneck.",
+          "read": {
+            "title": "NVIDIA CUDA Best Practices Guide: Memory Optimizations",
+            "url": "https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html#memory-optimizations",
+            "scope": "Read global-memory coalescing, shared-memory use, and execution configuration only as they support the probe.",
+            "why": "This section connects the memory model to actionable measurements without assigning the full guide.",
+            "platform": "NVIDIA documentation",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "GPU MODE Lecture 1: How to profile CUDA kernels in PyTorch",
+            "url": "https://www.youtube.com/watch?v=LuhJEEJQgUM",
+            "scope": "Watch for profiler workflow and kernel timing context; timestamps are not specified.",
+            "why": "A demonstrated profiling workflow adds screen-based tool context distinct from the written memory guide.",
+            "platform": "GPU MODE on YouTube",
+            "access": "Free video"
+          },
+          "build": "Time a bandwidth probe with CUDA events, compare contiguous and strided access, and inspect one Nsight Compute report.",
+          "stop": "Stop when you can name an observed bottleneck and reproduce the measurement. Do not chase bandwidth numbers from another GPU."
+        },
+        {
+          "title": "Reduction before matrix multiplication",
+          "outcome": "Use shared memory and barriers to reduce an irregular input safely.",
+          "read": {
+            "title": "CUDA Best Practices: Shared Memory",
+            "url": "https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html#shared-memory",
+            "scope": "Shared-memory visibility, barriers and bank conflicts only. Start from the programming guide’s kernel model already used in step 1.",
+            "why": "A synchronization contract for the reduction; Boehm’s matmul article is not a reduction tutorial.",
+            "platform": "NVIDIA documentation",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Implement scalar-oracle reduction, then a shared-memory version. Test irregular lengths and block-wide barrier participation with Compute Sanitizer.",
+          "stop": "The reduction matches the stated numerical tolerance and all tested lanes/bounds/barriers are valid."
+        },
+        {
+          "title": "Tiled FP32 matrix multiplication",
+          "outcome": "Reuse tiles, measure the bottleneck and handle rectangular/tail shapes.",
+          "read": {
+            "title": "Simon Boehm: CUDA Matmul Worklog",
+            "url": "https://siboehm.com/articles/22/CUDA-MMM",
+            "scope": "Implement kernels 1–3 first: naive, coalesced and shared-memory tiling. Later register/warp tiling variants are follow-ons after the core checkpoint.",
+            "why": "Each step changes one data-movement mechanism and records a measurement.",
+            "platform": "Simon Boehm",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "GPU MODE: CUDA Performance Checklist",
+            "url": "https://www.youtube.com/watch?v=SGhfUhlowB4",
+            "scope": "Use only the checklist sections relevant to a bottleneck in your current kernel.",
+            "why": "A profiler-based diagnostic companion, not a second full CUDA course.",
+            "platform": "YouTube",
+            "access": "Free"
+          },
+          "build": "Implement the tiled kernel with a CPU oracle and irregular M/N/K. Profile it and compare to cuBLAS with matched dtype, layout and math mode; record launch and transfer times separately.",
+          "stop": "Correct reduction and tiled matmul with a stated error policy and an explained profile. Tensor cores, softmax/attention, Triton and Metal are stretch, not an extra prerequisite."
+        }
+      ],
+      "lookups": [
+        {
+          "title": "Compute Sanitizer documentation",
+          "url": "https://docs.nvidia.com/compute-sanitizer/ComputeSanitizer/index.html",
+          "scope": "Use memcheck and synchronization checks on the kernels under test.",
+          "why": "Host sanitizers do not validate device accesses or barriers.",
+          "platform": "NVIDIA documentation",
+          "access": "Free"
+        }
+      ],
+      "excluded": [
+        {
+          "title": "PMPP 4th edition as a full additional textbook track",
+          "reason": "Its core topics are already represented by the CUDA guide, GPU Puzzles, targeted GPU MODE lectures, and the Boehm worklog. Use a relevant chapter only to resolve a gap."
+        },
+        {
+          "title": "Full CUDA Udemy course and GPU MODE playlist",
+          "reason": "They add broad setup and repeated memory/kernel coverage. No verified narrow lesson was needed beyond the exact public lectures selected here."
+        },
+        {
+          "title": "All GPU MODE lectures 3, 4, 8 and 9",
+          "reason": "The existing CUDA text, profiler demo, reduction and matmul work already cover these concepts. Keep the scoped lecture-8 checklist, not another viewing queue."
+        }
+      ]
+    },
+    "9": {
+      "shortTitle": "Compilers, VMs & Lua",
+      "project": "Build clox in C, then a small protected Lua host.",
+      "core": "clox tests and correct Lua stack/error boundaries first. The required LLVM backend follows in 9b; server hot reload remains stretch.",
+      "rationale": "clox is already the project's compiler/interpreter course and builds a complete bytecode VM with scanner, Pratt parser, compiler, GC, closures, and a VM. Add no C compiler or JavaScript compiler course. Make the Lua comparison a small follow-on: read a few implementation files and prove one host/API path, not the whole Lua runtime.",
+      "units": [
+        {
+          "title": "Bytecode, chunks, and the VM loop",
+          "outcome": "Trace one expression from source to bytecode and through the stack-based VM.",
+          "read": {
+            "title": "Crafting Interpreters: Chunks of Bytecode and A Virtual Machine",
+            "url": "https://craftinginterpreters.com/chunks-of-bytecode.html",
+            "scope": "Read chapters 14–15, covering chunks, the VM, and a test harness. Compiler chapters start in the next unit.",
+            "why": "These exact chapters establish the bytecode representation and dispatch loop without doing the Java tree-walker first.",
+            "platform": "Crafting Interpreters",
+            "access": "Free online book"
+          },
+          "visual": null,
+          "build": "Implement the clox chunk/VM sequence and disassemble a small expression; keep the book's tests as behavior checks.",
+          "stop": "Stop when the first expressions execute and you can annotate the stack and instruction pointer. Do not start a second VM project."
+        },
+        {
+          "title": "Scanning, Pratt parsing, and compilation",
+          "outcome": "Compile expressions and statements into bytecode while preserving the Lox language behavior contract.",
+          "read": {
+            "title": "Crafting Interpreters: Scanning, Parsing Expressions, and Statements",
+            "url": "https://craftinginterpreters.com/scanning-on-demand.html",
+            "scope": "Read chapters 16–24 for scanning, Pratt parsing, and the compiler. Skip part 2 unless a chapter refers back to a concept you need.",
+            "why": "This bounded run covers the scanner/parser/compiler needed by clox; no standalone compiler course is necessary.",
+            "platform": "Crafting Interpreters",
+            "access": "Free online book"
+          },
+          "visual": null,
+          "build": "Complete the clox scanner and compiler incrementally; test precedence and malformed input as you add syntax.",
+          "stop": "Stop when the required clox compiler tests pass. A C compiler, JavaScript compiler, or native backend is outside this phase."
+        },
+        {
+          "title": "Runtime values, garbage collection, and closures",
+          "outcome": "Explain value representation, object lifetime, mark/sweep roots, and captured-variable behavior in clox.",
+          "read": {
+            "title": "Crafting Interpreters: Closures",
+            "url": "https://craftinginterpreters.com/closures.html",
+            "scope": "Chapters 25–30 in the book’s Part III sequence: closures, GC, classes/methods/inheritance and optimization. Start at Closures, not chapter 15 again.",
+            "why": "Completes the same clox runtime without re-reading the dispatch-loop introduction.",
+            "platform": "Crafting Interpreters",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Finish clox through chapter 30. Force frequent debug collections and test captured locals after their function returns; keep regressions for rooting/lifetime bugs.",
+          "stop": "clox passes the selected book tests and the closure/GC cases. Native code generation and server hot reload are not prerequisites for embedding Lua."
+        },
+        {
+          "title": "Lua's VM and the C host boundary",
+          "outcome": "Compare clox's stack VM with Lua's register VM and write a minimal protected Lua call from C.",
+          "read": {
+            "title": "The Implementation of Lua 5.0",
+            "url": "https://www.lua.org/doc/jucs05.pdf",
+            "scope": "Read the paper's register-VM, table, closure, and coroutine discussion; then inspect only lopcodes.h, lvm.c, and lapi.c in the matching Lua release.",
+            "why": "The short paper gives a visual/conceptual map for selected source files without assigning a full Lua source-reading track.",
+            "platform": "Journal of Universal Computer Science / Lua.org",
+            "access": "Free paper and source"
+          },
+          "visual": null,
+          "build": "Build a tiny C host that loads one script and calls one function via lua_pcall; draw the Lua stack before and after the call.",
+          "stop": "Stop when errors are protected at the C boundary and one clox/Lua instruction comparison is written. Do not read all Lua source or build another compiler."
+        }
+      ],
+      "lookups": [
+        {
+          "title": "The Lox Language",
+          "url": "https://craftinginterpreters.com/the-lox-language.html",
+          "scope": "Use as the language behavior contract for the syntax/features actually implemented in clox.",
+          "why": "Defines expected behavior without requiring a second tree-walker implementation.",
+          "platform": "Crafting Interpreters",
+          "access": "Free online book"
+        },
+        {
+          "title": "Lua 5.5 Reference Manual",
+          "url": "https://www.lua.org/manual/5.5/",
+          "scope": "Use the C API and error-handling sections matching the installed headers/runtime.",
+          "why": "The manual, headers, and library version must match at the host boundary.",
+          "platform": "Lua.org",
+          "access": "Free"
+        },
+        {
+          "title": "Lua source releases",
+          "url": "https://www.lua.org/ftp/",
+          "scope": "Inspect selected implementation files only, pinned to the same release as the manual.",
+          "why": "The versioned source archive is more precise than relying on an unversioned source snapshot.",
+          "platform": "Lua.org",
+          "access": "Free"
+        }
+      ],
+      "excluded": [
+        {
+          "title": "Developing a C Compiler From Scratch course",
+          "reason": "A second compiler project duplicates scanning/parsing/AST concepts while not contributing to the clox or Lua-host deliverables."
+        },
+        {
+          "title": "Master.dev TypeScript/JavaScript compiler course lessons",
+          "reason": "The lessons add a different language and AST formatter track on top of clox. They are not needed to build or understand this C VM."
+        },
+        {
+          "title": "Crafting Interpreters Java tree-walker part",
+          "reason": "The phase specifically chooses the C bytecode VM. Read a tree-walker explanation only when clox refers to a concept that is unclear."
+        }
+      ]
+    },
+    "10": {
+      "shortTitle": "Software rendering",
+      "project": "An SDL3 platform layer, scalar rasterizer, ray tracer and playable build.",
+      "core": "A clipped, depth-tested scalar scene before SIMD or multicore rendering. 1080p60 is stretch.",
+      "rationale": "Build the scalar renderer and SDL3 platform boundary before chasing performance. Handmade Hero is the visual/code walkthrough, but it is C-style C++ on Win32; borrow the data flow and debugging habits, not its OS calls or build setup. The guide exposes topic markers and individual episodes, so select only relevant pages rather than watching days 1–60 in order.",
+      "units": [
+        {
+          "title": "Pixels, window and platform boundary",
+          "outcome": "Show a moving software-rendered buffer in an SDL3 window; explain pitch, pixel format and ownership.",
+          "read": {
+            "title": "SDL3 surface and pixel APIs",
+            "url": "https://wiki.libsdl.org/SDL3/CategoryPixels",
+            "scope": "Surface, pixel formats, pitch and conversion",
+            "why": "The platform contract for presenting a CPU-owned image; do not assume tightly packed rows.",
+            "platform": "SDL3 documentation",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "Handmade Hero: Allocating a Back Buffer",
+            "url": "https://guide.handmadehero.org/code/day003/",
+            "scope": "Episode 3",
+            "why": "A concrete walkthrough of a CPU backbuffer and its dimensions; translate Win32 presentation to SDL3 rather than copying it.",
+            "platform": "Handmade Hero episode guide / YouTube",
+            "access": "Free"
+          },
+          "build": "Create the SDL3 window and a validated pixel buffer, draw a changing gradient, and present it. Record buffer dimensions, pitch and format.",
+          "stop": "Window input and the gradient work on the target Mac without adding an engine or a separate GPU-renderer curriculum."
+        },
+        {
+          "title": "Platform boundary, frame state and replay",
+          "outcome": "Separate OS polling/presentation from update-and-render, measure frame time and replay recorded input.",
+          "read": {
+            "title": "Game Programming Patterns: Double Buffer",
+            "url": "https://gameprogrammingpatterns.com/double-buffer.html",
+            "scope": "The buffered rendering/state examples only. Keep platform-owned presentation separate from game-owned persistent state; reuse your phase 2 lifetime rules.",
+            "why": "A written explanation of separating an in-progress state from the state being observed.",
+            "platform": "Game Programming Patterns",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "Handmade Hero: Input Recording and Playback",
+            "url": "https://guide.handmadehero.org/code/day023/",
+            "scope": "Episode 23",
+            "why": "A memorable debugging gem: replay makes an intermittent game bug repeatable. Its Win32 file APIs need SDL/platform replacements.",
+            "platform": "Handmade Hero episode guide / YouTube",
+            "access": "Free"
+          },
+          "build": "Use SDL events and performance counters to drive a bounded frame loop. Store input frames and replay a short session to reproduce the same state.",
+          "stop": "Input replay reproduces a state transition and frame timing is logged; defer hot reload and audio until this boundary works."
+        },
+        {
+          "title": "Scalar triangle rasterizer",
+          "outcome": "Draw clipped, depth-tested triangles with a documented coordinate, winding and depth convention.",
+          "read": {
+            "title": "Scratchapixel: Rasterization, a Practical Implementation",
+            "url": "https://www.scratchapixel.com/lessons/3d-basic-rendering/rasterization-practical-implementation/rasterization-practical-implementation.html",
+            "scope": "Edge functions, barycentric interpolation and perspective-correct interpolation",
+            "why": "Fills the implementation gap from transforms to actual software pixels, with equations tied to diagrams.",
+            "platform": "Scratchapixel",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Start with edge-tested 2D triangles, then transform a cube, clip against the near plane before perspective divide, and add a depth buffer. Keep scalar output as oracle.",
+          "stop": "Tests cover shared edges, inside/outside/crossing near-plane triangles, and overlapping depth-tested geometry. SIMD and tiled parallelism are stretch."
+        },
+        {
+          "title": "Ray tracing: a separate image-generation mechanism",
+          "outcome": "Trace rays through a camera and simple geometry, then distribute independent pixels safely.",
+          "read": {
+            "title": "Ray Tracing in One Weekend",
+            "url": "https://raytracing.github.io/books/RayTracingInOneWeekend.html",
+            "scope": "Book 1 only. Port the C++ examples to C; the diagrams and rendered images are the visual companion. No books 2–3 yet.",
+            "why": "Ray intersections and sampling are different from rasterization, so the existing project stays in the path.",
+            "platform": "Ray Tracing books",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Produce book 1’s final image in C, then parallelize tiles using your phase 6 job system. Fix random seeds when comparing output and document sampling limits.",
+          "stop": "The reference scene renders correctly and the parallel version preserves the stated output policy. Extra ray-tracing books are not phase gates."
+        },
+        {
+          "title": "A small playable renderer checkpoint",
+          "outcome": "Ship a tiny interactive scene and compare a software image against a minimal GPU presentation path.",
+          "read": {
+            "title": "SDL3 application examples",
+            "url": "https://examples.libsdl.org/",
+            "scope": "Use only a minimal renderer/input example matching your existing window. The goal is packaging a tiny playable build, not learning all sample categories.",
+            "why": "A concrete integration reference for the SDL3 runtime you already use.",
+            "platform": "SDL3",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Make a small playable scene with frame-time reporting. If useful, upload the software buffer as a texture for comparison, without replacing the scalar renderer.",
+          "stop": "A second Mac can run the build and the project checklist's scalar correctness is met; 1080p60 is optional."
+        }
+      ],
+      "lookups": [
+        {
+          "title": "SDL3 API reference",
+          "url": "https://wiki.libsdl.org/SDL3",
+          "scope": "Window, events, timing, audio and pixel-format contracts as needed",
+          "why": "Primary API reference for the macOS platform layer.",
+          "platform": "SDL3",
+          "access": "Free"
+        },
+        {
+          "title": "LearnOpenGL: Coordinate Systems",
+          "url": "https://learnopengl.com/Getting-started/Coordinate-Systems",
+          "scope": "Return for transform order, clip space and perspective division while building the scalar rasterizer.",
+          "why": "A math lookup, not an OpenGL renderer curriculum.",
+          "platform": "LearnOpenGL",
+          "access": "Free"
+        }
+      ],
+      "excluded": [
+        {
+          "title": "Handmade Hero days 1–60 as a continuous course",
+          "reason": "Most are Windows-specific setup and repeated game progression; use exact topic episodes and build on SDL3/macOS instead."
+        },
+        {
+          "title": "OpenGL/Vulkan renderer as the main project",
+          "reason": "The phase's learning target is CPU rasterization. GPU API work belongs to a short comparison or phase 10b."
+        },
+        {
+          "title": "Ray Tracing books 2 and 3",
+          "reason": "Book 1 remains a distinct required project. The later books add depth after that checkpoint."
+        },
+        {
+          "title": "TinyRenderer as a second rasterizer",
+          "reason": "The current scalar renderer and Scratchapixel equations already establish this build. Another renderer would repeat the same deliverable."
+        }
+      ]
+    },
+    "11": {
+      "shortTitle": "Kernels & bare metal",
+      "project": "A QEMU kernel with interrupts, paging and two tasks; a separate Pico exercise.",
+      "core": "Boot, faults, mapped memory and cooperative tasks first. Filesystem, user mode and ELF loading are stretch.",
+      "rationale": "Choose the Rust tutorial's boot contract for the QEMU kernel and stay within its Rust/no_std path. Do not mix in the C/assembly bootloader steps from a different tutorial. Keep RP2350 bare metal and Linux modules as independent exercises, not prerequisites for booting the kernel.",
+      "units": [
+        {
+          "title": "Boot a Rust kernel under its documented loader contract",
+          "outcome": "Build a pinned tutorial-compatible image that boots in QEMU and writes serial output; explain what the bootloader already did.",
+          "read": {
+            "title": "Writing an OS in Rust: A Minimal Rust Kernel",
+            "url": "https://os.phil-opp.com/minimal-rust-kernel/",
+            "scope": "Second-edition minimal kernel and bootloader contract. Follow the linked freestanding prerequisite once; pin the documented bootimage/bootloader toolchain rather than substituting latest releases.",
+            "why": "The actual boot contract is required reading, not hidden behind an optional companion.",
+            "platform": "Philipp Oppermann",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Follow the tutorial's pinned second-edition bootimage/bootloader contract, add serial output and a panic path, then deliberately trigger a fault in QEMU.",
+          "stop": "Reproducibly boot, print and diagnose one intentional fault. Do not replace the boot protocol as an early exercise."
+        },
+        {
+          "title": "Exceptions and hardware interrupts",
+          "outcome": "Install handlers and diagnose intentional exceptions before allowing timer-driven work.",
+          "read": {
+            "title": "Writing an OS in Rust: CPU Exceptions",
+            "url": "https://os.phil-opp.com/cpu-exceptions/",
+            "scope": "Continue in the same tutorial through double faults and hardware interrupts. Diagnose each intentional fault before moving on.",
+            "why": "Keeps exception prerequisites and device interrupts within one known boot path.",
+            "platform": "Philipp Oppermann",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Add breakpoint/double-fault handlers and a minimal hardware timer interrupt. Record which stack/register state the handler owns, and use serial/QEMU diagnostics rather than changing several mechanisms at once.",
+          "stop": "An intentional fault is identifiable and timer interrupts occur without corrupting the interrupted state."
+        },
+        {
+          "title": "Page mappings and a usable heap",
+          "outcome": "Distinguish physical frames from virtual pages and keep allocation ownership explicit.",
+          "read": {
+            "title": "Writing an OS in Rust: Paging Introduction",
+            "url": "https://os.phil-opp.com/paging-introduction/",
+            "scope": "Follow the same tutorial’s paging, paging implementation and heap-allocation posts. Use its page-table diagrams; no second OSDev boot path.",
+            "why": "This is the missing frame/mapping/heap mechanism between interrupts and tasks.",
+            "platform": "Philipp Oppermann",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Implement frame allocation, map a new virtual region and add a minimal tested heap. Exercise valid mapping, exhausted frames and a deliberate invalid access.",
+          "stop": "Mapping/allocator invariants hold and failures produce a diagnosable panic rather than silent corruption."
+        },
+        {
+          "title": "Two cooperative tasks before timer preemption",
+          "outcome": "Switch between two kernel tasks with explicit stack and saved-register ownership.",
+          "read": {
+            "title": "MIT xv6 book: Scheduling",
+            "url": "https://pdos.csail.mit.edu/6.1810/2025/xv6/book-riscv-rev5.pdf",
+            "scope": "Scheduling and context-switch discussion, as a conceptual comparison",
+            "why": "A compact reference for process state and switching; do not copy its RISC-V assembly into the x86 Rust tutorial kernel.",
+            "platform": "MIT xv6",
+            "access": "Free PDF"
+          },
+          "visual": null,
+          "build": "Add cooperative task switching first; only then add a timer interrupt and round-robin policy if the context model is sound.",
+          "stop": "Two tasks resume with their own stack/state and tests show no cross-task memory corruption."
+        },
+        {
+          "title": "Separate RP2350 bare-metal exercise",
+          "outcome": "Flash a Pico 2 program that initializes GPIO from the chip documentation and blinks without an SDK runtime.",
+          "read": {
+            "title": "RP2350 Datasheet",
+            "url": "https://datasheets.raspberrypi.com/rp2350/rp2350-datasheet.pdf",
+            "scope": "Boot process, selected core/ISA, GPIO and UART chapters",
+            "why": "The datasheet and image format define this board's real boot and register contract; select one core architecture and toolchain.",
+            "platform": "Raspberry Pi documentation",
+            "access": "Free PDF"
+          },
+          "visual": null,
+          "build": "First flash a known-good image with documented probe/tools, then write the smallest own startup/GPIO path and a UART message.",
+          "stop": "Known-good recovery route remains available and the chosen board/core path blinks reliably. This is independent of the QEMU kernel."
+        }
+      ],
+      "lookups": [
+        {
+          "title": "OSDev Wiki",
+          "url": "https://wiki.osdev.org/",
+          "scope": "Look up an x86 protocol/device detail only when the chosen implementation requires it",
+          "why": "Broad reference, not a second boot tutorial to combine with the Rust path.",
+          "platform": "OSDev Wiki",
+          "access": "Free"
+        }
+      ],
+      "excluded": [
+        {
+          "title": "Nanobyte C boot path combined with the Rust tutorial",
+          "reason": "Its boot protocol, language and toolchain assumptions differ; mixing them obscures which component owns entry setup."
+        },
+        {
+          "title": "Writing a bootloader from reset as a prerequisite",
+          "reason": "The selected tutorial deliberately uses a bootloader and its contract; replacing it is a distinct project."
+        },
+        {
+          "title": "Filesystem, user mode, Pico, Linux module and full preemptive scheduler all as one gate",
+          "reason": "These have separate hardware and debugging contracts; keep the earliest boot/memory/task checkpoint independently finishable."
+        },
+        {
+          "title": "A second RISC-V C bootstrap via OSDev",
+          "reason": "xv6 supplies RISC-V experience and the existing Rust kernel has a pinned x86 boot contract. A second boot path would duplicate mechanisms and mix ISA assumptions. Drivers remain separate required work."
+        }
+      ]
+    },
+    "12": {
+      "shortTitle": "Storage & TCP",
+      "project": "A recoverable single-writer KV store and isolated TCP handshake/echo.",
+      "core": "Document the crash model. kill -9 is not power-loss testing. Full TCP recovery is a larger capstone.",
+      "rationale": "Storage and TCP are separate projects with different correctness models, so use six focused units. Pin CMU Fall 2025 and select only buffer-pool, index, logging and recovery topics relevant to the B+ tree/WAL; do not enroll in the full course or add the full Udemy course as another prerequisite. Start TCP offline, then use an isolated TUN lab.",
+      "units": [
+        {
+          "title": "Page format and buffer pool",
+          "outcome": "Serialize a fixed-width page format and manage cached pages with pinning, dirty state and eviction.",
+          "read": {
+            "title": "CMU 15-445: Buffer Pool notes",
+            "url": "https://15445.courses.cs.cmu.edu/fall2025/notes/04-bufferpool.pdf",
+            "scope": "Pinned Fall 2025 memory-management notes only. Use single-threaded clock/LRU initially; do not implement BusTub’s full concurrent ARC/DiskScheduler assignment.",
+            "why": "Written pinning/dirty/eviction contracts without importing the course’s C++ infrastructure.",
+            "platform": "CMU",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "CMU 15-445: Buffer Pool lecture",
+            "url": "https://www.youtube.com/watch?v=8-2yv4z0VZc",
+            "scope": "Fall 2025 schedule lecture 4",
+            "why": "Lecture visuals clarify the buffer-pool role; use the pinned schedule because course numbering can change by offering.",
+            "platform": "YouTube / CMU",
+            "access": "Free"
+          },
+          "build": "Define page IDs and byte-order-stable headers, then write/read fixed-size pages through a buffer pool with dirty tracking and eviction tests.",
+          "stop": "Round-trip page tests reject invalid lengths/versions and eviction never loses a dirty pinned page."
+        },
+        {
+          "title": "B+ tree and range scans",
+          "outcome": "Insert/search/split a disk-backed B+ tree and validate range results against a sorted in-memory reference.",
+          "read": {
+            "title": "CMU 15-445: B+ Tree notes",
+            "url": "https://15445.courses.cs.cmu.edu/fall2025/notes/08-indexes1.pdf",
+            "scope": "B+ tree layout, lookup, insert/split and range scans. Read the next index notes only when deletion or a specific missing detail is in scope.",
+            "why": "One written index lesson, with the lecture as optional visual support.",
+            "platform": "CMU",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "CMU 15-445: Indexes & Filters I",
+            "url": "https://www.youtube.com/watch?v=u7ii_Lvm9rM",
+            "scope": "Fall 2025 lecture 8",
+            "why": "Visual explanation of index structures alongside the selected page/tree build.",
+            "platform": "YouTube / CMU",
+            "access": "Free"
+          },
+          "build": "Add search, insertion, split and ordered leaf links. Fuzz operations against an independent sorted-array oracle.",
+          "stop": "Random insert/search/range tests preserve tree ordering and reachability; deletion rebalancing can wait if explicitly excluded."
+        },
+        {
+          "title": "Write-ahead log and recovery boundary",
+          "outcome": "Define when a put is acknowledged, frame log records, sync before dependent pages and recover a truncated tail.",
+          "read": {
+            "title": "SQLite: Write-Ahead Logging",
+            "url": "https://www.sqlite.org/wal.html",
+            "scope": "Sections 2.1–2.3: WAL/checkpoint lifecycle and ordering. Apply the idea to your documented single-writer log, not SQLite file compatibility.",
+            "why": "A bounded written lifecycle model; multi-user ARIES is not needed to build the first recoverable operation log.",
+            "platform": "SQLite documentation",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "CMU 15-445: Database Logging",
+            "url": "https://www.youtube.com/watch?v=CedEy54pe3g",
+            "scope": "Pinned Fall 2025 lecture 21. Select WAL ordering examples only; stop before unrelated multi-transaction machinery.",
+            "why": "A diagrammed ordering example for the same persistence boundary.",
+            "platform": "YouTube",
+            "access": "Free"
+          },
+          "build": "Implement an append-only operation log with framing/checksum, sync errors, startup replay and a documented commit acknowledgment point.",
+          "stop": "Recovery yields structurally valid state after each injected short/failed/truncated write. Do not describe kill -9 as power-loss testing."
+        },
+        {
+          "title": "Fault-injected durability tests",
+          "outcome": "Check acknowledged-write guarantees against a simulated persistence layer at each ordering boundary.",
+          "read": {
+            "title": "SQLite Atomic Commit: Testing",
+            "url": "https://www.sqlite.org/atomiccommit.html#section_8_0",
+            "scope": "Testing section only",
+            "why": "Explains crash/failure testing principles without prescribing a different journaling algorithm.",
+            "platform": "SQLite documentation",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Inject interrupted, lost and failed writes/syncs through a storage interface; compare recovery to a separate record of acknowledged operations.",
+          "stop": "State precisely which modeled faults are covered; do not claim hardware power-loss guarantees from process-kill tests."
+        },
+        {
+          "title": "Offline IPv4/TCP packet parser",
+          "outcome": "Parse captured IPv4/TCP packets with bounds, byte order and checksum validation before implementing a state machine.",
+          "read": {
+            "title": "IPv4 datagram contract: RFC 791",
+            "url": "https://www.rfc-editor.org/rfc/rfc791",
+            "scope": "Section 3.1: header fields, length and fragmentation framing. For TCP fields use RFC 9293 from the next step; do not re-read the sockets tutorial from phase 5.",
+            "why": "Raw TUN packets are a new byte-format contract, not another socket API lesson.",
+            "platform": "RFC Editor",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "Implementing TCP in Rust",
+            "url": "https://www.youtube.com/watch?v=bzja9fQWzdA",
+            "scope": "Jon Gjengset stream 1, especially TUN setup and state-machine introduction",
+            "why": "A visual end-to-end demonstration of the TUN boundary; implementation language differs, so use it for concepts, not copied Rust code.",
+            "platform": "YouTube",
+            "access": "Free"
+          },
+          "build": "Read saved packets into a parser; validate IPv4/TCP header lengths, pseudo-header checksums and option framing without casting untrusted bytes to structs.",
+          "stop": "Malformed and truncated fixtures fail safely; valid captured packets produce checked fields."
+        },
+        {
+          "title": "Isolated TCP handshake and echo",
+          "outcome": "Implement a deliberately scoped TCP state machine over a Linux TUN interface and test against a real kernel peer.",
+          "read": {
+            "title": "RFC 9293: Transmission Control Protocol",
+            "url": "https://www.rfc-editor.org/rfc/rfc9293",
+            "scope": "Sections 3.1–3.5 for segment/state basics, then selected later sections for implemented behavior",
+            "why": "Normative protocol contract for sequence numbers, handshake, receive windows and close; implement only a stated learning subset.",
+            "platform": "IETF RFC",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "In a network namespace/TUN lab, implement handshake and echo first, then bounded retransmission/close tests. Keep the stack off public networks.",
+          "stop": "Document supported subset and test duplicate, loss and malformed input cases. Full TCP recovery/congestion and HTTP integration are stretch."
+        }
+      ],
+      "lookups": [
+        {
+          "title": "CMU 15-445 Fall 2025 schedule",
+          "url": "https://15445.courses.cs.cmu.edu/fall2025/schedule.html",
+          "scope": "Select buffer pools, indexes, logging and recovery by schedule topic, opening only associated notes/slides/videos",
+          "why": "Pinned, authoritative index; do not treat all lectures/projects as required.",
+          "platform": "CMU",
+          "access": "Free"
+        },
+        {
+          "title": "SQLite file format",
+          "url": "https://www.sqlite.org/fileformat.html",
+          "scope": "Page layout and serialized field definitions",
+          "why": "Useful production format reference; never write native structs directly to disk.",
+          "platform": "SQLite documentation",
+          "access": "Free"
+        },
+        {
+          "title": "RFC 6298",
+          "url": "https://www.rfc-editor.org/rfc/rfc6298",
+          "scope": "Retransmission timer rules if extending beyond handshake/echo",
+          "why": "Specific normative follow-up for TCP timeout behavior.",
+          "platform": "IETF RFC",
+          "access": "Free"
+        },
+        {
+          "title": "CMU 15-445: Database Recovery notes",
+          "url": "https://15445.courses.cs.cmu.edu/fall2025/notes/22-recovery.pdf",
+          "scope": "Return only for checkpoint/recovery questions your simplified store cannot yet answer.",
+          "why": "Recovery depth after the append-only correctness model works.",
+          "platform": "CMU",
+          "access": "Free"
+        }
+      ],
+      "excluded": [
+        {
+          "title": "CMU 15-445 as a full course and project sequence",
+          "reason": "Only storage engine topics that serve the capstone are assigned; concurrency, query engine and unrelated breadth add redundant workload."
+        },
+        {
+          "title": "Fundamentals of Database Engineering full Udemy course",
+          "reason": "Overlaps the pinned CMU storage topics and is not needed as a second full course; keep as optional lookup only if a concrete concept remains unclear."
+        },
+        {
+          "title": "SQLite source tour before the store works",
+          "reason": "Production source is a reference after the relevant behavior exists; tracing pager/btree internals first risks replacing the student's implementation."
+        },
+        {
+          "title": "Full internet-facing TCP implementation",
+          "reason": "Robust loss recovery, congestion control and public-network exposure exceed the isolated learning subset; keep it in a TUN lab."
+        }
+      ]
+    },
+    "13": {
+      "shortTitle": "Read & contribute",
+      "checks": [
+        "Port one tested operation using explicit allocation and cleanup",
+        "Pin, build and test a selected real codebase",
+        "Trace one operation through input, allocation, output and cleanup",
+        "Reproduce a bug, add a regression test and contribute a fix"
+      ],
+      "project": "Trace one real operation, reproduce a bug and contribute a tested fix.",
+      "core": "Pin, build and test one codebase, then finish one traced operation and a focused contribution. Move on to MiniTorch after that finite checkpoint; further contribution practice can continue later.",
+      "rationale": "Phase 13 is ongoing codebase practice, not three language courses in sequence. Learn one language only to support a selected codebase or a small port, while the central task remains tracing, testing and fixing real code. Choose one repo at a time.",
+      "units": [
+        {
+          "title": "C++ subset for one real port",
+          "outcome": "Understand RAII, object lifetime, copy/move and container invalidation well enough to port a small tested renderer operation.",
+          "read": {
+            "title": "LearnCpp: Destructors",
+            "url": "https://www.learncpp.com/cpp-tutorial/destructors/",
+            "scope": "Destructor/resource-lifetime explanation only. Follow a referenced class or copy/move concept only when the small port needs it.",
+            "why": "A free written RAII starting point; owning a course or buying a book is not the gate for a C programmer’s small port.",
+            "platform": "LearnCpp",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Port one bounded, tested phase-10 operation and state allocation, cleanup and invalidation rules. Compare behavior, not line count.",
+          "stop": "The port passes the same behavioral tests and ownership decisions are explainable."
+        },
+        {
+          "title": "Read and change one codebase",
+          "outcome": "Trace an operation from input through allocation to output/cleanup, reproduce a bug and submit a focused tested fix.",
+          "read": {
+            "title": "TigerBeetle repository and Tiger Style",
+            "url": "https://github.com/tigerbeetle/tigerbeetle",
+            "scope": "Pin a release/commit, read contribution/design guidance, then follow one relevant storage operation",
+            "why": "A substantial Zig systems codebase and design guide; treat it as a code-reading target, not a prerequisite to learn all Zig.",
+            "platform": "GitHub",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Build the pinned project, run its relevant test, trace one path, reproduce a real issue or add a missing test, then make a small change.",
+          "stop": "A regression test fails before and passes after the change; report the exact version and test command."
+        },
+        {
+          "title": "One optional Zig probe",
+          "outcome": "If the chosen codebase needs Zig, port one small tested operation with explicit allocation and error handling.",
+          "read": {
+            "title": "Zig language reference",
+            "url": "https://ziglang.org/documentation/",
+            "scope": "Allocator, error handling and build/release documentation matching the selected project version",
+            "why": "Consult the actual release contract only if choosing a Zig project; avoid broad tutorial duplication.",
+            "platform": "Zig documentation",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Only if choosing a Zig repo/task: use its pinned release and port one bounded operation. If you choose Odin instead, replace this probe with the Odin lookup; do not do both.",
+          "stop": "One operation works under the project's pinned release and its allocation/cleanup contract is stated."
+        }
+      ],
+      "lookups": [
+        {
+          "title": "Odin overview",
+          "url": "https://odin-lang.org/docs/overview/",
+          "scope": "Allocator context and data layout only when Odin is selected",
+          "why": "Use as a language reference, not a required second language track.",
+          "platform": "Odin documentation",
+          "access": "Free"
+        },
+        {
+          "title": "Redis source",
+          "url": "https://github.com/redis/redis",
+          "scope": "Optional C codebase for tracing event loop, dictionary or string operations",
+          "why": "Choose this instead of TigerBeetle when a focused C code-reading target fits better.",
+          "platform": "GitHub",
+          "access": "Public source"
+        }
+      ],
+      "excluded": [
+        {
+          "title": "C++, Zig and Odin as three complete prerequisite courses",
+          "reason": "Phase 13 is open-ended practice; learn only enough of one language to read or modify the chosen codebase."
+        },
+        {
+          "title": "Translate a whole engine before learning ownership/lifetimes",
+          "reason": "A small tested operation exposes language differences without creating a months-long parallel rewrite."
+        },
+        {
+          "title": "Read an entire large repository before building or testing",
+          "reason": "Pin, build and trace one real operation; broad source reading has no concrete feedback loop."
+        }
+      ]
+    },
+    "14": {
+      "after": "13",
+      "title": "MiniTorch modules 1–4",
+      "shortTitle": "MiniTorch",
+      "weeks": "6–8 weeks",
+      "goal": "Complete MiniTorch modules 1–4 as a final Python/ML extension, learning autodifferentiation, tensor operations, parallel/GPU kernels, and basic neural-network components while keeping its backend distinct from the native CUDA work.",
+      "project": "Complete and test MiniTorch modules 1–4: scalar autodiff, tensor autodiff, parallel and CUDA tensor operations, then foundational neural-network components.",
+      "core": "Complete modules 1–4 with correctness and numerical gradient checks before training. Module 3 GPU operations require a working NVIDIA CUDA environment from phase 8. MiniTorch uses Python/Numba; it is not a binding to your native CUDA library.",
+      "checks": [
+        "Pass MiniTorch module 1 tests for scalar derivatives and backpropagation, including numerical gradient checks",
+        "Pass module 2 tensor indexing, broadcasting, operation, and autodiff tests, including non-contiguous or boundary cases the assignment exposes",
+        "Pass module 3 parallel and CUDA operation tests and compare results against the provided/reference backend",
+        "Pass module 4 network tests and train the assigned small model with a recorded loss/result",
+        "Explain which code runs in MiniTorch's Python/Numba backend and which code belongs to the separate phase-8 native CUDA project",
+        "Add an original differentiable operation, test its gradient independently and document the runtime/backend boundary"
+      ],
+      "rationale": "MiniTorch provides a sequence of public, test-driven modules whose content extends the systems roadmap into autodiff and neural networks. It is a final extension after phase 13, not a substitute for phases 8–9: its CUDA path is Numba-based and is not the native CUDA executable/backend built earlier. Start only after the phase-8 GPU fundamentals and phase-9 VM/compiler work are in place.",
+      "units": [
+        {
+          "title": "Module 1: scalar autodifferentiation",
+          "outcome": "Build scalar operations and reverse-mode backpropagation, then validate gradients numerically.",
+          "read": {
+            "title": "MiniTorch Module 1: Autodifferentiation",
+            "url": "https://minitorch.github.io/module1/module1/",
+            "scope": "Complete module 1 assignment and use its Derivatives, Scalar, Autodifferentiation, and Backpropagate guides as needed.",
+            "why": "The assignment is the module's concrete test-driven deliverable and teaches scalar computation graphs before tensors.",
+            "platform": "MiniTorch documentation",
+            "access": "Free public course materials and source"
+          },
+          "visual": null,
+          "build": "Complete the module 1 implementation and tests. Check selected derivatives against finite differences and trace one graph from output gradient back to its inputs.",
+          "stop": "Module 1 tests pass and a numerical gradient check agrees within an explicit tolerance."
+        },
+        {
+          "title": "Module 2: tensors and tensor autodiff",
+          "outcome": "Implement tensor data/indexing, broadcasting, operations, and automatic differentiation over tensor computations.",
+          "read": {
+            "title": "MiniTorch Module 2: Tensors",
+            "url": "https://minitorch.github.io/module2/module2/",
+            "scope": "Complete module 2 assignment and consult Tensors, Broadcasting, Operations, and Auto-Grad guides for the corresponding implementation tasks.",
+            "why": "It lifts the tested scalar differentiation model into multidimensional tensor shapes and operations.",
+            "platform": "MiniTorch documentation",
+            "access": "Free public course materials and source"
+          },
+          "visual": null,
+          "build": "Complete module 2 tests, especially indexing and broadcast cases with mismatched dimensions. Compare tensor gradients with small hand-computable examples.",
+          "stop": "Module 2 tests pass and shapes, strides/indexing, broadcasting, and gradient flow can be explained for a worked example."
+        },
+        {
+          "title": "Module 3: parallel operations and CUDA",
+          "outcome": "Optimize tensor map/zip/reduce and matrix multiplication with MiniTorch's documented parallel and CUDA paths.",
+          "read": {
+            "title": "MiniTorch Module 3: Efficiency",
+            "url": "https://minitorch.github.io/module3/module3/",
+            "scope": "Complete the module 3 assignment. Focus on parallelization, matrix multiplication, CUDA operations, and CUDA matrix multiplication; use the companion GPU Programming guide for Numba CUDA concepts.",
+            "why": "The module makes performance work measurable against the same tensor behavior and explicitly teaches its own Numba-based execution path.",
+            "platform": "MiniTorch documentation",
+            "access": "Free public course materials and source"
+          },
+          "visual": null,
+          "build": "Run the module's correctness tests before timing. Implement its required parallel/CUDA operations using the supplied MiniTorch backend interfaces; record device/toolchain requirements and timings separately from the native phase-8 CUDA project.",
+          "stop": "CPU-parallel and CUDA operation tests both pass on the chosen NVIDIA environment, including reduce and matmul boundary cases. A CPU-only or simulated run is preparation, not completion of the GPU gate."
+        },
+        {
+          "title": "Module 4: foundational neural networks",
+          "outcome": "Use MiniTorch tensors and autodiff to implement and train foundational network components.",
+          "read": {
+            "title": "MiniTorch Module 4: Networks",
+            "url": "https://minitorch.github.io/module4/module4/",
+            "scope": "Complete module 4 assignment and consult the Convolution, Pooling, and Multiclass Classification guides for the specific required components.",
+            "why": "It closes the four-module sequence by applying the earlier tensor and differentiation work to neural-network building blocks.",
+            "platform": "MiniTorch documentation",
+            "access": "Free public course materials and source"
+          },
+          "visual": null,
+          "build": "Complete module 4 tests, train the assigned small network, and record a baseline result with the command and random seed where available.",
+          "stop": "Module 4 tests pass and the assigned training example produces the expected behavior. Stop at module 4 rather than adding a broad ML course."
+        },
+        {
+          "title": "One original operation and a runtime map",
+          "outcome": "Own an extension instead of merely filling the assignment blanks.",
+          "read": {
+            "title": "MiniTorch tensor autodiff assignment",
+            "url": "https://minitorch.github.io/module2/module2/",
+            "scope": "Consult the existing operation/backward contracts only for your added differentiable operator. Do not redo module 2.",
+            "why": "An existing interface lets the final extension stay small and independently tested.",
+            "platform": "MiniTorch",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Add one differentiable operation with independent finite-difference tests and one profiler or graph visualization. Draw Python call -> tensor storage/shape/stride -> backend kernel -> backward accumulation. Explain five production concerns absent from this runtime.",
+          "stop": "The new operator passes gradient checks independently of training accuracy and your architecture note distinguishes Python/Numba execution from the earlier native CUDA library."
+        }
+      ],
+      "lookups": [
+        {
+          "title": "MiniTorch GPU Programming guide",
+          "url": "https://minitorch.github.io/module3/cuda/",
+          "scope": "Consult the Numba CUDA setup, execution model, and kernel examples only for module 3's assigned GPU operations.",
+          "why": "This is the official MiniTorch guide for its CUDA programming route; it clarifies that route's distinct Python/Numba environment.",
+          "platform": "MiniTorch documentation",
+          "access": "Free"
+        },
+        {
+          "title": "MiniTorch setup and assignment templates",
+          "url": "https://minitorch.github.io/install/",
+          "scope": "Create the isolated Python environment and use the starter template linked by each assignment. Record its revision and requirements; repair module-0 helper/testing gaps only if module 1 needs them.",
+          "why": "The assignment template, not a finished implementation repository, supplies the TODOs and tests. Current setup specifies Python 3.11 or newer; check Numba/CUDA compatibility before the GPU module.",
+          "platform": "MiniTorch documentation",
+          "access": "Free public setup instructions"
+        }
+      ],
+      "excluded": [
+        {
+          "title": "Treat MiniTorch CUDA as the phase-8 native CUDA backend",
+          "reason": "MiniTorch's module-3 GPU guide uses Python/Numba CUDA. The phase-8 native CUDA kernels are a separate implementation, source tree, and build path; results and binaries are not interchangeable."
+        },
+        {
+          "title": "Start MiniTorch before phases 8 and 9",
+          "reason": "This final extension assumes the roadmap's GPU fundamentals and compiler/VM foundation. It does not replace those phases."
+        },
+        {
+          "title": "Add modules beyond module 4 or a separate full ML course",
+          "reason": "The requested scope is the bounded modules 1–4 sequence. Further ML study can be chosen later based on a concrete goal."
+        }
+      ],
+      "environment": "Python + Numba / NVIDIA CUDA device"
+    },
+    "0b": {
+      "shortTitle": "C foundations",
+      "project": "A linked list, a growable array and a word counter in C.",
+      "core": "Draw the bytes and ownership first. Verify with the debugger. Finish the small containers before moving on.",
+      "checks": [
+        "Set up the local C build loop and compile a warning-clean, sanitizer-enabled hello program (UBSan works; ASan hangs in current macOS setup)",
+        "Write small C programs using expressions, control flow, functions, arrays and structs",
+        "Explain arrays, strings, pointers and lifetimes with memory drawings",
+        "Implement strlen, bounded strcpy, in-place string reverse and pointer-based swap",
+        "Use lldb, Python Tutor and raw memory dumps to verify pointer behavior",
+        "Build a linked list with explicit ownership and test under ASan in a working environment",
+        "Build a growable array that handles empty input, removal, growth and allocation failure",
+        "Build a word counter, then match three C functions to ARM64 assembly"
+      ],
+      "rationale": "Your syntax checkpoint is done. Start with pointer drawings, not another introductory C course. Beej supplies the written model; Master.dev is an optional picture, and Educative is used only for the dynamic-array exercise.",
+      "units": [
+        {
+          "title": "Pointers: addresses, dereferencing and arguments",
+          "outcome": "Distinguish the pointer variable from the object it points to.",
+          "read": {
+            "title": "Beej: Pointers",
+            "url": "https://beej.us/guide/bgc/html/split/pointers.html",
+            "scope": "Chapter 5, sections 5.1–5.5. Skip the introductory syntax chapters you already passed.",
+            "why": "One written explanation of addresses and dereferencing, immediately checked against your own program.",
+            "platform": "Beej",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "Python Tutor for C",
+            "url": "https://pythontutor.com/c.html",
+            "scope": "Step through a local int, a pointer to it and your swap function. Draw the arrows yourself before stepping.",
+            "why": "This displays changes to your code, rather than giving you another lecture about pointers.",
+            "platform": "Python Tutor",
+            "access": "Free"
+          },
+          "build": "Draw int x = 42 and int *p = &x. Implement swap through pointers; inspect the variables with LLDB and compare the drawing.",
+          "stop": "Explain what p, &p and *p mean, and show how swap changes the caller’s values."
+        },
+        {
+          "title": "Strings, bounds and element-scaled arithmetic",
+          "outcome": "Keep array capacity, string length and the trailing zero separate.",
+          "read": {
+            "title": "Beej: Strings",
+            "url": "https://beej.us/guide/bgc/html/split/strings.html",
+            "scope": "Sections 7.3–7.7: array storage, initializers, length, termination and copying. Treat strcpy as an API to understand, not the safe contract for your own bounded copy.",
+            "why": "A single source connects the bytes to the string operations you must implement.",
+            "platform": "Beej",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "Master.dev: Byte Arrays",
+            "url": "https://master.dev/courses/c-fundamentals/byte-arrays/",
+            "scope": "Only this lesson if contiguous storage and addresses are still hard to picture. Skip the rest of the course.",
+            "why": "A bounded visual explanation of byte layout. Public lesson metadata was checked; playback was not.",
+            "platform": "Master.dev",
+            "access": "Existing subscription; login may be required"
+          },
+          "build": "Implement strlen, capacity-checked copy and in-place reverse. Test empty input, exact fit and a destination one byte too small. Explain why int-pointer movement differs from char-pointer movement.",
+          "stop": "All three functions pass boundary tests, and you can identify every byte read and written, including the terminator."
+        },
+        {
+          "title": "Allocated lifetime and explicit cleanup",
+          "outcome": "Know who owns each allocation and when every pointer becomes invalid.",
+          "read": {
+            "title": "Beej: Manual Memory Allocation",
+            "url": "https://beej.us/guide/bgc/html/split/manual-memory-allocation.html",
+            "scope": "Sections 12.1–12.3 only: malloc, free, failure checking and array allocation. Realloc is for the next step.",
+            "why": "This adds allocated lifetime without repeating the previous pointer lesson.",
+            "platform": "Beej",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "Master.dev: Memory Management in C",
+            "url": "https://master.dev/courses/c-fundamentals/memory-management-in-c/",
+            "scope": "Only this lesson when you cannot yet separate a local pointer’s lifetime from its target’s lifetime.",
+            "why": "Provides a second picture of ownership, not another complete memory course. Playback was not tested.",
+            "platform": "Master.dev",
+            "access": "Existing subscription; login may be required"
+          },
+          "build": "Build the owned linked list. Write down who frees each node; test empty, one-node and multi-node teardown. Run ASan in an environment where it works; keep UBSan on your Mac.",
+          "stop": "Every allocation has one cleanup path, and you can show why returning an automatic array or using freed storage is invalid."
+        },
+        {
+          "title": "Grow the array without losing its owner",
+          "outcome": "Maintain length <= capacity across growth, removal and allocation failure.",
+          "read": {
+            "title": "Educative: Reallocating Dynamic Arrays",
+            "url": "https://www.educative.io/courses/in-depth-understanding-of-memory-and-pointers-in-c/reallocating-dynamic-arrays",
+            "scope": "This lesson only. Do not add the rest of the pointers course. Check its example against your own failure and overflow tests.",
+            "why": "A narrow textual lesson fits the growable-array checkpoint. Subscription playback and interactive execution were not tested.",
+            "platform": "Educative",
+            "access": "Existing subscription; entitlement not tested"
+          },
+          "visual": null,
+          "build": "Implement append, removal and repeated growth. Keep the old owner until realloc succeeds; inject allocation failure and check size arithmetic. Draw which saved views expire after growth.",
+          "stop": "Empty input, exact capacity, repeated growth and failed growth preserve the array invariants and clean up correctly."
+        },
+        {
+          "title": "Word counter and the first assembly comparison",
+          "outcome": "Combine containers with file I/O, then inspect a few emitted instructions.",
+          "read": {
+            "title": "Beej: File Input/Output",
+            "url": "https://beej.us/guide/bgc/html/split/file-inputoutput.html",
+            "scope": "Sections 9.1–9.3: FILE, opening/closing and character/line input. No binary file-format project yet.",
+            "why": "Adds the missing I/O contract instead of another C course.",
+            "platform": "Beej",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "Compiler Explorer",
+            "url": "https://godbolt.org/",
+            "scope": "Compare three of your small functions at -O0 and -O2 with an explicit ARM64 target. This is inspection, not benchmarking.",
+            "why": "Shows the C and emitted instructions side by side.",
+            "platform": "Compiler Explorer",
+            "access": "Free"
+          },
+          "build": "Read a fixture file into your word counter using the tested containers. Test empty files, repeated words and final input without a newline. Annotate assembly for three small functions.",
+          "stop": "The counter returns expected counts, closes the file and frees owned data. Match three C operations to ARM64 output; deeper assembly waits for phase 3."
+        }
+      ],
+      "lookups": [
+        {
+          "title": "LLDB / GDB command map",
+          "url": "https://lldb.llvm.org/use/map.html",
+          "scope": "Breakpoints, stepping, memory dumps and watchpoints only.",
+          "why": "Command lookup for checking your drawings on the real program.",
+          "platform": "LLVM documentation",
+          "access": "Free"
+        },
+        {
+          "title": "Beej: Pointer Arithmetic",
+          "url": "https://beej.us/guide/bgc/html/split/pointers2.html",
+          "scope": "Sections 11.1–11.2 only if element scaling or array parameters are still unclear.",
+          "why": "A repair lookup, not a second assigned pointer course.",
+          "platform": "Beej",
+          "access": "Free"
+        }
+      ],
+      "excluded": [
+        {
+          "title": "Full CS50x course queue",
+          "reason": "Syntax and basic programs are done; only use selected weeks/problems to fill a specific gap."
+        },
+        {
+          "title": "All optional Educative and Udemy pointer videos",
+          "reason": "They repeat the current array/pointer outcome. Select one only if the primary bounded reading does not resolve confusion."
+        },
+        {
+          "title": "Master.dev C Fundamentals from the beginning",
+          "reason": "Syntax is already done. Keep only the two optional visual lessons attached to concrete exercises."
+        },
+        {
+          "title": "Parallel CS50, K&R and Udemy pointer tracks",
+          "reason": "They repeat the same foundation outcomes. Use the selected text and your debugger before changing explanations."
+        },
+        {
+          "title": "Another Dive Into Systems C syntax pass",
+          "reason": "The existing Beej lessons and C projects already cover this prerequisite. Use the Linux debugger lookup only for a tool gap."
+        }
+      ]
+    },
+    "10b": {
+      "shortTitle": "Build & ship games",
+      "project": "Ship a tightly scoped 2D game, then a small 3D game.",
+      "core": "The game determines which engine systems exist. Ship game 1 before adding general engine features.",
+      "rationale": "Ship a small game before generalizing an engine. Reuse the existing SDL3 GPU, fixed-timestep and pattern references only where each game needs them; scope the visuals around timing and rendering diagnostics rather than adding another broad game course.",
+      "units": [
+        {
+          "title": "Fixed-step simulation and input actions",
+          "outcome": "Run gameplay at a fixed interval while rendering interpolated states; distinguish held buttons from one-shot presses.",
+          "read": {
+            "title": "Fix Your Timestep!",
+            "url": "https://gafferongames.com/post/fix_your_timestep/",
+            "scope": "Accumulator loop, interpolation and bounded catch-up",
+            "why": "A compact derivation of the simulation/render split that the 2D game needs.",
+            "platform": "Gaffer On Games",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Add action-mapped keyboard/gamepad input, fixed updates, interpolation and a maximum catch-up policy to the SDL3 game loop.",
+          "stop": "A deliberately delayed frame does not change simulation step size or repeat a press event unexpectedly."
+        },
+        {
+          "title": "GPU resource lifetime and sprite batching",
+          "outcome": "Render an atlas-backed sprite batch and avoid reusing upload data still consumed by the GPU.",
+          "read": {
+            "title": "SDL3 GPU documentation",
+            "url": "https://wiki.libsdl.org/SDL3/CategoryGPU",
+            "scope": "Transfer buffers, cycling, synchronization and coordinate-system notes",
+            "why": "Defines the API/lifetime rules; build one triangle before a batcher.",
+            "platform": "SDL3 documentation",
+            "access": "Free"
+          },
+          "visual": {
+            "title": "SDL_gpu_examples",
+            "url": "https://github.com/TheSpydog/SDL_gpu_examples",
+            "scope": "Small examples matching the SDL3 GPU features used",
+            "why": "Runnable code makes resource and command flow visible without a second video course.",
+            "platform": "GitHub",
+            "access": "Free"
+          },
+          "build": "Move rendering to SDL3 GPU, then batch the sprites the first game actually uses. Capture one frame on Metal and the available Windows/Linux backend if accessible.",
+          "stop": "A stable textured draw works and in-flight resource reuse is correct; 100,000 sprites at 60 Hz is not a gate."
+        },
+        {
+          "title": "Collision and entity handles for the 2D game",
+          "outcome": "Use bounded broadphase and generation-checked handles to implement the needed game interactions.",
+          "read": {
+            "title": "Game Programming Patterns: Spatial Partition",
+            "url": "https://gameprogrammingpatterns.com/spatial-partition.html",
+            "scope": "Spatial partition chapter",
+            "why": "Enough structure to choose a simple grid when a linear scan becomes a measured problem.",
+            "platform": "Game Programming Patterns",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Implement swept AABB collision and a uniform grid only if required by the game; use index-plus-generation handles for reusable entity slots.",
+          "stop": "Tests catch stale handles, invalid indices and tunneling for the chosen movement bounds. Defer general rigid-body physics."
+        },
+        {
+          "title": "Ship a 2D game before the 3D renderer grows",
+          "outcome": "Deliver a playable, testable 2D game with asset and tuning paths that serve actual gameplay.",
+          "read": {
+            "title": "itch.io: Uploading your project",
+            "url": "https://itch.io/docs/creators/getting-started",
+            "scope": "Packaging an upload, project page and distribution settings only. Test the runnable archive on another machine before publishing.",
+            "why": "Adds a shipping task instead of re-reading the game loop you already built.",
+            "platform": "itch.io documentation",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Finish a small 2D action game, add only needed audio/script/debug controls, package it, and test on another machine.",
+          "stop": "A fresh install starts, plays and saves as expected. Do not begin game two before this checkpoint."
+        },
+        {
+          "title": "A tightly scoped 3D game",
+          "outcome": "Reuse the shipped game’s systems for one level and one mechanic instead of expanding a general engine.",
+          "read": {
+            "title": "LearnOpenGL: Basic Lighting",
+            "url": "https://learnopengl.com/Lighting/Basic-Lighting",
+            "scope": "The light/material math only. Adapt it to SDL3 GPU’s coordinate and [0,1] depth contracts; do not start a separate OpenGL course.",
+            "why": "Introduces the new 3D lighting work without repeating the engine or shipping sequence.",
+            "platform": "LearnOpenGL",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Load a small validated asset pack, use simple boxes/floors, add one lit forward pass and one mechanic. Reuse Lua tuning, audio and profiling only where needed; test and ship the second game.",
+          "stop": "Both games run on another machine and their frame-time and in-flight resource behavior are recorded. Shadows and a general character controller are stretch."
+        }
+      ],
+      "lookups": [
+        {
+          "title": "itch.io jams",
+          "url": "https://itch.io/jams",
+          "scope": "Optional submission target after a playable build exists",
+          "why": "A deadline can test shipping discipline, not a prerequisite course.",
+          "platform": "itch.io",
+          "access": "Public index"
+        }
+      ],
+      "excluded": [
+        {
+          "title": "General-purpose engine and 100k-sprite target before game 1",
+          "reason": "The roadmap explicitly says each system should emerge from a game need; benchmark target is stretch."
+        },
+        {
+          "title": "Game Engine Architecture cover-to-cover",
+          "reason": "Use selected subsystem chapters when a concrete system blocks implementation; it is reference depth, not a parallel prerequisite."
+        },
+        {
+          "title": "Full 3D character physics and multiple render passes",
+          "reason": "A constrained 3D game can use simple geometry and one forward pass; arbitrary collision is a separate project."
+        },
+        {
+          "title": "Full COMP4300 and chronological Handmade Hero",
+          "reason": "The portal already assigns fixed-step, collisions, entities and shipping. Use its two scoped Handmade Hero demonstrations, not another engine course."
+        }
+      ]
+    },
+    "9b": {
+      "after": "9",
+      "title": "LLVM code generation",
+      "shortTitle": "LLVM codegen",
+      "weeks": "3–4 weeks",
+      "goal": "Add a small numeric LLVM backend after clox, learning explicit IR, verification, JIT execution and object emission without rebuilding an entire language.",
+      "project": "A numeric expression/function compiler with verified LLVM IR, a JIT path and a linked object-file demo.",
+      "core": "clox emits bytecode directly, not an AST. Reuse its token and precedence tests, then add a deliberately small C++ AST for numeric expressions/functions. No strings, closures, GC or full Lox lowering. Pin one LLVM version across headers, libraries and tutorial.",
+      "checks": [
+        "Explain why clox needs a new small AST boundary rather than pretending it already has one",
+        "Emit and verify LLVM IR for the supported numeric expression/function subset",
+        "Run differential tests through clox and the JIT with a documented numeric tolerance",
+        "Explain conditional basic blocks, terminators and PHI values",
+        "Emit a host-target object, link its caller and add an original feature/test"
+      ],
+      "rationale": "The VM already taught scanning, precedence and execution. This extension teaches a different backend: typed SSA values, basic blocks, JIT and native object emission. The C++ tutorial needs a small owning AST because clox has no existing AST to hand to LLVM. Learn unique_ptr at that boundary, not a complete C++ course.",
+      "units": [
+        {
+          "title": "A small frontend boundary and verified IR",
+          "outcome": "Represent only numeric expressions and functions with an owning AST, then emit a verified LLVM module.",
+          "read": {
+            "title": "Kaleidoscope chapter 3: LLVM IR",
+            "url": "https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/LangImpl03.html",
+            "scope": "Read chapter 3 IR generation. Consult chapter 2 only for its expression/function AST shape; skip its language-tour exercises. Inspect the installed LLVM version before choosing matching docs.",
+            "why": "IRBuilder and module verification add backend concepts absent from the bytecode VM.",
+            "platform": "LLVM",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Reuse clox token/precedence test inputs, not a nonexistent clox AST. Write the smallest C++ expression/function AST using unique_ptr ownership, emit one numeric function and verify/print its IR. Reject unsupported Lox forms.",
+          "stop": "You can trace one source expression through AST to typed LLVM instructions and explain where each AST node is freed. The module verifier passes."
+        },
+        {
+          "title": "Execute the same function through JIT",
+          "outcome": "Distinguish constructing IR from compiling, linking and invoking generated machine code.",
+          "read": {
+            "title": "Kaleidoscope chapter 4: JIT",
+            "url": "https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/LangImpl04.html",
+            "scope": "The JIT execution path and required setup only. Skip optimizer tuning; use the helper implementation matched to the chosen LLVM version.",
+            "why": "Execution makes the IR/backend boundary testable.",
+            "platform": "LLVM",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Execute supported numeric functions through the JIT; compare with clox outputs on the same arithmetic inputs and precedence cases. Record host target, LLVM version and build command.",
+          "stop": "Arithmetic/function tests agree within a stated floating-point tolerance; malformed/unsupported syntax fails explicitly."
+        },
+        {
+          "title": "Basic blocks and conditional values",
+          "outcome": "Explain branches, terminators and a PHI value without hiding control flow in the VM.",
+          "read": {
+            "title": "Kaleidoscope chapter 5: Control flow",
+            "url": "https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/LangImpl05.html",
+            "scope": "If/then/else, basic blocks and PHI nodes. Add one loop only after the conditional works; no new general language features.",
+            "why": "This is the native-backend control-flow model, not another parser tutorial.",
+            "platform": "LLVM",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Lower one conditional, inspect its block diagram and PHI value, then add a bounded loop and boundary tests. Keep the numeric subset explicit; do not claim complete Lox semantics.",
+          "stop": "The verifier passes, each block has a valid terminator, and both conditional branches plus zero/multiple loop iterations match the reference behavior."
+        },
+        {
+          "title": "Object emission and a reproducible native executable",
+          "outcome": "Follow generated IR through target machine, object file and linker into a callable function.",
+          "read": {
+            "title": "Kaleidoscope chapter 8: Compiling to object code",
+            "url": "https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/LangImpl08.html",
+            "scope": "Target selection, object emission and linking the tutorial-style C caller. Skip debug-info and optimizer implementation.",
+            "why": "Native object emission is new work that connects phase 3 linking to your own compiler.",
+            "platform": "LLVM",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Emit one object for the host target, link a tiny caller and compare it with the JIT result. Add a numeric operator or diagnostic not supplied by the tutorial and a regression test; document the subset.",
+          "stop": "A clean build emits, links and runs the object; you can explain the ABI and the role of each tool without rebuilding the full frontend."
+        }
+      ],
+      "lookups": [
+        {
+          "title": "LLVM Language Reference",
+          "url": "https://llvm.org/docs/LangRef.html",
+          "scope": "Consult the IR instruction and type contract for constructs the backend emits.",
+          "why": "The tutorial introduces IR, while the reference defines instruction semantics precisely.",
+          "platform": "LLVM project documentation",
+          "access": "Free"
+        },
+        {
+          "title": "C++ unique_ptr ownership",
+          "url": "https://en.cppreference.com/w/cpp/memory/unique_ptr.html",
+          "scope": "Only make_unique, move-only ownership and recursive AST destruction. Return here when the tutorial transfers ownership.",
+          "why": "A narrow C++ lifetime prerequisite, not another language course.",
+          "platform": "cppreference",
+          "access": "Free"
+        }
+      ],
+      "excluded": [
+        {
+          "title": "Implement all Kaleidoscope chapters as a separate compiler",
+          "reason": "A full second language repeats phase 9. Use the tutorial's backend sections; reuse token/precedence tests while adding only the small AST boundary clox does not have."
+        },
+        {
+          "title": "LLVM optimizer and debug-info deep dives",
+          "reason": "Object emission stays because it connects the compiler to real binaries. Building optimizers and debug metadata does not help this bounded backend gate."
+        }
+      ],
+      "environment": "Host LLVM toolchain / C++ owning AST"
+    },
+    "9c": {
+      "after": "9b",
+      "title": "CHIP-8 interpreter",
+      "shortTitle": "CHIP-8",
+      "weeks": "3–4 weeks",
+      "goal": "Build a small CHIP-8 interpreter as a distinct, tested machine implementation, with instruction behavior, timers, input, and display checked against public ROM tests.",
+      "project": "Implement a CHIP-8 interpreter with a fetch/decode/execute loop, memory and registers, timers, keypad input, and a pixel display. Keep the build and tests separate from the compiler project.",
+      "core": "Use Langhoff's implementation guide for the machine model and Timendus ROMs for compatibility checks. Make choices for known CHIP-8 quirks explicit and testable.",
+      "checks": [
+        "Render the CHIP-8 splash and IBM logo ROMs; explain the small opcode subset each checks",
+        "Pass the selected Timendus CHIP-8 test ROMs and record any intentionally unsupported quirks",
+        "Test instruction decoding, program-counter movement, stack bounds, and memory bounds",
+        "Verify timers tick independently of instruction speed and keypad waits resume on a key event",
+        "Use a PC/register/opcode debugger with breakpoints and single-step; reproduce one failing instruction trace"
+      ],
+      "rationale": "This is a different, concrete interpreter target after the compiler/VM work, not another compiler. Langhoff's guide explains the machine's behavior and historical ambiguities; Timendus supplies practical ROM tests. The interpreter needs its own reproducible build and observable tests rather than relying on a visual demo alone.",
+      "units": [
+        {
+          "title": "Machine state and instruction cycle",
+          "outcome": "Describe CHIP-8 memory, registers, stack, program counter, timers, and the fetch/decode/execute loop.",
+          "read": {
+            "title": "Guide to making a CHIP-8 emulator",
+            "url": "https://tobiasvl.github.io/blog/write-a-chip-8-emulator/",
+            "scope": "Read the sections on CHIP-8 architecture, memory, registers, stack, and instruction execution. Note ambiguous or historically variable behavior rather than treating every convention as universal.",
+            "why": "A focused implementation guide for the virtual machine rather than a broad emulator course.",
+            "platform": "Tobias V. Langhoff",
+            "access": "Free public article"
+          },
+          "visual": null,
+          "build": "Define the interpreter state and implement a bounded fetch/decode loop for a small initial opcode set. Add unit tests for instruction effects and program-counter changes.",
+          "stop": "State transitions are tested without a graphical frontend, and invalid memory/program-counter access fails safely."
+        },
+        {
+          "title": "Display, keypad, and timing",
+          "outcome": "Connect drawing, input, and delay/sound timers to a runnable CHIP-8 program.",
+          "read": {
+            "title": "Guide to making a CHIP-8 emulator",
+            "url": "https://tobiasvl.github.io/blog/write-a-chip-8-emulator/",
+            "scope": "Use the guide's graphics, input, and timer sections. Follow its platform-independent machine behavior; choose only the smallest local display/input layer needed to run ROMs.",
+            "why": "It covers the remaining virtual peripherals without prescribing a particular host framework.",
+            "platform": "Tobias V. Langhoff",
+            "access": "Free public article"
+          },
+          "visual": {
+            "title": "Timendus: expected IBM logo in Octo",
+            "url": "https://timendus.github.io/chip8-test-suite/2-ibm-logo.html",
+            "scope": "Run the reference ROM to see its expected frame; compare with your own emulator. This demo does not prove keypad or timer correctness.",
+            "why": "A runnable expected-output view, not a second emulator tutorial.",
+            "platform": "Timendus / Octo",
+            "access": "Free"
+          },
+          "build": "Reuse only a minimal host display/input wrapper (SDL if useful); keep the machine state independent of it. Render splash and IBM logo, test the dedicated keypad ROM, and tick delay/sound timers at 60 Hz from elapsed time, not instruction count.",
+          "stop": "Logo frames match; dedicated keypad tests pass and timers remain 60 Hz when opcode throughput changes. The splash screen alone does not check input."
+        },
+        {
+          "title": "Compatibility tests and deliberate quirks",
+          "outcome": "Use public ROM tests to find opcode errors and document selected compatibility behavior.",
+          "read": {
+            "title": "Timendus CHIP-8 test suite",
+            "url": "https://github.com/Timendus/chip8-test-suite",
+            "scope": "README usage and the CHIP-8 test ROMs relevant to the implemented instruction set. Do not claim support for SUPER-CHIP or XO-CHIP unless implemented and tested.",
+            "why": "The ROMs check real interpreter behavior and expose commonly missed display, arithmetic, and quirk differences.",
+            "platform": "GitHub",
+            "access": "Public source and ROMs"
+          },
+          "visual": null,
+          "build": "Run the relevant ROMs; for each failure, reduce it to an instruction-level regression test. Choose and document behavior for shift, index-register, and sprite edge cases based on the intended compatibility target.",
+          "stop": "The selected CHIP-8 ROM tests pass or each remaining incompatibility is named and explained. Do not imply extensions are supported by base CHIP-8 tests."
+        },
+        {
+          "title": "Single-step debugger and an ownership extension",
+          "outcome": "Explain a failing opcode by inspecting machine state instead of guessing from the display.",
+          "read": {
+            "title": "Langhoff: instructions and quirks",
+            "url": "https://tobiasvl.github.io/blog/write-a-chip-8-emulator/",
+            "scope": "Consult only the failing opcode or selected quirk; no rereading the whole implementation guide.",
+            "why": "The spec is the debugger contract; there is no reference implementation to copy.",
+            "platform": "Tobias V. Langhoff",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Add PC/register/opcode view, breakpoint and single-step controls; capture one reduced failure. Then add save/load state or a bounded instruction trace with a round-trip/regression test. Record the tested ROM revision and a clean build command.",
+          "stop": "You can stop before a bad instruction, state the violated invariant, and replay or restore the same state. No Game Boy/NES or extension-ISA detour."
+        }
+      ],
+      "lookups": [],
+      "excluded": [
+        {
+          "title": "SUPER-CHIP and XO-CHIP extensions",
+          "reason": "The task is a tested base CHIP-8 interpreter. Extension support adds distinct opcodes and display rules and should not be claimed without separate implementation and tests."
+        },
+        {
+          "title": "A second compiler or full emulator framework",
+          "reason": "The learning target is a small interpreter with a visible machine loop; a larger framework would obscure that deliverable."
+        }
+      ],
+      "environment": "C/C++ host build / minimal display and input"
+    },
+    "11b": {
+      "after": "11",
+      "title": "Linux drivers",
+      "shortTitle": "Linux drivers",
+      "weeks": "4–5 weeks",
+      "goal": "Build and test a character device, an observed interrupt/deferred-work path and a controlled mapping in the lab’s QEMU x86 guest, with explicit kernel and architecture assumptions.",
+      "project": "A character device with a bounded read/write interface, an interrupt-driven event path with deferred work, and a deliberately small mmap demonstration.",
+      "core": "First validate the supplied QEMU x86 setup on the existing x86 laptop, recording uname -m, target kernel and pinned lab revision. Load modules only into that matching guest. On Apple Silicon, x86 requires explicit emulation/cross-building, not an ARM64 guest pretending to be the same target; no host kernel modules.",
+      "checks": [
+        "Build and load a minimal module against the exact target VM kernel, then unload it cleanly",
+        "Exercise character-device read/write behavior from a user process and test bounds and error paths",
+        "Trace interrupt top-half versus deferred work without sleeping in interrupt context",
+        "Map and unmap the documented buffer and explain its lifetime and permissions",
+        "Unload safely while deferred work is pending and record the observed IRQ source"
+      ],
+      "rationale": "This is a required, bounded Linux driver extension, not a second kernel. Use the existing x86 laptop as the lab host and boot the lab’s QEMU x86 target; verify its bitness instead of assuming x86-64. Pin the lab tree, VM/kernel and matching docs together. Native Apple Silicon ARM64 virtualization does not run x86 instructions.",
+      "units": [
+        {
+          "title": "Validate the QEMU lab target first",
+          "outcome": "Make the VM/kernel/architecture assumptions reproducible and test module failure and cleanup paths.",
+          "read": {
+            "title": "Linux Kernel Labs: Booting the virtual machine",
+            "url": "https://linux-kernel-labs.github.io/refs/heads/master/labs/introduction.html",
+            "scope": "Only Booting the virtual machine and the provided QEMU/GDB workflow. Pin the lab revision and match its kernel/build scripts; skip source-navigation tools and unrelated disk exercises.",
+            "why": "Validate the target before any driver work; the public example is x86 and may be 32-bit.",
+            "platform": "Linux Kernel Labs",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Boot the provided lab target on the existing x86 laptop; record lab commit, QEMU command, uname -m, kernel release and module build tree. Build/load/unload the minimal supplied module in the guest only. Do not assume the public master docs match an arbitrary modern distribution kernel.",
+          "stop": "The target and build architectures are stated, modules load only into their matching kernel, and the lab's supported test path passes."
+        },
+        {
+          "title": "Character device and user/kernel boundary",
+          "outcome": "Register a small character device and define its read/write contract, ownership, and error behavior.",
+          "read": {
+            "title": "Linux Kernel Labs: Character device drivers",
+            "url": "https://linux-kernel-labs.github.io/refs/heads/master/labs/device_drivers.html",
+            "scope": "The character-device lab only: module setup, registration, file operations, and the user-space test program.",
+            "why": "It gives a concrete driver/user boundary and lab scaffold without requiring a second kernel implementation.",
+            "platform": "Linux Kernel Labs",
+            "access": "Public course material; VM and lab setup requirements are in the lab instructions"
+          },
+          "visual": null,
+          "build": "In the compatible lab VM, complete the character-device exercise, then add one bounded read/write behavior and test short buffers, invalid requests, and cleanup.",
+          "stop": "The module builds against the running VM kernel, user-space tests pass, and unload leaves no registered device behind."
+        },
+        {
+          "title": "Device access and observed interrupts",
+          "outcome": "Acknowledge the lab device event and state which handler operations cannot sleep.",
+          "read": {
+            "title": "Linux Kernel Labs: I/O access and Interrupts",
+            "url": "https://linux-kernel-labs.github.io/refs/heads/master/labs/interrupts.html",
+            "scope": "I/O ports versus MMIO, device acknowledgement and interrupt-handler exercise only. The next step handles deferred execution separately.",
+            "why": "The lab supplies an actual device/IRQ exercise; deferred execution is the next step, not a second explanation here.",
+            "platform": "Linux Kernel Labs",
+            "access": "Public course material; hardware-dependent parts may require the lab's supported setup"
+          },
+          "visual": null,
+          "build": "Run the supplied x86/QEMU I/O and IRQ exercise on its documented device. Record event generation, handler invocation and acknowledgement, then repeat events and test cleanup. If the current VM lacks that device, repair the matching lab setup before moving on; do not replace evidence with a conceptual diagram.",
+          "stop": "The supported lab device produces an observed interrupt, acknowledgement is correct and the handler cannot sleep. Record the device and VM path; conceptual reading alone does not pass this build."
+        },
+        {
+          "title": "Deferred work and safe shutdown",
+          "outcome": "Move slower work out of interrupt context and close the race between queued work and module removal.",
+          "read": {
+            "title": "Linux Kernel Labs: Deferred work",
+            "url": "https://linux-kernel-labs.github.io/refs/heads/master/labs/deferred_work.html",
+            "scope": "Workqueue exercise and cancellation/cleanup rules. Compare softirq/tasklet context only to explain where sleeping is forbidden; do not implement every deferred-work mechanism.",
+            "why": "A distinct execution/lifetime contract following the IRQ lab.",
+            "platform": "Linux Kernel Labs",
+            "access": "Free"
+          },
+          "visual": null,
+          "build": "Queue bounded work from the observed event path, record top-half and worker context, then stress shutdown/unload with work pending. Flush/cancel work before freeing module state.",
+          "stop": "Deferred work executes in its documented context and repeated load/event/unload tests leave no queued work or use-after-free."
+        },
+        {
+          "title": "Map a kernel buffer to a process",
+          "outcome": "Use mmap for one controlled buffer and state who may access it and how long it remains valid.",
+          "read": {
+            "title": "Linux Kernel Labs: Memory mapping",
+            "url": "https://linux-kernel-labs.github.io/refs/heads/master/labs/memory_mapping.html",
+            "scope": "The memory-mapping lab sections that implement a device mapping and test it from user space; skip unrelated memory-management topics.",
+            "why": "It supplies a direct mapping example and makes the user/kernel lifetime and access contract visible.",
+            "platform": "Linux Kernel Labs",
+            "access": "Public course material; follow its stated kernel and VM requirements"
+          },
+          "visual": null,
+          "build": "Complete the mapping lab's small example. Add a user-space test for mapped contents and cleanup, and document mapping permissions and buffer lifetime. Do not turn this into a DMA or zero-copy claim.",
+          "stop": "Mapping and unmapping follow the documented lab contract, and tests demonstrate allowed access and cleanup."
+        }
+      ],
+      "lookups": [
+        {
+          "title": "Linux Kernel Labs: Interrupts lecture",
+          "url": "https://linux-kernel-labs.github.io/refs/heads/master/lectures/interrupts.html",
+          "scope": "Linux interrupt handling and interrupt context, only when interpreting the interrupt lab.",
+          "why": "A course lecture reference for interrupt context and deferred execution.",
+          "platform": "Linux Kernel Labs",
+          "access": "Public"
+        }
+      ],
+      "excluded": [
+        {
+          "title": "A second C or RISC-V teaching kernel",
+          "reason": "The roadmap already has xv6 and a Rust kernel. This extension studies Linux's driver interface, not another kernel build."
+        },
+        {
+          "title": "Full block, network, and production driver development",
+          "reason": "Those add separate device and subsystem contracts beyond this bounded character-device project."
+        },
+        {
+          "title": "Treating an ARM64 guest as the x86 lab target",
+          "reason": "Check the actual guest bitness and kernel. The public introduction shows a qemux86 target; use the supplied path on the existing x86 laptop instead of assuming native ARM64 equivalence."
+        }
+      ],
+      "environment": "x86 laptop / matching QEMU lab guest"
+    },
+    "11c": {
+      "after": "11b",
+      "title": "Embedded firmware",
+      "shortTitle": "Embedded firmware",
+      "weeks": "4–5 weeks",
+      "goal": "Extend the existing RP2350 bare-metal exercise by understanding the Cortex-M core, interrupts, GPIO, timers, serial I/O, and DMA constraints without turning it into another kernel project.",
+      "project": "A register-aware timer/UART/ring-buffer firmware with an event loop in the RP2040 simulator; document the port boundary to the existing RP2350 board exercise.",
+      "core": "Use one RP2040 C-compatible firmware core in Wokwi: register-level GPIO, timer/UART interrupts, a bounded ring and a cooperative event loop. SDK startup/interrupt registration is allowed, but explain the reset/vector path and inspect the generated code. Wokwi models one CPU core and DMA only for PIO; no dual-core or general DMA evidence is implied. Hardware is not required.",
+      "checks": [
+        "Trace RP2040 reset/vector/interrupt entry and compare the existing RP2350 ARM boot path",
+        "Run register-aware GPIO and timer interrupts in the selected C/C++ Wokwi scaffold",
+        "Test UART ISR-to-main-loop ring wraparound, overflow and partial input",
+        "Run a cooperative event/state-machine loop with bounded ISR work",
+        "Document target register differences and DMA lifetime rules without claiming unsupported simulation"
+      ],
+      "rationale": "Deepen the existing Pico exercise, not another kernel. The hardware-free route uses Wokwi RP2040 Cortex-M0+ with an SDK C/C++ scaffold; it is not RP2350 Cortex-M33. Arm’s second-edition Nucleo-F091RC text supplies concepts, while the RP2040 datasheet defines registers. Keep the original RP2350 startup exercise separate and make a port map, not another complete firmware implementation.",
+      "units": [
+        {
+          "title": "Cortex-M core, exceptions, and interrupt state",
+          "outcome": "Trace exception entry, vector selection, and the state saved by the selected Cortex-M core.",
+          "read": {
+            "title": "Arm Education: Embedded Systems Fundamentals, chapters 3 and 4",
+            "url": "https://github.com/arm-education/Embedded-Systems-Fundamentals",
+            "scope": "Second-edition Nucleo-F091RC book: chapter 4 core/interrupt entry, with chapter 3 only for ISR/main-loop coordination. Skip general thread/race explanations already covered in phase 6; do not copy STM32 register addresses.",
+            "why": "The official page publishes the chapter contents and links a free textbook; these chapters address concurrency, core state, and interrupts without adding another architecture course.",
+            "platform": "Arm University",
+            "access": "Free PDF via official Arm Education repository; board examples differ from RP2040/RP2350."
+          },
+          "visual": null,
+          "build": "Start from the Wokwi Pico C++ SDK scaffold and keep the firmware logic C-compatible. Locate reset/vector/stack setup in the built image, trigger a timer interrupt and inspect the handler path. Use the RP2040 datasheet, not the textbook’s STM32 addresses.",
+          "stop": "You can trace reset to main and vector to handler for RP2040, and distinguish this scaffold from the owned RP2350 boot exercise."
+        },
+        {
+          "title": "GPIO and timer-driven behavior in simulation",
+          "outcome": "Configure a pin and replace busy waiting with a timer-driven event in one supported simulator target.",
+          "read": {
+            "title": "Arm Education: Embedded Systems Fundamentals, chapters 2 and 7",
+            "url": "https://github.com/arm-education/Embedded-Systems-Fundamentals",
+            "scope": "Chapter 2, General Purpose Input/Output, and chapter 7, Timers, for the concepts and exercises. Examples target a different STM32 board; use the RP2040 datasheet and Wokwi target for actual registers and peripherals.",
+            "why": "The public contents confirm these focused topics, while the separate RP2040 reference keeps simulator-specific work grounded in the actual target.",
+            "platform": "Arm University; Raspberry Pi documentation for target details",
+            "access": "Free PDF via official Arm Education repository; board examples differ from RP2040/RP2350."
+          },
+          "visual": {
+            "title": "Wokwi: Pico C++ SDK Blink scaffold",
+            "url": "https://wokwi.com/projects/298013072042230285",
+            "scope": "Fork the C/C++ SDK example, not a MicroPython project. Only use its startup/build wrapper; replace the blink logic with your timer-driven register-aware firmware.",
+            "why": "A visible simulator target with a concrete compiled firmware scaffold.",
+            "platform": "Wokwi",
+            "access": "Public browser example; local/VS Code features may have separate access requirements."
+          },
+          "build": "Drive one GPIO using the RP2040 register contract, then switch from a busy loop to a timer interrupt. Inspect generated assembly for the MMIO accesses; keep ISR work to acknowledgement and posting a bounded event.",
+          "stop": "The GPIO changes at the configured timer cadence and the handler stays bounded; document the single simulated CPU and target registers."
+        },
+        {
+          "title": "Serial diagnostics and peripheral data flow",
+          "outcome": "Use UART output to observe a peripheral event and reason about buffering and concurrency.",
+          "read": {
+            "title": "Arm Education: Embedded Systems Fundamentals, chapters 8 and 3",
+            "url": "https://github.com/arm-education/Embedded-Systems-Fundamentals",
+            "scope": "Chapter 8: UART framing and buffering only. Reuse the ISR/main-loop coordination model from step 1 rather than reread chapter 3. Verify target-specific UART registers against the RP2040 datasheet.",
+            "why": "The chapter list confirms serial and concurrency coverage. The target datasheet, not the textbook example, defines the Pico peripheral contract.",
+            "platform": "Arm University; Raspberry Pi documentation for target details",
+            "access": "Free PDF via official Arm Education repository; board examples differ from RP2040/RP2350."
+          },
+          "visual": null,
+          "build": "Use the physical UART interface wired to the serial monitor, not USB Serial disguised as UART. Move RX bytes from the ISR through a bounded ring into the main loop; handle overflow explicitly and test wraparound, partial messages and a slow consumer. Add a cooperative state-machine task that consumes events without sleeping in the ISR.",
+          "stop": "UART traffic and timer events coexist; ring overflow/wraparound tests pass and the main loop, not the ISR, handles slower work."
+        },
+        {
+          "title": "DMA and the RP2350 hardware boundary",
+          "outcome": "Read the RP2350 DMA contract and identify which properties cannot be established by the selected simulator.",
+          "read": {
+            "title": "RP2350 Datasheet",
+            "url": "https://datasheets.raspberrypi.com/rp2350/rp2350-datasheet.pdf",
+            "scope": "Compare only the GPIO, UART, timer, selected ARM core and boot assumptions needed to port this RP2040 exercise. Read DMA transfer lifetime/buffer rules conceptually; do not assume the simulator models arbitrary DMA.",
+            "why": "This is the chip's primary hardware contract. Wokwi's Pi Pico project targets RP2040 and does not establish RP2350 or DMA behavior.",
+            "platform": "Raspberry Pi documentation",
+            "access": "Free public PDF"
+          },
+          "visual": null,
+          "build": "Write an RP2040-to-RP2350 port map against the two datasheets without rebuilding both implementations. Design one DMA transfer with buffer lifetime and completion/interrupt rules. General DMA is a written model unless real supported hardware is available; Wokwi’s documented DMA support is PIO-only.",
+          "stop": "The port map names changed core/startup/register assumptions, and the DMA design states what was modeled versus measured. No hardware purchase or fabricated simulator result is required."
+        }
+      ],
+      "lookups": [
+        {
+          "title": "RP2040 Datasheet",
+          "url": "https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf",
+          "scope": "Check simulator-target register, GPIO, timer, UART, and core details for Wokwi's Pico/RP2040 path only.",
+          "why": "Wokwi's Pico simulator is RP2040, so use the matching chip reference rather than the RP2350 datasheet.",
+          "platform": "Raspberry Pi documentation",
+          "access": "Free public PDF"
+        },
+        {
+          "title": "Wokwi Pico model and UART wiring",
+          "url": "https://docs.wokwi.com/parts/wokwi-pi-pico",
+          "scope": "Supported peripherals, physical UART serial-monitor wiring and model limitations. DMA is PIO-only; only one core is simulated.",
+          "why": "The simulator feature table bounds what tests can establish.",
+          "platform": "Wokwi docs",
+          "access": "Free"
+        }
+      ],
+      "excluded": [
+        {
+          "title": "Treating Wokwi Pico as RP2350/Pico 2 simulation",
+          "reason": "The Wokwi Pi Pico project targets RP2040 Cortex-M0+, while RP2350 uses a different chip and the existing Pico 2 exercise uses its own hardware contract."
+        },
+        {
+          "title": "Claiming DMA is simulator-tested or hardware-proven without a test",
+          "reason": "A datasheet reading or an RP2040 simulation does not establish DMA behavior on RP2350."
+        },
+        {
+          "title": "Replacing the existing board exercise with a new MCU/kernel project",
+          "reason": "Keep the original RP2350 exercise; deepen its same-board ARM core/peripheral work and use RP2040 simulation only as a clearly labeled separate path."
+        }
+      ],
+      "environment": "Wokwi RP2040 / RP2350 hardware remains separate"
+    }
+  },
+  "selectionResearch": [
+    "Inspected ROADMAP-BEGINNER.md phases 0, 0b, and 1-4; LEARNING.md; and portal/curated.json chapters 0, 0b, 1-4.",
+    "Fetched the Nand2Tetris project 1-6 pages, Computer Enhance landing page, Algorithmica HPC index, MIT 6.172 Fall 2018 course page, and the Master.dev byte-arrays lesson. The Nand2Tetris pages expose their project descriptions; Algorithmica and MIT provide course-level navigation. Computer Enhance lesson selection must be made inside the current subscriber course navigation, so no unverified episode URL is guessed.",
+    "Master.dev lesson landing pages are public, but viewing content may require the existing account. The selected Educative growth lesson uses a previously researched syllabus route. No subscription entitlement or authenticated playback was verified.",
+    "Parent review kept Nand2Tetris as the only hardware track and omitted the proposed Petzold companion. Phase 4 now assigns written Algorithmica sections and optional Computer Enhance demonstrations; MIT and conference talks are excluded from the default path.",
+    "Exact publicly accessible item URLs are used where verified. For books, course indexes, and subscription-gated material, scopes name the bounded chapters/projects/lesson to select. The Petzold companion site returned HTTP 406 in this fetch environment, so its availability/content was not independently confirmed.",
+    "Checked the requested roadmap sections and existing portal/curated.json before selecting additions. Opened public OSTEP PDFs, the 2025 MIT xv6 offering, Rust Book/Nomicon pages, Bos's online book, GPU MODE lecture index, CUDA documentation, Boehm's worklog, Crafting Interpreters, and Lua materials to confirm page/topic contents and link routes.",
+    "OSTEP chapter URLs are direct public PDFs. The chosen chapters and neighboring chapter numbers/titles were cross-checked against the OSTEP contents; the Educative OS lessons already listed in curated.json cover overlapping fork and paging material, so they are excluded as required study rather than duplicated.",
+    "Independent review found a mislabeled GPU MODE video in the research proposal. Parent checked YouTube oEmbed metadata and replaced Lecture 4 with the actual Lecture 8 checklist (SGhfUhlowB4). All direct YouTube selections in the final path were checked for public title/author metadata; playback was not tested.",
+    "Some roadmap source claims are time-sensitive (for example CUDA card capability, toolkit support, course offerings, and Lua release version). Confirm local hardware/tool versions at study time; benchmark claims in articles are not portable targets.",
+    "Visual resources are only included where they contribute a distinct diagram, interactive task, or profiler demonstration. Null visuals are deliberate where a second resource would repeat the same explanation. The proposed scopes and stop conditions are recommendations, not claims about required course completion.",
+    "Handmade Hero guide was fetched live. The index links to individual pages such as /code/day003/; those pages identify actual episode titles. Verified useful topic pages include day003 backbuffer, day014 platform-independent game memory, day018 frame pacing, day023 input recording/playback, and day037 bitmap rendering. The episodes use C-style C++ and Windows/Win32 APIs, while this roadmap's target is SDL3 on macOS; examples are visual/architectural references only.",
+    "The roadmap's preference for visual learning is served with selected Handmade Hero episodes, diagrams/docs and runnable SDL examples rather than assigning a long video playlist. Distinct visuals are omitted where they would repeat the written contract.",
+    "CMU Fall 2025 schedule was reachable and confirms its lecture/topic index and links to notes, slides, videos and projects. Some CMU endpoints blocked automated fetches during this check; exact lecture/topic mapping should be opened from the pinned schedule because numbering changes across offerings.",
+    "RFC 9293 and RFC 6298 are protocol specifications; SQLite docs are implementation/reference material, not a substitute for defining this project's own on-disk format or crash model.",
+    "The Udemy Business storage course overlaps CMU selected topics. Its current exact section lineup was not verified here, so it is deliberately excluded from required units rather than inventing lesson titles or durations.",
+    "Handmade Hero visual URLs are verified topic episode pages. Episode pages can include chapter markers and full recordings; watch only the named episode/topic portions relevant to the unit, not days 1–60 wholesale.",
+    "Parent review replaced video-first foundation assignments with exact Beej text chapters, two targeted Master.dev visual companions, and one Educative growth lesson. Fetched Beej’s contents plus the pointers, strings, pointer-arithmetic and manual-allocation chapters. Public Master.dev lesson pages expose titles, not playback.",
+    "Parent fetched Algorithmica profiling, instrumentation, SIMD/intrinsics pages and the official Computer Enhance GitHub listing tree. The latter supplies exact 8086 input files; subscriber demonstration links remain clearly labeled indexes.",
+    "Parent review removed same-URL assigned resources from Lookups. The original roadmap and checklist indices are unchanged, so saved completion and notes retain their meaning."
+  ],
+  "breadthResearch": {
+    "verification": [
+      "Checked the official LLVM tutorial page and confirmed it is the Kaleidoscope tutorial contents page. It links chapter 3 code generation and later chapters; the plan uses those sections selectively and does not invent a chapter URL.",
+      "Checked Tobias V. Langhoff's public CHIP-8 guide title and page, and confirmed the Timendus CHIP-8 test-suite GitHub repository is public and describes ROM tests for CHIP-8 and extensions.",
+      "Checked the official MiniTorch documentation navigation and live pages for modules 1–4; the published titles are Autodifferentiation, Tensors, Efficiency, and Networks. The module 3 page lists parallelization, matrix multiplication, CUDA operations, CUDA matrix multiplication, and training.",
+      "Checked MiniTorch's official GPU Programming page and confirmed it imports numba.cuda. This is its Python/Numba CUDA path, not the phase-8 native CUDA project.",
+      "Public pages and repository contents were reachable during this research. This verifies page availability and visible scope, not completion of the projects, ROM execution, or compatibility of every current dependency with the learner's machines.",
+      "Fetched Linux Kernel Labs' public interrupts lecture and confirmed its sections include Linux interrupt handling and interrupt context; confirmed its course navigation links the character-device, I/O/interrupt, and memory-mapping labs.",
+      "The Linux Kernel Labs character-device, interrupt, memory-mapping, and course landing URLs returned public pages during research. Verify the actual x86 guest bitness and matching build target; do not assume native compatibility with macOS ARM64.",
+      "Fetched Arm University's official book page and confirmed the table of contents: GPIO, software concurrency, Cortex-M0+ core and interrupts, timers, serial communications, and DMA. The page links a free textbook download; its examples are not RP2350-targeted.",
+      "Fetched the Wokwi Pi Pico project page and Raspberry Pi RP2040/RP2350 datasheet URLs. Treat Wokwi's Pico as RP2040 Cortex-M0+; no RP2350 or DMA simulator proof is claimed.",
+      "The worker proposals were merged into curated.json and corrected by parent review; intermediate research files are not curriculum inputs.",
+      "Parent inspected the Linux Kernel Labs introduction: public example is qemux86 with a 32-bit vmlinux, not evidence of an x86-64-only VM. Parent inspected Wokwi model docs: one RP2040 core; DMA PIO-only; public C++ SDK scaffold available."
+    ],
+    "decisions": [
+      "Rustlings is syntax practice, not a prerequisite for phase 7: the existing Rust Book sections are selected at the exact ownership/API boundary and the project ports known C behavior. Use a Rustlings exercise only if a specific syntax gap blocks that work.",
+      "TinyRenderer is a useful standalone C++ rasterizer, but phase 10 already has a scalar rasterizer build and Scratchapixel's equations. A second renderer project would duplicate the deliverable and introduce a C++ codebase before it is needed.",
+      "Churchill COMP4300 is a game-development course, while phase 10's required outcome is a small software renderer and playable checkpoint. Handmade Hero supplies selected visuals and SDL3 is the platform contract; the full course adds broader game systems rather than closing a demonstrated gap.",
+      "OSDev material is not a mandatory addition to phase 11: the kernel follows Philipp Oppermann's pinned x86/Rust boot contract, while the listed OSDev RISC-V material uses a different ISA/boot path. Mixing it in would blur the selected boot and interrupt contracts. Keep OSDev as a targeted reference only when a concrete device/protocol gap appears.",
+      "The existing Nand2Tetris Part I projects already provide the complete phase 1 CPU/assembler build, and GPU MODE 3/4/8/9 are not automatic additions to the CUDA path. The curated phase already has CUDA contracts, puzzles, a profiling lecture, and matmul worklog; select a GPU MODE episode only for a named profiling/kernel gap."
+    ],
+    "corrections": [
+      "clox has no AST: the LLVM extension must construct a small owning numeric AST instead of pretending to reuse one.",
+      "Timendus logo ROMs check drawing/opcode subsets, not keypad or timers; dedicated tests are required.",
+      "Use day034 49:50–54:58 for the basic arena visual, not an advanced day305 implementation.",
+      "Keep OSTEP allocator reading; the CMU harness is a lookup, not another assigned allocator."
+    ]
+  }
+}
