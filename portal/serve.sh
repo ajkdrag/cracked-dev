@@ -7,6 +7,7 @@ running() { [ -f server.pid ] && kill -0 "$(cat server.pid)" 2>/dev/null; }
 case "$1" in
   start)
     if running; then echo "already running: http://localhost:$port"; exit 0; fi
+    [ -d node_modules ] || { echo "node_modules missing: run npm install"; exit 1; }
     nohup node server.mjs > server.log 2>&1 &
     echo $! > server.pid
     sleep 1

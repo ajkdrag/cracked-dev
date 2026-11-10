@@ -19,9 +19,59 @@ void *counted_malloc(size_t sz) {
   return ptr;
 }
 
-bool list_pop_front(struct Node **head, int *out_value) { return true; }
+void counted_free(void *ptr) {
+  if (ptr != NULL) {
+    free(ptr);
+    free_count++;
+  }
+}
 
-bool list_remove_first(struct Node **head) {}
+void list_reverse(struct Node **head) {
+  if (head == NULL)
+    return;
+  if (*head == NULL)
+    return;
+
+  struct Node *curr = *head;
+  struct Node *prev = NULL;
+
+  while (curr != NULL) {
+    struct Node *next = curr->next;
+    curr->next = prev;
+    prev = curr;
+    curr = next;
+  }
+  // if *head was NULL, the while loop won't run
+  // and we just reassign NULL to *head again, thus nothing changed
+  *head = prev;
+}
+
+bool list_pop_front(struct Node **head, int *out_value) {
+  if (head == NULL || out_value == NULL)
+    return false;
+  struct Node *first_item = *head;
+  if (first_item == NULL)
+    return false;
+
+  *head = first_item->next;
+  *out_value = first_item->value;
+  counted_free(first_item);
+  return true;
+}
+
+bool list_remove_first(struct Node **head, int value) {
+  if (head == NULL)
+    return false;
+  while ((*head != NULL) && ((*head)->value != value)) {
+    head = &((*head)->next);
+  }
+  if (*head == NULL)
+    return false;
+  struct Node *to_remove = *head;
+  *head = (*head)->next;
+  counted_free(to_remove);
+  return true;
+}
 
 int list_push_front(struct Node **head, int value) {
   // head is [addr1] -> [addr2] -> (Node: [el_1], next) ...
@@ -38,13 +88,6 @@ int list_push_front(struct Node **head, int value) {
   return 1;
 }
 
-void counted_free(void *ptr) {
-  if (ptr != NULL) {
-    free(ptr);
-    free_count++;
-  }
-}
-
 void list_free(struct Node **head) {
   if (head == NULL)
     return;
@@ -56,32 +99,43 @@ void list_free(struct Node **head) {
   }
 }
 
-void print_ll(struct Node **head) {
-  if (head == NULL)
-    return;
+size_t get_length(struct Node **head) {
+  if (head == NULL) {
+    return 0;
+  }
 
   struct Node *curr = *head;
-  if (curr == NULL)
-    return;
-  int size = 0;
+  size_t size = 0;
   while (curr != NULL) {
-    printf("Curr: %d \n", curr->value);
     struct Node *next = curr->next;
     size++;
     curr = next;
   }
-  printf("size of LL: %d\n", size);
+  return size;
+}
+
+void print_ll(struct Node **head) {
+  printf("Items: ");
+  if (head == NULL) {
+    return;
+  }
+
+  struct Node *curr = *head;
+  while (curr != NULL) {
+    printf("%d, ", curr->value);
+    struct Node *next = curr->next;
+    curr = next;
+  }
+  printf("\n");
 }
 
 int main(void) {
 
   struct Node *head = NULL;
 
-  list_push_front(&head, 3);
-  list_push_front(&head, 4);
-  list_push_front(&head, 2);
   list_push_front(&head, 1);
   print_ll(&head);
-
+  list_reverse(&head);
+  print_ll(&head);
   return 0;
 }

@@ -197,6 +197,93 @@ static void test_remove_first(void) {
   check_remove("missing value", list, 3, 99, false, list, 3);
   check_remove("empty list", NULL, 0, 1, false, NULL, 0);
   check_remove("duplicates (first match only)", dups, 3, 5, true, dups_after, 2);
+
+  const int unsorted[] = {3, 1, 2};
+  const int unsorted_after[] = {3, 1};
+  check_remove("unsorted list, match after larger values", unsorted, 3, 2, true,
+               unsorted_after, 2);
+}
+
+static void test_null_arguments(void) {
+  struct Node *head = NULL;
+  reset_counters();
+  const int values[] = {2, 1};
+  head = list_from_array(values, 2);
+
+  int out = -99;
+  check("pop(NULL, &out) returns false", !list_pop_front(NULL, &out));
+  check("pop(NULL, &out) leaves out untouched", out == -99);
+  check("pop(&head, NULL) returns false", !list_pop_front(&head, NULL));
+  check("pop(&head, NULL) frees nothing, list intact",
+        free_count == 0 && list_matches(head, values, 2));
+  check("remove(NULL, v) returns false", !list_remove_first(NULL, 1));
+  check("remove(NULL, v) frees nothing", free_count == 0);
+
+  list_free(&head);
+}
+
+// Reverse must only rewire next pointers: same nodes, same addresses, no alloc, no free.
+static void check_reverse(const char *label, const int *before, size_t n) {
+  char text[96];
+  reset_counters();
+  struct Node *head = list_from_array(before, n);
+  int allocs_for_setup = alloc_count;
+
+  struct Node *old_nodes[8] = {0};
+  struct Node *walk = head;
+  for (size_t i = 0; i < n; i++, walk = walk->next)
+    old_nodes[i] = walk;
+
+  int reversed[8];
+  for (size_t i = 0; i < n; i++)
+    reversed[i] = before[n - 1 - i];
+  fail_at_alloc = 1;
+  list_reverse(&head);
+  fail_at_alloc = 0;
+
+  snprintf(text, sizeof text, "reverse %s: values reversed", label);
+  check(text, list_matches(head, reversed, n));
+  snprintf(text, sizeof text, "reverse %s: no alloc, no free", label);
+  check(text, alloc_count == allocs_for_setup && free_count == 0);
+  bool same_nodes = true;
+  walk = head;
+  for (size_t i = 0; i < n; i++, walk = walk->next)
+    same_nodes = same_nodes && walk == old_nodes[n - 1 - i];
+  snprintf(text, sizeof text, "reverse %s: same node addresses, flipped", label);
+  check(text, same_nodes);
+
+  list_free(&head);
+  snprintf(text, sizeof text, "reverse %s: counters balance after free", label);
+  check(text, counters_balanced(allocs_for_setup));
+}
+
+static void test_reverse(void) {
+  const int one[] = {7};
+  const int two[] = {1, 2};
+  const int three[] = {1, 2, 3};
+  const int dups[] = {4, 4, 9, 4};
+  check_reverse("empty", NULL, 0);
+  check_reverse("one node", one, 1);
+  check_reverse("two nodes", two, 2);
+  check_reverse("three nodes", three, 3);
+  check_reverse("duplicates", dups, 4);
+
+  list_reverse(NULL);
+  check("reverse(NULL) does nothing and does not crash", true);
+
+  struct Node *head = NULL;
+  reset_counters();
+  const int count = 200000;
+  for (int i = 0; i < count; i++)
+    list_push_front(&head, i);
+  list_reverse(&head);
+  bool ascending = true;
+  int expected = 0;
+  for (struct Node *node = head; node != NULL; node = node->next)
+    ascending = ascending && node->value == expected++;
+  check("reverse 200000 nodes: iterative, ascending, none lost",
+        ascending && expected == count);
+  list_free(&head);
 }
 
 int main(void) {
@@ -210,6 +297,8 @@ int main(void) {
   test_long_list();
   test_pop_front();
   test_remove_first();
+  test_null_arguments();
+  test_reverse();
 
   printf("%d failure(s)\n", failures);
   return failures;
