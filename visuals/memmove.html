@@ -1,0 +1,55 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>memcpy vs memmove: overlapping copy</title>
+<style>
+  body { font: 15px/1.4 ui-monospace, Menlo, monospace; margin: 24px; max-width: 900px; }
+  h2 { margin: 28px 0 6px; }
+  .row { display: flex; align-items: center; gap: 6px; margin: 4px 0; }
+  .label { width: 150px; color: #555; }
+  .cell { width: 44px; height: 36px; border: 2px solid #333; text-align: center; line-height: 36px; }
+  .src { background: #d8ecff; }
+  .dst { background: #ffe9c2; }
+  .lost { background: #ffd0d0; }
+  .ok { background: #d6f5d6; }
+  .note { color: #555; margin: 2px 0 10px 156px; }
+  .good { color: #146c2e; font-weight: bold; }
+  .bad { color: #a31515; font-weight: bold; }
+  .legend span { display: inline-block; padding: 2px 8px; border: 1px solid #333; margin-right: 8px; }
+</style>
+<h1>Copy a[0..3] into a[1..4], on top of itself</h1>
+<p>Array <b>a = {1,2,3,4,5}</b>. Source is slots 0 to 3. Destination is slots 1 to 4. They share slots 1, 2 and 3.</p>
+<p class="legend"><span class="src">being read</span><span class="dst">being written</span><span class="lost">value destroyed before it was read</span><span class="ok">final, correct</span></p>
+
+<h2>Wrong order: ascending (front to back)</h2>
+<div class="row"><span class="label">start</span>
+  <div class="cell src">1</div><div class="cell">2</div><div class="cell">3</div><div class="cell">4</div><div class="cell">5</div></div>
+<div class="row"><span class="label">a[1] = a[0]</span>
+  <div class="cell src">1</div><div class="cell dst">1</div><div class="cell">3</div><div class="cell">4</div><div class="cell">5</div></div>
+<div class="note">the old 2 is gone, and the next step needs it</div>
+<div class="row"><span class="label">a[2] = a[1]</span>
+  <div class="cell">1</div><div class="cell src">1</div><div class="cell dst">1</div><div class="cell">4</div><div class="cell">5</div></div>
+<div class="note">copies the NEW a[1], not the original 2</div>
+<div class="row"><span class="label">a[3] = a[2]</span>
+  <div class="cell">1</div><div class="cell">1</div><div class="cell src">1</div><div class="cell dst">1</div><div class="cell">5</div></div>
+<div class="row"><span class="label">a[4] = a[3]</span>
+  <div class="cell">1</div><div class="cell lost">1</div><div class="cell lost">1</div><div class="cell lost">1</div><div class="cell dst">1</div></div>
+<div class="note bad">result {1,1,1,1,1}. The 1 smeared across the overlap.</div>
+
+<h2>Right order: descending (back to front)</h2>
+<div class="row"><span class="label">start</span>
+  <div class="cell">1</div><div class="cell">2</div><div class="cell">3</div><div class="cell src">4</div><div class="cell">5</div></div>
+<div class="row"><span class="label">a[4] = a[3]</span>
+  <div class="cell">1</div><div class="cell">2</div><div class="cell">3</div><div class="cell src">4</div><div class="cell dst">4</div></div>
+<div class="note">the old 5 is gone, and nothing needs it</div>
+<div class="row"><span class="label">a[3] = a[2]</span>
+  <div class="cell">1</div><div class="cell">2</div><div class="cell src">3</div><div class="cell dst">3</div><div class="cell">4</div></div>
+<div class="row"><span class="label">a[2] = a[1]</span>
+  <div class="cell">1</div><div class="cell src">2</div><div class="cell dst">2</div><div class="cell">3</div><div class="cell">4</div></div>
+<div class="row"><span class="label">a[1] = a[0]</span>
+  <div class="cell src">1</div><div class="cell dst">1</div><div class="cell">2</div><div class="cell">3</div><div class="cell">4</div></div>
+<div class="note good">result {1,1,2,3,4}. Each slot is read before it is overwritten.</div>
+
+<h2>The rule memmove applies for you</h2>
+<div class="row"><span class="label">dst &gt; src (shift right)</span><b>copy from the END, going down</b></div>
+<div class="row"><span class="label">dst &lt; src (shift left)</span><b>copy from the FRONT, going up</b>  (your vec_remove_at loop)</div>
+<div class="row"><span class="label">no overlap</span><b>either order works, memcpy may pick the fastest</b></div>

@@ -15,6 +15,13 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#ifdef __APPLE__
+#include <malloc/malloc.h>
+#define usable_bytes(p) malloc_size(p)
+#else
+#include <malloc.h>
+#define usable_bytes(p) malloc_usable_size(p)
+#endif
 
 static int failures = 0;
 
@@ -74,6 +81,10 @@ static void test_push_growth(void) {
         v.len == 5 && v.cap == 8 && realloc_calls == 2);
   const int expected[] = {10, 20, 30, 40, 50};
   check("push 5th: old elements survive the move", vec_matches(&v, expected, 5));
+  check("push 5th: block is at least cap * sizeof(int) bytes",
+        v.data != NULL && usable_bytes(v.data) >= v.cap * sizeof(int));
+  check("push 5th: block is under 2 * cap * sizeof(int) bytes (no sizeof(int *))",
+        v.data != NULL && usable_bytes(v.data) < 2 * v.cap * sizeof(int));
 
   vec_free(&v);
   check("push: counters balance (one block, one free)",
@@ -133,6 +144,22 @@ static void test_later_growth_fails(void) {
   vec_free(&v);
   check("fail at 2nd realloc: old block was still ours, freed once",
         alloc_count == 1 && free_count == 1);
+}
+
+static void test_third_growth_fails(void) {
+  struct Vec v;
+  reset_counters();
+  vec_init(&v);
+  const int eight[] = {1, 2, 3, 4, 5, 6, 7, 8};
+  push_all(&v, eight, 8);
+  fail_at_alloc = 3;
+
+  check("fail at 3rd realloc: 9th push returns false", !vec_push(&v, 9));
+  check("fail at 3rd realloc: len 8, cap 8, elements intact",
+        v.len == 8 && v.cap == 8 && vec_matches(&v, eight, 8));
+
+  fail_at_alloc = 0;
+  vec_free(&v);
 }
 
 static void test_size_overflow(void) {
@@ -218,6 +245,7 @@ int main(void) {
   test_push_many();
   test_first_growth_fails();
   test_later_growth_fails();
+  test_third_growth_fails();
   test_size_overflow();
   test_remove_at();
   test_null_and_free();
