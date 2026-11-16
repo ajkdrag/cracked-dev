@@ -200,7 +200,7 @@ Then encode by hand, on paper, the first six instructions of `MaxL.asm` from the
 
 ## The CPU and the computer
 
-The CPU runs one loop, once per clock cycle:
+The programs from the last step ran on the IDE's built-in CPU. Now you build your own from the ALU, registers and PC of the earlier steps, and the same programs test it. The CPU runs one loop, once per clock cycle:
 
 ```
           +------------------------------------------------+
@@ -378,4 +378,4 @@ diff Pong.hack PongL.hack
 
 You built a computer from NAND gates and wrote the tool that produces its programs. You can now say what a register is, how RAM selects a word by address, how an instruction's bits drive the ALU and the registers, and how the program counter picks the next instruction. When chapter 02's `ldr w8, [x0]` runs, you know roughly what happens inside.
 
-Hack is a minimal machine. It has one data size, no bytes, no stack and no call instruction. Real C programs on your Mac work with bytes, structs, stacks and allocators, and they break in ways Hack cannot show you. Chapter 04, C properly: memory, undefined behavior, arenas, goes back to C with the machine model from this chapter. You will see how C lays out data in memory, which code the compiler is allowed to assume never runs, and how to replace the many small `malloc` calls in your symbol table with an arena. The text parsing you did here grows into a JSON parser there.
+Hack is a minimal machine. It has one data size, no bytes, no stack and no call instruction. Real C programs on your Mac work with bytes, structs, stacks and allocators, and they break in ways Hack cannot show you. Chapter 04, C properly: memory, undefined behavior, arenas, goes back to C with the machine model from this chapter. It starts where your ALU stopped: the same two's complement bits, now 8 to 64 bits wide, with C's integer types and the rules that convert between them. Then you will see how C lays out data in memory, which code the compiler is allowed to assume never runs, and how to replace the many small `malloc` calls in your symbol table with an arena. The text parsing you did here grows into a JSON parser there.

@@ -89,7 +89,7 @@ The bits tests pass in debug builds, which include UBSan, on the Mac and in the 
 
 ## Floats: the bits of float and double
 
-A `float` is 32 bits: a sign bit, an 8-bit exponent and a 23-bit fraction. A `double` is 64 bits with an 11-bit exponent and a 52-bit fraction. The fraction has an implied leading 1 for normal numbers, so a `double` holds every integer up to 2 to the 53rd power exactly, and above that it starts skipping integers. JSON numbers are often 64-bit IDs, which matters in the parser steps.
+Integers are one way C stores numbers as bits. Floats are the other, and they follow different rules. A `float` is 32 bits: a sign bit, an 8-bit exponent and a 23-bit fraction. A `double` is 64 bits with an 11-bit exponent and a 52-bit fraction. The fraction has an implied leading 1 for normal numbers, so a `double` holds every integer up to 2 to the 53rd power exactly, and above that it starts skipping integers. JSON numbers are often 64-bit IDs, which matters in the parser steps.
 
 ```
   float 1.0f = 0x3F800000
@@ -185,6 +185,8 @@ In chapter 02, every list node had its own `malloc` and its own `free`, and the 
 
 Fleury's article explains the lifetime model: a function receives the arena its results should live in. Wellons' article turns that into about fifteen lines of C. Two of Wellons' conventions appear in every later step. A permanent arena is passed by pointer, and what you allocate there outlives the call. A scratch arena is passed by value, so the function allocates from its own copy of the two pointers and everything it allocated is gone when it returns. Allocation failure aborts the program, or returns 0 when the caller asks for a soft failure.
 
+Wellons names his types with `typedef`. `typedef struct { char *beg; char *end; } Arena;` declares a struct with no tag and gives it the name `Arena`, so you write `Arena` where chapter 02 wrote `struct Node`. The CS50 linked list notes from chapter 02 used a similar form with a tag. The rest of this chapter names every struct this way.
+
 Every allocation pads `beg` up to the alignment of the type, with the `align_padding` expression from step 1. `_Alignof(T)` gives that alignment. `new` is a function-like macro that passes `sizeof(T)` and `_Alignof(T)` for you, so the rest of the program never writes a size by hand.
 
 Your process has several kinds of memory, and the arena block is one more region in it. This picture is a teaching layout. The real addresses on macOS and Linux differ and change on every run:
@@ -235,7 +237,7 @@ All tests pass on both machines, and the VM run reports no leaks. `grep -n 'mall
 
 ## Strings that carry their length
 
-C strings end with a zero byte. You saw the cost in chapter 02: every length is a walk with `strlen`, every copy needs capacity for the terminator, and a slice of a string cannot exist without a copy. Wellons replaces them with a pointer and a length passed by value:
+The arena gives the library a place to put things. The first type built on it replaces the C string. C strings end with a zero byte. You saw the cost in chapter 02: every length is a walk with `strlen`, every copy needs capacity for the terminator, and a slice of a string cannot exist without a copy. Wellons replaces them with a pointer and a length passed by value:
 
 ```
   Str s = S("hello world");        Str t = str_slice(s, 6, 11);
@@ -329,7 +331,7 @@ The tests pass on both machines. `wordcount2` and the chapter 02 word counter pr
 
 ## Buffered output
 
-`printf` parses a format string at run time and writes through a buffer you do not control. Wellons replaces it with a buffer you append to: bytes, strings, integers. When the buffer is full it is flushed to a file, or, for a memory buffer, the append sets a sticky error flag. You check the flag once at the end instead of after every call.
+The last step's `wordcount2` still prints with `printf`. `printf` parses a format string at run time and writes through a buffer you do not control. Wellons replaces it with a buffer you append to: bytes, strings, integers. When the buffer is full it is flushed to a file, or, for a memory buffer, the append sets a sticky error flag. You check the flag once at the end instead of after every call.
 
 Wellons' sink is an `os_write` that he leaves to the platform. Use `fwrite` and then `fflush` on a `FILE *`, from the stdio reference of the previous step. If `fwrite` returns fewer items than you asked for, or `fflush` returns `EOF`, set the error flag. The JSON serializer in step 9 writes through this buffer.
 
@@ -361,7 +363,7 @@ The tests pass. `wordcount2` output still matches chapter 02 byte for byte. In t
 
 ## A JSON parser: grammar, values, numbers and arrays
 
-JSON has a short formal grammar in RFC 8259, written in ABNF. Read it like this: `/` separates alternatives, `*` before an element means zero or more, `[ ]` means optional, `%x5B` is the byte 0x5B, and `%x30-39` is the range of digits. `ws` is the whitespace allowed around structural characters: space, tab, line feed and carriage return.
+The library now has what a parser needs: an arena for the tree, `Str` for slices of the input, growable arrays and a hash map for arrays and objects, and a `Buf` for output. JSON has a short formal grammar in RFC 8259, written in ABNF. Read it like this: `/` separates alternatives, `*` before an element means zero or more, `[ ]` means optional, `%x5B` is the byte 0x5B, and `%x30-39` is the range of digits. `ws` is the whitespace allowed around structural characters: space, tab, line feed and carriage return.
 
 A recursive descent parser turns each grammar rule into one function. Your parser keeps the input as a `Str` and an offset into it. Each function looks at the byte at the offset, consumes what its rule allows, and calls the function for any rule nested inside. `value` calls `array`, and `array` calls `value` for each element, so nesting becomes recursion:
 
@@ -429,7 +431,7 @@ Every test passes on the Mac and in the VM with no sanitizer report. For each fa
 
 ## Strings, objects and the serializer
 
-A JSON string is a quote, then characters, then a quote. Raw bytes from 0x00 to 0x1F are not allowed inside. A backslash starts an escape: `\"`, `\\`, `\/`, `\b`, `\f`, `\n`, `\r`, `\t`, or `\u` followed by four hex digits. Store the decoded bytes. If a string has no backslash, its decoded bytes equal its raw bytes, so the `Str` points straight into the input and copies nothing. Otherwise allocate a buffer the size of the raw text and decode into it. Decoding never makes a string longer, as the escape table shows:
+The parser from the last step stops with an error at the first quote or brace. This step fills in both. A JSON string is a quote, then characters, then a quote. Raw bytes from 0x00 to 0x1F are not allowed inside. A backslash starts an escape: `\"`, `\\`, `\/`, `\b`, `\f`, `\n`, `\r`, `\t`, or `\u` followed by four hex digits. Store the decoded bytes. If a string has no backslash, its decoded bytes equal its raw bytes, so the `Str` points straight into the input and copies nothing. Otherwise allocate a buffer the size of the raw text and decode into it. Decoding never makes a string longer, as the escape table shows:
 
 ```
   escape              bytes in    UTF-8 bytes out

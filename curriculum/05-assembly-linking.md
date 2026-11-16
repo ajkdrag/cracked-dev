@@ -156,7 +156,9 @@ At the first `bl`, the frame looks like this:
 
 The frame is 32 bytes, so sp stays a multiple of 16. Each saved x29 points at the caller's frame record, so the frame records form a linked list from the newest frame to the oldest. lldb's `bt` walks that list, and Apple requires x29 to point at a valid record at all times. A recursive function is the same prologue stacked once per call.
 
-The step ends with two programs that talk to the operating system. On the Mac, call libc. Your assembly `_main` loads arguments and runs `bl _write`, like a C program would. One rule differs from Linux: on Apple platforms the variadic arguments of a function like `printf` go on the stack, not in registers. To print a `long` you reserve 16 bytes, store the value at `[sp]` and pass only the format string in x0. On Linux the same value goes in x1. Compiled C shows both versions:
+The step ends with two programs that talk to the operating system. The kernel is the part of the operating system that owns the hardware, and a program cannot write to the terminal or a file on its own. It asks the kernel with a system call: it loads a call number and arguments into registers and runs one instruction that switches the CPU into the kernel. libc's `write(int fd, const void *buf, size_t n)` is a thin C wrapper around that instruction. `fd` is a file descriptor, a small integer that names an open file. Every program starts with 0, 1 and 2 open as standard input, standard output and standard error from chapter 01. Chapter 08 covers what the kernel does with the call.
+
+On the Mac, call libc. Your assembly `_main` loads arguments and runs `bl _write`, like a C program would. One rule differs from Linux: on Apple platforms the variadic arguments of a function like `printf` go on the stack, not in registers. To print a `long` you reserve 16 bytes, store the value at `[sp]` and pass only the format string in x0. On Linux the same value goes in x1. Compiled C shows both versions:
 
 ```
   printf("%ld\n", v), clang -O1
@@ -202,7 +204,7 @@ The last line tells the Linux linker that this code does not need an executable 
 
 ### Study
 
-- [Dive Into Systems: 9.5.2 Tracing Through an Example](https://diveintosystems.org/book/C9-ARM64/functions.html#_tracing_through_an_example) (read, 1 h): 9.5.2 and 9.5.3, then "Next" to 9.6 Recursion, including the animation in 9.6.1. Chapter 02 stopped you before 9.5.2. The book runs gcc on ARM64 Linux, so its frames match your VM. Clang on the Mac builds the same frames with small differences in order.
+- [Dive Into Systems: 9.6 Recursion](https://diveintosystems.org/book/C9-ARM64/recursion.html) (read, 30 min): The whole section, including the animation in 9.6.1. Chapter 02 assigned 9.5, which traces the `stp x29, x30` and `ldp` pair through one call. Reread 9.5.2 and 9.5.3 from there if the frame record above is not clear. The book runs gcc on ARM64 Linux, so its frames match your VM. Clang on the Mac builds the same frames with small differences in order.
 - [Linux man page: syscall(2)](https://man7.org/linux/man-pages/man2/syscall.2.html) (reference, as needed): Under NOTES, the two "Architecture calling conventions" tables. Read the arm64 row now and the x86-64 row in the next step.
 
 ### Build
@@ -614,4 +616,4 @@ The script prints OK for every listing from 43 to 54 that is not marked optional
 
 You can now write a function in assembly on both ISAs and call it from C, explain every stack adjustment in a prologue, read `-O2` output and name what the optimizer did, and follow a program from object files through the linker to the loader. You also wrote a decoder and a simulator for a real instruction set, so a CPU's fetch, decode and execute loop is code you wrote and tested.
 
-What you have not built is a whole machine: a CPU together with its screen, keyboard, timers and a program to run at full speed. Chapter 06, A CHIP-8 emulator, does that. CHIP-8 is a small virtual machine from the 1970s with fixed two-byte instructions, so its decoder is simpler than your 8086 one. The new parts are the 64 by 32 display, the keypad, the two timers and a main loop that runs the CPU at a fixed rate. Your simulator's loop and your test-by-diff habit carry straight over.
+What you have not built is a whole machine: a CPU together with its screen, keyboard, timers and a program to run at full speed. Chapter 06, A CHIP-8 emulator, does that. CHIP-8 is a small virtual machine from the 1970s with fixed two-byte instructions, so its decoder is simpler than your 8086 one. Its first step writes the whole machine state as one C struct and runs six instructions headless, printing the display as text, until two test ROMs draw their logos. The new parts come after that: a window for the 64 by 32 display, the keypad, the two timers and a main loop that runs the CPU at a fixed rate. Your simulator's loop and your test-by-diff habit carry straight over.

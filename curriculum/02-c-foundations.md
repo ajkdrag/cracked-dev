@@ -16,7 +16,7 @@ The chapter comes now because chapter 03 asks you to write an assembler in C. Th
 
 ## The build loop and a test pattern
 
-Chapter 01 gave you `build.sh`, sanitizers on both machines and a debugger. Every program in that chapter came ready-made. Before you write your own, check that the loop still works on the Mac and in Linux, and add the one piece chapter 01 did not have: a small test program per source file. Every Build in this chapter has test cases, and this pattern runs them.
+Before you write your own C, check that the loop from chapter 01 still works on the Mac and in Linux, and add the one piece chapter 01 did not have: a small test program per source file. Every Build in this chapter has test cases, and this pattern runs them.
 
 The pattern keeps the whole program in one translation unit, like `build.sh` does. The test file includes the `.c` file it tests, so it sees every function, including `static` ones. The preprocessor renames the tested file's `main` out of the way first:
 
@@ -84,7 +84,7 @@ The last step of this chapter reads `.s` output in detail. Here you only see tha
 
 ## Expressions, control flow, functions, arrays and structs
 
-You know Python, so most of C's control flow reads as familiar syntax. The differences that matter for this chapter: every variable has a fixed type and size, integer division truncates, an `int` can overflow, and a function receives copies of its arguments.
+The test pattern needs functions to test. This step writes the first ones. You know Python, so most of C's control flow reads as familiar syntax. The differences that matter for this chapter: every variable has a fixed type and size, integer division truncates, an `int` can overflow, and a function receives copies of its arguments.
 
 Arrays and structs are the two ways C groups values. An array is values of one type placed back to back. A struct is fields of different types laid out in the order you declare them. A struct can be copied whole by assignment or by passing it to a function. An array cannot be assigned or passed whole. Passing arrays to functions needs pointers, which come in the next step, so in this step keep each array inside the function that declares it.
 
@@ -108,7 +108,7 @@ The program prints 0, 8 and 111 for the Collatz cases, 212 for 100 Celsius, and 
 
 ## Pointers and lifetimes on paper
 
-Memory is one long array of bytes, and every byte has an address. A variable is a name for some of those bytes. A pointer is a variable that holds an address. The addresses below are made up. The layout is exact for your Mac:
+The last step kept every array inside the function that declared it, and `stats_average` could not change the caller's struct. Both limits go away once a function receives an address instead of a copy. Memory is one long array of bytes, and every byte has an address. A variable is a name for some of those bytes. A pointer is a variable that holds an address. The addresses below are made up. The layout is exact for your Mac:
 
 ```
   int x = 42;
@@ -161,7 +161,7 @@ You can explain what `p`, `&p` and `*p` each mean and what type each one has. Yo
 
 ## Strings and pointer arithmetic
 
-A string in C is a `char` array with a 0 byte after the last character. Nothing stores the length. `strlen` finds it by walking until the 0 byte. That gives you two numbers to keep apart: the length of the text and the capacity of the buffer that holds it. The capacity must be at least length + 1.
+Every function in this step takes a pointer from the last step, because a string reaches a function as the address of its first character. A string in C is a `char` array with a 0 byte after the last character. Nothing stores the length. `strlen` finds it by walking until the 0 byte. That gives you two numbers to keep apart: the length of the text and the capacity of the buffer that holds it. The capacity must be at least length + 1.
 
 ```
   char buf[8] = "cat";
@@ -311,7 +311,7 @@ All tests pass with balanced counters on the Mac. The same tests run clean under
 
 ## A growable array
 
-A growable array keeps its elements in one heap block and tracks two numbers: `len`, the number of valid elements, and `cap`, the number that fit in the block. The rule is `0 <= len <= cap` at all times. When `len == cap` and you push, you grow the block, usually by doubling `cap`.
+The linked list paid for one `malloc` per element and spread its nodes across the heap. A growable array keeps its elements in one heap block and tracks two numbers: `len`, the number of valid elements, and `cap`, the number that fit in the block. The rule is `0 <= len <= cap` at all times. When `len == cap` and you push, you grow the block, usually by doubling `cap`.
 
 `realloc` grows a block. It may grow it in place or it may move the elements to a new block and free the old one. If it fails it returns NULL and leaves the old block alone. So keep the old pointer until you know `realloc` succeeded:
 
@@ -446,4 +446,4 @@ All word counter tests pass with balanced counters on the Mac and clean under AS
 
 You can now write C that owns heap memory and frees it on every path, test the failure paths on purpose, read raw bytes in a debugger, and look at the instructions the compiler produced.
 
-What you cannot yet explain is the hardware that runs those instructions. You saw `ldr`, `add` and `ret` move values between registers and memory, but you have not seen how a register, the program counter or the step from one instruction to the next is built. Chapter 03, From gates to a CPU, builds them from logic gates up to a working CPU, and then asks you to write an assembler in C. The assembler reads a text file, splits lines into fields and keeps a symbol table, so your string functions and word table carry over.
+What you cannot yet explain is the hardware that runs those instructions. You saw `ldr`, `add` and `ret` move values between registers and memory, but you have not seen how a register, the program counter or the step from one instruction to the next is built. Chapter 03, From gates to a CPU, builds them from logic gates up to a working CPU, and then asks you to write an assembler in C. It starts away from C, in a browser-based hardware simulator, where you build every basic gate out of NAND. C comes back in its last two steps. The assembler reads a text file, splits lines into fields and keeps a symbol table, so your string functions and word table carry over.
