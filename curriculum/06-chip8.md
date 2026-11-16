@@ -120,7 +120,7 @@ Langhoff marks three sections "Ambiguous instruction!": the shifts, BNNN, and FX
 
 Langhoff also writes that the test ROMs expect the later FX55 and FX65. The corax+ and flags ROMs pass with either version, so they cannot tell you which one you built. Step 4 runs the quirks test, which can.
 
-VF is both a general register and the flag. When an instruction uses VF as an operand, the flag still wins, so compute the result and the flag into locals first, then write VX, then VF:
+VF is both a general register and the flag. When an instruction uses VF as an operand, the flag value is the one that ends up in VF, so compute the result and the flag into locals first, then write VX, then VF:
 
 ```
   8F14 with VF = 0x80, V1 = 0x80
@@ -147,12 +147,12 @@ The stack holds 16 addresses. A 2NNN with a full stack and a 00EE with an empty 
 ### Study
 
 - [Tobias V. I. Langhoff: Guide to making a CHIP-8 emulator](https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#00ee-and-2nnn-subroutines) (read, 45 min): From "00EE and 2NNN: Subroutines" to the end of "FX55 and FX65: Store and load memory", including EX9E and FX0A. Read the warnings marked "Ambiguous instruction", then use the table above to decide. Ignore the suggestion in FX1E to set VF when I passes 0xFFF. The original interpreter leaves VF alone there, and the flags test checks only the value of I.
-- [Steffen Schümann: Classic CHIP-8 Technical Reference](https://chip8kb.gulrak.net/reference/variants/classic-chip-8/) (reference, as needed): The table in section 4, "Original CHIP-8 Opcode Set", and the NOTE under "Specific Notes on Opcodes" about VF being written last. Check each instruction against the table as you write it.
+- [Steffen Schümann: Classic CHIP-8 Technical Reference](https://chip8kb.gulrak.net/reference/variants/classic-chip-8/#4-original-chip8-opcode-set) (reference, as needed): The table in section 4, "Original CHIP-8 Opcode Set", and the NOTE under "Specific Notes on Opcodes" about VF being written last. Check each instruction against the table as you write it.
 
 ### Build
 
 1. Add every instruction except FX0A to `chip8_step`, with the behavior from the table above.
-2. Write `tests/chip8_test.c` with the `check` function from chapter 02. A helper `exec(Chip8 *c, uint16_t op)` writes the opcode at PC and calls `chip8_step`. Test at least these cases:
+2. Write `tests/chip8_test.c` with the `check` function from chapter 02. A helper `exec(Chip8 *c, uint16_t op)` writes the opcode at PC and calls `chip8_step`. Build and run it with `tests/run_chip8_test.sh`, written like `tests/run_add_test.sh` from chapter 02, since `build.sh` only builds files in `src/`. Test at least these cases:
    - `7001` with V0 = 0xFF gives V0 = 0x00 and leaves VF alone.
    - `8014` with V0 = 0xFF, V1 = 0x01 gives V0 = 0x00, VF = 1.
    - `8F14` with VF = 0x80, V1 = 0x80 gives VF = 1.
@@ -164,7 +164,7 @@ The stack holds 16 addresses. A 2NNN with a full stack and a 00EE with an empty 
    - `F029` with V0 = 0x1A sets I to the address of the glyph for A.
    - `B300` with V0 = 4 sets PC to 0x304.
    - 17 nested calls set the error. A return with an empty stack sets the error.
-   - `D015` drawing the glyph for 0 twice at the same place sets VF = 0, then VF = 1, and leaves the display blank. Drawn at (62, 30) it lights only the pixels left of x = 64 and above y = 32. Drawn with V0 = 66 and V1 = 35 it appears at (2, 3).
+   - `D015` with I set to the glyph for 0 first (`F029` with V0 = 0), drawing it twice at the same place sets VF = 0, then VF = 1, and leaves the display blank. Drawn at (62, 30) it lights only the pixels left of x = 64 and above y = 32. Drawn with V0 = 66 and V1 = 35 it appears at (2, 3).
    - `E09E` skips when `keys[V0 & 0xF]` is true. `E0A1` skips when it is false.
 3. Run `3-corax+.ch8` and `4-flags.ch8` for 2000 cycles and compare them with the README pictures. A check mark means that instruction passed. A cross means it failed.
 4. Plant a bug: in 8XY4, write VF before you compute the sum. Run the flags test and find which marks changed. Then remove the bug.
@@ -241,12 +241,12 @@ FX0A completes the instruction set. It waits in two phases. While no key is held
 
 - [SDL3 examples: renderer/07-streaming-textures](https://examples.libsdl.org/SDL3/renderer/07-streaming-textures/) (do, 30 min): The official example for a texture you rewrite every frame. Build it on the Mac against your Homebrew SDL3 and run it. Then change it to fill a 64 by 32 texture from an array with `SDL_UpdateTexture`, in place of `SDL_LockTextureToSurface`. The surface functions it uses are not needed.
 - [Glenn Fiedler: Fix Your Timestep!](https://gafferongames.com/post/fix_your_timestep/) (read, 20 min): From "Fixed delta time" through "Free the physics". Read "integrate" as "run one CHIP-8 frame". Skip "The final touch", which interpolates physics state and has no CHIP-8 counterpart.
-- [SDL3 wiki: API by name](https://wiki.libsdl.org/SDL3/CategoryAPI) (reference, as needed): One page per function and struct. Look up `SDL_CreateWindowAndRenderer`, `SDL_CreateTexture`, `SDL_SetTextureScaleMode`, `SDL_UpdateTexture`, `SDL_PollEvent`, `SDL_KeyboardEvent`, `SDL_GetTicksNS` and `SDL_SetRenderVSync`. Every page has the signature and the return value. Most functions return `false` on failure and `SDL_GetError()` says why.
+- [SDL3 wiki: API by name](https://wiki.libsdl.org/SDL3/CategoryAPI) (reference, as needed): One page per function and struct. Look up `SDL_CreateWindowAndRenderer`, `SDL_CreateTexture`, `SDL_SetTextureScaleMode`, `SDL_UpdateTexture`, `SDL_PollEvent`, `SDL_KeyboardEvent`, `SDL_Scancode`, `SDL_GetTicksNS` and `SDL_SetRenderVSync`. Every page has the signature and the return value. Most functions return `false` on failure and `SDL_GetError()` says why.
 
 ### Build
 
-1. Add `chip8_frame` to the core. Change the runner to `chip8 ROM FRAMES [PRESET]`. It runs FRAMES frames at IPF 15. If PRESET is given, it writes that byte to address `0x1FF` after loading. The Timendus menus read that address and skip the menu, as their README sections explain.
-2. Write `src/chip8_sdl.c` with the loop above: a 640 by 320 window, vsync on, the streaming texture, the accumulator and the key table. Take the ROM path, and optionally the IPF and the preset, from the command line.
+1. Add `chip8_frame` to the core. Change the runner to `chip8 ROM FRAMES [MENU]`. It runs FRAMES frames at IPF 15. If MENU is given, it writes that byte, the menu value, to address `0x1FF` after loading. The Timendus menus read that address and skip the menu, as their README sections explain.
+2. Write `src/chip8_sdl.c` with the loop above: a 640 by 320 window, vsync on, the streaming texture, the accumulator and the key table. Its command line is `chip8_sdl ROM [IPF] [MENU]`. IPF and MENU are both numbers, so to give MENU you give IPF too.
 3. Add FX0A to the core and unit tests for it: with `keys[5]` held, a step leaves the machine waiting and V3 unchanged. After `keys[5]` goes false, the next step sets V3 = 5 and the machine runs on.
 4. Once per second of real time, print the number of CHIP-8 frames that ran in that second.
 5. Read the "Keypad test" section of the Timendus README and run `6-keypad.ch8` in the window. Try all three modes.
@@ -276,20 +276,20 @@ typedef struct {
 
 The "vip" preset sets the first four to true and the last two to false, which matches the behavior you built in steps 1 and 2. The "octo" preset sets all six to false. Octo is the CHIP-8 development environment most modern games were written in, and its own source gives those defaults. You need that preset for the games in step 5.
 
-The sound timer drives a buzzer. While ST is above zero, the speaker beeps. SDL3 plays sound through an audio stream: you open it with a sample format and a rate, and push samples into it. A square wave is enough, a constant value that flips sign every few samples. At 8000 samples per second, flipping every 4 samples gives a 1000 Hz tone. The SDL example keeps half a second of audio queued, which would make every beep start and stop half a second late. Keep the queue short instead. After each CHIP-8 frame, if fewer than about three frames of samples are queued, push one frame's worth, 8000 / 60, about 134 samples. Push the square wave if ST is above zero and zeros if it is not.
+The sound timer drives a buzzer. While ST is above zero, the speaker beeps. SDL3 plays sound through an audio stream: you open it with a sample format and a rate, and push samples into it. A square wave is enough, a constant value that flips sign every few samples. At 8000 samples per second, flipping every 4 samples gives a 1000 Hz tone. The SDL example keeps half a second of audio queued, which would make every beep start and stop half a second late. Keep the queue short instead. After each CHIP-8 frame, if fewer than about three frames of samples are queued, push one frame's worth, 8000 / 60, about 134 samples. Push the square wave if ST is above zero and zeros if it is not. `SDL_GetAudioStreamQueued` counts bytes, not samples. With 32-bit float samples as in the example, one frame is about 134 times 4 bytes, so three frames are about 1600 bytes.
 
 ### Study
 
-- [Steffen Schümann: Classic CHIP-8 Technical Reference](https://chip8kb.gulrak.net/reference/variants/classic-chip-8/) (read, 15 min): Section 7, "CHIP-8 Quirks", and the paragraph on display wait at the end of "Specific Notes on Opcodes". The "COSMAC VIP" box after that paragraph explains why a draw can take two frames on the real machine. You do not need to emulate that.
+- [Steffen Schümann: Classic CHIP-8 Technical Reference](https://chip8kb.gulrak.net/reference/variants/classic-chip-8/#7-chip-8-quirks) (read, 15 min): Section 7, "CHIP-8 Quirks", and the paragraph on display wait at the end of "Specific Notes on Opcodes". The "COSMAC VIP" box after that paragraph explains why a draw can take two frames on the real machine. You do not need to emulate that.
 - [SDL3 examples: audio/01-simple-playback](https://examples.libsdl.org/SDL3/audio/01-simple-playback/) (do, 20 min): Build and run it. It opens a stream with `SDL_OpenAudioDeviceStream`, starts it with `SDL_ResumeAudioStreamDevice`, and feeds a sine wave with `SDL_PutAudioStreamData` whenever `SDL_GetAudioStreamQueued` is low. Change the sine to a square wave and the queue limit to three frames before you move the code into your front end.
 
 ### Build
 
 1. Add `Quirks quirks` to `Chip8`, use each flag at its instruction, and set the "vip" preset in `chip8_reset`. When `clipping` is off, DXYN wraps every pixel with `& 63` and `& 31` instead of cutting it off.
-2. Make `chip8_frame` stop after a DXYN when `display_wait` is on. Give the front end and the runner an optional `vip` or `octo` argument.
-3. Read the "Quirks test" section of the Timendus README. Run `5-quirks.ch8` with preset 1 in the runner for 300 frames, then in the window.
+2. Make `chip8_frame` stop after a DXYN when `display_wait` is on. Give the front end and the runner an optional quirks preset, `vip` or `octo`. The full command lines are now `chip8 ROM FRAMES [vip|octo] [MENU] [trace]` and `chip8_sdl ROM [IPF] [vip|octo] [MENU] [BREAK]`. The runner tells its optional arguments apart by their form: a preset name, a number, or the word `trace`. In the front end the first number is IPF, the second is MENU, and BREAK starts with `0x`. The `trace` and `BREAK` arguments come in step 5.
+3. Read the "Quirks test" section of the Timendus README. Run `5-quirks.ch8` with menu value 1 in the runner for 300 frames, then in the window.
 4. Turn each quirk flag around in turn, and run the test again. Then run it with IPF 5.
-5. Add the audio stream to the front end. Read the "Beep test" section and run `7-beep.ch8`. Keypad B is the C key on your keyboard.
+5. Add the audio stream to the front end, and add `SDL_INIT_AUDIO` to the flags of `SDL_Init`. Read the "Beep test" section and run `7-beep.ch8`. Keypad B is the C key on your keyboard.
 
 ### Done when
 
@@ -314,6 +314,8 @@ Then play games. The CHIP-8 Archive collects programs released under CC0, most o
 | `shiftQuirks` | `shift_vx` |
 | `jumpQuirks` | `jump_vx` |
 
+Some entries also carry `vfOrderQuirks`. Octo's default for it, false, writes VF last, as you did in step 2, so you can ignore it.
+
 ### Study
 
 - [Tobias V. I. Langhoff: Guide to making a CHIP-8 emulator](https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#troubleshooting) (read, 10 min): "Troubleshooting" and "Add debug capabilities". Skip the rest of "What next". The SUPER-CHIP and XO-CHIP extensions are outside this chapter.
@@ -321,18 +323,18 @@ Then play games. The CHIP-8 Archive collects programs released under CC0, most o
 
 ### Build
 
-1. Add the trace to the runner as an optional last argument, `trace`. One line per instruction, for example `0x2A4 8F14 V0=00 V1=80 ... VF=80 I=0x300 SP=1 DT=00 ST=00`.
-2. In the front end, Space pauses and resumes, N runs one instruction while paused and prints the same line, and an optional hex address on the command line sets a breakpoint. Parse it with the hex digit code from chapter 04's `\u` escapes.
+1. Add the trace to the runner as the optional last argument, `trace`. One line per instruction, for example `0x2A4 8F14 V0=00 V1=80 ... VF=80 I=0x300 SP=1 DT=00 ST=00`.
+2. In the front end, Space pauses and resumes, N runs one instruction while paused and prints the same line, and the optional BREAK argument, a hex address such as `0x2A4`, sets a breakpoint. Parse the digits after `0x` with the hex digit code from chapter 04's `\u` escapes.
 3. Plant the 8XY4 bug from step 2 again. In the trace of `4-flags.ch8`, find the first 8XY4 whose X or Y is F. Set a breakpoint at its address in the window, step over it, and compare VF and VX with what the instruction should produce. Remove the bug.
-4. Write `tests/run_roms.sh`. It builds the runner, runs ROMs 1 to 5 headless with fixed frame counts (300 frames is enough for each, with preset 1 for the quirks test), and diffs each output with `tests/golden/<rom>.txt`. Create the golden files once, after you have checked each screen against its README picture. The script exits nonzero on any difference.
+4. Write `tests/run_roms.sh`. It builds the runner, runs ROMs 1 to 5 headless with fixed frame counts (300 frames is enough for each, with menu value 1 for the quirks test), and diffs each output with `tests/golden/<rom>.txt`. Create the golden files once, after you have checked each screen against its README picture. The script exits nonzero on any difference.
 5. Play the four games. Set IPF from `tickrate` and the quirks from `options`.
 
 ### Done when
 
-`sh tests/run_roms.sh; echo $?` prints 0 on the Mac and in Linux. With the planted bug, it fails on `4-flags` and `5-quirks` and passes the other three. The quirks test uses the same instruction and shows ERR2 in its clipping row. Stepping over the buggy instruction shows VF overwritten before the add reads it. You can stop at a breakpoint and step through a subroutine call and its return. The four games play at a speed that feels right, and their controls respond.
+`sh tests/run_roms.sh; echo $?` prints 0 on the Mac and in Linux. With the planted bug, it fails on `4-flags` and `5-quirks` and passes the other three. The quirks test uses the same instruction and shows ERR2 in its clipping row. Stepping over the buggy instruction shows VF overwritten before the add reads it. You can stop at a breakpoint and step through a subroutine call and its return. Each of the four games reaches its playfield. Keys 7 and 9 slide the paddle in `br8kout`, keys 5, 7, 8 and 9 move the gunman in `outlaw`, key 5 makes the player fall in `down8`, and keys 7 and 9 move the player in `caveexplorer`, as the `howto` fields in `programs.json` and the caveexplorer source say.
 
 ## Where this leads
 
-You have built a computer in software and checked it against a reference. Fetch, decode and execute run inside a 60 Hz frame. A pixel buffer, a key array and an audio stream connect the machine to the host. Quirk flags make the incompatibilities between interpreters explicit, and golden files hold every behavior you have verified. That finishes part one. You went from NAND gates to a CPU, from C basics to arenas and undefined behavior, from assembly to instruction decoding, and now to a complete machine.
+You have built a computer in software and checked it against a reference. That finishes part one.
 
-You have not measured how fast any of this runs. The emulator does 15 instructions per frame and the host could do millions, so speed never came up. In real programs it does, and guessing does not work. Chapter 07, Memory hierarchy, measurement and SIMD, starts with measurement. You profile and speed up the haversine pipeline from the Computer Enhance course, then study caches, data layout and the vector instructions that your Mac and your VM both have.
+You have not measured how fast any of this runs. The emulator does 15 instructions per frame and the host could do millions, so speed never came up. Real programs are slow for reasons you cannot see by reading the code, so chapter 07, Memory hierarchy, measurement and SIMD, starts with measurement. You profile and speed up the haversine pipeline from the Computer Enhance course, then study caches, data layout and the vector instructions that your Mac and your VM both have.

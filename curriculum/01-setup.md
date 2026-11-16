@@ -26,7 +26,7 @@ Install Apple's command line tools with `xcode-select --install`. They provide `
 
 ### Study
 
-- [Missing Semester 2026: Command-line Environment](https://missing.csail.mit.edu/2026/command-line-environment/) (read, 25 min): Under "The Command Line Interface", read Arguments, Streams, Environment variables and Return codes, then do the Return Codes exercises. Skip Signals for now and everything from "Remote Machines" on.
+- [Missing Semester 2026: Command-line Environment](https://missing.csail.mit.edu/2026/command-line-environment/) (read, 25 min): Under "The Command Line Interface", read Arguments, Streams, Environment variables and Return codes. Skim the globbing and `fzf` passages. Skip Signals for now and everything from "Remote Machines" on.
 - [Beej's Guide to C: Hello, World!](https://beej.us/guide/bgc/html/split/hello-world.html) (read, 25 min): Sections 2.1 to 2.5 and 2.7. Skip 2.6 on IDEs. On the Mac, `gcc` runs clang, as 2.5 explains, so use `clang` everywhere.
 
 ### Build
@@ -55,7 +55,7 @@ cat out.txt
 ./hello && echo ok || echo failed
 ```
 
-Then run `rm hello`, delete the semicolon after `return 3`, and compile again. Read clang's message, run `echo $?` right after it, and run `ls`. Put the semicolon back, compile, and commit `src/main.c` and `.gitignore`.
+Then run `rm hello`, delete the semicolon after `return 3`, and compile again. Read clang's message, run `echo $?` right after it, and run `ls`. Put the semicolon back, compile, run `rm hello out.txt err.txt`, and commit `src/main.c` and `.gitignore`.
 
 ### Done when
 
@@ -71,7 +71,7 @@ The script makes two kinds of build. The debug build turns optimization off with
 
 ### Study
 
-- [Chris Wellons: My favorite C compiler flags during development](https://nullprogram.com/blog/2023/04/29/) (read, 15 min): Read "Static warnings" and "Debug information". Leave "Dynamic run-time checks" for the sanitizer step. Skip the MSVC parts, which apply to Windows. Wellons also turns off two unused-code warnings. You may copy that once they get in your way.
+- [Chris Wellons: My favorite C compiler flags during development](https://nullprogram.com/blog/2023/04/29/) (read, 25 min): Read the whole post. Skip the MSVC parts, which apply to Windows, and the paragraph on Thread Sanitizer, which belongs to "Concurrency and parallelism". "Dynamic run-time checks" comes back in the sanitizer step. Wellons also turns off two unused-code warnings. You may copy that once they get in your way.
 - [Clang: Diagnostic flags](https://clang.llvm.org/docs/DiagnosticsReference.html) (reference, as needed): Look up a warning by the name clang prints in brackets, such as `-Wfloat-conversion`.
 
 ### Build
@@ -96,13 +96,13 @@ else
     flags="-g3 -O0 -fsanitize=${SAN:-address,undefined} -fno-sanitize-recover=undefined"
 fi
 
-$cc -std=c11 $warn $flags -o "$out/$name" "src/$name.c"
+$cc -std=gnu11 $warn $flags -o "$out/$name" "src/$name.c"
 echo "built $out/$name ($mode, $cc)"
 ```
 
-`set -e` stops the script at the first failing command. `${CC:-clang}` uses the `CC` variable when you set one and `clang` otherwise. The same goes for `SAN`. `uname -s` prints `Darwin` on macOS and `Linux` in Linux, so the two machines write to different directories.
+`-std=gnu11` selects C11 plus the POSIX and GNU declarations that Linux hides in strict `-std=c11` mode. Later chapters call functions such as `clock_gettime` and `mmap` that need them. `set -e` stops the script at the first failing command. `${CC:-clang}` uses the `CC` variable when you set one and `clang` otherwise. The same goes for `SAN`. `uname -s` prints `Darwin` on macOS and `Linux` in Linux, so the two machines write to different directories.
 
-Run `sh build.sh` and `./out/Darwin-debug/main`. If the debug build hangs or crashes before it prints anything, run `export SAN=undefined` in that shell and build again. Some macOS setups cannot run AddressSanitizer, and the sanitizer step deals with that.
+Run `sh build.sh` and `./out/Darwin-debug/main`.
 
 Next, write `src/w.c` with two planted problems:
 
@@ -128,7 +128,7 @@ Run `sh build.sh w`. Read both errors, then fix them: delete `unused` and write 
 
 ## A Linux machine next to the Mac
 
-Much of this book runs on Linux. The operating systems, driver and networking chapters use Linux system calls and tools that macOS does not have. LeakSanitizer, which lists memory your program never freed, is on by default on Linux and off by default on macOS. You need a Linux machine this week.
+Much of this book runs on Linux. The operating systems, driver and networking chapters use Linux system calls and tools that macOS does not have. LeakSanitizer, which lists memory your program never freed, runs by default on Linux. Apple's clang does not ship it, so the Mac build never checks for leaks. You need a Linux machine this week.
 
 OrbStack runs Linux in a light virtual machine on the Mac. On Apple Silicon it creates ARM64 machines unless you ask for Intel, so Linux runs the same instruction set as macOS. `uname -m` prints `arm64` on the Mac and `aarch64` in Linux. Both names mean ARM64. The x86-64 work comes in "Assembly, the ABI and linking".
 
@@ -169,11 +169,11 @@ sh build.sh && ./out/Linux-debug/main; echo $?
 CC=gcc sh build.sh && ./out/Linux-debug/main; echo $?
 ```
 
-Back on the Mac, run `git status`. The `out/` directory should not appear.
+Back on the Mac, run `git status`. It should not list `out/`.
 
 ### Done when
 
-`uname -m` prints `aarch64` in the machine. The same commit builds with clang on the Mac, and with clang and with gcc in Linux, with no warnings, and all three binaries print both lines and exit with status 3. You can say which sanitizers your Mac debug build uses.
+`uname -m` prints `aarch64` in the machine. The same commit builds with clang on the Mac, and with clang and with gcc in Linux, with no warnings, and all three binaries print both lines and exit with status 3. You can say which sanitizer checks run on the Mac and which run only in Linux.
 
 ## Sanitizers: memory and undefined behavior at run time
 
@@ -197,11 +197,12 @@ previously allocated by thread T0 here:
     #1 in use_after_free src/bugs.c:20                             <- who allocated it
 ```
 
-A sanitized program runs about twice as slow, which is fine for debug builds. On some macOS versions an ASan build hangs before `main` runs. If yours does, keep `SAN=undefined` on the Mac and do all ASan and leak checks in Linux.
+A sanitized program runs about twice as slow, which is fine for debug builds. ASan and UBSan both run on macOS, as the Supported Platforms section of the ASan page says. That page also offers leak detection on macOS through `ASAN_OPTIONS=detect_leaks=1`, but Apple's clang does not support it. Do all leak checks in Linux.
+
+Return to "Dynamic run-time checks" in Wellons' post from the build script step. He prefers UBSan's trap mode. This chapter keeps the printed reports while you learn to read them. Note his `ASAN_OPTIONS` line. The debugger step uses it.
 
 ### Study
 
-- [Chris Wellons: My favorite C compiler flags during development](https://nullprogram.com/blog/2023/04/29/) (read, 10 min): Now read "Dynamic run-time checks". Wellons prefers UBSan's trap mode. This chapter keeps the printed reports while you learn to read them. Note his `ASAN_OPTIONS` line. The next step uses it.
 - [Clang: AddressSanitizer](https://clang.llvm.org/docs/AddressSanitizer.html) (read, 20 min): Read Introduction, Usage, Symbolizing the Reports, "Memory leak detection" under Additional Checks, and Supported Platforms. The example is C++. Read `new` as `malloc` and `delete[]` as `free`. Skip the rest.
 - [Clang: UndefinedBehaviorSanitizer](https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html) (reference, as needed): Usage, and the list under "Available checks" when a report names a check you do not recognize.
 
@@ -268,10 +269,10 @@ int main(int argc, char **argv) {
 In Linux, run `sh build.sh bugs`, then `./out/Linux-debug/bugs 1` through `4`, with `echo $?` after each. For every run, note the kind of error and the line of `bugs.c` it blames. Then:
 
 1. Run 1 is caught by UBSan's bounds check. Rebuild with `SAN=address sh build.sh bugs` and run 1 again to see ASan report the same bug as a stack-buffer-overflow. Rebuild with the default afterwards.
-2. Build the release version with `sh build.sh bugs release` and run all four. They exit with status 0 and print no report.
+2. Build the release version with `sh build.sh bugs release` and run all four. They exit with status 0 and print no report. Use clang for this one. gcc rejects `bugs.c` at `-O2` under `-Werror`, because its optimizer spots the out-of-bounds loop and the use after free at compile time.
 3. Repeat the four debug runs with `CC=gcc sh build.sh bugs`.
 4. Copy `bugs.c` to `src/fixed.c` and fix the four bugs in the copy. Keep `bugs.c` as it is. The next step uses it. In `out_of_bounds`, loop while `i < 4`. In `use_after_free`, read `*p` into a local before `release(p)` and return the local. In `leak`, call `free(s)` after the `strlen` line. In `main`, call `add_one(41)`.
-5. On the Mac, run the four debug runs with whatever sanitizers your Mac supports.
+5. On the Mac, build `bugs` and run the four debug runs. Runs 1, 2 and 4 stop with reports. Run 3 prints 33 with no leak report.
 
 ### Done when
 
@@ -302,8 +303,8 @@ c                              c                  continue
 
 ### Study
 
-- [LLDB: Tutorial](https://lldb.llvm.org/use/tutorial.html) (read, 40 min): Read Command Structure, Loading a Program Into LLDB, Setting Breakpoints, Setting Watchpoints, Starting or Attaching to Your Program, Controlling Your Program, Examining Thread State and Examining Stack Frame State. Skip Breakpoint Names, and skim the parts on attaching to a running process.
-- [LLDB: GDB to LLDB command map](https://lldb.llvm.org/use/map.html) (reference, as needed): Keep it open in Linux to translate between the two debuggers.
+- [LLDB: Tutorial](https://lldb.llvm.org/use/tutorial.html) (read, 20 min): Read Command Structure, Setting Breakpoints, Setting Watchpoints, Controlling Your Program and Examining Stack Frame State. The examples are mostly Objective-C, so skip the `self`, `isa` and `NSString` details. Skip Loading a Program Into LLDB, Breakpoint Names, Starting or Attaching to Your Program and Examining Thread State.
+- [LLDB: GDB to LLDB command map](https://lldb.llvm.org/use/map.html) (reference, as needed): Keep it open in Linux to translate between the two debuggers. Examining Variables covers `frame variable`, which `v` abbreviates, and `p`. Examining Thread State covers `bt`, `up`, `down`, `frame select` and `x/`.
 
 ### Build
 
@@ -336,7 +337,7 @@ On the Mac, build it with `sh build.sh scores` and start `lldb ./out/Darwin-debu
 3. Restart once more. Stop in `sum`, run `bt`, `up`, and `x/5dw &scores` to see the five scores in memory, then `down`.
 4. Fix the loop and confirm the program prints `total 410, mean 82`.
 
-In Linux, repeat steps 1 to 3 with `gdb ./out/Linux-debug/scores`, using the map to translate. Then watch a sanitizer report from inside the debugger. Wellons' `abort_on_error=1` option makes ASan call `abort` after its report, and the debugger stops on the abort:
+In Linux, start gdb with `ASAN_OPTIONS=detect_leaks=0 gdb ./out/Linux-debug/scores` and repeat steps 1 to 3, using the map to translate. LeakSanitizer cannot run under a debugger. Without that option it prints a fatal error when the program exits, and the exit status turns to 1. Then watch a sanitizer report from inside the debugger. Wellons' `abort_on_error=1` option makes ASan call `abort` after its report, and the debugger stops on the abort:
 
 ```sh
 ASAN_OPTIONS=abort_on_error=1 gdb --args ./out/Linux-debug/bugs 2

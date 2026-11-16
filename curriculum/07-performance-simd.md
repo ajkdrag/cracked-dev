@@ -8,21 +8,9 @@ project: The haversine pipeline profiled and sped up on the Mac with your own ti
 
 Chapter 06 ended with a CHIP-8 emulator that runs 15 instructions per frame on a host that could run millions. Speed never came up in part one. Your programs were correct, tested against golden files, and you could read the instructions clang made from them. You never asked how long any of it took, or why. In this chapter you measure it, and you explain each number with a model of the hardware. The chapter opens part two of the book, on the operating system and concurrency, because both are judged by speed. Chapter 08 explains the page faults you count here, and the timers, profiler and repetition tester you write here measure the work of the chapters after it.
 
-The backbone is Casey Muratori's Performance-Aware Programming course on Computer Enhance, the course whose Part 1 gave you the 8086 decoder in chapter 05. You follow its Prologue, Part 2 (Basic Profiling), most of Part 3 (Moving Data) and the start of Part 5 (Computation). Keep the [table of contents](https://www.computerenhance.com/p/table-of-contents) open. Every post named below is linked from it, and each post has the video, notes and often a transcript. The code listings live in the [course repository](https://github.com/cmuratori/computer_enhance/tree/main/perfaware/part2), in the folders `part2`, `part3`, `part4` and `part5`.
+The backbone is Casey Muratori's Performance-Aware Programming course on Computer Enhance, the course whose Part 1 gave you the 8086 decoder in chapter 05. You follow its Prologue, Part 2 (Basic Profiling), most of Part 3 (Moving Data) and the start of Part 5 (Computation). Keep the [table of contents](https://www.computerenhance.com/p/table-of-contents) open. Every post named below is linked from it, and each post has the video, notes and often a transcript. The code listings live in the [course repository](https://github.com/cmuratori/computer_enhance/tree/main/perfaware), in the folders `part1` to `part5`.
 
-Casey works on Windows with x86-64 CPUs. You work on an ARM64 Mac. That gap is most of the homework. Where Casey reads the x86 time stamp counter, you read the ARM generic timer. Where he writes an x64 loop in nasm, you write the same loop in ARM64 assembly as you did in chapter 05. Where he uses AVX intrinsics, you use NEON. His listings say the course is not tested on macOS or Linux, so treat them as reference code to port, not as code to run. Do every timing on the Mac itself. The `lab86` machine from chapter 05 runs x86 code through Rosetta, so its numbers describe the translator, not an x86 CPU. If you have a native x86-64 machine, such as the laptop chapter 20 uses, you can run Casey's listings unchanged there as a side experiment.
-
-Every measurement in this chapter follows the same rules. Time only release builds from chapter 01's `build.sh`, after the debug build with sanitizers passes. Keep the slow version as an oracle that every fast version must agree with. Write down, next to each number:
-
-```
-  machine   sysctl -n machdep.cpu.brand_string, macOS version
-  build     clang --version, flags, release or debug
-  input     file name, pair count, seed, size in bytes
-  result    a sum or checksum the program prints, so the optimizer
-            cannot delete the work (chapter 05 showed it will)
-  timing    minimum and median over repeated runs, plus a rate:
-            bytes per second or operations per second
-```
+Casey works on Windows with x86-64 CPUs. You work on an ARM64 Mac. Porting his timers, assembly loops and intrinsics to the Mac is most of the homework. Where Casey reads the x86 time stamp counter, you read the ARM generic timer. Where he writes an x64 loop in nasm, you write the same loop in ARM64 assembly as you did in chapter 05. Where he uses AVX intrinsics, you use NEON. His listings say the course is not tested on macOS or Linux, so read them as reference code to port and do not expect them to build as they are. Do every timing on the Mac itself. The `lab86` machine from chapter 05 runs x86 code through Rosetta, so its numbers describe the translator. If you have a native x86-64 machine, such as the laptop chapter 20 uses, you can run Casey's listings unchanged there as a side experiment.
 
 ## The five multipliers and a haversine baseline
 
@@ -42,6 +30,18 @@ static uint64_t now_ns(void) {
 ```
 
 Run each loop many times over the same 4096-element array and keep the fastest run. The first runs pay for cold caches and for a core that is still at a low clock speed. Step 2 replaces this clock with better ones.
+
+This is the first timing in the chapter, so set the rules for all of them now. Time only release builds from chapter 01's `build.sh`, after the debug build with sanitizers passes. Keep the slow version as an oracle that every fast version must agree with. Write down, next to each number:
+
+```
+  machine   sysctl -n machdep.cpu.brand_string, macOS version
+  build     clang --version, flags, release or debug
+  input     file name, pair count, seed, size in bytes
+  result    a sum or checksum the program prints, so the optimizer
+            cannot delete the work (chapter 05 showed it will)
+  timing    minimum and median over repeated runs, plus a rate:
+            bytes per second or operations per second
+```
 
 Then the course turns to its real problem. The haversine formula gives the distance between two points on a sphere from their longitudes and latitudes. A generator writes a JSON file of random point pairs and a binary file of answers. A processor reads the JSON, computes the distance of every pair and prints the average. The whole chapter makes this program fast.
 
@@ -72,11 +72,11 @@ Write down the accuracy rule now and keep it for the whole chapter: the average 
 
 ### Build
 
-Part 1, the sum loops. Write `src/sumloops.c` with `SingleScalar`, `Unroll2Scalar`, `DualScalar` and `QuadScalar` from listing 58. Build it twice: with the release flags from `build.sh`, and with the no-vectorize flags from the listing's comment. Print each loop's time per element in nanoseconds and the sum, so the work cannot be deleted. Write the Python version too: `sum()` over a list of 4096 ints, timed with `time.perf_counter_ns` over many runs. Disassemble the four functions in both builds with lldb's `di -n` or Compiler Explorer and find the NEON instructions in the vectorized build. They name `v` registers, like `add v0.4s, v0.4s, v1.4s`. Compiler Explorer's "armv8-a clang" target from chapter 05 shows the same thing. Casey's optional Part 1 video [From 8086 to x64](https://www.computerenhance.com/p/from-8086-to-x64) walks through the x64 version of these loops if you want to compare.
+Part 1, the sum loops. Write `src/sumloops.c` with `SingleScalar`, `Unroll2Scalar`, `DualScalar` and `QuadScalar` from listing 58. Build it twice: with the release flags from `build.sh`, and with the no-vectorize flags from the listing's comment. Print each loop's time per element in nanoseconds and the sum, so the work cannot be deleted. Write the Python version too: `sum()` over a list of 4096 ints, timed with `time.perf_counter_ns` over many runs. Disassemble the four functions in both builds with lldb's `di -n` or Compiler Explorer and find the NEON instructions in the vectorized build. They name `v` registers, like `add v0.4s, v0.4s, v1.4s`. Compiler Explorer's "armv8-a clang" target from chapter 05 shows the same thing.
 
-Part 2, the baseline. Write `src/gen.c` with the same arguments and output format as Casey's generator: `uniform` or `cluster`, a seed, and a pair count, with one pair per line of JSON. Any 64-bit random number generator works. The one in `part2/listing_0066_haversine_generator_main.cpp` is 15 lines and easy to port. Print the expected average. Write `src/hav.c`: load both files, parse the JSON with your chapter 04 parser, copy the pairs into an array of `struct { double x0, y0, x1, y1; }`, compute the average with `ReferenceHaversine`, and print it next to the reference value and their difference. Also compare the first 1000 per-pair distances with the answer file and print the largest difference. Print how many arena bytes the parse used, and divide by the file size.
+Part 2, the baseline. Write `src/gen.c` with the same arguments and output format as Casey's generator: `uniform` or `cluster`, a seed, and a pair count, with one pair per line of JSON. Any 64-bit random number generator works. The one in `part2/listing_0066_haversine_generator_main.cpp` is a small jsf64 generator and easy to port. Print the expected average. Write `src/hav.c`: load both files, parse the JSON with your chapter 04 parser, copy the pairs into an array of `struct { double x0, y0, x1, y1; }`, compute the average with `ReferenceHaversine`, and print it next to the reference value and their difference. Also compare the first 1000 per-pair distances with the answer file and print the largest difference. Print how many arena bytes the parse used, and divide by the file size.
 
-Generate 100,000 pairs for testing and 1,000,000 pairs for timing, in both modes. Time the whole processor with `now_ns`.
+Generate 100,000 pairs for testing and 1,000,000 pairs for timing, in both modes. Also generate 10,000,000 pairs in both modes for step 8. Those two JSON files take about 1 GB each, so check your free disk space first. Time the whole processor with `now_ns`.
 
 ### Done when
 
@@ -104,15 +104,15 @@ static inline uint64_t cpu_timer_freq(void) {
 
 `__asm__` places the instructions in the string into the compiled C. `"=r"(v)` asks clang to pick a general register for `%0` and copy that register into `v` afterwards. `volatile` stops clang from moving the statement or deleting it. `mrs` copies a system register into a general register. The `isb` comes from section 4.1 of the Arm guide below: the CPU may read the counter early, out of program order, and `isb` makes it wait for the instructions before it.
 
-The frequency matters. If `cntfrq_el0` reports 24 MHz, one tick lasts about 42 ns. A block of code that takes 10 ns then reads as 0 or 1 tick, and you only get a useful number by timing many runs of it. That limit shapes every probe you write later in this chapter. The counter also does not count core cycles, the same problem Casey describes for the invariant TSC. Step 5 gets cycle counts another way.
+If `cntfrq_el0` reports 24 MHz, one tick lasts about 42 ns. A block of code that takes 10 ns then reads as 0 or 1 tick, and you only get a useful number by timing many runs of it. That limit shapes every probe you write later in this chapter. The counter also does not count core cycles, the same problem Casey describes for the invariant TSC. Step 5 gets cycle counts another way.
 
 The OS clock on the Mac has two forms. `clock_gettime(CLOCK_MONOTONIC)` returns nanoseconds on both systems. `mach_absolute_time` is a macOS call that returns the counter in its own unit, a tick you must convert, as Apple's page below explains. Casey's way to check a timer still applies: count ticks of the CPU timer over 100 ms of the OS clock, divide, and compare with the frequency the register reports.
 
-macOS also decides which core runs your program. Apple Silicon has performance cores and efficiency cores, and the scheduler picks one. `sysctl hw | grep perflevel` shows how many of each you have. Apple's notes on [tuning for Apple silicon](https://developer.apple.com/documentation/apple-silicon/tuning-your-code-s-performance-for-apple-silicon) explain that a thread's quality-of-service class influences where it runs. On the Mac, call `pthread_set_qos_class_self_np(QOS_CLASS_USER_INTERACTIVE, 0)` from `<pthread.h>` at the start of every benchmark, inside `#ifdef __APPLE__` so the code still builds in Linux. Treat a sudden 2x slowdown as a sign the program ran on an efficiency core.
+macOS also decides which core runs your program. Apple Silicon has performance cores and efficiency cores, and the scheduler picks one. `sysctl hw | grep perflevel` shows how many of each you have. The scheduler uses a thread's quality-of-service class when it picks a core. On the Mac, call `pthread_set_qos_class_self_np(QOS_CLASS_USER_INTERACTIVE, 0)` from `<pthread.h>` at the start of every benchmark, inside `#ifdef __APPLE__` so the code still builds in Linux. Treat a sudden 2x slowdown as a sign the program ran on an efficiency core.
 
 ### Study
 
-- [Computer Enhance: Introduction to RDTSC](https://www.computerenhance.com/p/introduction-to-rdtsc) (watch, 1 h 20 min): The video, then the next post in Part 2, "How does QueryPerformanceCounter measure time?". The second one is a written post and free. Both are about x86 and Windows. Watch for the method: calibrate an unknown counter against a known clock, then check what the OS clock reads underneath.
+- [Computer Enhance: Introduction to RDTSC](https://www.computerenhance.com/p/introduction-to-rdtsc) (watch, 1 h 20 min): The video, then the next post in Part 2, "How does QueryPerformanceCounter measure time?". The second one is also a video, and it is free. Both are about x86 and Windows. Watch for the method: calibrate an unknown counter against a known clock, then check what the OS clock reads underneath.
 - [Arm: Learn the architecture, Generic Timer](https://documentation-service.arm.com/static/65fac6957bcc0c1c661b36c0) (read, 20 min): Arm's guide, version 1.3, as a PDF. Read section 4.1 "Count and frequency" and section 4.6 "Timer virtualization", which explains why the virtual count in your Linux VM can differ from the Mac's. Skip the sections on configuring timers and interrupts. They are for kernels.
 - [Apple: Addressing architectural differences in your macOS code](https://developer.apple.com/documentation/apple-silicon/addressing-architectural-differences-in-your-macos-code) (reference, as needed): "Fetch System and Hardware Details Dynamically" for page and cache line sizes, which you need in steps 4 and 7, and "Apply Timebase Information to Mach Absolute Time Values".
 
@@ -173,7 +173,7 @@ void prof_end(ProfBlock *b);
 #define TIME_FUNCTION TIME_BLOCK(__func__)
 ```
 
-Anchor 0 stays free to act as the parent of the outermost blocks. A profiler costs time, two timer reads per block plus the bookkeeping. With a 42 ns tick, a block that runs for less than a microsecond is mostly noise. Casey's overhead videos show how to measure the cost and how to compile the profiler out completely with one switch.
+Anchor 0 stays free to act as the parent of the outermost blocks. `__COUNTER__` counts within one translation unit, so keep chapter 04's convention: include `profiler.c` first, then `base.c` and `json.c`, in a single translation unit, and every block gets a different index. Compile them separately and the anchor numbers collide with no error. A profiler costs time, two timer reads per block plus the bookkeeping. With a 42 ns tick, a block that runs for less than a microsecond is mostly noise. Casey's overhead videos show how to measure the cost and how to compile the profiler out completely with one switch.
 
 ### Study
 
@@ -216,12 +216,12 @@ The first repetition test of file reading turns up a surprise: reading into fres
                           faults start over
 ```
 
-Chapter 08 explains virtual memory from the kernel's side. Here you count the faults and measure what they cost. `getrusage` reports the number of faults the process has taken so far. The non-Windows branch of Casey's listings, which a student contributed, adds its `ru_minflt` and `ru_majflt` fields. Page sizes differ between your two systems, so print both before you predict anything.
+Chapter 08 explains virtual memory from the kernel's side. Here you count the faults and measure what they cost. `getrusage` reports the number of faults the process has taken so far. The non-Windows branch of Casey's `part3/listing_0108_platform_metrics.cpp`, which a student contributed, adds its `ru_minflt` and `ru_majflt` fields. Page sizes differ between your two systems, so print both before you predict anything.
 
 ### Study
 
 - [Computer Enhance: Measuring Data Throughput](https://www.computerenhance.com/p/measuring-data-throughput) (watch, 50 min): This video, then "Repetition Testing", the first two videos of Part 3. Copy his repetition tester's structure in C. His file reads use Windows calls. Use `fread` from chapter 04 instead.
-- [Computer Enhance: Monitoring OS Performance Counters](https://www.computerenhance.com/p/monitoring-os-performance-counters) (watch, 1 h): This video, then "Page Faults". The four Part 3 videos marked with an asterisk in the table of contents ("Probing OS Page Fault Behavior", "Four-Level Paging", "Analyzing Page Fault Anomalies", "Powerful Page Mapping Techniques") are optional bonus material. "Faster Reads with Large Page Allocations" uses a Windows feature, so watch it if you like and skip its homework.
+- [Computer Enhance: Monitoring OS Performance Counters](https://www.computerenhance.com/p/monitoring-os-performance-counters) (watch, 1 h): This video, then "Page Faults". Four of the Part 3 videos marked with an asterisk in the table of contents are about page faults and are optional bonus material: "Probing OS Page Fault Behavior", "Four-Level Paging", "Analyzing Page Fault Anomalies" and "Powerful Page Mapping Techniques". "Faster Reads with Large Page Allocations" uses a Windows feature, so watch it if you like and skip its homework.
 - [getrusage(2)](https://man7.org/linux/man-pages/man2/getrusage.2.html) (reference, as needed): The Linux man page, for the `ru_minflt` and `ru_majflt` fields. On the Mac, run `man getrusage`.
 
 ### Build
@@ -270,7 +270,7 @@ _add_chain8:
   cycles per iteration = 8     frequency = 8 * count / seconds
 ```
 
-`.p2align 6` starts the loop on a 64-byte boundary, as Casey's `align 64` does. Check the result against the maximum clock speed Apple publishes for your chip. If it comes out at half that, the add latency on your core is not 1 cycle, or the program ran on an efficiency core. With the frequency in hand, every time you measure converts to cycles. The clock speed drifts with temperature and load, so calibrate in the same run as the measurement.
+`.p2align 6` starts the loop on a 64-byte boundary, as Casey's `align 64` does. Apple does not publish clock speeds for its M-series chips, so check the result against a second reading. While the probe runs, `sudo powermetrics --samplers cpu_power -n 1` in another terminal prints the frequency of each core cluster as macOS sees it. Your chip may be newer than the M1 that Dougall measured, and its clock will differ. If your result comes out at about half of what `powermetrics` shows for the performance cluster, the add latency on your core is not 1 cycle, or the program ran on an efficiency core. With the frequency in hand, every time you measure converts to cycles. The clock speed drifts with temperature and load, so calibrate in the same run as the measurement.
 
 The front end also has a limit: how many instructions per cycle the core can fetch and decode, whatever they are. A loop of `nop` instructions measures it, because a `nop` does nothing once decoded.
 
@@ -323,7 +323,7 @@ The rest of the out-of-order core comes next. Your program names 31 registers, b
 
 - [Computer Enhance: Branch Prediction](https://www.computerenhance.com/p/branch-prediction) (watch, 1 h 15 min): This video, then "Code Alignment". His random data comes from a Windows call. On the Mac use `arc4random_buf` from `<stdlib.h>`.
 - [Computer Enhance: The RAT and the Register File](https://www.computerenhance.com/p/the-rat-and-the-register-file) (watch, 1 h 20 min): This video, then "Execution Ports and the Scheduler". The RAT homework is x64 assembly you trace on paper with chapter 05's x86 reading skills.
-- [Dougall Johnson: Firestorm Overview](https://dougallj.github.io/applecpu/firestorm.html) (reference, as needed): "Execution units" lists which of the M1 performance core's units handle integer, load, store and SIMD work, and "Elimination" lists the instructions the renamer removes. Compare your measurements with both.
+- [Dougall Johnson: Firestorm Overview](https://dougallj.github.io/applecpu/firestorm.html) (reference, as needed): "Firestorm Units" lists which of the M1 performance core's units handle integer, load, store and SIMD work, and "Elimination" lists the instructions the renamer removes. Compare your measurements with both.
 
 ### Build
 
@@ -333,7 +333,7 @@ Add to `probes.s` and `probes.c`:
 2. Two assembly versions of "sum the bytes that are 128 or more": one with `cmp` and a branch around the add, one with `csel`. Run both on random bytes and on the same bytes sorted.
 3. `load_x1` to `load_x4`: 1 to 4 independent `ldr x3, [x1]` per iteration from the same address. Print loads per cycle.
 4. The RAT homework from the video, traced on paper: draw each instruction's inputs after renaming and find the longest chain.
-5. Optional: copy `cond_nop`, put 1 to 63 `nop` instructions before the loop's `.p2align`, and see whether the loop's position in memory changes its speed on your core.
+5. Optional: copy `cond_nop`, put 1 to 63 `nop` instructions after the `.p2align` and before the loop label, and see whether the loop's position in memory changes its speed on your core.
 
 ### Done when
 
@@ -360,7 +360,7 @@ Bandwidth needs wide loads. NEON gives you 32 vector registers of 128 bits, `v0`
 
 Latency needs a different loop. Make the buffer one random cycle of pointers, one per cache line, and follow it: `p = *p`. Each load needs the previous result, so the hardware prefetcher cannot guess the next address, and every hop pays the full latency of whatever level holds the line. Build the cycle with Sattolo's algorithm, a variant of the Fisher-Yates shuffle: for `i` from `n - 1` down to 1, pick `j` at random from 0 to `i - 1`, and swap elements `i` and `j`. The result is one cycle through all `n` lines.
 
-The rest of the chapter depends on the gap between these two loops. A loop that streams through memory in order runs at tens of gigabytes per second. A loop that chases pointers pays a full memory latency per hop. Data layout alone can make a 100x gap before anyone changes the algorithm.
+A loop that streams through memory in order runs at tens of gigabytes per second. A loop that chases pointers pays a full memory latency per hop. Step 8 and step 10 both depend on the gap you measure here.
 
 ### Study
 
@@ -379,10 +379,10 @@ Write `src/arm64/cache.s` and `src/cache.c`, all run under the repetition tester
 5. Cache sets: read 64 lines that are 4 KB apart, then 64 lines that are 4 KB plus one line apart, and compare.
 6. Prefetching: a linked chain of cache-line-sized blocks in random order, with a short loop of busy work on each block, run with and without `prfm` on the next block's address.
 
-Fill in this table from your plots and `sysctl`:
+Fill in this table from your plots and `sysctl`. `sysctl` gives the L1 and L2 sizes, and `hw.memsize` gives DRAM. macOS does not expose the system cache size, so read it off your plot and write "from plot":
 
 ```
-  level           size (sysctl)    read bandwidth    latency (ns, cycles)
+  level           size             read bandwidth    latency (ns, cycles)
   L1 data         ...
   L2              ...
   system cache    ...
@@ -417,20 +417,19 @@ Store the numbers as a structure of arrays, one array per field, instead of an a
      one 16-byte load gets x0 of two neighboring pairs
 ```
 
-The math changes last. Casey's opening videos of Part 5 replace `sin`, `cos` and `asin` with his own polynomial approximations and remove the work the formula does twice. Part 4 derives those approximations. It is optional, and Casey says you can start Part 5 from the supplied code. Port the scalar function `SimplifiedHaversineI` from `part4/listing_0195_simplified_haversine_main.cpp` to C, with the helpers it uses from that file. Replace `SqrtCE` and its SSE intrinsic with `sqrt` from `<math.h>`, and check that the disassembly contains an `fsqrt` instruction and no call. `fma` from `<math.h>` should become one `fmadd` instruction.
+The math changes last. Casey's opening videos of Part 5 replace `sin`, `cos` and `asin` with his own polynomial approximations and remove the work the formula does twice. Part 4 derives those approximations. It is optional, and Casey says you can start Part 5 from the supplied code. Port the scalar function `SimplifiedHaversineI` from `part4/listing_0195_simplified_haversine_main.cpp` to C, with `SineCoreWithPrefix` and `ArcsineCoreFromSquared` from the same file. The rest of what it uses lives in other listings: the `f64` and `b32` types in `part4/listing_0194_combined_haversine_test.cpp`, `Pi64` in `listing_0175_math_check.cpp`, `QUESTIONABLE_EARTH_RADIUS` (6372.8) in `listing_0172_reference_haversine.cpp`, and `SqrtCE` in `listing_0190_math_replacement.cpp`. Define the two constants yourself. Casey declares the helpers plain `inline`, which fails to link in C99, so make them `static inline`. His function loops over an array of pair structures, so rewrite its loop to read your four arrays. Replace `SqrtCE` and its SSE intrinsic with `sqrt` from `<math.h>`, and check that the disassembly contains an `fsqrt` instruction and no call. `fma` from `<math.h>` should become one `fmadd` instruction.
 
 ### Study
 
 - [Computer Enhance: 2x Faster File Reads](https://www.computerenhance.com/p/2x-faster-file-reads) (watch, 30 min): The whole video. Skip the next one, "Overlapping File Reads with Computation", which uses a second thread. Threads come in chapter 09.
 - [Computer Enhance: Our Very Own Haversine](https://www.computerenhance.com/p/our-very-own-haversine) (watch, 1 h 10 min): This video, then "Removing Waste" and "Simplified Haversine Candidate", the first three entries of Part 5 in the table of contents. The posts themselves call these the last videos of Part 4. They are the same videos.
-- [Computer Enhance: "Clean" Code, Horrible Performance](https://www.computerenhance.com/p/clean-code-horrible-performance) (watch, 25 min): A free video from the Interlude. It applies the waste argument to code structure and ends with a table-driven version of the same program. Watch it before you design `hav2`'s data.
 
 ### Build
 
 Write `src/hav2.c`:
 
 1. Chunked reading into one buffer that you allocate once. Under the repetition tester, try chunk sizes from 16 KB to 16 MB, summing the bytes so the read cannot be skipped, and pick the fastest.
-2. The line parser and number conversion described above, writing into four arrays of `double` in the arena. Test the converter against `strtod` on every number of the 100,000-pair file and print the largest difference in units of the last bit.
+2. The line parser and number conversion described above, writing into four arrays of `double` in the arena. Test the converter against `strtod` on every number of the 100,000-pair file and print the largest difference in units of the last bit. To get that distance for two doubles of the same sign, `memcpy` each one into an `int64_t` and subtract the two integers.
 3. The scalar `SimplifiedHaversineI` over the four arrays.
 4. `-check`, which also runs the baseline and compares the two averages.
 
@@ -484,7 +483,7 @@ An array is rarely a multiple of the lane count. Process full vectors while at l
 
 ### Build
 
-Part 1, lanes and tails. Write `src/simd_add.c`: `add_f32_scalar` and `add_f32_neon` for `void add(float *dst, const float *a, const float *b, ptrdiff_t n)`. Test every `n` from 0 to 33 against the scalar version, with eight guard bytes after `dst` that must not change. Time both at sizes that fit in L1 and at 1 GB, and compare the ratio with your step 7 bandwidth numbers. Then compile the scalar version with `-O2 -Rpass=loop-vectorize -Rpass-missed=loop-vectorize`. LLVM's [vectorizer documentation](https://llvm.org/docs/Vectorizers.html) explains these remarks under "Diagnostics". Find out whether clang vectorized it and how its loop differs from yours.
+Part 1, lanes and tails. Write `src/simd_add.c`: `add_f32_scalar` and `add_f32_neon` for `void add(float *dst, const float *a, const float *b, ptrdiff_t n)`. Test every `n` from 0 to 33 against the scalar version, with eight guard bytes after `dst` that must not change. Time both at sizes that fit in L1 and at 1 GB, and compare the ratio with your step 7 bandwidth numbers. Then compile the scalar version with `-O2 -Rpass=loop-vectorize -Rpass-missed=loop-vectorize`. These flags make clang print a remark for each loop it vectorized or failed to vectorize. Find out whether clang vectorized it and how its loop differs from yours.
 
 Part 2, the haversine in lanes. Port the wide haversine from `part5/listing_0218_wide_haversine_math.cpp` and `part5/listing_0219_wide_haversine_main.cpp` to NEON, using the table above. Casey's listing 219 still loads one pair and broadcasts it to all lanes. Yours loads two neighboring pairs from the four arrays of `hav2`, so each lane holds a different pair. Keep the running sum in a `float64x2_t`, add its two lanes with `vaddvq_f64` at the end, and finish an odd last pair with the scalar function. Then try two independent accumulators, four pairs per iteration, as the dependency chains of step 5 suggest.
 
@@ -549,7 +548,6 @@ static uint64_t hash_u64(uint64_t x) {
 ### Study
 
 - [Abseil: Swiss Tables Design Notes](https://abseil.io/about/design/swisstables) (read, 20 min): "Lookup Optimizations", with its parts "Metadata Layout", "Metadata Information" and "Metadata Lookup". Skip "Storage Optimizations" and everything after it, which is about the C++ interface.
-- [CppCon 2017: Matt Kulukundis, "Designing a Fast, Efficient, Cache-friendly Hash Table, Step by Step"](https://www.youtube.com/watch?v=ncHmEUmJZf4) (watch, 1 h): The talk by one of the table's authors at Google. It builds the design from a plain open-addressing table one change at a time and measures each change. Skim the parts about C++ templates and the standard library interface.
 - [Danila Kutenin: Bit twiddling with Arm Neon: beating SSE movemasks, counting bits and more](https://developer.arm.com/community/arm-community-blogs/b/servers-and-cloud-computing-blog/posts/porting-x86-vector-bitmask-optimizations-to-arm-neon) (read, 30 min): A Google engineer's post on Arm's blog. Read the introduction on `shrn`, "Case study: ZSTD" for the 16-byte mask and its loop, and "Case study: Google SwissMap" for the 8-byte version. The other case studies are optional.
 
 ### Build

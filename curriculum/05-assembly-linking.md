@@ -78,9 +78,9 @@ Chapter 01's lldb commands work on assembly, because `-g` records line informati
 
 ### Study
 
-- [Dive Into Systems: 9.7 Arrays](https://diveintosystems.org/book/C9-ARM64/arrays.html) (read, 25 min): The whole section. It continues the chapter 9 reading from chapter 02 and shows the scaled-index load `ldr w0, [x1, x2, LSL, #2]` that your array loop needs.
-- [Procedure Call Standard for the Arm 64-bit Architecture (AAPCS64)](https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst) (read, 30 min): 6.1.1 General-purpose Registers with its Table 2, 6.4.5 The Stack, 6.5 Subroutine calls and 6.9 Result return. Skip the SIMD, SVE, SME and ZA material. It is Arm's own specification. Read it for the register table now and come back to it when a question comes up.
+- [Dive Into Systems: 9.7 Arrays](https://diveintosystems.org/book/C9-ARM64/arrays.html) (read, 25 min): The whole section. It continues the chapter 9 reading from chapter 02 and shows the scaled-index load `ldr w0, [x1, x2, LSL #2]` that your array loop needs. The book prints a comma after `LSL`. Leave it out, because clang rejects it.
 - [Apple: Writing ARM64 code for Apple platforms](https://developer.apple.com/documentation/xcode/writing-arm64-code-for-apple-platforms) (read, 15 min): Every section except "Handle C++ differences" and "Enable DIT". It lists where macOS departs from the Arm standard. The variadic rule matters in the next step.
+- [Procedure Call Standard for the Arm 64-bit Architecture (AAPCS64)](https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst) (reference, as needed): Arm's own specification. Look things up in 6.1.1 General-purpose Registers with its Table 2, 6.4.5 The Stack, 6.5 Subroutine calls, 6.8.2 Parameter passing rules (stage B covers structs larger than 16 bytes) and 6.9 Result return. Skip the SIMD, SVE, SME and ZA material.
 
 ### Build
 
@@ -154,7 +154,7 @@ At the first `bl`, the frame looks like this:
   lower addresses
 ```
 
-The frame is 32 bytes, so sp stays a multiple of 16. Each saved x29 points at the caller's frame record, so the frame records form a linked list from the newest frame to the oldest. That list is how lldb's `bt` walks the stack, and Apple requires x29 to point at a valid record at all times. A recursive function is the same prologue stacked once per call.
+The frame is 32 bytes, so sp stays a multiple of 16. Each saved x29 points at the caller's frame record, so the frame records form a linked list from the newest frame to the oldest. lldb's `bt` walks that list, and Apple requires x29 to point at a valid record at all times. A recursive function is the same prologue stacked once per call.
 
 The step ends with two programs that talk to the operating system. On the Mac, call libc. Your assembly `_main` loads arguments and runs `bl _write`, like a C program would. One rule differs from Linux: on Apple platforms the variadic arguments of a function like `printf` go on the stack, not in registers. To print a `long` you reserve 16 bytes, store the value at `[sp]` and pass only the format string in x0. On Linux the same value goes in x1. Compiled C shows both versions:
 
@@ -203,7 +203,6 @@ The last line tells the Linux linker that this code does not need an executable 
 ### Study
 
 - [Dive Into Systems: 9.5.2 Tracing Through an Example](https://diveintosystems.org/book/C9-ARM64/functions.html#_tracing_through_an_example) (read, 1 h): 9.5.2 and 9.5.3, then "Next" to 9.6 Recursion, including the animation in 9.6.1. Chapter 02 stopped you before 9.5.2. The book runs gcc on ARM64 Linux, so its frames match your VM. Clang on the Mac builds the same frames with small differences in order.
-- [HelloSilicon](https://github.com/below/HelloSilicon) (reference, as needed): Alexander von Below's notes on porting Stephen Smith's ARM64 book to Apple Silicon. You do not need the book. Read the README's "Chapter 1: Getting Started" notes on Hello World, "Chapter 7" on Darwin system calls and "Chapter 9" up to Listing 9-1, which calls `printf` from assembly.
 - [Linux man page: syscall(2)](https://man7.org/linux/man-pages/man2/syscall.2.html) (reference, as needed): Under NOTES, the two "Architecture calling conventions" tables. Read the arm64 row now and the x86-64 row in the next step.
 
 ### Build
@@ -289,12 +288,11 @@ gdb -q ./out/calls_test -ex 'target remote :1234'
 
 In gdb, `b sum3sq`, `c`, `info registers rdi rsi rdx rsp`, `stepi` and `x/4gx $rsp` do what their lldb versions did on the Mac. The x86-64 `hello` uses `syscall` with the number in rax and the arguments in rdi, rsi and rdx. `write` is 1 and `exit` is 60, from `/usr/include/x86_64-linux-gnu/asm/unistd_64.h`. Build the C tests with `gcc -g -O0` and no sanitizers in this machine. The sanitizers do not check assembly anyway.
 
-`print_long` needs one more rule on x86-64 Linux. Before a call to a variadic function such as `printf`, al holds the number of vector registers that carry arguments. For integer arguments that number is 0, which is why compiled C puts `xorl %eax, %eax` right before `call printf`. Leave it out and `printf` may read garbage. A misaligned rsp at that call can crash inside `printf` even when your own code never touches the stack.
+`print_long` needs one more rule on x86-64 Linux. Before a call to a variadic function such as `printf`, al holds the number of vector registers that carry arguments. For integer arguments that number is 0, so compiled C puts `xorl %eax, %eax` right before `call printf`. Leave it out and `printf` may read garbage. A misaligned rsp at that call can crash inside `printf` even when your own code never touches the stack.
 
 ### Study
 
-- [Dive Into Systems: 64-bit x86 Assembly](https://diveintosystems.org/book/C7-x86_64/index.html) (read, 3 h): The chapter introduction, which explains AT&T and Intel syntax, then follow "Next" through 7.1 to 7.7. Skip everything from 7.8 on. The sections match chapter 9 one to one, so read them side by side with what you know. Newer objdump prints `call` and `leave` where the book shows `callq` and `leaveq`.
-- [CMU 15-213: Machine-Level Programming III, Procedures](https://www.cs.cmu.edu/afs/cs/academic/class/15213-f25/www/lectures/05-machine-gamma.pdf) (read, 45 min): Lecture slides from the Fall 2025 course, built on CS:APP by Bryant and O'Hallaron. PDF pages 3 to 39, which include the x86-64 register usage tables on pages 37 and 38, then the recursive function on pages 71 to 78. Skip arrays and structs on pages 41 to 69.
+- [Dive Into Systems: 64-bit x86 Assembly](https://diveintosystems.org/book/C7-x86_64/index.html) (read, 3 h 20 min): The chapter introduction, which explains AT&T and Intel syntax, then follow "Next" through 7.1 to 7.7, skip 7.8 Matrices, and read 7.9 Structs in Assembly. Stop before 7.10. The sections match chapter 9 one to one, so read them side by side with what you know. Struct field access comes back in the Bomb Lab in the next step. Newer objdump prints `call` and `leave` where the book shows `callq` and `leaveq`.
 - [GNU as: AT&T Syntax versus Intel Syntax](https://sourceware.org/binutils/docs/as/i386_002dVariations.html) (reference, as needed): The list of differences between the two syntaxes. Keep it open when you compare gdb's output with Compiler Explorer's.
 
 ### Build
@@ -305,7 +303,7 @@ Then write `notes/abi.md`. For `sum_array`, `sum3sq` and `fib` on both ISAs, wri
 
 ### Done when
 
-All tests pass in `lab86`. `hello` prints its line and exits with 0. In gdb under QEMU, stopped at the first instruction of `sum3sq`, `p $rsp % 16` prints 8, and at each `call` inside it prints 0. You can explain every stack adjustment in `sum3sq` and `fib` on both ISAs from `notes/abi.md` without looking at the code.
+All tests pass in `lab86`. `hello` prints its line and exits with 0. In gdb under QEMU, stopped at the first instruction of `sum3sq`, `p (long)$rsp % 16` prints 8, and at each `call` inside it the same command prints 0. gdb refuses arithmetic on `$rsp` without the cast, because it treats the register as a pointer. You can explain every stack adjustment in `sum3sq` and `fib` on both ISAs from `notes/abi.md` without looking at the code.
 
 ## Optimized code and the Bomb Lab
 
@@ -322,7 +320,21 @@ So far you read code at `-O0` and `-O1`, or code you wrote. Real programs ship a
                                ret                         ret
 ```
 
-x86-64 uses its address arithmetic, `lea`, as a three-operand add, and ARM64 shifts the second operand for free inside `add`. Neither multiplies. Learn to name what you see: constant multiplies turned into shifts and adds, induction variables, loop-invariant code moved out of a loop, inlining, tail calls turned into jumps, a `switch` turned into a jump table, and whole loops replaced by a formula. The optimizer also deletes work whose result nothing uses, which is why every benchmark in chapter 07 needs a place to put its result.
+x86-64 uses its address arithmetic, `lea`, as a three-operand add, and ARM64 shifts the second operand for free inside `add`. Neither multiplies. Learn to name what you see: constant multiplies turned into shifts and adds, induction variables, loop-invariant code moved out of a loop, inlining, tail calls turned into jumps, a `switch` turned into a jump table, and whole loops replaced by a formula. The optimizer also deletes work whose result nothing uses, so every benchmark in chapter 07 needs a place to put its result.
+
+A `switch` over dense case values often becomes a jump table: an array of code addresses in `.rodata`, indexed by the switch value. The code checks the bounds once, then jumps through the table:
+
+```
+  cmpq   $6, %rdi                  # compare x with the largest case
+  ja     .Ldefault                 # unsigned compare: x > 6 or x < 0 goes to default
+  jmp    *.Ltable(,%rdi,8)         # load the address at .Ltable + 8*x and jump there
+
+  .section .rodata
+  .Ltable:
+  .quad  .Lcase0, .Lcase1, .Ldefault, .Lcase3, ...
+```
+
+`ja` is the unsigned "above", so one comparison rejects negative values too. In a disassembly the table has no name, only an address inside the `jmp`. Print it in gdb with `x/8gx` at that address to get the targets.
 
 Your chapter 04 library passes structs by value, so the ABI rules for structs show up in its listings. A `Str` is 16 bytes, two 8-byte fields. It travels in two argument registers, x0 and x1 or rdi and rsi, and comes back in two, x0 and x1 or rax and rdx. A `JsonResult` is 40 bytes, too big for registers. The caller reserves space for it and passes the address as a hidden argument: in x8 on ARM64, the register from step 1's table, and in rdi on x86-64, which moves every real argument one register along. This is `str_slice` at `-O2`:
 
@@ -351,13 +363,13 @@ Then practice reading code with no source. The CS:APP Bomb Lab gives you an x86-
   ./bomb answers.txt              reads solved lines from the file, then stdin
 ```
 
-Translate each phase into C on paper before you guess anything. Several phases read their line with `sscanf`, which parses a string the way `scanf` parses input and returns the number of fields it filled. Its format string is the first thing to print with `x/s`. Phase 3 uses a `switch`, phase 4 a recursive function, and phase 6 walks a linked list of structs, so the reading from step 3 and chapter 02's lists both come back. The bomb runs directly in `lab86`, and gdb reaches it through `qemu-x86_64-static -g 1234 ./bomb answers.txt`.
+Translate each phase into C on paper before you guess anything. Several phases read their line with `sscanf`, which parses a string the way `scanf` parses input and returns the number of fields it filled. Its format string is the first thing to print with `x/s`. Phase 3 uses a `switch` compiled to a jump table, phase 4 a recursive function, and phase 6 walks a linked list of structs. For phase 6 you need 7.9 Structs in Assembly from step 3 and your linked lists from chapter 02. Keep the CS:APP [two-page summary of gdb commands for x86-64](https://csapp.cs.cmu.edu/3e/docs/gdbnotes-x86-64.pdf) next to gdb while you work. The bomb runs directly in `lab86`, and gdb reaches it through `qemu-x86_64-static -g 1234 ./bomb answers.txt`.
 
 ### Study
 
-- [Matt Godbolt: Advent of Compiler Optimisations 2025](https://xania.org/AoCO2025-archive) (read, 2 h): Short posts by the author of Compiler Explorer, each with a live example. Read days 1 to 5, 9, 13, 16, 17, 19, 23 and 24 from the archive list. Day 16 covers structs passed in registers. Skip the loop-style post on day 8, which is about C++ containers. A few posts mention C++ types. Read `std::string_view` as a pointer plus a length. Open each example in Compiler Explorer and switch the compiler to "armv8-a clang" to see the ARM64 version.
+- [Matt Godbolt: Advent of Compiler Optimisations 2025](https://xania.org/AoCO2025-archive) (read, 1 h 15 min): Short posts by the author of Compiler Explorer, each with a live example. Read days 4, 9, 13, 16, 17, 19 and 24 from the archive list: multiply by a constant, induction variables, loop-invariant code motion, structs passed in registers, inlining, tail calls and a loop replaced by a formula. Day 16 shows only System V x86-64. The ARM64 rule for `Str` is in the prose above. A few posts mention C++ types. Read `std::string_view` as a pointer plus a length. Open each example in Compiler Explorer and switch the compiler to "armv8-a clang" to see the ARM64 version.
+- [CMU 15-213: Machine-Level Programming II, Control](https://www.cs.cmu.edu/afs/cs/academic/class/15213-f25/www/lectures/04-machine-control.pdf) (read, 20 min): Lecture slides from the Fall 2025 course, built on CS:APP by Bryant and O'Hallaron. Only the switch statements part, PDF pages 50 to 64: a `switch` in C, its jump table, and how to find the table in a binary with gdb. The rest of the deck covers the same ground as Dive Into Systems 7.4.
 - [CS:APP Labs: Bomb Lab](https://csapp.cs.cmu.edu/3e/labs.html) (do, 12 h): From the Bomb Lab entry, download the "Self-Study Handout" (`bomb.tar`) and read the "Writeup", whose Hints section lists the tools. Ignore the parts about requesting a bomb and the scoreboard, which apply to CMU students. Stop after phase 6. The secret phase is optional.
-- [CS:APP: Summary of GDB commands for x86-64 Systems](https://csapp.cs.cmu.edu/3e/docs/gdbnotes-x86-64.pdf) (reference, as needed): Two pages from the book's authors. Print it or keep it next to gdb.
 
 ### Build
 
@@ -399,7 +411,32 @@ The four zero bytes after the `e8` opcode are a hole. The relocation says to fil
 
 A static library (`.a`) is an archive of object files. The linker copies in only the members that define something still missing, and it scans the command line left to right, so order matters. A shared library (`.so` on Linux, `.dylib` on macOS) stays a separate file that the loader maps at run time, at an address nobody knows at link time. Code reaches its functions through the procedure linkage table (PLT) and its data through the global offset table (GOT). Ubuntu's gcc links with `-z now` by default, which fills the whole GOT at load time. Link with `-Wl,-z,lazy` to see the lazy scheme Bendersky describes, where each entry is filled at the first call.
 
-Build this step in `lab86` so your relocation names match the slides. The Mac uses Mach-O with the same ideas under other names. `objdump -dr` works there too and prints relocations such as `ARM64_RELOC_BRANCH26`, `otool -L` lists the libraries a program needs, and libc lives inside `libSystem`. `clang -###` prints the linker command the driver would run, and `gcc -v` prints it on Linux.
+`nm` prints one line per symbol with a letter for its kind. The ones you meet here: `T` for a function in `.text`, `D` for initialized data, `B` for zeroed data in `.bss`, `R` for read-only data, and `U` for a name this file uses but does not define. A lowercase letter means the symbol is local to the file. `static` makes a symbol local. The full list is under "symbol type" in the [nm(1) man page](https://man7.org/linux/man-pages/man1/nm.1.html).
+
+The driver also links files you never wrote. `gcc -v` shows them on the linker command line:
+
+```
+  Scrt1.o             holds _start, the entry point from step 2. It calls
+                      __libc_start_main, which calls your main and passes its
+                      return value to exit. The S marks the version for
+                      position-independent executables.
+  crti.o, crtn.o      the opening and closing instructions of _init and _fini,
+                      code that runs before main and at exit
+  crtbeginS.o,        gcc's support for running constructor and destructor lists
+  crtendS.o
+  -lgcc, -lgcc_s      gcc's helper routines for operations with no instruction
+  -lc                 libc itself, as libc.so.6
+```
+
+Build this step in `lab86` so your relocation names match the slides. The Mac uses Mach-O with the same ideas under other names. `objdump -dr` works there too, `otool -L` lists the libraries a program needs, and libc lives inside `libSystem`. `clang -###` prints the linker command the driver would run. ARM64 relocations patch the instructions you met in step 2:
+
+```
+  ARM64_RELOC_BRANCH26      the 26-bit offset in a bl
+  ARM64_RELOC_PAGE21        the page number in an adrp       (@PAGE)
+  ARM64_RELOC_PAGEOFF12     the low 12 bits in an add or ldr (@PAGEOFF)
+```
+
+A name with `GOT_LOAD` in it, such as `ARM64_RELOC_GOT_LOAD_PAGE21`, means the instruction reaches the symbol through the GOT instead of directly.
 
 ### Study
 
@@ -416,8 +453,8 @@ In `lab86`, split your chapter 04 code into separately compiled files. Chapter 0
 3. Run `gcc -v -o app *.o` and find the `collect2` line, the linker call. List the files it adds that you did not write, such as `Scrt1.o`, `crti.o` and `-lc`, and say what each one is for.
 4. Define the same non-static global variable in two files and link. Read the error. Make one of them `static` and link again.
 5. Build `libjson.a` from `arena.o`, `str.o` and `json.o` with `ar rcs`. Link `jsoncheck.o` with it, once with the library after `jsoncheck.o` and once before it. Explain the error.
-6. Build `libjson.so` from the same three files with `-fPIC -shared` and link `jsoncheck.c` against it with `-g -L. -ljson -no-pie -Wl,-z,lazy`. Run it with `LD_LIBRARY_PATH=.`. In `objdump -d`, find the PLT entry for `json_parse` and the GOT address its `jmp` reads. In gdb under QEMU, break on `main`, print that GOT slot with `x/gx`, step over the first call to `json_parse` with `next`, and print the slot again.
-7. On the Mac, compile the same files with `clang -c`, run `objdump -dr json.o` and `nm -m json.o`, and match each relocation type to its ELF counterpart from item 2.
+6. Recompile `arena.c`, `str.c` and `json.c` with `-fPIC`, link the new object files into `libjson.so` with `-shared`, and link `jsoncheck.c` against it with `-g -L. -ljson -no-pie -Wl,-z,lazy`. Run it with `LD_LIBRARY_PATH=.`. In `objdump -d`, find the PLT entry for `json_parse` and the GOT address its `jmp` reads. In gdb under QEMU, break on `main`, print that GOT slot with `x/gx`, step over the first call to `json_parse` with `next`, and print the slot again.
+7. On the Mac, compile the same files with `clang -c`, run `objdump -dr json.o` and `nm -m json.o`. List the relocation types you see, and for each one name the instruction it patches and what the linker writes there.
 
 ### Done when
 
@@ -487,24 +524,24 @@ The round trip prints OK for listings 37, 38 and 39. For each instruction in lis
 
 Conditional jumps such as `jnz` are two bytes: an opcode and a signed 8-bit displacement measured from the end of the jump. Labels do not exist in the bytes, so print the target as nasm's `$` plus an offset. `$` is the address where the current instruction starts, so a jump with displacement `d` reaches `$ + 2 + d`. A `jnz` at offset 12 with displacement -8 prints as `jnz $-6` and goes to offset 6.
 
-Watch the code review only after your own decoder passes. Casey walks through his reference decoder, which uses a table of instruction formats instead of a long `switch`. Compare its structure with yours and decide whether to rewrite before you start simulating. The simulator builds on whatever you have at the end of this step.
+The code review is optional. If you watch it, do so only after your own decoder passes. Casey walks through his reference decoder, which uses a table of instruction formats instead of a long `switch`. Compare its structure with yours and decide whether to rewrite before you start simulating. The simulator builds on whatever you have at the end of this step.
 
 ### Study
 
 - [Computer Enhance: Opcode Patterns in 8086 Arithmetic](https://www.computerenhance.com/p/opcode-patterns-in-8086-arithmetic) (watch, 20 min): The whole video. The homework is listing 41, with listing 42 as an optional challenge.
-- [Computer Enhance: 8086 Decoder Code Review](https://www.computerenhance.com/p/8086-decoder-code-review) (watch, 1 h 20 min): Only after listing 41 round-trips. Casey says you can skip it if you are happy with your own decoder.
+- [Computer Enhance: 8086 Decoder Code Review](https://www.computerenhance.com/p/8086-decoder-code-review) (watch, 1 h 20 min): Optional. Watch it only after listing 41 round-trips, and only if you want to compare designs before the simulator. Casey says you can skip it if you are happy with your own decoder.
 
 ### Build
 
-Extend `src/decode.c` with `add`, `sub` and `cmp` in all three forms, and the conditional jumps and loops in listing 41 (`je`, `jl`, `jle`, `jb`, `jbe`, `jp`, `jo`, `js`, `jnz` and the rest, plus `loop`, `loopz`, `loopnz` and `jcxz`). Look up each opcode in table 4-12. Add listing 41 to the round-trip script.
+Extend `src/decode.c` with `add`, `sub` and `cmp` in all three forms, and the conditional jumps and loops in listing 41 (`je`, `jl`, `jle`, `jb`, `jbe`, `jp`, `jo`, `js`, `jnz` and the rest, plus `loop`, `loopz`, `loopnz` and `jcxz`). Look up each opcode in table 4-12 of the Intel manual from the previous step. Add listing 41 to the round-trip script.
 
 ### Done when
 
-The round trip prints OK for listings 37, 38, 39 and 41. For any instruction in listing 41 you can find its row in table 4-12 and say which bits picked `add`, `sub` or `cmp`. After the code review, you can name one thing the reference decoder does differently from yours and say which version you kept and why.
+The round trip prints OK for listings 37, 38, 39 and 41. For any instruction in listing 41 you can find its row in table 4-12 and say which bits picked `add`, `sub` or `cmp`. If you watched the code review, you can name one thing the reference decoder does differently from yours and say which version you kept and why.
 
 ## Simulating registers, flags and jumps
 
-A simulator executes what the decoder decodes. For `mov` that means storing a value in an array of registers. Arithmetic does more: `add`, `sub` and `cmp` also set flags, single bits that describe the result. `cmp` is a `sub` that sets the flags and throws the result away. The reference outputs for the required listings use four flags: zero (Z, the result is 0), sign (S, the top bit of the result is 1), parity (P, the low byte of the result has an even number of 1 bits) and carry (C, the operation carried out of or borrowed into the top bit). The optional listing 47 adds auxiliary carry (A) and overflow (O). Casey explains them in the video on ADD, SUB and CMP.
+A simulator executes what the decoder decodes. For `mov` that means storing a value in an array of registers. Arithmetic does more: `add`, `sub` and `cmp` also set flags, single bits that describe the result. `cmp` is a `sub` that sets the flags and throws the result away. The final state of every required listing uses only four flags: zero (Z, the result is 0), sign (S, the top bit of the result is 1), parity (P, the low byte of the result has an even number of 1 bits) and carry (C, the operation carried out of or borrowed into the top bit). The per-instruction traces in the reference files also show auxiliary carry (A), and the optional listing 47 adds overflow (O). Casey explains all six in the video on ADD, SUB and CMP. You need A and O only for listing 47 and for a trace that matches line by line.
 
 A conditional jump reads the flags. To jump, the simulator needs an instruction pointer, IP, the offset of the next instruction. Your decoder already kept one to know where the next instruction starts. Now it becomes a register: each instruction adds its length to IP, and a jump that is taken adds its displacement as well. This is the fetch, decode, execute loop from chapter 03, on a CPU with variable-length instructions:
 
@@ -524,12 +561,13 @@ Final registers:
    flags: PZ
 ```
 
-Print your final state in the same format, with an option to leave out `ip` for the early listings, so `diff` can check it. The `.txt` files use Windows line endings, so remove the `\r` first:
+Print your final state in the same format, with an option to leave out `ip` for the early listings, so `diff` can check it. Compare the final block only. The `.txt` files use Windows line endings and end with a blank line, so remove the `\r` and the blank lines on both sides:
 
 ```sh
 ./out/sim < listing_0049_conditional_jumps > got.txt
-sed -n '/^Final registers/,$p' listing_0049_conditional_jumps.txt | tr -d '\r' > want.txt
-diff want.txt <(sed -n '/^Final registers/,$p' got.txt)
+sed -n '/^Final registers/,$p' listing_0049_conditional_jumps.txt | tr -d '\r' | sed '/^$/d' > want.txt
+sed -n '/^Final registers/,$p' got.txt | sed '/^$/d' > have.txt
+diff want.txt have.txt
 ```
 
 ### Study
@@ -550,14 +588,14 @@ The script prints OK for listings 43, 44, 46, 48 and 49. Before running listing 
 
 The last piece is memory. The 8086 addresses up to 1 MB, so give the simulator a 1 MB byte array. Every memory operand you decoded in step 6 now computes an effective address, such as `bx + si + 4`, and reads or writes one byte or two. A 16-bit value is stored little-endian, low byte first, like the `int` you dumped in chapter 02. Ignore the 8086's segment registers here. Casey's listings keep every address inside the first 64 KB.
 
-With `mov`, `add`, `sub`, `cmp` and conditional jumps, small real programs already work. Listing 54 draws a 64 by 64 picture into memory, four bytes per pixel, starting at address 256. Each pixel gets its x coordinate as red, its y coordinate as blue and 255 as alpha. Dump the simulator's memory to a file at exit, then turn the pixels into a PNG with the Python you already know:
+With `mov`, `add`, `sub`, `cmp` and conditional jumps, small real programs already work. Listing 54 draws a 64 by 64 picture into memory, four bytes per pixel, starting at address 256. Each pixel gets its x coordinate as red, its y coordinate as blue and 255 as alpha. Dump the simulator's memory to a file at exit, then turn the pixels into a PNG with the Python you already know. The one-liner needs Pillow. If `import PIL` fails, run `python3 -m pip install pillow` in a virtual environment first.
 
 ```sh
 ./out/sim -dump mem.bin < listing_0054_draw_rectangle
 python3 -c "from PIL import Image; d = open('mem.bin', 'rb').read(); Image.frombytes('RGBA', (64, 64), d[256:256 + 64*64*4]).save('rect.png')"
 ```
 
-The image should show red growing from left to right and blue from top to bottom. Casey's next video, [Estimating Cycles](https://www.computerenhance.com/p/estimating-cycles), adds 8086 cycle counts to the simulator. It is optional, and nothing in chapter 06 needs it.
+The image should show red growing from left to right and blue from top to bottom. The values only reach 63 out of 255, so expect dark colors. Casey's next video, [Estimating Cycles](https://www.computerenhance.com/p/estimating-cycles), adds 8086 cycle counts to the simulator. It is optional, and nothing in chapter 06 needs it.
 
 ### Study
 

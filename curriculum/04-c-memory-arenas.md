@@ -10,9 +10,9 @@ Chapter 02 taught you to own heap memory one `malloc` at a time: every node and 
 
 You build a small library in one file: an arena allocator, a string type that carries its length, a dynamic array, a hash map and a buffered writer. On top of it you write a JSON parser and serializer. The finished parser accepts and rejects the files of JSONTestSuite correctly, survives a fuzzer, and runs clean under the sanitizers. The whole program calls `malloc` once and `free` once, both in `main`.
 
-The first three steps come before any of that. They cover what C values look like as bits and what the compiler assumes about your code. Integer conversions change values without a warning, floats round, and undefined behavior lets the optimizer delete checks you wrote. The arena depends on alignment arithmetic and overflow-free size checks, and the parser has to decide what to do with numbers a `double` cannot hold, so these rules come first.
+The first three steps come before any of that. They cover what C values look like as bits and what the compiler assumes about your code. Integer conversions change values without a warning, floats round, and undefined behavior lets the optimizer delete checks you wrote. The arena depends on alignment arithmetic and overflow-free size checks, so the integer rules come first. Floats are part of how C values look as bits, and they come back once in the parser, when it keeps numbers as text because a `double` cannot hold every JSON number.
 
-The chapter comes now because chapter 05 reads the machine code clang makes from C. Much of what you see there, such as sign extension, deleted overflow checks and structs returned in registers, follows from the rules in this chapter. Do not grow the library past what the parser and the word counter need. Pull shared code out the third time you write it, not the first.
+The chapter comes now because chapter 05 reads the machine code clang makes from C. Much of what you see there, such as sign extension, deleted overflow checks and structs returned in registers, follows from the rules in this chapter. Do not grow the library past what the parser and the word counter need. Move code into `base.c` only after a second program needs it.
 
 ## Integers: widths, conversions and overflow
 
@@ -49,7 +49,7 @@ Bit operations are the other half of this step. Step 4's arena rounds an address
 
 - [Dive Into Systems: Signed Binary Integers](https://diveintosystems.org/book/C4-Binary/signed.html) (read, 45 min): Section 4.3, including Negation and Sign Extension, then follow "Next" to 4.5 Integer Overflow and 4.6 Bitwise Operators. Section 4.4 on binary addition by hand is optional after the adders of chapter 03.
 - [Beej's Guide to C: Numeric Conversions](https://beej.us/guide/bgc/html/split/types-iii-conversions.html#numeric-conversions) (read, 20 min): Sections 15.3 to 15.5.1. Skip 15.1 and 15.2 on strings and chars.
-- [C11 final draft, N1570](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1570.pdf) (reference, as needed): The language standard. Look up 6.3.1.1 (integer promotions), 6.3.1.3 (signed and unsigned conversions), 6.3.1.8 (usual arithmetic conversions) and 6.5.7 (shifts) when a prediction below goes wrong. Annex J.2 lists every undefined behavior, and step 3 uses it.
+- [C11 final draft, N1570](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1570.pdf) (reference, as needed): The language standard. Look up 6.3.1.1 (integer promotions), 6.3.1.3 (signed and unsigned conversions), 6.3.1.8 (usual arithmetic conversions), 6.2.5 paragraph 9 (unsigned wraparound), 6.5.5 (multiplicative operators, where division truncates toward zero) and 6.5.7 (shifts) when a prediction below goes wrong. Annex J.2 lists every undefined behavior, and step 3 uses it.
 
 ### Build
 
@@ -85,7 +85,7 @@ Part 2, bit functions. Write `src/bits.c` and `tests/bits_test.c` with the test 
 
 ### Done when
 
-The bits tests pass in debug builds, which include UBSan, on the Mac and in the VM. For every prediction that was wrong, you can name the rule that produced the real value and its section number in N1570. gcc refuses `countdown.c` with a `-Wtype-limits` error and clang builds it, and you can say why the loop never ends.
+The bits tests pass in debug builds, which include UBSan, on the Mac and in the VM. For every prediction that was wrong, you can name the rule that produced the real value and its section number in N1570. gcc refuses `countdown.c` with a `-Wtype-limits` error and clang builds it, and you can say why `i >= 0` is always true and why gcc rejects it.
 
 ## Floats: the bits of float and double
 
@@ -163,7 +163,7 @@ int main(int argc, char **argv) {
 1. Build the debug and the release version. Run cases 1 to 5 in both, on the Mac and in the VM, and record each output in a table: debug output or UBSan report, release output.
 2. For cases 1 and 3, find the comparison the optimizer deleted. At `-O2` clang inlines the `static` functions into `main`, so paste `always_bigger` and `bad_check` alone, without `static`, into Compiler Explorer with "armv8-a clang" and `-O2`.
 3. For case 2, explain from Lattner's first post why the release build prints 1 and the debug build prints 0, and why UBSan said nothing.
-4. Write a fixed version of each function in `src/ub_fixed.c`: an `always_bigger` that compares against `INT_MAX` first, a `bad_check` that tests `size == INT_MAX`, an `alias` that does not read one object through two pointer types, a `shift` that returns 0 for `n >= 32`, and a `to_int` that clamps to the `int` range before converting. Then build with `-fwrapv` once and run case 1 again to see what that flag changes.
+4. Write a fixed version of each function in `src/ub_fixed.c`: an `always_bigger` that compares against `INT_MAX` first, a `bad_check` that tests `size == INT_MAX`, an `alias` that does not read one object through two pointer types, a `shift` that returns 0 for `n < 0 || n >= 32`, and a `to_int` that returns 0 for NaN and clamps everything else to the `int` range before converting. Then build with `-fwrapv` once and run case 1 again to see what that flag changes.
 
 ### Done when
 
@@ -211,11 +211,11 @@ The sanitizers see the arena as one big `malloc` block. ASan cannot tell when yo
 
 ### Build
 
-Start `src/base.c`. Every function in it is `static`, and programs `#include` it, so each program stays one translation unit as in chapter 01.
+Start `src/base.c`. Every function in it is `static`, and programs `#include` it, so each program stays one translation unit as in chapter 01. Most programs call only some of those functions, and clang and gcc report every unused `static` function as an error under `-Werror`. Add `-Wno-unused-function` to the `warn` line of `build.sh`. This is one of the two unused-code warnings Wellons turns off in the flags post from chapter 01. You turn it off for the whole build because a library you include will always have functions a given program does not call.
 
 - `typedef struct { char *beg; char *end; } Arena;`
 - `void *alloc(Arena *a, ptrdiff_t size, ptrdiff_t align, ptrdiff_t count, int flags)` as in Wellons' post, with a `SOFTFAIL` flag. Add asserts that `size > 0`, `count >= 0` and `align` is a power of two. Wellons' version does not check for a negative count.
-- `#define new(a, t, n) (t *)alloc(a, sizeof(t), _Alignof(t), n, 0)`
+- `#define new(a, t, n) (t *)alloc(a, sizeof(t), _Alignof(t), n, 0)`. The hash map and dynamic array posts of step 6 call `new(perm, T)` with two arguments. Either copy the variadic `new` from the end of "The new macro", writing `_Alignof` where it writes `alignof`, or pass a count of 1 yourself when you copy their code.
 - In each program's `main`: one `malloc` for the arena's block, and one `free` of the same pointer before returning. LeakSanitizer in the VM then has nothing to report.
 
 Tests in `tests/base_test.c`:
@@ -231,7 +231,7 @@ Then a look at the layout picture. In `src/layout.c`, print with `%p` the addres
 
 ### Done when
 
-All tests pass on both machines, and the VM run reports no leaks. `grep -n 'malloc\|free(' src/*.c` shows only the pair in `main`. The `bt` of the aborting case shows `alloc` called from your test. You can explain why `scratch_user` cannot leak its allocations to its caller, and which of the addresses from `layout.c` matched the picture.
+All tests pass on both machines, and the VM run reports no leaks. `grep -n 'malloc\|free(' src/*.c` shows one `malloc` and one `free` per program, each in `main`, and none in `base.c`. The `bt` of the aborting case shows `alloc` called from your test. You can explain why `scratch_user` cannot leak its allocations to its caller, and which of the addresses from `layout.c` matched the picture.
 
 ## Strings that carry their length
 
@@ -251,7 +251,7 @@ A slice is a new pair of numbers and copies no bytes. Two strings are equal when
 
 Wellons also returns structs instead of writing through out-parameters. A parse function returns `{value, ok}` in one struct, and the caller checks `ok`. That shape repeats in every later step. The `S("...")` macro builds a `Str` with a compound literal, a struct value written inline.
 
-`memcmp` and `memcpy` require valid pointers even when the length is 0, and an empty `Str` has a null `data`. UBSan in the VM reports a null passed to `memcmp`. Check the length before you call them.
+`memcmp` and `memcpy` require valid pointers even when the length is 0, and an empty `Str` has a null `data`. UBSan in the VM reports a null passed to `memcmp`. Return or skip the call when the length is 0.
 
 ### Study
 
@@ -263,7 +263,7 @@ Wellons also returns structs instead of writing through out-parameters. A parse 
 Add to `src/base.c`:
 
 - `typedef struct { uint8_t *data; ptrdiff_t len; } Str;` and `#define S(s) (Str){(uint8_t *)s, (ptrdiff_t)sizeof(s) - 1}` for string literals only.
-- `bool str_equals(Str a, Str b)`
+- `bool str_equals(Str a, Str b)`. Compare the lengths first. Then add `if (a.len == 0) return true;` before the `memcmp`, because two empty strings with null `data` have equal lengths.
 - `Str str_slice(Str s, ptrdiff_t beg, ptrdiff_t end)`, which asserts `0 <= beg <= end <= s.len`.
 - `typedef struct { Str head; Str tail; bool ok; } Cut;` and `Cut str_cut(Str s, uint8_t c)`, which splits at the first `c`. Without a `c`, `head` is all of `s` and `ok` is false.
 - `Str str_trim(Str s)`, which removes spaces, tabs, `\n` and `\r` from both ends.
@@ -281,7 +281,7 @@ Test, with the chapter 02 pattern:
 
 ### Done when
 
-All tests pass on the Mac and under ASan and UBSan in the VM. Remove the length check from `str_equals` and confirm that UBSan in the VM reports the null passed to `memcmp`, then put the check back. You can say, for each `Str` in your tests, which object owns its bytes.
+All tests pass on the Mac and under ASan and UBSan in the VM. Remove the empty-string guard from `str_equals` and confirm that UBSan in the VM reports the null passed to `memcmp`, then put the guard back. You can say, for each `Str` in your tests, which object owns its bytes.
 
 ## A dynamic array and a hash map in the arena
 
@@ -300,6 +300,8 @@ Chapter 02's growable array used `realloc`. An arena cannot resize an object in 
 Wellons' hash map is a hash trie. Each node has four children, and the top two bits of the hash pick a child at each level. It never resizes, so it fits an arena. A null pointer is an empty map. One function, `upsert`, both finds and inserts. Called without an arena, it only looks up.
 
 The word counter from chapter 02 comes back here on top of the arena, with a hash map instead of a linear scan. To read all of standard input, call `fread` once into the arena's free space and advance `beg` by the number of bytes read. If `fread` filled the whole free space, the input was too large.
+
+Give the command-line programs of this chapter (`wordcount2`, `jsoncheck`) a 256 MB arena block. On macOS and Linux a block that large is mapped lazily, so pages the program never touches cost no physical memory. The fuzz target in step 10 uses 64 MB. When a program aborts inside `alloc`, or `read_all` reports input that is too large, run the program in lldb and read `bt` before you look for a parser bug. The fix for an out-of-memory abort is a larger block or a smaller input.
 
 ### Study
 
@@ -398,7 +400,7 @@ struct Json {
 ### Study
 
 - [RFC 8259: The JSON Data Interchange Format](https://www.rfc-editor.org/rfc/rfc8259#section-2) (read, 30 min): Sections 2, 3, 5, 6 and 9. Section 4 on objects and section 7 on strings belong to the next step. Draw the number grammar of section 6 as a diagram of states before you code it.
-- [Crafting Interpreters: Recursive Descent Parsing](https://craftinginterpreters.com/parsing-expressions.html#recursive-descent-parsing) (read, 15 min): Section 6.2 up to 6.2.1, with the table that maps grammar notation to code. Skim 6.2.1 for the shape of the functions. The code is Java and uses classes from earlier chapters of that book, so read it for structure only.
+- [Crafting Interpreters: Recursive Descent Parsing](https://craftinginterpreters.com/parsing-expressions.html#recursive-descent-parsing) (read, 15 min): Section 6.2 up to 6.2.1, with the table that maps grammar notation to code. Skim 6.2.1 for the shape of the functions. The code is Java and uses classes from earlier chapters of that book, so read it for structure only. This item is optional if the `value` and `array` sketch above already makes sense to you.
 - [Beej's Guide to C: Enumerated Types](https://beej.us/guide/bgc/html/split/enumerated-types-enum.html) (read, 10 min): Sections 22.1 to 22.2.
 
 ### Build
@@ -467,7 +469,7 @@ Tests. Each input parses, and `json_write` produces exactly the output shown:
 
 These fail at the offset given: `"abc` at 4, `"\x"` at 2, `{"a" 1}` at 5, `{1:2}` at 1, `{"a":1,}` at 7, and a string holding a raw tab byte at the offset of the tab.
 
-For every input that parses, check that `json_write`, then `json_parse` of that output, then `json_write` again gives the same bytes as the first `json_write`. That shows the serializer and parser agree. It cannot show that both are right, which is why the fixed outputs above exist.
+For every input that parses, check that `json_write`, then `json_parse` of that output, then `json_write` again gives the same bytes as the first `json_write`. That shows the serializer and parser agree. It cannot show that both are right, so the fixed outputs above are the real check.
 
 ### Done when
 
@@ -510,7 +512,7 @@ echo "$bad failure(s)"
 
    Fix every failure, then add the file's bytes as a test case in your own test program. Check `i_results.txt` for any status other than 0 or 1, and write one line per `i_` file into a section of comments at the top of `json.c` saying what your parser does and why.
 
-2. The fuzzer. Write `tests/json_fuzz.c`, which includes `base.c` and `json.c` and defines `int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)`. Make the arena's backing block once, on the first call, with `malloc`, and keep the pointer in a `static` variable. On each call, take a fresh copy of the arena header, parse the input with depth limit 512, and if it parses, serialize into a memory `Buf` of twice the input size plus 16 bytes, parse that output and serialize it again. Call `abort()` if a `Buf` reports an error, the second parse fails or the two outputs differ. Build and run it in the VM:
+2. The fuzzer. Write `tests/json_fuzz.c`, which includes `base.c` and `json.c` and defines `int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)`. Make the arena's 64 MB backing block once, on the first call, with `malloc`, and keep the pointer in a `static` variable. On each call, take a fresh copy of the arena header, parse the input with depth limit 512, and if it parses, serialize into a memory `Buf` of twice the input size plus 16 bytes, parse that output and serialize it again. Call `abort()` if a `Buf` reports an error, the second parse fails or the two outputs differ. Build and run it in the VM:
 
 ```sh
 clang -std=c11 -g -O1 -fsanitize=fuzzer,address,undefined -o out/json_fuzz tests/json_fuzz.c

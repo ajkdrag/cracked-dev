@@ -44,7 +44,7 @@ int main(void) {
 }
 ```
 
-`const char *label` is how C passes a string. The strings step explains it, and until then you can copy `check` as it is. `main` returns the failure count, so the exit status is 0 only when every check passed. A script that builds the test with the same flags as `build.sh` and runs it gives you a one-line command per step.
+`const char *label` is how C passes a string that the function only reads. The pointers step assigns the section on `const`, and until then you can copy `check` as it is. `main` returns the failure count, so the exit status is 0 only when every check passed. A script that builds the test with the same flags as `build.sh` and runs it gives you a one-line command per step.
 
 `#define` and `#include` are preprocessor work. Clang runs four stages on every file, and you can stop it after each one to look at the output:
 
@@ -92,7 +92,7 @@ Arrays and structs are the two ways C groups values. An array is values of one t
 
 - [Beej's Guide to C: Variables and Statements](https://beej.us/guide/bgc/html/split/variables-and-statements.html) (read, 90 min): All of chapter 3, then follow "Next" through chapter 4 on functions. Skim anything that matches Python.
 - [Beej's Guide to C: Arrays](https://beej.us/guide/bgc/html/split/arrays.html) (read, 20 min): Sections 6.1 to 6.4. Stop before 6.5 on multidimensional arrays.
-- [Beej's Guide to C: Structs](https://beej.us/guide/bgc/html/split/structs.html) (read, 20 min): Sections 8.1 to 8.3, 8.5 and 8.6. Section 8.4 on the arrow operator needs pointers and comes back in the linked list step.
+- [Beej's Guide to C: Structs](https://beej.us/guide/bgc/html/split/structs.html) (read, 20 min): Sections 8.1 to 8.3, 8.5 and 8.6. Skip 8.4 on the arrow operator, which needs pointers. The CS50 notes in the linked list step introduce it.
 
 ### Build
 
@@ -141,7 +141,7 @@ Draw before you run. For every program in this step, draw boxes for variables an
 ### Study
 
 - [Beej's Guide to C: Pointers](https://beej.us/guide/bgc/html/split/pointers.html) (read, 45 min): Sections 5.1 to 5.7.
-- [Beej's Guide to C: Qualifiers and Specifiers](https://beej.us/guide/bgc/html/split/types-iv-qualifiers-and-specifiers.html) (read, 10 min): Only 16.2.1 `auto` and 16.2.2 `static`. Skip the type qualifiers above them and the rest of 16.2.
+- [Beej's Guide to C: Qualifiers and Specifiers](https://beej.us/guide/bgc/html/split/types-iv-qualifiers-and-specifiers.html) (read, 25 min): All of 16.1.1 `const`, including 16.1.1.1 on `const` and pointers and 16.1.1.2 on the warning clang gives when a pointer drops `const`. Then 16.2.1 `auto` and 16.2.2 `static`. Skip the other qualifiers (16.1.2 to 16.1.4) and the rest of 16.2.
 - [Python Tutor for C](https://pythontutor.com/c.html) (do, 30 min): Paste each program from the Build and step through it. Predict where each arrow points before you click "Next".
 
 ### Build
@@ -174,6 +174,8 @@ A string in C is a `char` array with a 0 byte after the last character. Nothing 
 
 Pointer arithmetic moves in whole elements. If `p` is an `int *`, `p + 1` is 4 bytes further on. If `p` is a `char *`, `p + 1` is 1 byte further on. `a[i]` means `*(a + i)`. When you pass an array to a function, the function receives a pointer to its first element and `sizeof` inside the function measures the pointer. Pass the length or capacity as a separate argument.
 
+A parameter like `const char *s` says the function only reads through `s`. Clang rejects a write through it. `build.sh` also turns on `-Wconversion`, and `tolower` returns an `int`, so storing its result in a `char` is an error until you write the cast yourself: `*s = (char)tolower((unsigned char)*s)`. Cast other narrowing assignments between `int`, `char` and `size_t` the same way, on purpose.
+
 Your copy function should refuse to write past the destination. The standard `strcpy` trusts the caller, so it is the API to understand here and the wrong contract for your own bounded copy.
 
 ### Study
@@ -200,7 +202,7 @@ All tests pass. Break each function on purpose with an off-by-one change (copy o
 
 ## Checking drawings against real memory
 
-Python Tutor showed you arrows. The real program on your Mac has bytes. This step reads those bytes two ways: from inside the program with a dump function, and from outside it with lldb.
+Python Tutor showed you arrows. This step reads the real bytes two ways: from inside the program with a dump function, and from outside it with lldb.
 
 Every object can be read as a sequence of `unsigned char`. That is how you see byte order and padding. Your Mac and your Linux VM are both little-endian, so an `int` holding `0x12345678` is stored lowest byte first: `78 56 34 12`. A struct may contain padding bytes between fields so that each field starts at an address the hardware handles well, usually a multiple of the field's size. Their values are whatever was in memory before.
 
@@ -283,13 +285,13 @@ void counted_free(void *p) {
 }
 ```
 
-When a test ends, `alloc_count == free_count` means every block was freed. The counters work on the Mac. Run the same tests under ASan in the Linux VM to catch leaks and bad accesses the counters cannot see.
+Put the counters and the wrappers in `src/counted.h`. Each program in this chapter is one translation unit, so `list.c`, `vec.c` and `wordcount.c` each `#include "counted.h"` and get their own copy. When a test ends, `alloc_count == free_count` means every block was freed. The counters work on the Mac. Run the same tests under ASan in the Linux VM to catch leaks and bad accesses the counters cannot see.
 
 ### Study
 
-- [CS50x Lecture 5 notes: Linked Lists](https://cs50.harvard.edu/x/notes/5/#linked-lists) (read, 40 min): The "Linked Lists" section only. It introduces the arrow operator and builds prepend, append, sorted insert and an `unload` function that frees the list. The examples use `cs50.h` and `get_int`, which you do not have. Replace them with fixed values.
+- [CS50x Lecture 5 notes: Linked Lists](https://cs50.harvard.edu/x/notes/5/#linked-lists) (read, 25 min): The "Linked Lists" section only. Read the first program, which introduces the arrow operator and prepends nodes, the print loop, the loop that frees every node and the `unload` function at the end. Skim the append and sorted insert programs, which you do not build. The code writes `typedef struct node { ... } node;` so it can say `node` instead of `struct node`. Keep writing `struct Node`. The examples use `cs50.h` and `get_int`, which you do not have. Replace them with fixed values.
 - [Beej's Guide to C: Manual Memory Allocation](https://beej.us/guide/bgc/html/split/manual-memory-allocation.html) (read, 20 min): Sections 12.1 to 12.3. `realloc` in 12.5 waits for the next step.
-- [Beej's Guide to C: Pointers to Pointers](https://beej.us/guide/bgc/html/split/pointers-iii-pointers-to-pointers-and-more.html#pointers-to-pointers) (read, 20 min): Sections 23.1 and 23.1.1. They explain the pointer-to-pointer idea behind the `struct Node **` cursor above.
+- [Beej's Guide to C: Pointers to Pointers](https://beej.us/guide/bgc/html/split/pointers-iii-pointers-to-pointers-and-more.html#pointers-to-pointers) (read, 15 min): Section 23.1 only. It explains the pointer-to-pointer idea behind the `struct Node **` cursor above. Stop before 23.1.1.
 
 ### Build
 
@@ -335,11 +337,11 @@ When the block moves, every pointer into the old block dangles:
   saved   --> old block, already freed by realloc
 ```
 
-Write your `counted_realloc` like `counted_malloc`, and count a new block only when the pointer passed in was NULL. `realloc(NULL, n)` behaves like `malloc(n)`, so you can start from `data = NULL` and `cap = 0`.
+Add `counted_realloc` to `counted.h`. Write it like `counted_malloc`, and count a new block only when the pointer passed in was NULL. `realloc(NULL, n)` behaves like `malloc(n)`, so you can start from `data = NULL` and `cap = 0`.
 
 ### Study
 
-- [Beej's Guide to C: Manual Memory Allocation](https://beej.us/guide/bgc/html/split/manual-memory-allocation.html#an-alternative-calloc) (read, 30 min): Sections 12.4 to 12.5.2. The `readline` example in 12.5.1 grows a buffer one character at a time, and you reuse that pattern in the word counter.
+- [Beej's Guide to C: Manual Memory Allocation](https://beej.us/guide/bgc/html/split/manual-memory-allocation.html#changing-allocated-size-with-realloc) (read, 20 min): Sections 12.5 to 12.5.2. The `readline` example in 12.5.1 grows a buffer one character at a time, and you reuse that pattern in the word counter.
 - [Linux man page: malloc(3)](https://man7.org/linux/man-pages/man3/malloc.3.html) (reference, as needed): The `realloc()` and `reallocarray()` paragraphs under DESCRIPTION and the RETURN VALUE section. On the Mac, `man realloc` gives Apple's version.
 
 ### Build
@@ -391,14 +393,16 @@ The second half of the step is assembly. Chapter 05 teaches you to write it. Her
       ret                                jump back to the address in x30
 ```
 
-Pointers are 8 bytes, so they travel in 64-bit `x` registers. Ints are 4 bytes, so they are loaded into 32-bit `w` registers. At `-O0` the same function first stores `x0` and `x1` into stack slots and reloads them before every use, because each C variable gets its own slot in memory. Dive Into Systems compiles everything at `-O0` for that reason: the output follows the C line by line.
+Pointers are 8 bytes, so they travel in 64-bit `x` registers. Ints are 4 bytes, so they are loaded into 32-bit `w` registers. At `-O0` the same function first stores `x0` and `x1` into stack slots and reloads them before every use, because each C variable gets its own slot in memory. Dive Into Systems compiles with plain `gcc`, which means `-O0`, so its listings follow the C line by line.
 
 Two Mac details. Function names get a leading underscore (`_swap_ints`). And `char` is signed on Apple ARM64 but unsigned on ARM64 Linux, so the byte load in `str_len` at `-O0` is `ldrsb` on the Mac and `ldrb` in the VM. Both load one byte. `ldrsb` also copies the byte's sign bit into the upper bits of the register.
+
+Three more forms show up in the Build. `ldrb w9, [x0, x8]` loads the byte at the address `x0 + x8`, which is how clang writes `s[n]` with `n` kept in `x8`. `cbz` and `cbnz` branch when a register is zero or nonzero, which covers a NULL check and a loop that stops at the 0 byte. `bl` puts the return address in `x30` before it jumps, so a function that calls another function overwrites its own return address. Clang saves `x29`, the frame pointer, and `x30` on the stack first with an `stp` like `stp x29, x30, [sp, #-48]!` and restores both with `ldp` before `ret`.
 
 ### Study
 
 - [Beej's Guide to C: File Input/Output](https://beej.us/guide/bgc/html/split/file-inputoutput.html) (read, 30 min): Sections 9.1 to 9.3.1. Skip formatted input and binary I/O.
-- [Dive Into Systems: ARM Assembly Basics](https://diveintosystems.org/book/C9-ARM64/basics.html) (read, 2 h): Sections 9.1, 9.2, 9.3.1 and all of 9.4 (9.4.1 to 9.4.3), then the start of 9.5 through 9.5.1 Function Parameters. Use the "Next" links. Stop before 9.5.2. The book compiles with gcc on ARM64 Linux, so run its examples in your VM with `gcc -O0` and `objdump -d`.
+- [Dive Into Systems: ARM Assembly Basics](https://diveintosystems.org/book/C9-ARM64/basics.html) (read, 3 h): Sections 9.1, 9.2, 9.3.1, all of 9.4 (9.4.1 to 9.4.3) and all of 9.5 (9.5.1 to 9.5.3). Section 9.5.3 traces the `stp x29, x30` and `ldp` pair at the start and end of `main`. Use the "Next" links. Stop before 9.6 on recursion. The book compiles with gcc on ARM64 Linux, so run its examples in your VM with `gcc -O0` and `objdump -d`.
 - [Compiler Explorer](https://godbolt.org/) (do, 1 h): Pick the "armv8-a clang" compiler, which targets ARM64 Linux. Paste one function at a time and compare `-O0` with `-O1`. On the Mac, `clang -S -O1 -o - src/strings.c` shows the Apple version.
 
 ### Build
@@ -412,14 +416,14 @@ Part 1, the word counter, in `src/wordcount.c`:
 - `void table_free(struct WordTable *t)` frees every word and the array, zeroes the struct, and is safe to call twice or with NULL.
 - `main` reads standard input into a growing buffer, calls `table_add_text`, prints one `count word` line per entry in order of first appearance, frees everything and returns 0. On allocation failure it prints a message to `stderr` and returns 1.
 
-Use the counted allocators from the last two steps. Test:
+Include `counted.h` and use the counted allocators from the last two steps. Test:
 
 - "The", then "THE": one entry "the" with count 2. The second add allocates nothing.
 - "th", "the" and "then" are three entries.
 - Adding the first 5 bytes of "hello world" stores "hello".
 - `The cat. the dog; THE end 42 don't` gives the 3, cat 1, dog 1, end 1, don 1, t 1, in that order.
 - "", "123 !! --", text that ends right after a word, and text that starts with spaces, tabs and newlines.
-- 50000 copies of "the " give one entry with count 50000 and exactly 2 allocation calls.
+- 50000 copies of "the " give one entry with count 50000 and exactly 2 allocation calls. Build the 200 KB input string with plain `malloc` so it does not show up in the counts.
 - Allocation fails on the word copy, on the first array growth (the copy must be freed), on a later growth (old entries intact) and halfway through `table_add_text` (the words before the failure stay counted).
 - Counters balance after every test.
 
@@ -440,6 +444,6 @@ All word counter tests pass with balanced counters on the Mac and clean under AS
 
 ## Where this leads
 
-You can now write C that owns heap memory and frees it on every path, test the failure paths on purpose, read raw bytes in a debugger, and look at the instructions the compiler produced. The word counter is the shape of many programs in this book: read text, split it, keep a table, free everything at the end.
+You can now write C that owns heap memory and frees it on every path, test the failure paths on purpose, read raw bytes in a debugger, and look at the instructions the compiler produced.
 
 What you cannot yet explain is the hardware that runs those instructions. You saw `ldr`, `add` and `ret` move values between registers and memory, but you have not seen how a register, the program counter or the step from one instruction to the next is built. Chapter 03, From gates to a CPU, builds them from logic gates up to a working CPU, and then asks you to write an assembler in C. The assembler reads a text file, splits lines into fields and keeps a symbol table, so your string functions and word table carry over.

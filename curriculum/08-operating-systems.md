@@ -10,9 +10,9 @@ Chapter 07 made your programs fast. You measured them with your own profiler and
 
 The chapter has two tracks that take turns. The kernel track uses xv6, a small Unix that MIT wrote for teaching, and six labs from MIT's course 6.1810. You add system calls, print and change page tables, handle timer interrupts, implement copy-on-write fork and extend the file system. Each lab comes with a grading script, so you know when you are done. The user track runs on your Linux machine and on the Mac. You write a shell, a general-purpose `malloc` and an HTTP server that serves many clients from one thread.
 
-The tracks feed each other. The shell uses the `fork`, `exec` and pipes you first meet in xv6. The allocator asks the kernel for pages, and by then you have written the kernel code that hands pages out. The server waits on file descriptors whose kernel side you read in the file system step. The chapter comes before concurrency because a thread is a saved set of registers plus a stack that the scheduler switches between, and you write the code around that switch here.
+The tracks feed each other. The shell uses the `fork`, `exec` and pipes you first meet in xv6. The allocator asks the kernel for pages, and by then you have written the kernel code that hands pages out. The server waits on file descriptors whose kernel side you read in the file system step. The chapter comes before concurrency because a thread is a saved set of registers plus a stack that the scheduler switches between. Here you read the code of that switch and trace it in a debugger.
 
-xv6 runs on RISC-V, emulated by QEMU inside your Linux machine. RISC-V is your third instruction set after ARM64 and x86-64. Its base integer set has about 40 instructions, and the labs introduce the few they need. Install the tools in the Ubuntu 24.04 machine from chapter 01 and clone the lab repository:
+xv6 runs on RISC-V, emulated by QEMU inside your Linux machine. RISC-V is your third instruction set after ARM64 and x86-64. Its base integer set has about 40 instructions. The labs assume you can read them, and no assigned reading teaches them. Before the traps step, the few you meet, such as `lw`, `ld` and `ecall`, read like their ARM64 versions. The traps step explains the rest, about ten in all, and assigns an assembler manual to look them up in. Install the tools in the Ubuntu 24.04 machine from chapter 01 and clone the lab repository:
 
 ```sh
 sudo apt update
@@ -64,6 +64,8 @@ xv6's `user/sh.c` parses a command line into a tree of commands and runs it with
 
 The process calls are close to xv6's. `execvp` searches `PATH`, so `ls` runs `/bin/ls`. `waitpid` waits for one particular child, and with the `WNOHANG` flag it returns at once if that child has not exited. The status it fills in is decoded with macros such as `WIFEXITED` and `WEXITSTATUS`. `dup2(old, new)` makes descriptor `new` refer to what `old` refers to. It replaces xv6's trick of closing a descriptor and calling `dup`.
 
+Two library calls read the input. `getline(&buf, &cap, stdin)` reads one line, allocates and grows `buf` as needed, and returns the line's length, or -1 at end of input. Pass the same `buf` and `cap` on every call and free the buffer once at exit. `isatty(fd)` returns 1 when the descriptor is a terminal and 0 otherwise. The shell uses it to decide whether a person is typing, and prints its prompt and job notices only then.
+
 A pipeline is mostly descriptor bookkeeping. For `ls | grep c | wc -l > out.txt` the shell creates two pipes and three children:
 
 ```
@@ -100,7 +102,7 @@ Write `src/mysh.c` with the build script from chapter 01. It must build with no 
 4. Redirection: `< file` on the first command of a line and `> file` on the last. Open the output with `O_WRONLY | O_CREAT | O_TRUNC` and mode `0644`. Draw the descriptor table of the child before you write the code.
 5. Pipelines of any length. Draw the pipe ends for three commands as in the diagram above, then write the code. The shell closes every pipe end after the last fork.
 6. Ctrl-C: the shell ignores SIGINT. Every child sets SIGINT back to `SIG_DFL` before `execvp`.
-7. Background jobs: a trailing `&`. All processes of the job join one new process group whose ID is the first child's pid. Call `setpgid` in the child and in the parent, so the group exists whichever process runs first. Print `[<pid>]` for the last process of the job when it starts. Before each prompt, reap finished children with `WNOHANG` and print `[<pid>] done`.
+7. Background jobs: a trailing `&`. All processes of the job join one new process group whose ID is the first child's pid. Call `setpgid` in the child and in the parent, so the group exists whichever process runs first. Before each prompt, reap finished children with `WNOHANG`. When `isatty(0)` is true, print `[<pid>]` to stderr for the last process of the job when it starts, and `[<pid>] done` to stderr for each background child the loop reaps. A non-interactive `sh` prints no job notices, so this keeps them out of the compared output in the next item.
 8. Write `tests/shell.sh` for the Linux machine. For each case it runs the command line through `timeout 5 ./mysh` and through `sh`, with the line on standard input, and compares standard output. A hang counts as a failure. The cases:
 
 ```
@@ -224,12 +226,14 @@ A timer interrupt arrives every tick, whatever the process is doing. `usertrap` 
 
 Two different sets of registers get saved here. The trapframe holds all 32 user registers, because the interrupt can land between any two user instructions. `struct context` holds only ra, sp and s0 to s11, the callee-saved registers. The kernel calls `swtch` as an ordinary C function, so the compiler has already saved every caller-saved register it still needs. On ARM64 the callee-saved set is x19 to x28, which chapter 05's stack frames preserved. The scheduler code takes and releases `p->lock`. Read those calls as "only one CPU touches this process at a time" for now. Chapter 09 explains locks.
 
-The lab has three parts. The RISC-V assembly questions use the calling convention, which you know in its ARM64 form. The backtrace walks frame pointers: s0 holds the current frame pointer, the return address sits at s0 minus 8 and the caller's frame pointer at s0 minus 16, like x29 and x30 in ARM64 frame records. The alarm is a small version of a Unix signal handler. The kernel diverts a process to a user function by changing the saved pc in its trapframe, and `sigreturn` restores the registers saved when the alarm fired. Linux delivers the signals your shell handled in the same way: it edits the saved user registers before it returns to user mode.
+The lab has three parts. The RISC-V assembly questions use the calling convention, which you know in its ARM64 form, and a handful of instructions that you look up. `li` and `mv` load a constant and copy a register. `addi` adds an immediate. `ld` and `sd` load and store 64 bits, like `ldr` and `str`. `auipc` adds an upper immediate to the pc, and `jalr` jumps to a register plus an offset and writes the return address into its destination register. `call` and `ret` are pseudo-instructions built from those two. The assembler manual's pseudo-instruction table shows the expansion of each one.
+
+The backtrace walks frame pointers: s0 holds the current frame pointer, the return address sits at s0 minus 8 and the caller's frame pointer at s0 minus 16, like x29 and x30 in ARM64 frame records. The alarm is a small version of a Unix signal handler. The kernel diverts a process to a user function by changing the saved pc in its trapframe, and `sigreturn` restores the registers saved when the alarm fired. Linux delivers the signals your shell handled in the same way: it edits the saved user registers before it returns to user mode.
 
 ### Study
 
 - [xv6 book, chapter 4: Traps and system calls](https://pdos.csail.mit.edu/6.1810/2025/xv6/book-riscv-rev5.pdf#page=43) (read, 2 h): Sections 4.1, 4.2 and 4.5, pages 43 to 49, with `kernel/trampoline.S` and `kernel/trap.c` open. Then section 6.4, "Timer interrupts", on page 59, and sections 8.1 to 8.3 on pages 75 to 77 with `kernel/swtch.S` and `scheduler()` in `kernel/proc.c`. Stop before 8.4.
-- [RISC-V calling convention](https://pdos.csail.mit.edu/6.1810/2025/readings/riscv-calling.pdf) (reference, as needed): Table 18.2 lists every register, its ABI name and whether the caller or the callee saves it. Use it for the assembly questions and for `swtch`.
+- [RISC-V Assembly Programmer's Manual](https://github.com/riscv-non-isa/riscv-asm-manual/blob/main/src/asm-manual.adoc) (reference, as needed): "General registers" for each register's ABI name and whether calls preserve it, which is the split between `struct context` and the trapframe. "Function Calls" and "A listing of standard RISC-V pseudoinstructions" for `call`, `ret`, `li` and `mv`. Skip the directive and relocation sections.
 - [6.1810 Fall 2025: Lab Traps](https://pdos.csail.mit.edu/6.1810/2025/labs/traps.html) (do, 8 h): "RISC-V assembly", "Backtrace" and "Alarm" with its test0 to test3 parts.
 
 ### Build
@@ -237,6 +241,7 @@ The lab has three parts. The RISC-V assembly questions use the calling conventio
 1. Check out the `traps` branch. Answer the assembly questions in `answers-traps.txt`.
 2. Write `backtrace`, call it from `sys_pause` and from `panic`, and check the addresses with `addr2line` as the lab shows.
 3. Write `sigalarm` and `sigreturn`. Before writing `sigreturn`, list on paper which registers it must restore and where each saved copy lives.
+4. Watch one context switch. Run `make CPUS=1 qemu-gdb` and `gdb-multiarch` as the guidance page shows, and set a breakpoint on `sched` in `kernel/proc.c`. When it stops, print `p->context` and `cpus[0].context`. Step into `swtch` with `stepi` and on through its `ret`, which lands in `scheduler`. Print `p->context` again there and find the `ra` and `sp` that `swtch` just saved.
 
 ### Done when
 
@@ -261,7 +266,7 @@ Linux implements `fork` this way, and it also maps file data and anonymous memor
 
 ### Study
 
-- [xv6 book, chapter 5: Page faults](https://pdos.csail.mit.edu/6.1810/2025/xv6/book-riscv-rev5.pdf#page=51) (read, 45 min): Sections 5.1 to 5.5, pages 51 to 54, with `vmfault` in `kernel/vm.c` and its callers in `kernel/trap.c` open. Do exercise 1 in section 5.6 if you want to see a lazy page appear in `vmprint`.
+- [xv6 book, chapter 5: Page faults](https://pdos.csail.mit.edu/6.1810/2025/xv6/book-riscv-rev5.pdf#page=51) (read, 1 h): Sections 5.1 to 5.5, pages 51 to 54, with `vmfault` in `kernel/vm.c` and its callers in `kernel/trap.c` open. Then do exercise 1 in section 5.6: grow a process by one byte with `sbrk(1)`, print its page table with your `vmprint` before and after, and read the new PTE.
 - [6.1810 Fall 2025: Lab Copy on-write](https://pdos.csail.mit.edu/6.1810/2025/labs/cow.html) (do, 10 h): The whole page. Follow its plan of attack: `uvmcopy`, `vmfault`, reference counts in `kalloc.c`, then `copyout`.
 
 ### Build
@@ -277,16 +282,18 @@ Linux implements `fork` this way, and it also maps file data and anonymous memor
 
 The chapter 04 arena handed out memory by moving a pointer and freed everything at once. A general-purpose `malloc` has to accept `free` in any order, reuse the freed space and stay fast. It gets its memory from the kernel in large pieces and divides them up itself. On Linux and macOS the call for that is `mmap` with `MAP_PRIVATE | MAP_ANON`, which returns zeroed, page-aligned memory. After the last two steps you know what that does inside the kernel: it records a range, and the pages arrive one fault at a time when you touch them.
 
-The CMU slides build the classic design step by step. Every block starts with a header that holds its size and an allocated bit. A free block also ends with a footer, a copy of the header, so that `free` can find the previous block and merge with it in constant time. Free blocks link into one or more free lists that live inside the free blocks themselves.
+The CMU slides build the classic design step by step. Every block starts with a header that holds its size and an allocated bit. In the version on slides 40 to 47, every block also ends with a footer, a copy of the header, so that `free` can find the previous block and merge with it in constant time. Free blocks link into one or more free lists that live inside the free blocks themselves.
 
 ```
   one chunk from mmap
-  +--------+----------------------+--------+-------------------------+--------+
-  | prolog | hdr  payload ...     | hdr    next prev ...      ftr    | epilog |
-  | alloc  | 48|1                 | 96|0                       96|0   | 0|1    |
-  +--------+----------------------+--------+-------------------------+--------+
-            allocated block         free block on a free list
+  +--------+-----------------------------+---------------------------------+--------+
+  | prolog | hdr   payload ...     ftr   | hdr   next prev ...       ftr   | epilog |
+  | alloc  | 48|1                  48|1  | 96|0                      96|0  | 0|1    |
+  +--------+-----------------------------+---------------------------------+--------+
+            allocated block               free block on a free list
 ```
+
+Build this version first. Slides 52 to 56 then drop the footer from allocated blocks to save space. That needs a second bit in each header that records whether the previous block is allocated. Treat it as an optional change once everything else passes.
 
 The slides grow one contiguous heap with `sbrk`. Your heap is a set of chunks from `mmap`, which need not touch each other. Give each chunk its own allocated prologue and epilogue, as the slides' "Heap Structure" slide does for the whole heap, and coalescing stops at the chunk edges by itself. Requests above a threshold, say 256 KB, skip the free lists: map them directly, record the mapping size in the header, and `munmap` them on `free`.
 
@@ -304,7 +311,7 @@ Align every pointer you return to 16 bytes, as the system `malloc` does on both 
 
 Write `src/mm.c` and `src/mm.h` with `mm_malloc`, `mm_free`, `mm_calloc` and `mm_realloc`, and build them on both machines.
 
-1. Start with one chunk, an implicit free list, first fit, splitting and boundary-tag coalescing, as on the slides. Then switch to an explicit free list. Then try segregated lists by size class and keep them only if your benchmark says they help.
+1. Start with one chunk, an implicit free list, first fit, splitting and boundary-tag coalescing, with a footer on every block as on slides 40 to 47. Then switch to an explicit free list. Then try segregated lists by size class and keep them only if your benchmark says they help.
 2. Add new chunks of at least 1 MB when no free block fits, and map large requests directly.
 3. Write `mm_check`, a heap checker. It walks every chunk and fails if a header and footer disagree, if two free blocks are adjacent, if a free block is missing from its list, or if a payload is not 16-byte aligned.
 4. Write a test driver. It runs a random trace of one million operations with up to 2000 live blocks. Most sizes are below 512 bytes and a few are above the direct-map threshold. Every block is filled with a byte pattern derived from its index, and the driver checks the pattern before each free and each realloc. It calls `mm_check` every 1000 operations. Seed the random generator from the command line so a failing trace can be replayed.
@@ -330,7 +337,7 @@ A file system is a data structure on a disk that has to survive a crash at any m
   disk              virtio driver, 1024-byte blocks
 ```
 
-An inode lists its data blocks. xv6 keeps 12 direct block numbers and one indirect block holding 256 more. `bmap` maps a block number within the file to a block number on the disk. The lab adds a doubly indirect block, which raises the limit from 268 blocks to 65,803:
+An inode lists its data blocks. xv6 keeps 12 direct block numbers and one indirect block holding 256 more. `bmap` maps a block number within the file to a block number on the disk. The lab gives up one direct block for a doubly indirect one, which raises the limit from 268 blocks to 65,803:
 
 ```
   addrs[0..10]   direct          blocks 0 to 10 of the file
@@ -338,13 +345,15 @@ An inode lists its data blocks. xv6 keeps 12 direct block numbers and one indire
   addrs[12]      double indirect -> 256 indirect blocks -> 256 x 256 block numbers
 ```
 
-Creating a file writes several blocks: the inode, the directory, the free bitmap. A crash between two of those writes leaves the disk inconsistent. xv6 avoids that with a log. A system call writes its blocks to the log area first, then writes a header block that marks the transaction as committed, then copies the blocks to their real places and clears the header. After a crash, recovery replays a committed log and ignores an uncommitted one, so every system call's writes appear completely or not at all. OSTEP describes the same idea for a general file system before you read xv6's code. Chapter 18 of this book builds a write-ahead log for a key-value store on the same principle.
+Creating a file writes several blocks: the inode, the directory, the free bitmap. A crash between two of those writes leaves the disk inconsistent. xv6 avoids that with a log. A system call writes its blocks to the log area first, then writes a header block that marks the transaction as committed, then copies the blocks to their real places and clears the header. After a crash, recovery replays a committed log and ignores an uncommitted one, so every system call's writes appear completely or not at all. Chapter 18 of this book builds a write-ahead log for a key-value store on the same principle.
+
+OSTEP's crash consistency chapter walks through the same protocol for a general file system, with a timeline of every write. Read it first, then read how `kernel/log.c` does it. The other layers need no OSTEP reading, because xv6 sections 10.1 and 10.8 to 10.12 cover them next to the code.
 
 The xv6 code takes locks on buffers and inodes (`bread`, `ilock`). As in the scheduler, read them as "one user at a time" until chapter 09.
 
 ### Study
 
-- [OSTEP chapter 40: File System Implementation](https://pages.cs.wisc.edu/~remzi/OSTEP/file-implementation.pdf) (read, 1 h 15 min): Sections 40.1 to 40.7. Figures 40.3 and 40.4, the read and create timelines, list the blocks each operation touches. Skip the homework.
+- [OSTEP chapter 42: Crash Consistency: FSCK and Journaling](https://pages.cs.wisc.edu/~remzi/OSTEP/file-journaling.pdf) (read, 45 min): Section 42.1 for the crash scenarios and 42.3 for the journaling protocol, recovery and the timelines in figures 42.1 and 42.2. Skip 42.2 on fsck, 42.4 and the homework.
 - [xv6 book, chapter 10: File system](https://pdos.csail.mit.edu/6.1810/2025/xv6/book-riscv-rev5.pdf#page=89) (read, 2 h 30 min): Sections 10.1 to 10.14, pages 89 to 103, with `kernel/fs.c` and `kernel/log.c` open. Figure 10.3 is the inode diagram the lab refers to. Skip 10.15 and the exercises.
 - [6.1810 Fall 2025: Lab File system](https://pdos.csail.mit.edu/6.1810/2025/labs/fs.html) (do, 10 h): "Large files" and "Symbolic links".
 
@@ -422,19 +431,21 @@ Host: 127.0.0.1:8080\r\n
 
 The server answers with a status line, headers and a body whose length it states in `Content-Length`. The connection stays open for the next request unless either side sends `Connection: close`, and a client may send several requests before reading any response. Your echo loop already handles the hard part, bytes that arrive in pieces. The new part is framing: a request is complete when its input buffer contains `\r\n\r\n`. Until then, wait for more bytes, and if the buffer fills first, the request is too large.
 
-Parse with the `Str` and `str_cut` functions from chapter 04, as you parsed JSON. Support only `GET` and `HEAD`, and only requests without a body. RFC 9112 section 6.3 says a request with neither `Content-Length` nor `Transfer-Encoding` has no body. Answer anything outside the subset with a status from RFC 9110 and close the connection: 400 for malformed requests and oversized headers, 501 for other methods and for `Transfer-Encoding`, 413 for a nonzero `Content-Length`, 505 for a version other than HTTP/1.0 or 1.1.
+Parse with the `Str` and `str_cut` functions from chapter 04, as you parsed JSON. Support only `GET` and `HEAD`, and only requests without a body. RFC 9112 section 6.3 says a request with neither `Content-Length` nor `Transfer-Encoding` has no body. Answer anything outside the subset with a status from RFC 9110 and close the connection: 400 for malformed requests and oversized headers, 501 for other methods and for `Transfer-Encoding`, 413 for a GET or HEAD with a nonzero `Content-Length`, 505 for a version other than HTTP/1.0 or 1.1. Check the method first, so a POST gets 501 whatever its body.
 
-Load every file to serve into memory at startup, into a table keyed by its URL path. Take the files from the command line, for example `./httpd 8080 www index.html style.css`, which maps `/index.html` to the bytes of `www/index.html`. Read them with `fopen` and `fread` as in chapter 02. A request path that is not in the table gets 404. With exact lookup, a path like `/../etc/passwd` cannot reach the disk at all. It also keeps the loop free of disk reads. A nonblocking socket does not make `read` on a file nonblocking, and a slow disk read would stall every client. Moving that work to other threads comes in chapter 09.
+RFC 9112 is the only place in this step that defines the framing, so read its sections before you write the parser. Take three things from it: the grammar of the request line and field lines with their CRLF endings, how `Content-Length` and `Transfer-Encoding` decide whether a body follows, and when a connection stays open for the next request.
+
+Load every file to serve into memory at startup, into a table keyed by its URL path. Take the files from the command line, for example `./httpd 8080 www index.html style.css`, which maps `/index.html` to the bytes of `www/index.html`. Read them with `fopen` from chapter 02 and `fread` from chapter 04. A request path that is not in the table gets 404. With exact lookup, a path like `/../etc/passwd` cannot reach the disk at all. It also keeps the loop free of disk reads. A nonblocking socket does not make `read` on a file nonblocking, and a slow disk read would stall every client. Moving that work to other threads comes in chapter 09.
 
 ### Study
 
-- [RFC 9112: HTTP/1.1](https://www.rfc-editor.org/rfc/rfc9112#section-2) (reference, as needed): Sections 2 (message format and parsing), 3 up to and including 3.2.1 (request line, origin-form), 4 (status line), 5.1 (field line parsing), 6.3 (message body length) and 9.3 (persistence, including 9.3.2 on pipelining). Skip transfer codings and TLS.
-- [RFC 9110: HTTP Semantics, section 15](https://www.rfc-editor.org/rfc/rfc9110#section-15) (reference, as needed): Only the codes you send: 15.3.1 (200), 15.5.1 (400), 15.5.5 (404), 15.5.14 (413), 15.6.2 (501) and 15.6.6 (505). Sections 9.3.1 and 9.3.2 define GET and HEAD.
+- [RFC 9112: HTTP/1.1](https://www.rfc-editor.org/rfc/rfc9112.html#section-2) (read, 45 min): Sections 2 (message format and parsing), 3 up to and including 3.2.1 (request line, origin-form), 4 (status line), 5.1 (field line parsing), 6.3 (message body length) and 9.3 (persistence, including 9.3.2 on pipelining). Skip transfer codings and TLS.
+- [RFC 9110: HTTP Semantics, section 15](https://www.rfc-editor.org/rfc/rfc9110.html#section-15) (reference, as needed): Only the codes you send: 15.3.1 (200), 15.5.1 (400), 15.5.5 (404), 15.5.14 (413), 15.6.2 (501) and 15.6.6 (505). Sections 9.3.1 and 9.3.2 define GET and HEAD.
 
 ### Build
 
 1. Write `src/httpd.c` on top of the loop. Keep the input and output limits from the echo server. Send `Content-Length` on every response and send no body for HEAD. Honor `Connection: close` and close after any error response.
-2. Write `tests/http.sh` with `curl` and `printf ... | nc`. In Linux, `sudo apt install -y curl netcat-openbsd wrk` installs what the tests and the load test need. The tests cover a normal GET, a HEAD, a 404, two requests sent in one write on one connection, a request split into one-byte writes, a POST with a body, a header block larger than the input buffer, and `GET /../etc/passwd`. Check the status line of each response.
+2. Write `tests/http.sh` with `curl` and `printf ... | nc`. In Linux, `sudo apt install -y curl netcat-openbsd wrk` installs what the tests and the load test need. The tests cover a normal GET, a HEAD, a 404, two requests sent in one write on one connection, a request split into one-byte writes, a POST with a body (501), a GET with `Content-Length: 5` and five bytes of body (413), a header block larger than the input buffer, and `GET /../etc/passwd`. Check the status line of each response.
 3. Adapt `echotest` into `httptest`: a stalled client that sends GET requests on one connection and never reads the responses, and a pinger that sends one GET every 100 ms on its own connection and records each round trip.
 4. In Linux, load test with `wrk`: `wrk -t2 -c100 -d10s http://127.0.0.1:8080/index.html`, then 1000 connections. Raise the descriptor limit with `ulimit -n` first and note what fails before you raise it. Record requests per second and the latency percentiles from `wrk --latency`.
 
@@ -444,6 +455,6 @@ Load every file to serve into memory at startup, into a table keyed by its URL p
 
 ## Where this leads
 
-You have changed a real kernel in six places and seen each mechanism from both sides. A system call is a trap with a number in a register. A process's memory is a page table that the kernel edits, and a page fault is a chance to edit it lazily. A context switch saves fourteen registers and swaps stacks. A file system survives crashes by logging. In user space you used the same mechanisms: the shell drives `fork`, `exec`, pipes and signals, the allocator turns `mmap` pages into blocks, and the server multiplexes hundreds of sockets in one thread.
+You have changed a real kernel in six places. You can trace a `write` from the user stub to the disk, add a system call, change a page table, explain what the kernel does on a store fault to a copy-on-write page, and say which registers `swtch` saves. In user space you wrote a shell that drives `fork`, `exec`, pipes and signals, an allocator that carves `mmap` pages into blocks, and a server that handles hundreds of sockets in one thread.
 
-Two things are still missing. Your server uses one core of a machine that has many, and any blocking work, such as a disk read, stalls every client. And the xv6 code you modified is full of `acquire` and `release` calls that you were told to take on trust. Chapter 09, Concurrency and parallelism, covers both. It starts from the threads and the context switch you wrote, explains what a lock does at the level of atomic instructions and memory ordering, and ends with a job system built on a queue you test and a memory model you state.
+Two things are still missing. Your server uses one core of a machine that has many, and any blocking work, such as a disk read, stalls every client. And the xv6 code you modified is full of `acquire` and `release` calls that you were told to take on trust. Chapter 09, Concurrency and parallelism, covers both. It starts from the context switch you traced in xv6, explains what a lock does at the level of atomic instructions and memory ordering, and ends with a job system built on a queue you test and a memory model you state.
