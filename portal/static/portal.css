@@ -1,0 +1,562 @@
+/* App shell and book styles on top of Bulma. Colors come from Bulma's
+   variables, so light and dark mode follow the system setting. */
+:root {
+  --sidebar-width: 256px;
+  --bar-height: 40px;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --line: var(--bulma-border-weak);
+  --dim: var(--bulma-text-weak);
+  --accent: var(--bulma-link-text);
+}
+
+html {
+  font-size: 15px;
+  scroll-padding-top: calc(var(--bar-height) + 12px);
+}
+
+.shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.label {
+  font: 600 0.7rem var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin: 0;
+}
+
+.chapter-number,
+.step-number,
+.progress-count {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--dim);
+}
+
+kbd {
+  font: 0.7rem var(--mono);
+  padding: 1px 5px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  color: var(--dim);
+}
+
+/* Sidebar */
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  border-right: 1px solid var(--line);
+  background: var(--bulma-scheme-main-bis);
+  padding: 10px 8px 24px;
+}
+
+.brand {
+  display: block;
+  padding: 2px 8px 10px;
+  font: 700 0.95rem var(--mono);
+  color: var(--bulma-text-strong);
+}
+
+.search-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--bulma-scheme-main);
+  color: var(--dim);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.part-label {
+  margin: 14px 8px 3px;
+  font: 600 0.68rem var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.chapter-list a {
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  gap: 6px;
+  align-items: baseline;
+  padding: 3px 8px;
+  border-radius: 5px;
+  color: var(--bulma-text);
+  font-size: 0.87rem;
+  line-height: 1.35;
+}
+
+.chapter-list a:hover {
+  background: var(--bulma-scheme-main-ter);
+}
+
+.chapter-list a.is-active {
+  background: var(--bulma-link-soft);
+  color: var(--bulma-link-bold);
+  font-weight: 600;
+}
+
+.chapter-list a.is-current .chapter-number {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* One-line bar at the top of every page */
+.page-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  height: var(--bar-height);
+  padding: 9px 20px 0;
+  border-bottom: 1px solid var(--line);
+  background: var(--bulma-scheme-main);
+  white-space: nowrap;
+}
+
+.page-bar h1 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--bulma-text-strong);
+}
+
+.page-bar-meta {
+  font-size: 0.8rem;
+  color: var(--dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.page-bar-nav {
+  margin-left: auto;
+  display: flex;
+  gap: 14px;
+  font: 0.8rem var(--mono);
+}
+
+/* Contents page */
+.contents {
+  max-width: 1000px;
+  padding: 16px 20px 60px;
+}
+
+.continue-strip {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 8px 12px;
+  border: 1px solid var(--bulma-link-soft-invert);
+  border-radius: 6px;
+  background: var(--bulma-link-soft);
+  color: var(--bulma-text);
+}
+
+.continue-strip .continue-item {
+  flex: 1;
+  color: var(--dim);
+  font-size: 0.87rem;
+}
+
+.how-to {
+  margin: 10px 0 0;
+  font-size: 0.85rem;
+  color: var(--dim);
+}
+
+.part-heading {
+  margin: 22px 0 4px;
+  font: 600 0.72rem var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.contents-table {
+  width: 100%;
+  border-top: 1px solid var(--line);
+}
+
+.contents-table td {
+  padding: 5px 10px 5px 0;
+  border-bottom: 1px solid var(--line);
+  vertical-align: baseline;
+  font-size: 0.9rem;
+}
+
+.contents-table .chapter-number {
+  width: 30px;
+}
+
+.contents-title {
+  width: 30%;
+  font-weight: 600;
+}
+
+.contents-project {
+  color: var(--dim);
+  font-size: 0.85rem !important;
+}
+
+.contents-weeks,
+.contents-table .progress-count {
+  white-space: nowrap;
+  text-align: right;
+  font: 0.78rem var(--mono) !important;
+  color: var(--dim);
+}
+
+.contents-table tr.is-current .chapter-number {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.message {
+  white-space: pre-wrap;
+}
+
+/* Chapter page */
+.chapter-body {
+  display: grid;
+  grid-template-columns: minmax(0, 76ch) 280px;
+  gap: 36px;
+  padding: 14px 20px 80px;
+}
+
+.chapter.content {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.chapter .project {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+  color: var(--bulma-text-strong);
+}
+
+.chapter .project .label {
+  margin-right: 8px;
+}
+
+.chapter.content h2 {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  margin: 34px 0 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 1.2rem;
+}
+
+.chapter.content h2 .step-number {
+  font-size: 0.9rem;
+  color: var(--accent);
+}
+
+.chapter.content pre {
+  font-size: 0.82rem;
+  line-height: 1.4;
+  padding: 10px 12px;
+}
+
+.chapter.content ul.study {
+  list-style: none;
+  margin: 14px 0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.study li {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr) auto;
+  column-gap: 8px;
+  align-items: baseline;
+  padding: 7px 10px;
+  margin: 0;
+}
+
+.study li + li {
+  border-top: 1px solid var(--line);
+}
+
+.study-title {
+  font-weight: 600;
+}
+
+.study-time {
+  font: 0.75rem var(--mono);
+  color: var(--dim);
+  white-space: nowrap;
+}
+
+.chapter.content .study-scope {
+  grid-column: 2 / -1;
+  margin: 1px 0 0;
+  font-size: 0.87rem;
+  color: var(--dim);
+}
+
+.kind {
+  justify-self: start;
+  padding: 0 6px;
+  border-radius: 4px;
+  font: 600 0.66rem/1.7 var(--mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: var(--bulma-scheme-main-ter);
+  color: var(--bulma-text);
+}
+
+.kind-read,
+.kind-chapter {
+  background: var(--bulma-info-soft);
+  color: var(--bulma-info-bold);
+}
+
+.kind-watch {
+  background: var(--bulma-danger-soft);
+  color: var(--bulma-danger-bold);
+}
+
+.kind-do,
+.kind-step {
+  background: var(--bulma-success-soft);
+  color: var(--bulma-success-bold);
+}
+
+.task {
+  margin: 10px 0;
+  padding: 2px 0 2px 12px;
+  border-left: 3px solid var(--line);
+}
+
+.task.build {
+  border-left-color: var(--bulma-success);
+}
+
+.task.done-when {
+  border-left-color: var(--bulma-warning);
+}
+
+.chapter.content .task h3 {
+  margin: 0 0 2px;
+  font: 600 0.7rem var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.next-chapter {
+  display: inline-flex;
+  gap: 8px;
+  align-items: baseline;
+  margin-top: 6px;
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+/* Right rail */
+.rail {
+  position: sticky;
+  top: calc(var(--bar-height) + 14px);
+  align-self: start;
+  max-height: calc(100vh - var(--bar-height) - 28px);
+  overflow-y: auto;
+  font-size: 0.82rem;
+}
+
+.rail h2 {
+  margin: 0 0 4px;
+  font: 600 0.68rem var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.rail-steps {
+  list-style: none;
+  margin: 0 0 18px;
+}
+
+.rail-steps a {
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  gap: 6px;
+  padding: 2px 6px;
+  border-left: 2px solid var(--line);
+  color: var(--dim);
+  line-height: 1.35;
+}
+
+.rail-steps a.is-active {
+  border-left-color: var(--accent);
+  color: var(--bulma-text-strong);
+}
+
+.rail-checklist {
+  list-style: none;
+  margin: 0;
+}
+
+.rail-checklist li {
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  gap: 6px;
+  padding: 2px 0;
+  line-height: 1.35;
+}
+
+/* LEARNING.md items carry long mentor notes. The full text is in the tooltip. */
+.rail-checklist-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.rail-checklist li.is-done {
+  color: var(--dim);
+}
+
+.rail-checklist .tick {
+  width: 13px;
+  height: 13px;
+  margin-top: 3px;
+  border: 1px solid var(--bulma-border);
+  border-radius: 3px;
+  font-size: 0.65rem;
+  line-height: 11px;
+  text-align: center;
+  color: var(--bulma-success);
+}
+
+/* Search */
+.search-modal {
+  justify-content: flex-start;
+  padding-top: 12vh;
+}
+
+.search-modal .modal-content {
+  width: min(720px, 92vw);
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--bulma-border);
+  border-radius: 8px;
+  background: var(--bulma-scheme-main);
+}
+
+#search-input {
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 1.05rem;
+}
+
+#search-results {
+  overflow-y: auto;
+}
+
+.search-hint,
+.search-keys {
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  color: var(--dim);
+}
+
+.search-keys {
+  border-top: 1px solid var(--line);
+}
+
+.search-hit {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.search-hit-main {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 74px 24px minmax(0, 1fr);
+  gap: 8px;
+  align-items: baseline;
+  padding: 6px 12px;
+  color: var(--bulma-text);
+}
+
+.search-hit-main.is-active,
+.search-hit-main:hover {
+  background: var(--bulma-link-soft);
+}
+
+.search-hit-context {
+  margin-left: 8px;
+  font-size: 0.75rem;
+  color: var(--dim);
+}
+
+.search-hit-snippet {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 0.8rem;
+  color: var(--dim);
+}
+
+.search-hit-open {
+  padding: 0 12px;
+  font: 0.75rem var(--mono);
+  white-space: nowrap;
+}
+
+@media (max-width: 1100px) {
+  .chapter-body {
+    grid-template-columns: minmax(0, 76ch);
+  }
+  .rail {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sidebar {
+    position: static;
+    height: auto;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 8px 12px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand {
+    padding: 0;
+  }
+  .chapter-list {
+    display: none;
+  }
+  .page-bar-meta,
+  .contents-project {
+    display: none;
+  }
+}

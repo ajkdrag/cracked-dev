@@ -1,7 +1,7 @@
 # Learning: C foundations for game-dev and systems programming
 Mode: mentor
 Level: 1
-Phase: 0b
+Phase: 02
 Mine: src/** (files I write; everything else you may write)
 
 ## Style
@@ -22,13 +22,12 @@ Mine: src/** (files I write; everything else you may write)
 - [ ] Build a word counter, then match three C functions to ARM64 assembly <- current
 
 ## Done phases
-<!-- Portal format: `Phase: <id>` above names the phase under `## Checklist`.
-Each finished or earlier phase gets a `### Phase <id>` block of `- [x]` / `- [ ]`
-lines here. The portal reads this file on every page load, so edit it directly.
-A listed phase replaces that chapter's curated checks. Phase ids must exist in
-the roadmap. -->
+<!-- Portal format: `Phase: <id>` above names the chapter under `## Checklist`.
+Other chapters get a `### Phase <id>` block of `- [x]` / `- [ ]` lines here.
+Ids are the chapter numbers in curriculum/ (01, 02, ...). The portal reads
+this file on every page load, so edit it directly. -->
 
-### Phase 0
+### Phase 01
 - [x] Compile a warning-clean hello program on the Mac
 - [ ] Compile and run the same program in the Linux VM
 - [ ] Explain working directory, stdout, stderr and exit status
