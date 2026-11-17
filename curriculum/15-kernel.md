@@ -6,13 +6,13 @@ weeks: 8
 project: A Rust kernel for x86-64 that boots on QEMU, handles exceptions and hardware interrupts, builds its own page mappings and heap, and switches between two tasks on the timer interrupt.
 ---
 
-Chapter 14 ended with two shipped games. Under each of them sat macOS. It loaded the program, mapped its memory, delivered keyboard events and scheduled its threads. In chapter 08 you saw that machinery from inside xv6. But someone else had booted xv6 and written its trap entry and its scheduler, and you changed parts of a kernel that already worked.
+Chapter 14 ended with two shipped games. Each of them ran on macOS, which loaded the program, mapped its memory, delivered keyboard events and scheduled its threads. In chapter 08 you saw that machinery from inside xv6. But someone else had booted xv6 and written its trap entry and its scheduler, and you changed parts of a kernel that already worked.
 
 This chapter opens the part on kernels and bare metal. You write a kernel from its first instruction. You follow Philipp Oppermann's Writing an OS in Rust from a binary with no standard library through output, exceptions, hardware interrupts, paging and a heap. That is eleven posts by one author, spread over six steps. Then you leave the tutorial and add what it does not have: two tasks, each with its own stack, that the timer interrupt switches between.
 
 The kernel is in Rust. Chapter 10 taught you `unsafe`, and a kernel needs it in a few exact places: raw addresses, port I/O and the instructions that load CPU tables. The kernel targets x86-64, because the tutorial does and because it pins a BIOS bootloader that works. Your Mac cannot run x86 code, so QEMU emulates a whole PC in software. A kernel this small runs fine that way. You read x86-64 assembly and its calling convention in chapter 05. This chapter adds the privileged half of the same instruction set. Chapters 16 and 17 go back to ARM.
 
-The boot path below is the contract you work inside. Everything above `_start` belongs to the bootloader. Writing a bootloader is a separate project, and this chapter does not do it.
+The diagram below shows what the bootloader has done before your code runs. Everything above `_start` belongs to the bootloader. Writing a bootloader is a separate project, and this chapter does not do it.
 
 ```
   power on
@@ -33,7 +33,7 @@ The boot path below is the contract you work inside. Everything above `_start` b
 
 Every Rust program you wrote so far linked the standard library, and `std` assumes an operating system underneath: files, threads, a heap and a C runtime that calls `main`. A kernel has none of those. `#![no_std]` drops `std` and keeps `core`, the part of the library that needs nothing from an OS. `core` has `Option`, iterators, slices and formatting. You then supply two things the runtime used to supply: a panic handler and an entry point named `_start`.
 
-The first post gets rid of the linker errors by building for a target with no OS, an ARM microcontroller. The second post defines a custom target in a JSON file and recompiles `core` for it with Cargo's `build-std`. Three lines in that JSON file matter later. `"disable-redzone": true` turns off the red zone. The System V ABI from chapter 05 lets a leaf function use 128 bytes below `rsp` without moving `rsp`, and an interrupt would push its frame right on top of them. `"features": "-mmx,-sse,+soft-float"` keeps the compiler away from the SSE registers, so the kernel's whole register state is the 16 general registers plus flags. Step 7 depends on that.
+The first post gets rid of the linker errors by building for a target with no OS, an ARM microcontroller. The second post defines a custom target in a JSON file and recompiles `core` for it with Cargo's `build-std`. Three lines in that JSON file matter later. `"disable-redzone": true` turns off the red zone. The System V ABI lets a leaf function use 128 bytes below `rsp` without moving `rsp`, and an interrupt would push its frame right on top of them. `"features": "-mmx,-sse,+soft-float"` keeps the compiler away from the SSE registers, so the kernel's whole register state is the 16 general registers plus flags. `"rustc-abi": "softfloat"` tells `rustc` to use the ABI that goes with `+soft-float`. Step 7 depends on these last two lines.
 
 Do the chapter on the Mac. Install the tools with Homebrew:
 
@@ -50,7 +50,7 @@ channel = "nightly-2026-11-16"
 components = ["rust-src", "llvm-tools-preview"]
 ```
 
-The tutorial's code lives in the `phil-opp/blog_os` repository on GitHub, with one branch per post. Its CI builds and tests every branch each night against the latest nightly on macOS and Linux. If a later nightly breaks your build, move the date back to one that worked. Compare your code with the post's branch when you are stuck.
+The tutorial's code lives in the `phil-opp/blog_os` repository on GitHub, with one branch per post. Its CI builds and tests every branch each night against the latest nightly on Linux, macOS and Windows. The workflow `scheduled-builds.yml` on the `main` branch starts those runs. If a later nightly breaks your build, move the date back to one that worked. Compare your code with the post's branch when you are stuck.
 
 ### Study
 
@@ -79,7 +79,7 @@ The tutorial's code lives in the `phil-opp/blog_os` repository on GitHub, with o
 
 A kernel talks to devices in two ways on x86. The VGA text buffer is memory-mapped I/O. The video hardware reads the 80 by 25 character cells from physical address `0xb8000`, so a store to that address changes the screen. The compiler does not know that, and it may drop a store that nothing in the program reads back. The post wraps the buffer in `Volatile` to forbid that. Chapter 04 showed you what an optimizer assumes about ordinary memory, and device memory breaks those assumptions.
 
-The serial port uses the other way, port I/O. x86 has a separate 16-bit address space for devices, reached with the `in` and `out` instructions. A 16550 UART sits at port `0x3F8`. QEMU connects it to your terminal when you pass `-serial stdio`. From the next step on, serial output is your `printf`. It still works when the screen is garbage, and you can copy and search its text.
+The serial port uses the other way, port I/O. x86 has a separate 16-bit address space for devices, reached with the `in` and `out` instructions. A 16550 UART sits at port `0x3F8`. QEMU connects it to your terminal when you pass `-serial stdio`. From the next step on, you print to the serial port. Serial output still works when the screen is garbage, and you can copy and search its text.
 
 The testing post also builds a test runner for a kernel. Cargo's normal harness needs `std`, so the post uses the unstable custom test frameworks feature. QEMU's `isa-debug-exit` device lets the kernel end the emulator with an exit code, which turns a kernel run into a pass or fail result. The global writer sits behind `spin::Mutex`, a spinlock like the ones you built in chapter 09. A kernel has no OS that could put a waiting thread to sleep.
 
@@ -88,8 +88,8 @@ The tutorial explains `macro_rules!` as far as its `println!` needs. Keep the QE
 ### Study
 
 - [Writing an OS in Rust: VGA Text Mode](https://os.phil-opp.com/vga-text-mode/) (do, 2 h): The whole post.
-- [Writing an OS in Rust: Testing](https://os.phil-opp.com/testing/) (do, 2 h 30 min): The whole post. "Integration Tests" sets up the `lib.rs` and `tests/` layout that every later post builds on, so do not skip it.
-- [QEMU docs: Invocation](https://www.qemu.org/docs/master/system/invocation.html#hxtool-9) (reference, as needed): "Debug/Expert options" has `-d`, `-D` and `-no-reboot`. "Character device options" explains what `-serial stdio` connects.
+- [Writing an OS in Rust: Testing](https://os.phil-opp.com/testing/) (do, 150 min): The whole post. "Integration Tests" sets up the `lib.rs` and `tests/` layout that every later post builds on, so do not skip it.
+- [QEMU docs: Invocation](https://www.qemu.org/docs/master/system/invocation.html) (reference, as needed): Two sections of the page. "Debug/Expert options" has `-d`, `-D` and `-no-reboot`. "Character device options" explains what `-serial stdio` connects.
 
 ### Build
 
@@ -136,12 +136,12 @@ Run `cargo bootimage` first, then `./debug.sh -s -S`. In a second terminal run `
 ### Study
 
 - [Writing an OS in Rust: CPU Exceptions](https://os.phil-opp.com/cpu-exceptions/) (do, 2 h): The whole post. "Too much Magic?" points to first-edition posts with an older Rust syntax. Do not follow that link.
-- [Writing an OS in Rust: Double Faults](https://os.phil-opp.com/double-fault-exceptions/) (do, 2 h 30 min): The whole post, including "A Stack Overflow Test".
+- [Writing an OS in Rust: Double Faults](https://os.phil-opp.com/double-fault-exceptions/) (do, 150 min): The whole post, including "A Stack Overflow Test".
 - [QEMU docs: GDB usage](https://www.qemu.org/docs/master/system/gdb.html) (reference, as needed): The top of the page for `-s -S`, `target remote` and `info reg`, and "Breakpoint and Watchpoint support".
 
 ### Build
 
-1. Follow the CPU exceptions post. Then, at its breakpoint test, stop in gdb before the handler's prologue with `hbreak *blog_os::interrupts::breakpoint_handler` and run `x/5gx $rsp`. Match the five words to RIP, CS, RFLAGS, RSP and SS. Check that the saved RIP points just past the `int3` instruction with `x/2i <address>-1`.
+1. Follow the CPU exceptions post. Start its breakpoint test under gdb and type `hbreak *blog_os::interrupts::breakpoint_handler` and then `continue`. gdb stops before the handler's prologue. Run `x/5gx $rsp` there. Match the five words to RIP, CS, RFLAGS, RSP and SS. Check that the saved RIP points just past the `int3` instruction with `x/2i <address>-1`.
 2. Follow the double faults post up to "Kernel Stack Overflow". Run the overflowing kernel with `./debug.sh`. In `qemu.log`, find the first `v=0e` entry with a `CR2` address just below the stack, the `check_exception` line that turns it into `v=08`, and the last `check_exception` line before QEMU exits. Copy the three into `NOTES.md` and say what each one means.
 3. Finish the post. Run the overflow again with gdb attached and `hbreak` on your double fault handler. `info symbol $rsp` should name the `STACK` array from `gdt.rs`.
 
@@ -151,15 +151,15 @@ Run `cargo bootimage` first, then `./debug.sh -s -S`. In a second terminal run `
 
 ## Hardware interrupts: the PIC, the timer and the keyboard
 
-Exceptions come from the instruction that is running. Hardware interrupts come from devices, between any two instructions. QEMU's PC has the two chained 8259 Programmable Interrupt Controllers of the original IBM PC. Each collects the interrupt lines of a few devices and forwards one to the CPU with a vector number. Their default vectors collide with the CPU exceptions, so the post remaps them to 32 to 47. The PIC then waits for an End of Interrupt before it delivers the next interrupt from that line or a lower-priority one. Forget the EOI and the timer fires once and never again.
+Exceptions come from the instruction that is running. Hardware interrupts come from devices, between any two instructions. QEMU's PC has the two chained 8259 Programmable Interrupt Controllers of the original IBM PC. Each collects the interrupt lines of a few devices and forwards one to the CPU with a vector number. Their default vectors collide with the CPU exceptions, so the post remaps them to 32 to 47. The PIC then waits for an End of Interrupt before it delivers the next interrupt from that line or a lower-priority one. Without the EOI the timer fires once and never again.
 
 The timer is the Programmable Interval Timer. At its default setting it fires about 18.2 times a second: its input clock of 1,193,182 Hz divided by 65,536. That rate is slow, and it is enough for this chapter. The keyboard puts each scancode at I/O port `0x60`, and the handler must read it before the controller sends another.
 
-The post then provokes a deadlock. The main code holds the writer's spinlock, the timer interrupt arrives, and its handler spins on the same lock forever. The fix is to turn interrupts off while the lock is held. In chapter 09 you explained why xv6's `acquire` turns interrupts off before it spins. This is the same bug on one CPU. The post ends with `hlt`, which parks the CPU until the next interrupt instead of spinning.
+The post then provokes a deadlock. The main code holds the writer's spinlock, the timer interrupt arrives, and its handler spins on the same lock forever. The fix is to turn interrupts off while the lock is held. In chapter 09 you explained why xv6's `acquire` turns interrupts off before it spins. This is the same bug on one CPU. The post also adds `hlt`, which parks the CPU until the next interrupt instead of spinning.
 
 ### Study
 
-- [Writing an OS in Rust: Hardware Interrupts](https://os.phil-opp.com/hardware-interrupts/) (do, 2 h 30 min): The whole post. "Configuring the Timer" links to the OSDev wiki on the PIT. You do not need it, as the default rate is enough.
+- [Writing an OS in Rust: Hardware Interrupts](https://os.phil-opp.com/hardware-interrupts/) (do, 150 min): The whole post. "Configuring the Timer" links to the OSDev wiki on the PIT. You do not need it, as the default rate is enough.
 
 ### Build
 
@@ -191,13 +191,13 @@ A kernel has one problem that xv6 hid from you. Page table entries hold physical
 
 ### Study
 
-- [Writing an OS in Rust: Introduction to Paging](https://os.phil-opp.com/paging-introduction/) (read, 1 h 30 min): The whole post. "Segmentation" is history and can be skimmed. Work the "Example Translation" with a pencil.
+- [Writing an OS in Rust: Introduction to Paging](https://os.phil-opp.com/paging-introduction/) (read, 90 min): The whole post. "Segmentation" is history and can be skimmed. Work the "Example Translation" with a pencil.
 - [Writing an OS in Rust: Paging Implementation](https://os.phil-opp.com/paging-implementation/) (do, 3 h): The whole post. Read "Temporary Mapping" and "Recursive Page Tables" once as alternatives. The code uses "Map the Complete Physical Memory".
 
 ### Build
 
 1. Follow both posts.
-2. Write `dump_level4(phys_offset)`. It prints each present entry of the level 4 table with its index, the physical address of the table it points to and its flags. Explain each line in `NOTES.md`: which one covers the kernel's code, which the stack and the boot information, and which the bootloader's map of physical memory. One entry points back at the level 4 table itself. The post's "Recursive Page Tables" section explains what that entry allows.
+2. Write `dump_level4(phys_offset)`. It prints each present entry of the level 4 table with its index, the physical address of the table it points to and its flags. Explain each line in `NOTES.md`: which one covers the kernel's code, which the stack and the boot information, and which the bootloader's map of physical memory.
 3. Write `map_stack(slot, mapper, frame_allocator) -> VirtAddr` in `memory.rs`. A slot is 64 KB of address space at `0x5555_0000_0000 + slot * 0x1_0000`. Leave the first page of the slot unmapped as a guard. Map the next four pages present and writable to fresh frames, and return the address just past the last one, which becomes the top of the stack. Step 7 uses it for task stacks.
 4. Test `map_stack(0, ...)`: write a `u64` just below the top and read it back. Then read the `u64` at `0x5555_0000_0000`, in the guard page. The page fault handler from the first post should print a `CR2` equal to `0x5555_0000_0000`.
 
@@ -213,18 +213,19 @@ The second post builds three allocators, and you have met two of them before. Th
 
 ### Study
 
-- [Writing an OS in Rust: Heap Allocation](https://os.phil-opp.com/heap-allocation/) (do, 1 h 30 min): The whole post.
+- [Writing an OS in Rust: Heap Allocation](https://os.phil-opp.com/heap-allocation/) (do, 90 min): The whole post.
 - [Writing an OS in Rust: Allocator Designs](https://os.phil-opp.com/allocator-designs/) (do, 3 h): The whole post. "Variations" describes slab and buddy allocators. Read it, but do not build them.
 
 ### Build
 
 1. Follow both posts. Keep all three allocators in the tree, so that switching the `#[global_allocator]` line switches the allocator.
 2. Run `tests/heap_allocation.rs` with each allocator in turn.
-3. Add a test that allocates 1,000 boxes of mixed sizes (8, 64 and 2,048 bytes in rotation), keeps every third one, drops the rest, then allocates 1,000 more. Run it with each allocator.
+3. Add a test `mixed_sizes`. It allocates 50 boxes of 8, 64 and 2,048 bytes in rotation, each filled with its index, and keeps every fourth one. Then it runs ten rounds that each allocate 50 more boxes in the same rotation and drop them. At the end it checks that the kept boxes still hold their values. Collect each batch in a `Vec::with_capacity(50)`. The test never has more than about 45 KB live, but it allocates about 370 KB in total, so the 100 KB heap only holds it if freed memory comes back. Run it with each allocator.
+4. Raise the rounds to 100 and run the test with the post's linked list allocator again. Note the round where it fails in `NOTES.md`, then set the rounds back to ten.
 
 ### Done when
 
-All four heap tests and your mixed test pass with the linked list and the fixed-size block allocators. With the bump allocator, `many_boxes_long_lived` fails, and you can say why in one sentence that uses chapter 04's arena. You can say which allocator in this step is closest to your chapter 08 malloc and where the two differ.
+All four heap tests and `mixed_sizes` pass with the linked list and the fixed-size block allocators. With the bump allocator, `many_boxes_long_lived` and `mixed_sizes` fail, and you can say why in one sentence that uses chapter 04's arena. You can say why the post's linked list allocator runs out of memory at 100 rounds although the 45 KB of live data would fit, using the post's "Merging Freed Blocks". You can say which allocator in this step is closest to your chapter 08 malloc and where the two differ.
 
 ## Two tasks and a context switch
 
@@ -260,9 +261,9 @@ Preemption needs the full state. Point the timer's IDT entry at a handler you wr
     top - 168   0         r15    <- saved rsp of the new task
 ```
 
-Copy CS and SS from the running kernel with `CS::get_reg()` and `SS::get_reg()` from `x86_64::registers::segmentation`. `iretq` already accepts those values when your other handlers return. The frame's RFLAGS enables interrupts in the new task, so the first `iretq` into it also turns preemption on.
+Copy CS and SS from the running kernel with `CS::get_reg()` and `SS::get_reg()`. They need `use x86_64::registers::segmentation::{CS, SS, Segment};`, because `get_reg` is a method of the `Segment` trait. `iretq` already accepts those values when your other handlers return. The frame's RFLAGS enables interrupts in the new task, so the first `iretq` into it also turns preemption on.
 
-Both functions are naked functions. `#[unsafe(naked)]` tells the compiler to emit no prologue or epilogue, and the body is one `naked_asm!` block. Declare the timer entry `unsafe extern "custom"`, as the Rust reference's note on naked functions advises, because it follows no calling convention. Install it with `set_handler_addr` instead of `set_handler_fn`. Rust's inline assembly uses Intel syntax by default. The destination comes first, and registers have no `%`, the reverse of the AT&T syntax you read in chapter 05. A `sym` operand puts the address of a Rust function into the assembly, which is how the handler calls `schedule`.
+Both functions are naked functions. `#[unsafe(naked)]` tells the compiler to emit no prologue or epilogue, and the body is one `naked_asm!` block. Declare the timer entry `unsafe extern "custom"`, as the Rust reference's note on naked functions advises, because it follows no calling convention. Install it with `set_handler_addr` instead of `set_handler_fn`. Chapter 05 used both AT&T and Intel syntax. `asm!` and `naked_asm!` default to Intel, with no `%` and the destination first. A `sym` operand puts the address of a Rust function into the assembly, so the handler can call `schedule`.
 
 The scheduler's table of tasks is shared between task code and the timer handler. The handler runs with interrupts off and cannot wait for a lock. So task code touches the table only inside `without_interrupts`, the rule from step 4.
 
@@ -274,7 +275,7 @@ The scheduler's table of tasks is shared between task code and the timer handler
 
 ### Build
 
-1. Write `task.rs` with a fixed table of up to four tasks, each a saved `rsp`. Slot 0 is the boot context: whatever runs `kernel_main` after `init` becomes task 0 the first time it is switched away from. `spawn(entry)` takes a stack from `map_stack` with the next free slot and writes the initial frame.
+1. Write `task.rs` with a fixed table of up to four tasks, each a saved `rsp`. Slot 0 is the boot context: whatever runs `kernel_main` after `init` becomes task 0 the first time it is switched away from. `spawn(entry)` takes a stack from `map_stack` with the next free slot and writes the initial frame. In the posts the mapper and the frame allocator are locals of `kernel_main`. After paging init, move both into a `spin::Mutex` static so that `spawn` can reach them.
 2. Cooperative version: write the naked `switch` and `yield_now()`, which picks the next task round robin and calls `switch`. Spawn task A and task B. Each prints its name and a counter to serial, then yields. Task 0 loops on `yield_now()`. Commit this version.
 3. Preemptive version: write the naked timer entry and `schedule`, change `spawn` to write the interrupt frame, and remove every call to `yield_now`. Task 0 runs `hlt_loop()`. Tasks A and B print and then busy-wait about 10 million iterations of `core::hint::spin_loop()` between prints.
 4. Change task A to `loop {}` after its first print. Then spawn a task C that recurses without end, the way the post's `stack_overflow` test does.

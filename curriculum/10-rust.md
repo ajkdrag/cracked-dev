@@ -47,7 +47,7 @@ let writer = &mut text;        // accepted: no shared borrow is live any more
 writer.push('!');
 ```
 
-A borrow ends at its last use, not at the closing brace. Chapter 4 of the Rust Book works through these rules with diagrams of the stack and the heap that match the ones you drew in chapter 02.
+A borrow ends at its last use. Chapter 4 of the Rust Book works through these rules with diagrams of the stack and the heap that match the ones you drew in chapter 02.
 
 The word counter reads bytes, so give it a `&[u8]`. Input that is not valid UTF-8 then cannot stop it. `u8` has the methods `is_ascii_alphabetic` and `to_ascii_lowercase`, and `byte as char` turns an ASCII byte into a `char` you can push onto a `String`. To read all of standard input, call `std::io::stdin().read_to_end(&mut buf)` with `use std::io::Read;` at the top of the file. The `use` brings the trait that defines `read_to_end` into scope. Step 3 explains traits.
 
@@ -71,7 +71,7 @@ Rust's `Vec` and `String` abort the process when the allocator fails, so the all
 ### Study
 
 - [The Rust Programming Language, chapters 1 to 3](https://doc.rust-lang.org/book/ch01-00-getting-started.html) (read, 2 h 30 min): Chapter 1 (installation, Hello Cargo), chapter 2 (the guessing game, typed in and run) and chapter 3 (sections 3.1 to 3.5). Use the arrow at the bottom of each page to move on. Read 3.2's "Integer Overflow" closely.
-- [The Rust Programming Language, chapter 4: Understanding Ownership](https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html) (read, 1 h 30 min): Sections 4.1 to 4.3. Redraw the stack and heap figures in 4.1 and 4.2 next to your chapter 02 drawings.
+- [The Rust Programming Language, chapter 4: Understanding Ownership](https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html) (read, 2 h 10 min): Sections 4.1 to 4.3. Redraw the stack and heap figures in 4.1 and 4.2 next to your chapter 02 drawings. Then sections 8.1 and 8.2 from the table of contents, on vectors and strings, which the build and the Rustlings `05_vecs` exercises use.
 - [Rustlings](https://rustlings.rust-lang.org/) (do, 3 h): Install it as the page shows, then do the exercises from `00_intro` to `06_move_semantics`, with the first quiz. Stop before `07_structs`.
 
 ### Build
@@ -115,12 +115,12 @@ A Rust `struct` is a C struct with methods attached in an `impl` block. A Rust `
 
 Two enums from the standard library replace two C conventions. `Option<T>` is either `Some(value)` or `None`, which replaces a NULL pointer. `Result<T, E>` is either `Ok(value)` or `Err(error)`, which replaces the `bool` return plus out-parameter of chapter 03's `encode_a`. The `?` operator returns early with the error when a `Result` is an `Err`, so a function that calls five fallible functions does not need five `if` blocks. `HashMap<String, u16>` replaces the symbol table you wrote with a linear scan.
 
-Strings in Rust are UTF-8. `String` owns its bytes and `&str` borrows them. Chapter 8 of the Rust Book explains why you cannot index a `String` by an integer. Hack source is ASCII, so this rarely matters here, but `str::lines()` and `trim()` do the line splitting and space removal that took a page of C. `str::lines()` also removes the `\r` of a `\r\n` ending. `println!("{:016b}", word)` prints a `u16` as 16 binary digits, which replaces `word_to_bits`.
+Strings in Rust are UTF-8. `String` owns its bytes and `&str` borrows them. Section 8.2 of the Rust Book, from step 1, explains why you cannot index a `String` by an integer. Hack source is ASCII, so this rarely matters here, but `str::lines()` and `trim()` do the line splitting and space removal that took a page of C. `str::lines()` also removes the `\r` of a `\r\n` ending. `println!("{:016b}", word)` prints a `u16` as 16 binary digits, which replaces `word_to_bits`.
 
 ### Study
 
 - [The Rust Programming Language, chapters 5 to 7](https://doc.rust-lang.org/book/ch05-00-structs.html) (read, 2 h 30 min): Structs and methods, enums and `match`, then packages, crates and modules. Chapter 7 tells you how to split the assembler into files. Skim 7.1, which repeats Cargo basics.
-- [The Rust Programming Language, chapters 8 and 9](https://doc.rust-lang.org/book/ch08-00-common-collections.html) (read, 2 h 30 min): Vectors, strings and hash maps, then error handling with `panic!`, `Result` and `?`. Then section 11.1, "How to Write Tests", from the table of contents. Skip the rest of chapter 11 and all of chapter 12.
+- [The Rust Programming Language, section 8.3 and chapter 9](https://doc.rust-lang.org/book/ch08-03-hash-maps.html) (read, 2 h 10 min): Hash maps, then chapter 9 on error handling with `panic!`, `Result` and `?`. Then section 11.1, "How to Write Tests", and sections 12.1 (command line arguments), 12.2 (reading a file) and 12.6 (writing to standard error) from the table of contents, for `std::env::args`, `std::fs` and `eprintln!`. Skip the rest of chapters 11 and 12.
 - [Rustlings](https://rustlings.rust-lang.org/) (do, 3 h): Exercises `07_structs` to `13_error_handling`, with the second quiz.
 
 ### Build
@@ -157,14 +157,14 @@ The linked-list book exists because a linked list is easy in C and hard in safe 
 ### Study
 
 - [The Rust Programming Language, chapter 10: Generic Types, Traits, and Lifetimes](https://doc.rust-lang.org/book/ch10-00-generics.html) (read, 2 h 30 min): Sections 10.1 to 10.3. Then sections 13.1, 13.2 and 13.4 from the table of contents, on closures, iterators and their performance. Skip 13.3, which builds on chapter 12.
-- [Learning Rust With Entirely Too Many Linked Lists](https://rust-unofficial.github.io/too-many-lists/first.html) (do, 6 h): Chapters 2 to 4: "A Bad Stack", "An Ok Stack" and "A Persistent Stack". Type every listing and run every test. Stop before chapter 5, "A Bad Safe Deque".
+- [Learning Rust With Entirely Too Many Linked Lists](https://rust-unofficial.github.io/too-many-lists/first.html) (do, 4 h): Chapters 2 and 3: "A Bad Stack" and "An Ok Stack". Type every listing and run every test. Stop before chapter 4, "A Persistent Stack". Step 6 gets `Rc` and `Arc` from another source.
 - [Rustlings](https://rustlings.rust-lang.org/) (do, 2 h): Exercises `14_generics` to `18_iterators`, with the third quiz.
 
 ### Build
 
-1. A `lists` crate with the code from the linked-list book's chapters 2 to 4 and all of its tests.
+1. A `lists` crate with the code from the linked-list book's chapters 2 and 3 and all of its tests.
 2. Back in `hasm`, make the parser borrow from the source text instead of copying. Change the line type to `enum Line<'a>` with `Label(&'a str)` and `Operand::Sym(&'a str)`. The symbol table still owns its names as `String`.
-3. Write `struct SourceLines<'a>` that implements `Iterator<Item = (usize, &'a str)>`. It yields the line number and the line with its comment cut off and surrounding spaces trimmed, and skips empty lines. A line that still contains a space is an error that names the line.
+3. Write `struct SourceLines<'a>` that implements `Iterator<Item = (usize, &'a str)>`. It yields the line number and the line with its comment cut off and surrounding spaces trimmed, and skips empty lines. A line that still contains a space is an error that names the line. Chapter 03 stripped every space, so this is a deliberate change. First check that no instruction in Pong has an inner space with `sed 's://.*::' Pong.asm | grep -n '[^ ] [^ ]'`, which should print nothing, and drop any ported test that relied on spaces inside an instruction.
 4. Implement `std::fmt::Display` for `AsmError`, so `main` prints it with `{}`.
 
 ### Done when
@@ -192,7 +192,7 @@ impl Swiss {
 }
 ```
 
-The signatures carry the rules. `get` takes `&self`, so any number of readers may look up at once. `put` and `del` take `&mut self`, so while one of them runs nobody else holds a reference into the table. When the table grows, `put` builds three new `Vec`s, inserts every live key and assigns them to the fields. Assigning drops the old `Vec`s and frees their memory. In C the old arrays stayed in the arena until it was reset.
+`get` takes `&self`, so any number of readers may look up at once. `put` and `del` take `&mut self`, so while one of them runs nobody else holds a reference into the table. When the table grows, `put` builds three new `Vec`s, inserts every live key and assigns them to the fields. Assigning drops the old `Vec`s and frees their memory. In C the old arrays stayed in the arena until it was reset.
 
 Every `ctrl[i]` in safe Rust checks `i < ctrl.len()` and panics if it fails. That check is a compare and a branch, and the optimizer removes it when it can prove the index is in range. Slicing once, as in `let group = &ctrl[start..start + 16];`, and then indexing the slice often removes the checks inside the loop. The Rust Performance Book's "Bounds Checks" chapter lists the ways. Read the assembly to see which checks remain. Compiler Explorer from chapter 02 compiles Rust too. For a whole crate, this writes one `.s` file per crate into `target/release/deps`:
 
@@ -233,9 +233,8 @@ From this step on, keep a file `NOTES.md` in the project. Every time the compile
 
 ### Study
 
-- [The Rust Performance Book: Build Configuration](https://nnethercote.github.io/perf-book/build-configuration.html) (read, 1 h): Nicholas Nethercote's short book on Rust performance. Read "Release Builds" and "Maximizing Runtime Speed" up to "Profile-guided Optimization", then the chapters "Inlining", "Bounds Checks" and "Machine Code" from the sidebar. Skip the rest for now.
+- [The Rust Performance Book: Build Configuration](https://nnethercote.github.io/perf-book/build-configuration.html) (read, 1 h): Nicholas Nethercote's short book on Rust performance. Read "Release Builds" and "Maximizing Runtime Speed" up to "Profile-guided Optimization", then the chapters "Bounds Checks" and "Machine Code" from the sidebar. Skip the rest for now.
 - [Rust standard library: HashMap](https://doc.rust-lang.org/std/collections/struct.HashMap.html) (reference, as needed): The description at the top (SipHash, the SwissTable port), `with_hasher` and `with_capacity_and_hasher`, and the `entry` API if you use the map as a test oracle.
-- [Rust standard library: black_box](https://doc.rust-lang.org/std/hint/fn.black_box.html) (reference, as needed): What it promises and what it does not. It is a hint, so check the assembly when a timing looks too good.
 
 ### Build
 
@@ -252,9 +251,21 @@ The tests pass in a debug and a release build on the Mac and in the VM. You have
 
 ## Unsafe Rust, NEON and Miri
 
-`unsafe` unlocks five operations that the compiler cannot check: dereferencing a raw pointer, calling an `unsafe` function, using a mutable static, implementing an `unsafe` trait and reading a union field. It does not switch off the borrow checker for references. An `unsafe` block says "I checked this by hand", and the rest of the program trusts it. A safe function that contains an `unsafe` block must be correct for every input a safe caller could pass. Otherwise safe code can cause undefined behavior through it. The standard library and mio, which you read in step 7, put a `// SAFETY:` comment above each `unsafe` block that states what the author checked. Do the same.
+`unsafe` unlocks five operations that the compiler cannot check: dereferencing a raw pointer, calling an `unsafe` function, using a mutable static, implementing an `unsafe` trait and reading a union field. It does not switch off the borrow checker for references. An `unsafe` block says "I checked this by hand", and the rest of the program trusts it. A safe function that contains an `unsafe` block must be correct for every input a safe caller could pass. Otherwise safe code can cause undefined behavior through it. The standard library puts a `// SAFETY:` comment above each `unsafe` block that states what the author checked. Do the same.
 
-The NEON intrinsics from chapter 07 exist in Rust under the same names in `std::arch::aarch64`. A load such as `vld1q_u8` takes a raw pointer, so it is an `unsafe` function. The arithmetic intrinsics are safe functions marked as requiring the `neon` target feature. Rust still makes you call them from an `unsafe` block, or from a function marked `#[target_feature(enable = "neon")]`, even though both of your targets enable NEON by default. The 16-byte group match from chapter 07 becomes:
+The NEON intrinsics from chapter 07 exist in Rust under the same names in `std::arch::aarch64`. A load such as `vld1q_u8` takes a raw pointer, so it is an `unsafe` function. The arithmetic intrinsics are safe functions marked as requiring the `neon` target feature. Rust still makes you call them from an `unsafe` block, or from a function marked `#[target_feature(enable = "neon")]`, even though both of your targets enable NEON by default. Leave out the `unsafe` and the compiler says so in its error: "the neon target feature being enabled in the build configuration does not remove the requirement to list it in `#[target_feature]`".
+
+A trait can declare constants that each implementation sets. `GroupMatch` declares two, the group width and the number of mask bits per control byte, next to the match function:
+
+```rust
+pub trait GroupMatch {
+    const WIDTH: usize;
+    const STRIDE: u32;
+    fn matches(group: &[u8], h2: u8) -> u64;
+}
+```
+
+The 16-byte group match from chapter 07 becomes:
 
 ```rust
 use std::arch::aarch64::*;
@@ -279,7 +290,7 @@ impl GroupMatch for Neon16 {
 }
 ```
 
-`GroupMatch` is a trait you write with the two constants and `matches`. Make the table generic over it, `Swiss<M: GroupMatch>`, and write `Scalar`, `Neon16` and `Neon8` implementations. The compiler makes one copy of the table per matcher, the compile-time selection you did with the preprocessor in chapter 07. The table stores no value of type `M`, so add a field `_m: std::marker::PhantomData<M>` to tell the compiler the type parameter is used. The `try_into` checks that the slice has 16 bytes. When the caller slices with a constant width, the optimizer removes that check. Look for it in the assembly.
+Make the table generic over it, `Swiss<M: GroupMatch>`, and write `Scalar`, `Neon16` and `Neon8` implementations. The compiler makes one copy of the table per matcher, the compile-time selection you did with the preprocessor in chapter 07. The table stores no value of type `M`, so add a field `_m: std::marker::PhantomData<M>` to tell the compiler the type parameter is used. The `try_into` checks that the slice has 16 bytes. When the caller slices with a constant width, the optimizer removes that check. Look for it in the assembly.
 
 Miri runs a program in an interpreter that checks every memory access against Rust's rules. It reports reads out of bounds, use after free, and references that break the aliasing rules, which the linked-list book calls stacked borrows. Miri needs a nightly toolchain, installed next to your stable one with `rustup +nightly component add miri`, and runs with `cargo +nightly miri test`. It is slow, so shrink the test sizes when `cfg!(miri)` is true. Miri does not implement every platform intrinsic. If it stops at a NEON call with "unsupported operation", run it on the `Scalar` matcher. Like the sanitizers of chapter 01, Miri only finds bugs on the paths your tests run.
 
@@ -295,7 +306,7 @@ Miri runs a program in an interpreter that checks every memory access against Ru
 2. In `swiss`, the `GroupMatch` trait and the three matchers. `Neon8` loads 8 bytes with `vld1_u8`, compares with `vceq_u8` and masks with `0x8080_8080_8080_8080`, so its stride is 8 bits. Start every group at a multiple of its width.
 3. Run all four tests for each matcher, with one generic test function `fn check_all<M: GroupMatch>()` called three times.
 4. Add the three matchers to `swissbench` next to the scalar results from step 4 and the C NEON results from chapter 07.
-5. Run the `Scalar` tests under Miri. Then plant a bug: in a copy of `Scalar::matches`, read the control bytes through a raw pointer starting one byte past the group. Run Miri, note what it says, and delete the copy.
+5. Run the `Scalar` tests under Miri. Then plant a bug: in a copy of `Scalar::matches`, take `group.as_ptr().add(1)` and read 16 bytes from it. The pointer comes from the 16-byte slice, so the 16th read lies outside what that borrow allows, and Miri reports it even when the byte is still inside the `Vec`. Add a test that calls the copy with the last 16 bytes of the control array, where the read also leaves the allocation. Run Miri, note what it says for each test, and delete the copy.
 6. In the probe loop of `get`, replace the indexing of `keys` with `get_unchecked` in an `unsafe` block, with a `// SAFETY:` comment that states why the index is in range. Benchmark it. Keep it only if it is measurably faster.
 
 ### Done when
@@ -317,13 +328,13 @@ std::thread::scope(|s| {
 });                                               // every thread has joined here
 ```
 
-Writes need a lock. A sharded table puts one `Mutex<Swiss>` in each of N shards and picks the shard from the top bits of the hash, so threads that write different shards rarely wait for each other. Shards next to each other in memory can still slow each other down. A `Mutex` is a few bytes, and Apple's cache lines are 128 bytes, as you measured in chapter 07. Several locks then share one line, and every lock operation on one core pulls the line away from the others. That effect is called false sharing. `#[repr(align(128))]` on a wrapper struct gives each shard its own line.
+Writes need a lock. A sharded table puts one `Mutex<Swiss>` in each of N shards and picks the shard from the top bits of the hash, so threads that write different shards rarely wait for each other. Shards next to each other in memory can still slow each other down. A `Mutex<Swiss>` is about 100 bytes, and Apple's cache lines are 128 bytes, as you measured in chapter 07. Two neighboring shards then usually share a line, and every lock operation or `live` update on one shard pulls the line away from its neighbor. That effect is called false sharing. `#[repr(align(128))]` on a wrapper struct gives each shard its own line.
 
 Mara Bos is a former lead of the Rust library team. The first chapter of her book covers threads, scoped threads, `Rc` and `Arc`, interior mutability, `Send` and `Sync`, and Rust's `Mutex` for readers who know concurrency from another language.
 
 ### Study
 
-- [Mara Bos: Rust Atomics and Locks, chapter 1: Basics of Rust Concurrency](https://marabos.nl/atomics/basics.html) (read, 2 h): From "Threads in Rust" through "Locking: Mutexes and RwLocks". "Waiting: Parking and Condition Variables" is optional, since chapter 09 covered condition variables. The rest of the book is the Rust version of chapter 09's atomics and is not needed here.
+- [Mara Bos: Rust Atomics and Locks, chapter 1: Basics of Rust Concurrency](https://mara.nl/atomics/basics.html) (read, 2 h): From "Threads in Rust" through "Locking: Mutexes and RwLocks". "Waiting: Parking and Condition Variables" is optional, since chapter 09 covered condition variables. The rest of the book is the Rust version of chapter 09's atomics and is not needed here.
 - [Rust standard library: thread::scope](https://doc.rust-lang.org/std/thread/fn.scope.html) (reference, as needed): The example, and the rules for borrowing from the enclosing function.
 
 ### Build
@@ -373,7 +384,9 @@ mod epoll;
 mod kqueue;
 ```
 
-`BorrowedFd<'_>` is a descriptor borrowed for the length of the call. Any `TcpStream` hands one out through `as_fd()`, and the caller keeps ownership. The token is the client's slot index, as in mio, so an event leads straight to its `Client` without a search.
+`BorrowedFd<'_>` is a descriptor borrowed for the length of the call. Any `TcpStream` hands one out through `as_fd()`, and the caller keeps ownership. The token is the client's slot index, as in mio, so an event leads straight to its `Client` without a search. `watch` must work for a new descriptor and for one already registered, because pausing and resuming reads changes the interest of a live client. On epoll, `EPOLL_CTL_ADD` fails with `EEXIST` for a registered descriptor, so the epoll version tries `EPOLL_CTL_MOD` first and falls back to `EPOLL_CTL_ADD` on `ENOENT`. On kqueue, `EV_ADD` updates a filter that already exists.
+
+The port comes from the command line. `std::env::args().nth(1)` returns it as an `Option<String>`, as in section 12.1, and `parse::<u16>()` turns it into a number, as in the guessing game of chapter 2.
 
 mio is the library that Tokio, Rust's main async runtime, uses to wait on sockets. Its `epoll.rs` and `kqueue.rs` files are each a few hundred lines that wrap these calls the way you are about to. Read them for three patterns. The descriptor of the epoll or kqueue instance is an `OwnedFd`. A `syscall!` macro turns a return value of -1 into `std::io::Error::last_os_error()`, the Rust form of `errno`. And `select` fills a `Vec` with spare capacity through a raw pointer and then sets its length with `set_len`, with a comment that says why that is sound. mio registers sockets edge-triggered, with `EPOLLET` and `EV_CLEAR`. Your loop stays level-triggered, as in chapter 08, so leave those flags out.
 
@@ -410,7 +423,7 @@ struct Request<'a> {
 fn parse_head(buf: &[u8]) -> Result<Option<(Request<'_>, usize)>, Status>
 ```
 
-While a `Request` is alive, the compiler rejects any code that writes to the input buffer or shifts the next request to its front. You handle the request, drop it, and only then remove the `n` bytes. `Status` is an enum with one variant per code you send, and a `match` gives each variant its number and reason phrase. The file table becomes a `HashMap<String, Vec<u8>>` built at startup from the command line, as in chapter 08.
+While a `Request` is alive, the compiler rejects any code that writes to the input buffer or shifts the next request to its front. You handle the request, drop it, and only then remove the `n` bytes. `Status` is an enum with one variant per code you send, and a `match` gives each variant its number and reason phrase. The file table becomes a `HashMap<String, Vec<u8>>` built at startup from the command line, as in chapter 08. `std::fs::read` returns a file's bytes as a `Vec<u8>`, the byte form of the `fs::read_to_string` from section 12.2.
 
 The slice methods `windows(4)` with `position` find `\r\n\r\n`, `split` cuts at spaces and line ends, `trim_ascii` removes surrounding spaces, and `eq_ignore_ascii_case` compares header names. `std::str::from_utf8` turns a path into a `&str` for the table lookup, and a path that is not UTF-8 gets 404.
 

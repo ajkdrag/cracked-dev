@@ -6,7 +6,7 @@ weeks: 10
 project: An SDL3 platform layer with live code reload and input replay, a software rasterizer that draws clipped, depth-tested, perspective-correct textured 3D scenes and runs on NEON and the job system, and a multithreaded C port of Ray Tracing in One Weekend.
 ---
 
-Chapter 12 ended with Kaleidoscope compiled through LLVM IR into object files that link with C. Most programs in this book so far read input, compute and write output, or answer requests on a socket. The CHIP-8 front end of chapter 06 was the exception. It opened a window, pushed a 64 by 32 texture to it and ran a 60 Hz loop. This chapter builds on that loop and makes the picture the whole job. You write a program that computes every pixel of a 960 by 540 frame from a list of triangles and a camera, 60 times a second, with no graphics API between your code and the pixels.
+Chapter 12 ended with Kaleidoscope compiled through LLVM IR into object files that link with C. Most programs in this book so far read input, compute and write output, or answer requests on a socket. The CHIP-8 front end of chapter 06 was the exception. It opened a window, pushed a 64 by 32 texture to it and ran a 60 Hz loop. This chapter builds on that loop. You write a program that computes every pixel of a 960 by 540 frame from a list of triangles and a camera, 60 times a second, with no graphics API between your code and the pixels.
 
 The program has two halves. The platform layer talks to macOS through SDL3: window, input, timing, memory and loading code. The game is everything else, one function that the platform calls once per frame with the input and a pixel buffer. That split lets you reload the game code while it runs and replay recorded input, two tools you build in the first two steps and use for the rest of the chapter. Then comes the renderer: lines, triangles with exact edge rules, the transforms from a 3D model to the screen, clipping, a depth buffer and textures. You also write a ray tracer, a second way to turn geometry into pixels, and you finish by making the rasterizer fast with NEON and the job system.
 
@@ -56,7 +56,7 @@ The platform passes input to the game as plain data. `GameInput` holds `dt`, the
 ### Study
 
 - [Handmade Hero day 011: The Basics of Platform API Design](https://guide.handmadehero.org/code/day011/) (watch, 50 min): From 11:23 "Topic of the day revealed!" to 1:01:00, where the Q&A starts. Casey works in C-style C++ on Win32. Watch for the shape of the boundary and ignore the Windows calls. Note the question at 1:03:22 about threading in the platform layer. It comes back in the last step of this chapter.
-- [Handmade Hero day 014: Platform-independent Game Memory](https://guide.handmadehero.org/code/day014/) (watch, 1 h): From 0:58 to 58:24, plus his answer at 1:04:13 on permanent and transient storage. He reserves memory with `VirtualAlloc` at a fixed base address. Use `mmap` with a null address instead. A fixed address only matters for his later snapshot files.
+- [Handmade Hero day 014: Platform-independent Game Memory](https://guide.handmadehero.org/code/day014/) (watch, 15 min): From 17:25 "Adding memory to the platform abstraction" to 28:40 "Put it where you want it", plus his answer at 1:04:13 on permanent and transient storage. Skip the rest, which covers allocation habits you have from chapter 04 and Windows build options. He reserves memory with `VirtualAlloc`. Use `mmap` with a null address instead.
 - [SDL3 wiki: SDL_LockTexture](https://wiki.libsdl.org/SDL3/SDL_LockTexture) (reference, as needed): The `pitch` parameter and the remark that the locked memory is write-only and may not hold last frame's pixels. Other functions are in the API list from chapter 06: `SDL_UnlockTexture`, `SDL_SetRenderLogicalPresentation`, `SDL_EVENT_MOUSE_MOTION` and `SDL_GetTicksNS`.
 
 ### Build
@@ -95,9 +95,9 @@ Day 023 adds the second tool. Press L and the platform copies the whole permanen
 1. Extend `build.sh` so that `LIB=1 sh build.sh game` compiles `src/game.c` with `-dynamiclib` into `$out/game.tmp.dylib` and then moves it to `$out/game.dylib`. Keep the sanitizer flags in debug builds of both the library and the platform.
 2. In `game.h`, declare `typedef void GameUpdateAndRender(GameMemory *, GameInput *, Framebuffer *);`. The platform holds a pointer of that type, set to a stub that clears the screen when no library is loaded.
 3. Write `load_game(n)` in the platform: copy `game.dylib` to `game_loaded_<n>.dylib`, `dlopen` it with `RTLD_NOW`, look up the function, and on success `dlclose` the previous handle. F5 calls it. Print the load count and any error.
-4. Recording and playback on L, as above. At the start and at the end of each playback pass, print an FNV-1a hash of the permanent block, the hash from chapter 04.
+4. Recording and playback on L, as above. At the start and at the end of each playback pass, print an FNV-1a hash of the permanent block. You typed the 32-bit FNV-1a into clox in chapter 11. Use the 64-bit version here: start a `uint64_t` at 14695981039346656037, then for each byte xor the byte in and multiply by 1099511628211.
 5. Record five seconds of moving the square. While it loops, change the gradient colors in `game.c`, rebuild and press F5.
-6. Plant a bug: add `const char *label` to `GameState`, set it to a string literal on the first frame and print it every second. Add a few lines of code above that function, rebuild and reload, twice, and watch what happens.
+6. Plant a bug: add `const char *label` to `GameState`, set it to a string literal on the first frame and print it every second. Add a few lines of code above that function, rebuild and reload, twice, and watch what happens. Print the pointer's value. In lldb, `image list` shows the address range where each `game_loaded_<n>.dylib` is mapped, and `image lookup --address <ptr>` names the library and section that hold an address. Run both before a reload, then run them again after it.
 
 ### Done when
 
@@ -156,14 +156,20 @@ Fixed point comes first. Snap vertex positions to 1/16 of a pixel and do the edg
 
 Orientation comes second. Giesen's pictures have y pointing up. Your coordinates have y pointing down, which flips the sign of `orient2d` for a triangle that looks the same on screen. Do not convert anything. Apply his formulas to your numbers as they are: if `orient2d(v0, v1, v2)` is negative, swap `v1` and `v2`, and if it is zero, draw nothing. Every triangle then reaches the loop with a positive area.
 
-The fill rule comes third. A pixel center that lies exactly on an edge shared by two triangles must go to exactly one of them. Giesen's top-left rule does that with one bias per edge, computed once per triangle. Use his rule as written, on your y-down numbers. On screen it then selects the bottom and left edges instead of the top and left ones, which is just as consistent. The only requirement is that every shared edge goes to one side.
+The fill rule comes third. A pixel center that lies exactly on an edge shared by two triangles must go to exactly one of them. Giesen's top-left rule does that with one bias per edge, computed once per triangle: 0 for an edge the rule accepts, -1 for the others. He states the rule in words, and with y down the words can be read two ways. Use it in numbers, on your fixed-point coordinates after the swap:
+
+```
+  is_top_left(a, b) = (a.y == b.y && b.x < a.x) || b.y < a.y
+```
+
+On screen this selects the bottom and left edges instead of the top and left ones. That is just as consistent. Any rule passes the test below as long as every shared edge goes to exactly one side.
 
 To test all three, draw into a buffer of counters instead of colors. Each covered pixel increments its counter. A grid of quads that tiles the screen, with jittered shared vertices, must leave every counter at exactly 1.
 
 ### Study
 
-- [Fabian Giesen: The barycentric conspiracy](https://fgiesen.wordpress.com/2013/02/06/the-barycentric-conspirac/) (read, 40 min): All of it. The post sets up the orientation test, edge functions as signed areas, and barycentric interpolation. Giesen is a programmer at RAD Game Tools, and the series takes apart the software rasterizer in Intel's Software Occlusion Culling demo.
-- [Fabian Giesen: Triangle rasterization in practice](https://fgiesen.wordpress.com/2013/02/08/triangle-rasterization-in-practice/) (read, 40 min): All of it. His loop samples at integer coordinates. Yours samples at pixel centers, which is the `+ 8` in the box above. His `isTopLeft` is described in words, so write it from the two rules he states for counterclockwise triangles.
+- [Fabian Giesen: The barycentric conspiracy](https://fgiesen.wordpress.com/2013/02/06/the-barycentric-conspirac/) (read, 40 min): All of it. The post sets up the orientation test, edge functions as signed areas, and barycentric interpolation. Giesen worked at RAD Game Tools when he wrote the series, which takes apart the software rasterizer in Intel's Software Occlusion Culling demo.
+- [Fabian Giesen: Triangle rasterization in practice](https://fgiesen.wordpress.com/2013/02/08/triangle-rasterization-in-practice/) (read, 40 min): All of it. His loop samples at integer coordinates. Yours samples at pixel centers, which is the `+ 8` in the box above. His `isTopLeft` is described in words. Use the numeric version in the prose above.
 
 ### Build
 
@@ -235,25 +241,25 @@ Clip a triangle as a polygon, one plane at a time. This is the Sutherland-Hodgma
 
 ```
   a inside,  b inside    emit b
-  a inside,  b outside   emit the crossing point
-  a outside, b inside    emit the crossing point, then b
+  a inside,  b outside   emit crossing(a, b)
+  a outside, b inside    emit crossing(b, a), then b
   a outside, b outside   emit nothing
 
-  crossing:  t = da / (da - db),  P = a + t * (b - a)
-             and the same t for every attribute: color, later UV
+  crossing(in, out):  t = d_in / (d_in - d_out),  P = in + t * (out - in)
+                      and the same t for every attribute: color, later UV
 ```
 
 Each plane can add at most one vertex, so a triangle clipped by six planes has at most 9. Triangulate the result as a fan from its first vertex. After all six planes every vertex satisfies `|x|, |y| <= w`, so every fixed-point coordinate lies inside the viewport. That replaces both temporary checks from the last step.
 
-Clipping can open cracks between triangles that used to share an edge exactly. Two neighbors walk the shared edge in opposite directions, so one computes the crossing from `a` toward `b` and the other from `b` toward `a`. In floating point the two results can differ in the last bit. Always compute the crossing from the inside vertex toward the outside vertex. Then both triangles do the same arithmetic on the same inputs and get the same point.
+Clipping can open cracks between triangles that used to share an edge exactly. Two neighbors walk the shared edge in opposite directions, so one computes the crossing from `a` toward `b` and the other from `b` toward `a`. In floating point the two results can differ in the last bit. The `crossing` in the box always starts at the inside vertex and moves toward the outside vertex. Then both triangles do the same arithmetic on the same inputs and get the same point.
 
 Lisitsa clips against only the near and far planes, and he re-triangulates after each plane with a case per sign pattern. Read his part 5 for the clip-space equations, the edge intersection and the test scenes, then write the polygon version above against all six planes.
 
-The depth buffer solves overlapping objects. It holds one value per pixel, the depth of the nearest surface drawn there so far. Clear it to the far value every frame. A pixel is drawn only if its depth is less than the stored one, and then it stores its own. Use NDC `z`, interpolated across the triangle. NDC `z` is linear in screen space, so interpolate it with the plain barycentric weights from step 4. Lisitsa's part 6 uses the perspective-corrected weights from his part 5 for depth too. Those weights are right for color and texture coordinates, which you add in the next step, and wrong for `z/w`. Store depth as a `float` in [0, 1], and keep the near plane at 0.1 or more. NDC `z` crowds most of its precision close to the near plane, and a smaller near distance makes distant surfaces fight.
+The depth buffer solves overlapping objects. It holds one value per pixel, the depth of the nearest surface drawn there so far. Clear it to 1.0f, the far value, every frame. A pixel is drawn only if its depth is less than the stored one, and then it stores its own. Use NDC `z`, interpolated across the triangle. NDC `z` is linear in screen space, so interpolate it with the plain barycentric weights from step 4. Lisitsa's part 6 uses the perspective-corrected weights from his part 5 for depth too. Those weights are right for color and texture coordinates, which you add in the next step, and wrong for `z/w`. NDC `z` runs from -1 to 1, so store `z * 0.5f + 0.5f`, a `float` in [0, 1]. Keep the near plane at 0.1 or more. NDC `z` crowds most of its precision close to the near plane, and a smaller near distance makes distant surfaces fight.
 
 ### Study
 
-- [Nikita Lisitsa: Implementing a tiny CPU rasterizer, part 5: Fixing issues with 3D](https://lisyarus.github.io/blog/posts/implementing-a-tiny-cpu-rasterizer-part-5.html) (read, 40 min): From "Clipping" through "Clipping a triangle: testing". The rest of the post is for the next step.
+- [Nikita Lisitsa: Implementing a tiny CPU rasterizer, part 5: Fixing issues with 3D](https://lisyarus.github.io/blog/posts/implementing-a-tiny-cpu-rasterizer-part-5.html) (read, 70 min): All of it, in two sittings. Read "Clipping" through "Clipping a triangle: testing" now. Read "Perspective-correct interpolation: the problem" to the end when you start the next step.
 - [Nikita Lisitsa: Implementing a tiny CPU rasterizer, part 6: Adding some depth](https://lisyarus.github.io/blog/posts/implementing-a-tiny-cpu-rasterizer-part-6.html) (read, 25 min): All of it. Interpolate depth with screen-space weights, as explained above. His enum of depth test modes is more than you need. Implement LESS.
 
 ### Build
@@ -272,7 +278,7 @@ The clip tests pass. Flying through and between the cubes never shows a triangle
 
 A texture is an image glued to a triangle. Each vertex carries a texture coordinate `(u, v)`, where (0, 0) and (1, 1) are opposite corners of the image. The rasterizer interpolates `u` and `v` per pixel and reads the color there.
 
-Interpolating with the screen-space weights from step 4 is wrong for a triangle that is not parallel to the screen. Equal steps on the screen are not equal steps on the surface, because the far end of the surface is compressed. Lisitsa shows that `1/w` is linear across the screen while `u` and `v` are not, and that the fix is a change of weights: divide each barycentric weight by its vertex's `w`, then normalize the three so they sum to 1. Use these corrected weights for every attribute except depth.
+Interpolating with the screen-space weights from step 4 is wrong for a triangle that is not parallel to the screen. Equal steps on the screen are not equal steps on the surface, because the far end of the surface is compressed. The second half of Lisitsa's part 5, assigned in the last step, shows that `1/w` is linear across the screen while `u` and `v` are not, and that the fix is a change of weights: divide each barycentric weight by its vertex's `w`, then normalize the three so they sum to 1. Use these corrected weights for every attribute except depth.
 
 Reading the texture is sampling. Casey's day 093 does it for a 2D sprite on a blackboard first and in code after:
 
@@ -289,7 +295,6 @@ A checkerboard floor that stretches to the horizon shows all of it in one pictur
 
 ### Study
 
-- [Nikita Lisitsa: Implementing a tiny CPU rasterizer, part 5: Fixing issues with 3D](https://lisyarus.github.io/blog/posts/implementing-a-tiny-cpu-rasterizer-part-5.html) (read, 30 min): From "Perspective-correct interpolation: the problem" to the end.
 - [Handmade Hero day 093: Textured Quadrilaterals](https://guide.handmadehero.org/code/day093/) (watch, 50 min): From 7:26 "Blackboard: Texture mapping" to 56:55. His quad is 2D and its `u` and `v` come from its own axes, so skip the details of his edge setup. The texel lookup at 24:59 and the bilinear blend from 38:56 on carry over to your rasterizer unchanged.
 
 ### Build
@@ -306,7 +311,7 @@ With corrected weights the checkerboard lines are straight at every camera angle
 
 ## A ray tracer
 
-The rasterizer loops over triangles and then over the pixels each one covers. A ray tracer turns the loops around. For each pixel it shoots a ray from the camera through that pixel, finds the nearest surface the ray hits, and asks that surface where the light came from by shooting more rays. Shadows, reflections and refraction then follow from the same loop, at the cost of many rays per pixel. Shirley's book builds one in 13 short sections: spheres, a camera you position with look-from, look-at and an up vector, antialiasing by averaging random samples per pixel, then diffuse, metal and glass materials.
+The rasterizer loops over triangles and then over the pixels each one covers. A ray tracer turns the loops around. For each pixel it shoots a ray from the camera through that pixel, finds the nearest surface the ray hits, and asks that surface where the light came from by shooting more rays. Shadows, reflections and refraction then follow from the same loop, at the cost of many rays per pixel. Shirley's book builds one in 13 short chapters: spheres, a camera you position with look-from, look-at and an up vector, antialiasing by averaging random samples per pixel, then diffuse, metal and glass materials.
 
 The book is C++ with classes, virtual functions and `shared_ptr`. Port it to C in the style of this book. A `V3` with plain functions, which you have from step 5. One flat array of spheres. A material as a `struct` with a type tag and a `switch`, in place of the virtual `scatter`. The arena in place of `shared_ptr`. Write the output with your step 3 `ppm_write` in place of the book's text format, and view it with your viewer.
 
@@ -314,7 +319,7 @@ Every pixel is independent, so the work splits across cores with your chapter 09
 
 ### Study
 
-- [Peter Shirley, Trevor David Black, Steve Hollasch: Ray Tracing in One Weekend](https://raytracing.github.io/books/RayTracingInOneWeekend.html) (do, 12 h): Version 4.0.2. Sections 1 to 13, then 14.1 "A Final Render". Skip 6.6 "Some New C++ Features" and replace 8.1 "Some Random Number Utilities" with your per-pixel generator. Each section ends with an image. Compare yours before you move on.
+- [Peter Shirley, Trevor David Black, Steve Hollasch: Ray Tracing in One Weekend](https://raytracing.github.io/books/RayTracingInOneWeekend.html) (do, 12 h): Version 4.0.2. Chapters 1 to 13, then section 14.1 "A Final Render". Skip 6.6 "Some New C++ Features" and replace 8.1 "Some Random Number Utilities" with your per-pixel generator. Each section ends with an image. Compare yours before you move on.
 
 ### Build
 
@@ -329,7 +334,7 @@ The final image shows the book's field of spheres with matte, metal and glass ba
 
 ## A faster rasterizer: incremental edges, NEON and tiles
 
-The scalar rasterizer is now the oracle. Every faster version must produce the same bytes, and `run_images.sh` checks that. Start with a profile, using the profiler from chapter 07, of the textured scene at 960 by 540 and at 1920 by 1080. Then make three changes, in this order, and measure after each.
+The scalar rasterizer is now the reference. Every faster version must produce the same bytes, and `run_images.sh` checks that. Start with a profile, using the profiler from chapter 07, of the textured scene at 960 by 540 and at 1920 by 1080. Then make three changes, in this order, and measure after each.
 
 Incremental edge functions come first. Each edge function is affine in `x` and `y`. One step right adds a constant `A`, one step down adds a constant `B`. Giesen's post for this step replaces two multiplies per edge per pixel with one add, still in integers, so the coverage stays bit-exact.
 
@@ -337,7 +342,7 @@ NEON comes second. Process 4 pixels of a row at once. The three edge values beco
 
 Tiles come third. Split the screen into 64 by 64 pixel tiles. After clipping and setup, append each triangle to the list of every tile its bounding box touches, in the transient arena. Then run one job per tile with `parallel_for`. A job rasterizes its tile's triangles in the order they were submitted, with the bounding box clamped to the tile. Tiles do not share pixels, so no job needs a lock, and each pixel sees the same triangles in the same order as in the scalar version. The color and depth of one tile take 32 KB, which fits in the L1 cache of a performance core. Giesen's last section describes the same binning in the rasterizer he studies.
 
-The job system belongs to the platform, the question Casey answered at 1:03:22 on day 011. The platform starts the workers once and puts a pointer to its `parallel_for` in `GameMemory`, so the game calls it like any other platform service. `parallel_for` returns before `game_update_and_render` does, so no job is still running code from the old library when F5 unloads it.
+The platform owns the job system. Casey answered that question on day 011 at 1:03:22. The platform starts the workers once and puts a pointer to its `parallel_for` in `GameMemory`, so the game calls it like any other platform service. `parallel_for` returns before `game_update_and_render` does, so no job is still running code from the old library when F5 unloads it.
 
 ### Study
 
@@ -353,10 +358,10 @@ The job system belongs to the platform, the question Casey answered at 1:03:22 o
 
 ### Done when
 
-`run_images.sh` passes for all four versions on the Mac, and the scalar and incremental versions pass in Linux too. Your table has all 16 numbers, and you can explain each ratio from the profile: what fraction of the scalar time NEON could touch, what the scalar texture reads cost, and how close the tiled version comes to the core count. The textured scene at 960 by 540 runs within the 16.7 ms budget with room to spare, which the frame-time graph shows. Reaching 60 Hz at 1920 by 1080 is a stretch goal.
+`run_images.sh` passes for all four versions on the Mac and in the Linux VM, which is ARM64 and runs the same NEON code. The NEON and tiled versions run clean under ASan and UBSan in the VM. Your table has all 16 numbers, and you can explain each ratio from the profile: what fraction of the scalar time NEON could touch, what the scalar texture reads cost, and how close the tiled version comes to the core count. The textured scene at 960 by 540 runs within the 16.7 ms budget with room to spare, which the frame-time graph shows. Reaching 60 Hz at 1920 by 1080 is a stretch goal.
 
 ## Where this leads
 
-You own a whole real-time program. A platform layer feeds a game function input, time and memory, reloads its code while it runs, and replays recorded input exactly. The game draws a textured 3D scene through the same stages every graphics API has: vertex transforms, clipping, perspective divide, viewport, rasterization with exact coverage rules, perspective-correct interpolation, texture sampling and a depth test. Golden images check every stage, the job system and NEON make it fast, and a ray tracer showed you the other way to make an image.
+You own a whole real-time program. A platform layer feeds a game function input, time and memory, reloads its code while it runs, and replays recorded input exactly. The game draws a textured 3D scene through the same stages every graphics API has: vertex transforms, clipping, perspective divide, viewport, rasterization with exact coverage rules, perspective-correct interpolation, texture sampling and a depth test.
 
 All of that work ran on the CPU. A GPU runs the same stages with thousands of lanes, fixed-function hardware for clipping, rasterization and texture filtering, and programs you supply for the per-vertex and per-pixel parts. Chapter 14, Game engines and shipped games, introduces that pipeline. The vertex shader is your transform code, the fragment shader is your per-pixel code, and the hardware does the rest. You build a small engine, script it with the Lua you embedded in chapter 11, and ship two games, one 2D and one 3D.
