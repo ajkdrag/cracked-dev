@@ -6,9 +6,9 @@ weeks: 10
 project: clox, a bytecode compiler and virtual machine for Lox in C that passes the book's test suite, then Lua 5.5 embedded in your chapter 08 HTTP server as route handlers that reload while the server runs.
 ---
 
-Chapter 10 ported your hash table and event loop to Rust. The borrow checker decided at compile time how long each value lives and who may change it. This chapter goes back to C and builds a language whose values live as long as the running program can still reach them. A garbage collector decides that at run time, and you write the collector.
+Chapter 10 ported your hash table and HTTP server to Rust and ended with your own verdict on the language. The borrow checker decided at compile time how long each value lives and who may change it. This chapter goes back to C and builds a language whose values live as long as the running program can still reach them. A garbage collector decides that at run time, and you write the collector.
 
-You have written interpreters before. The 8086 simulator in chapter 05 and the CHIP-8 emulator in chapter 06 each fetched an instruction, decoded it and executed it, in a loop. Those instruction sets were designed by someone else, for hardware. Here you design an instruction set for a programming language, write the compiler that produces it and write the loop that runs it. The guide is part III of Bob Nystrom's Crafting Interpreters, which builds clox: a scanner, a single-pass compiler, a stack-based virtual machine, a mark-sweep garbage collector, closures and classes, in about 2,500 lines of C. Chapter 04 already used one section of the same book for recursive descent parsing.
+You have written interpreters before. The 8086 simulator in chapter 05 and the CHIP-8 emulator in chapter 06 each fetched an instruction, decoded it and executed it, in a loop. Those instruction sets were designed by someone else, for hardware. Here you design an instruction set for a programming language, write the compiler that produces it and write the loop that runs it. The guide is part III of Bob Nystrom's Crafting Interpreters, which builds clox: a scanner, a single-pass compiler, a stack-based virtual machine, a mark-sweep garbage collector, closures and classes, in about 2,500 lines of C. Its chapters run from 1 to 30, and this chapter writes them as CI 14 to CI 30 so they do not mix with the chapters of this book. Chapter 04 already used one section of the same book for recursive descent parsing.
 
 The second half of the chapter reads and uses a production interpreter. Lua is about 32,000 lines of C. It is embedded in Neovim, Redis and many game engines, all through the same small C API. You learn the language, compare its register-based VM with clox, and then put Lua handlers into the HTTP server from chapter 08. Chapter 14 scripts its games in Lua and builds on that embedding.
 
@@ -26,7 +26,7 @@ A program for clox becomes a chunk: an array of bytes that holds instructions, a
   constants: [0] 1.2   [1] 3.4
 ```
 
-The VM is the loop you wrote twice already. `ip` points at the next byte, like the program counter in your 8086 simulator. A `switch` on the opcode runs the instruction. Instead of registers, clox keeps intermediate values on a value stack. An operation pops its operands and pushes its result. Chapter 15 runs this hand-built chunk:
+The VM is the loop you wrote twice already. `ip` points at the next byte, like the program counter in your 8086 simulator. A `switch` on the opcode runs the instruction. Instead of registers, clox keeps intermediate values on a value stack. An operation pops its operands and pushes its result. CI 15 runs this hand-built chunk:
 
 ```
   -((1.2 + 3.4) / 5.6)
@@ -41,7 +41,7 @@ The VM is the loop you wrote twice already. `ip` points at the next byte, like t
   OP_RETURN            []          prints the popped value
 ```
 
-Read the Lox language chapter first. It describes the language you implement: its types, operators, statements, functions, closures and classes. Then build chapters 14 and 15. Chapter 14 routes every allocation through one function, `reallocate`. Chapter 04 taught you to allocate from arenas, where everything dies at once. A garbage-collected language frees objects one at a time. In chapter 26 `reallocate` also starts a collection when the heap has grown enough. Chapter 15 ends with a design note on register-based bytecode. Read it, because Lua uses that design and you meet it again in step 8.
+Read the Lox language chapter first. It describes the language you implement: its types, operators, statements, functions, closures and classes. Then build CI 14 and CI 15. CI 14 routes every allocation through one function, `reallocate`. Chapter 04 taught you to allocate from arenas, where everything dies at once. A garbage-collected language frees objects one at a time. In CI 26 `reallocate` also starts a collection when the heap has grown enough. CI 15 ends with a design note on register-based bytecode. Read it, because Lua uses that design and you meet it again in step 8.
 
 clox is split into `.c` files with headers, the way the book writes it. Two of those files define static functions with the same name, so the one-translation-unit build from chapter 01 does not work. Write `build_clox.sh`, a copy of `build.sh` that compiles every file in `src/clox/` into `out/<os>-<mode>/clox`. Chapter 05 covered what the linker does with those object files. The book's code does not follow `-Wconversion`, so for clox use `-Wall -Wextra -Wno-unused-parameter` and drop `-Werror`. Fix every warning that comes from a typing mistake.
 
@@ -54,8 +54,8 @@ clox is split into `.c` files with headers, the way the book writes it. Two of t
 ### Build
 
 1. Write `build_clox.sh` as above, with a debug mode that uses chapter 01's sanitizers and a release mode at `-O2`.
-2. Type chapters 14 and 15 into `src/clox/`. Turn on `DEBUG_TRACE_EXECUTION` and run the book's chunk for `-((1.2 + 3.4) / 5.6)`.
-3. Challenge 1 of chapter 15: write the bytecode for `1 * 2 + 3`, `1 + 2 * 3`, `3 - 2 - 1` and `1 + 2 * 3 - 4 / -5` on paper. Then build each chunk by hand in `main`, run it with tracing on, and check the stack after each instruction against your paper.
+2. Type CI 14 and CI 15 into `src/clox/`. Turn on `DEBUG_TRACE_EXECUTION` and run the book's chunk for `-((1.2 + 3.4) / 5.6)`.
+3. Challenge 1 of CI 15: write the bytecode for `1 * 2 + 3`, `1 + 2 * 3`, `3 - 2 - 1` and `1 + 2 * 3 - 4 / -5` on paper. Then build each chunk by hand in `main`, run it with tracing on, and check the stack after each instruction against your paper.
 
 ### Done when
 
@@ -63,7 +63,7 @@ Both builds run the four hand-built chunks on the Mac and in Linux with no sanit
 
 ## Scanning and a Pratt compiler
 
-So far you built chunks by hand. The compiler builds them from source text in two parts. The scanner turns characters into tokens: `print`, `(`, `1.5`, `"hi"`. It works on demand. The compiler asks for the next token when it needs one, so clox never holds a list of tokens. The keyword check in chapter 16 is a small trie written as nested `switch` statements, a state machine you can read in the code.
+So far you built chunks by hand. The compiler builds them from source text in two parts. The scanner turns characters into tokens: `print`, `(`, `1.5`, `"hi"`. It works on demand. The compiler asks for the next token when it needs one, so clox never holds a list of tokens. The keyword check in CI 16 is a small trie written as nested `switch` statements, a state machine you can read in the code.
 
 The compiler is single-pass. It parses and emits bytecode at the same time, with no syntax tree in between. For expressions it uses a Pratt parser. Chapter 04's JSON parser had one function per grammar rule. A Pratt parser has one table instead, indexed by token type. Each row holds a prefix parse function, an infix parse function and a precedence. `parsePrecedence(p)` parses the prefix expression at the current token, then keeps folding infix operators into it while their precedence is at least `p`. `binary()` compiles its right operand at one level higher than its own operator, which makes `8 - 3 - 1` group to the left. Here is the call trace for `1 + 2 * 3`:
 
@@ -84,9 +84,9 @@ The compiler is single-pass. It parses and emits bytecode at the same time, with
 
 The bytecode comes out in the order the stack machine needs it: `1 2 3 * +`. Follow the same trace for `8 - 3 - 1` and watch the second `-` fail the test inside `parsePrecedence(FACTOR)` and go back up a level.
 
-Chapter 16 prints every token from a temporary loop in `compile()`, and chapter 17 replaces that loop. Keep that loop. Move the loop into `main.c` behind a `--tokens` flag, so `clox --tokens file.lox` prints the token stream in the chapter 16 format. Step 8 uses it.
+CI 16 prints every token from a temporary loop in `compile()`, and CI 17 replaces that loop. Keep that loop. Move the loop into `main.c` behind a `--tokens` flag, so `clox --tokens file.lox` prints the token stream in the CI 16 format. Step 8 uses it.
 
-From here on, test against the book's own suite. The test runner is a Dart program in the book's repository. Install Dart on the Mac with Homebrew, clone the repository, run `make get` in it, then point the runner at your binary with a suite named after the chapter you have finished. The suites for chapters 17 to 20 contain a single expression test. From chapter 21 on they run hundreds of tests. Run the suite on the Mac. Your clox still builds and runs in Linux.
+From here on, test against the book's own suite. The test runner is a Dart program in the book's repository. Install Dart on the Mac with Homebrew, clone the repository, run `make get` in it, then point the runner at your binary with a suite named after the chapter you have finished. The suites for CI 17 to CI 20 contain a single expression test. From CI 21 on they run hundreds of tests. Run the suite on the Mac. Your clox still builds and runs in Linux.
 
 ### Study
 
@@ -96,10 +96,10 @@ From here on, test against the book's own suite. The test runner is a Dart progr
 
 ### Build
 
-1. Type chapters 16 and 17. Turn on `DEBUG_PRINT_CODE` and keep the `--tokens` flag.
+1. Type CI 16 and CI 17. Turn on `DEBUG_PRINT_CODE` and keep the `--tokens` flag.
 2. Run `dart tool/bin/test.dart chap17_compiling --interpreter <path to your clox>` from the clone.
 3. Write `tests/expr.sh`, which writes each expression to a file with `printf`, without a trailing newline, runs clox on it and checks the printed value: `1 + 2 * 3` is 7, `8 - 3 - 1` is 4, `2 * (3 + 4)` is 14, `-(-3)` is 3, `(-1 + 2) * 3 - -4` is 7. Add two errors: `1 +` must print `[line 1] Error at end: Expect expression.` and exit with status 65, and `(1` must report a missing `)`.
-4. Challenge 1 of chapter 17: write the call trace for `(-1 + 2) * 3 - -4` on paper first, then add a temporary `fprintf(stderr, ...)` at the top of `parsePrecedence`, `unary`, `binary`, `grouping` and `number` and compare.
+4. Challenge 1 of CI 17: write the call trace for `(-1 + 2) * 3 - -4` on paper first, then add a temporary `fprintf(stderr, ...)` at the top of `parsePrecedence`, `unary`, `binary`, `grouping` and `number` and compare.
 
 ### Done when
 
@@ -107,9 +107,9 @@ The chap17 suite and `tests/expr.sh` pass on the Mac, and `tests/expr.sh` passes
 
 ## Values, strings and a hash table
 
-Until now every value was a `double`. Lox also has booleans, `nil` and strings, so a value becomes a type tag plus the fields that kind uses, as in chapter 04's `Json` struct. clox packs the payloads into a `union`, so a `Value` stays 16 bytes on ARM64: a 4-byte tag, 4 bytes of padding and an 8-byte payload. Chapter 30 squeezes it into 8.
+Until now every value was a `double`. Lox also has booleans, `nil` and strings, so a value becomes a type tag plus the fields that kind uses, as in chapter 04's `Json` struct. clox packs the payloads into a `union`, so a `Value` stays 16 bytes on ARM64: a 4-byte tag, 4 bytes of padding and an 8-byte payload. CI 30 squeezes it into 8.
 
-Strings do not fit in 8 bytes, so they live on the heap as objects. Every heap object starts with an `Obj` header that holds its type, and a pointer to an `Obj` can be cast to the specific struct after checking that type. Chapter 19 calls this struct inheritance. C allows the cast because a pointer to a struct also points to its first member. Every object is also linked into one list, so the VM can free them all at exit and, in chapter 26, find the ones that are garbage.
+Strings do not fit in 8 bytes, so they live on the heap as objects. Every heap object starts with an `Obj` header that holds its type, and a pointer to an `Obj` can be cast to the specific struct after checking that type. CI 19 calls this struct inheritance. C allows the cast because a pointer to a struct also points to its first member. Every object is also linked into one list, so the VM can free them all at exit and, in CI 26, find the ones that are garbage.
 
 ```
   Value on the VM stack            ObjString on the heap
@@ -121,7 +121,7 @@ Strings do not fit in 8 bytes, so they live on the heap as objects. Every heap o
                                    +-----------------------------+
 ```
 
-Chapter 20 builds the hash table that clox uses for global variables, for interning strings and later for fields and methods. It is open addressing with linear probing and tombstones, at most 75% full, with FNV-1a as the hash. You built a SIMD table on the same principles in chapter 07, with groups of 16 control bytes and a triangular probe sequence. Compare the two designs as you type this one: what a lookup touches in memory, and what deleting a key leaves behind. Interning stores every string once, so two equal strings are the same object and string equality is a pointer comparison.
+CI 20 builds the hash table that clox uses for global variables, for interning strings and later for fields and methods. It is open addressing with linear probing and tombstones, at most 75% full, with FNV-1a as the hash. You built a SIMD table on the same principles in chapter 07, with groups of 16 control bytes and a triangular probe sequence. Compare the two designs as you type this one: what a lookup touches in memory, and what deleting a key leaves behind. Interning stores every string once, so two equal strings are the same object and string equality is a pointer comparison.
 
 ### Study
 
@@ -131,7 +131,7 @@ Chapter 20 builds the hash table that clox uses for global variables, for intern
 
 ### Build
 
-1. Type chapters 18 to 20 and run the chap20_hash suite.
+1. Type CI 18 to CI 20 and run the chap20_hash suite.
 2. Add to `tests/expr.sh`: `!(5 - 4 > 3 * 2 == !nil)` prints `true`, `"st" + "ri" + "ng"` prints `string`, `nil == false` prints `false`, `"a" + "b" == "ab"` prints `true`, and `1 + "a"` prints the runtime error `Operands must be two numbers or two strings.` and exits with status 70.
 3. Write `tests/table_test.c` with its own `main`. A second line in `build_clox.sh` builds it together with every clox file except `main.c`. It takes the key count from `argv`, 100,000 when no number is given. It inserts that many distinct keys, deletes every second one, checks that each remaining key is found and each deleted key is not, then inserts the deleted keys again. Make keys with `copyString`, so call `initVM` first and `freeVM` at the end. Print the table's capacity and its count, tombstones included, after each phase.
 
@@ -156,9 +156,9 @@ Control flow is jumps over bytecode, the same idea as `JMP` in chapter 03's Hack
   end:
 ```
 
-`and` and `or` are jumps too, because they skip the right operand. Loops are a backward jump, `OP_LOOP`. Chapter 23 compiles `for` from the same jumps as `while`.
+`and` and `or` are jumps too, because they skip the right operand. Loops are a backward jump, `OP_LOOP`. CI 23 compiles `for` from the same jumps as `while`.
 
-The build adds a `switch` statement, challenge 1 of chapter 23. It touches the scanner (three keywords and `:`), the compiler and the jump patching. Each case compares against the same switch value, so that value has to stay on the stack across the comparisons. You need one new instruction for that, for example `OP_DUP`, and an `OP_POP` of the switch value on every exit path. Put your tests in the book's `test/` directory, in a new `test/switch/`, using the `// expect:` comments that every test file there uses. The runner then picks them up in every later suite.
+The build adds a `switch` statement, challenge 1 of CI 23. It touches the scanner (three keywords and `:`), the compiler and the jump patching. Each case compares against the same switch value, so that value has to stay on the stack across the comparisons. You need one new instruction for that, for example `OP_DUP`, and an `OP_POP` of the switch value on every exit path. Put your tests in the book's `test/` directory, in a new `test/switch/`, using the `// expect:` comments that every test file there uses. The runner then picks them up in every later suite.
 
 ### Study
 
@@ -168,7 +168,7 @@ The build adds a `switch` statement, challenge 1 of chapter 23. It touches the s
 
 ### Build
 
-1. Type chapters 21 to 23. Run the chap21_global, chap22_local and chap23_jumping suites at the end of each chapter.
+1. Type CI 21 to CI 23. Run the chap21_global, chap22_local and chap23_jumping suites at the end of each chapter.
 2. Add `switch` as challenge 1 specifies: no fallthrough, no `break`, optional `default` at the end.
 3. Write at least five tests in `test/switch/`: a match on the first case, on a later case, no match with a default, no match without one, and case values that are expressions evaluated in order. Add one compile error test, `case` after `default`, with the expected error in a `// [line N] Error` comment as in the book's own error tests.
 4. Disassemble a `switch` with three cases and a default with `DEBUG_PRINT_CODE`, and check every jump offset by hand.
@@ -179,7 +179,7 @@ The chap23_jumping suite passes with your `switch` tests included. The switch va
 
 ## Functions, calls and closures
 
-A function is an object with its own chunk. A call pushes a call frame: the function, a return address in the form of a saved `ip`, and a pointer to where its slots begin on the shared value stack. Arguments are already on the stack when the call starts, so they become the first locals with no copying. This is chapter 05's stack frame built from C structs:
+So far a Lox program is one block of top-level code in one chunk. A function is an object with its own chunk. A call pushes a call frame: the function, a return address in the form of a saved `ip`, and a pointer to where its slots begin on the shared value stack. Arguments are already on the stack when the call starts, so they become the first locals with no copying. This is chapter 05's stack frame built from C structs:
 
 ```
   script calls fib(5), which calls fib(3), which calls fib(1)
@@ -206,7 +206,7 @@ Closures take the longest to type and the longest to debug. A local lives in a s
 
 The scheme comes from Lua, and you read Lua's description of it in step 8.
 
-Chapter 24 also adds native functions, starting with `clock()`, which the book's benchmarks use. From now on you can time Lox programs. Challenge 1 of chapter 24 keeps `ip` in a C local variable instead of reading it through the current frame on every instruction. Do it, and measure it with `test/benchmark/fib.lox`, which prints its own elapsed time. Measure the release build, five runs each, and keep the minimum, as chapter 07's repetition tester does.
+CI 24 also adds native functions, starting with `clock()`, which the book's benchmarks use. From now on you can time Lox programs. Challenge 1 of CI 24 keeps `ip` in a C local variable instead of reading it through the current frame on every instruction. Do it, and measure it with `test/benchmark/fib.lox`, which prints its own elapsed time. Measure the release build, five runs each, and keep the minimum, as chapter 07's repetition tester does.
 
 ### Study
 
@@ -215,8 +215,8 @@ Chapter 24 also adds native functions, starting with `clock()`, which the book's
 
 ### Build
 
-1. Type chapter 24 and run the chap24_calls suite. Then do challenge 1, run the suite again, and record the fib time before and after.
-2. Type chapter 25 and run the chap25_closures suite.
+1. Type CI 24 and run the chap24_calls suite. Then do challenge 1, run the suite again, and record the fib time before and after.
+2. Type CI 25 and run the chap25_closures suite.
 3. Draw the stack and the upvalues, as above, for a function that returns two closures sharing one captured variable. Then check the drawing by tracing the program with `DEBUG_TRACE_EXECUTION`.
 
 ### Done when
@@ -225,7 +225,7 @@ The chap25_closures suite passes in the debug build with no sanitizer report. Yo
 
 ## A mark-sweep garbage collector
 
-clox has allocated objects and never freed one until exit. Chapter 26 adds a mark-sweep collector. Marking starts from the roots, the places the VM reads values from directly, and follows every reference from object to object. Sweeping walks the list of all objects and frees each one that was not marked. The book uses the tricolor abstraction for the marking phase:
+clox has allocated objects and never freed one until exit. CI 26 adds a mark-sweep collector. Marking starts from the roots, the places the VM reads values from directly, and follows every reference from object to object. Sweeping walks the list of all objects and frees each one that was not marked. The book uses the tricolor abstraction for the marking phase:
 
 ```
   white  not reached yet            freed by the sweep if still white at the end
@@ -246,7 +246,7 @@ The difficult bugs are missing roots. An object that only a C local variable poi
 
 ### Build
 
-1. Type chapter 26. Run the chap26_garbage suite with `DEBUG_STRESS_GC` on, in the debug build with AddressSanitizer.
+1. Type CI 26. Run the chap26_garbage suite with `DEBUG_STRESS_GC` on, in the debug build with AddressSanitizer.
 2. Undo one of the three fixes in section 26.7, rebuild with stress mode, and find a test or write a program that makes AddressSanitizer report the bug. Put the fix back.
 3. Run `table_test` from step 3 with stress mode on and 2,000 keys. Stress mode runs a full mark-sweep per allocation, so 100,000 keys under AddressSanitizer take minutes. The test's keys are reachable only from a table in a C variable, so the collector frees them. Read the report, then add a `Table *extraRoot` field to the VM that `markRoots` marks with `markTable`, and point it at the test's table. That fix is not enough on its own. `copyString` returns an object that nothing references yet, and `tableSet` allocates when it grows the table. Push the key with `push(OBJ_VAL(key))` before `tableSet` and pop it after, as 26.7.2 does.
 4. Write `bench/churn.lox`, a loop that creates a million closures and drops each one. Run it on the Mac with `/usr/bin/time -l` and note "maximum resident set size". Then comment out the call to `collectGarbage` in `reallocate`, run it again and compare.
@@ -258,9 +258,9 @@ The chap26_garbage suite passes with stress mode and AddressSanitizer on, with n
 
 ## Classes, then making clox faster
 
-Chapters 27 to 29 add classes, instances, methods, initializers and inheritance. Classes are objects with a method table, instances are objects with a field table, and a method call looks up a name at run time. Lua does not have classes. It builds objects from tables and metatables instead. Type these chapters anyway. The book's later code and benchmarks depend on them, and section 28.5 shows a superinstruction: `OP_INVOKE` does the work of a property lookup and a call in one instruction, so it skips creating a bound method object for every call.
+With the collector in place, clox runs every kind of Lox program except one with classes. CI 27 to CI 29 add classes, instances, methods, initializers and inheritance. Classes are objects with a method table, instances are objects with a field table, and a method call looks up a name at run time. Lua does not have classes. It builds objects from tables and metatables instead. Type these chapters anyway. The book's later code and benchmarks depend on them, and section 28.5 shows a superinstruction: `OP_INVOKE` does the work of a property lookup and a call in one instruction, so it skips creating a bound method object for every call.
 
-Chapter 30 measures and then makes clox faster in two ways. Section 30.2 replaces the modulo in hash probing with a mask. Section 30.3 replaces the 16-byte tagged union with NaN boxing. An IEEE 754 double whose exponent bits are all ones and whose quiet bit is set is a NaN, and the hardware never produces most of those bit patterns. clox uses them to hold everything that is not a number, in 8 bytes:
+CI 30 measures and then makes clox faster in two ways. Section 30.2 replaces the modulo in hash probing with a mask. Section 30.3 replaces the 16-byte tagged union with NaN boxing. An IEEE 754 double whose exponent bits are all ones and whose quiet bit is set is a NaN, and the hardware never produces most of those bit patterns. clox uses them to hold everything that is not a number, in 8 bytes:
 
 ```
   bit  63    62..52 (11 bits)   51..0
@@ -282,25 +282,25 @@ The last change is dispatch. A `switch` compiles to one indirect jump that every
 
 ### Study
 
-- [Crafting Interpreters: Classes and Instances, Methods and Initializers, Superclasses](https://craftinginterpreters.com/classes-and-instances.html) (do, 9 h): Chapter 27 at this link, then chapter 28 at `methods-and-initializers.html` and chapter 29 at `superclasses.html` on the same site. Read the design note "Novelty Budget" in chapter 28. Skip the challenges in all three chapters.
+- [Crafting Interpreters: Classes and Instances, Methods and Initializers, Superclasses](https://craftinginterpreters.com/classes-and-instances.html) (do, 9 h): CI 27 at this link, then CI 28 at `methods-and-initializers.html` and CI 29 at `superclasses.html` on the same site. Read the design note "Novelty Budget" in CI 28. Skip the challenges in all three chapters.
 - [Crafting Interpreters: Optimization](https://craftinginterpreters.com/optimization.html) (do, 4 h): The whole chapter, 30.1 to 30.4.
 - [Eli Bendersky: Computed goto for efficient dispatch tables](https://eli.thegreenplace.net/2012/07/12/computed-goto-for-efficient-dispatch-tables) (read, 25 min): From the start through "What is done in other VMs?". The two bonus sections are GCC disassembly for x86-64. Read them only if you want to compare with your own ARM64 disassembly.
 
 ### Build
 
-1. Type chapters 27 to 29 and run the full suite: `dart tool/bin/test.dart clox --interpreter <path>`.
-2. Before chapter 30, add the opcode counter and run every program in `test/benchmark/` in the release build. Record the time each prints, minimum of five runs, and the five most frequent opcodes.
+1. Type CI 27 to CI 29 and run the full suite: `dart tool/bin/test.dart clox --interpreter <path>`.
+2. Before CI 30, add the opcode counter and run every program in `test/benchmark/` in the release build. Record the time each prints, minimum of five runs, and the five most frequent opcodes.
 3. Type section 30.2 and measure again. Type section 30.3 and measure again, with `NAN_BOXING` on.
 4. Add computed-goto dispatch behind a `COMPUTED_GOTO` flag, with a table of label addresses indexed by opcode. Measure again.
 5. Run the full suite in four configurations: debug and release, each with `NAN_BOXING` on and off.
 
 ### Done when
 
-The full clox suite passes in all four configurations, and the debug runs show no sanitizer report. You have one table with a row per benchmark and a column per change: the version before chapter 30, mask probing, NaN boxing, computed goto. Next to each change you have one sentence, based on the opcode counts and the timings, on why it helped the benchmarks it helped and not the others.
+The full clox suite passes in all four configurations, and the debug runs show no sanitizer report. You have one table with a row per benchmark and a column per change: the version before CI 30, mask probing, NaN boxing, computed goto. Next to each change you have one sentence, based on the opcode counts and the timings, on why it helped the benchmarks it helped and not the others.
 
 ## Lua the language and its register VM
 
-Lua's types are nil, booleans, numbers (64-bit integers and doubles as two subtypes), strings, functions, userdata, threads and tables. The table is the only data structure. Arrays, records, modules and objects are all tables. A metatable attached to a table changes what operators and indexing do on it, which is how Lua builds objects without classes. Indexes start at 1, functions return several values, and a variable is global unless declared `local`. Lua 5.5 adds a `global` declaration as well. Section 2 of the reference manual covers values, environments, errors, metatables and the garbage collector. Section 3 is the language. Read both. Compare its rules with the choices clox made, for example which values count as false, what `1 == "1"` gives, and how a global is looked up.
+clox is complete. The rest of the chapter studies Lua, a production interpreter built from the same parts: tagged values, a hash table at the center, upvalues and a garbage collector. Lua's types are nil, booleans, numbers (64-bit integers and doubles as two subtypes), strings, functions, userdata, threads and tables. The table is the only data structure. Arrays, records, modules and objects are all tables. A metatable attached to a table changes what operators and indexing do on it, which is how Lua builds objects without classes. Indexes start at 1, functions return several values, and a variable is global unless declared `local`. Lua 5.5 adds a `global` declaration as well. Section 2 of the reference manual covers values, environments, errors, metatables and the garbage collector. Section 3 is the language. Read both. Compare its rules with the choices clox made, for example which values count as false, what `1 == "1"` gives, and how a global is looked up.
 
 The paper "The Implementation of Lua 5.0" explains the design of the VM in 16 pages. Lua switched from a stack VM to a register VM in version 5.0. Each function gets a window of the Lua stack, its registers, and locals live in fixed registers. An instruction names its operands by register number, so most operations take one instruction where clox needs several:
 
@@ -339,7 +339,7 @@ Build Lua 5.5.1 from source on both machines. The download page gives the comman
 
 ## Calling between C and Lua
 
-The C API exchanges values through a virtual stack that belongs to the `lua_State`. C code pushes values, calls functions, and reads results by index. Positive indexes count from the bottom of the stack, negative ones from the top, so -1 is the top value. Programming in Lua explains why there is no `lua_Value` type in C: the collector cannot see C variables. That is the missing-root problem from step 6. A value on the Lua stack is reachable, so it is safe. A pointer you copied out of it is only valid while the value stays reachable.
+In the last step you ran Lua through its own `lua` and `luac` programs. Lua is built to live inside a C program instead: the program links `liblua.a`, creates a state and calls into it. The C API exchanges values through a virtual stack that belongs to the `lua_State`. C code pushes values, calls functions, and reads results by index. Positive indexes count from the bottom of the stack, negative ones from the top, so -1 is the top value. Programming in Lua explains why there is no `lua_Value` type in C: the collector cannot see C variables. That is the missing-root problem from step 6. A value on the Lua stack is reachable, so it is safe. A pointer you copied out of it is only valid while the value stays reachable.
 
 Errors in Lua are a `longjmp`. `setjmp` saves the stack pointer, the program counter and the callee-saved registers from chapter 05. `longjmp` restores them, and execution continues at the `setjmp` with every frame in between abandoned. Their cleanup code never runs. `lua_pcall` sets such a point, catches any error raised while the called function runs and returns a status code with the error value on the stack. An error outside any `lua_pcall` calls a panic function and then `abort`. Two rules follow. Call Lua code only through `lua_pcall`. In a C function that Lua calls, do not hold memory, a lock or an open file across an API call that can raise an error, because the jump skips your `free`.
 
@@ -426,4 +426,4 @@ The manual sections you kept open from step 9 cover the functions of this step: 
 
 You have implemented a language end to end. Source text becomes tokens, a single-pass compiler turns tokens into bytecode, and a dispatch loop runs that bytecode over a value stack, with call frames, closures that outlive their stack slots and a collector that finds every root. You measured what NaN boxing and computed goto change on your own CPU. You read a production VM and compared its register design with yours, and you embedded it in a server whose C side checks the types Lua hands it, refuses a response object used after its request, and stops a handler that runs too long.
 
-clox never builds a syntax tree. It emits each expression as soon as it parses it, so it never sees a whole function before generating code, and it does no optimization of the program it compiles. Every instruction still goes through the dispatch loop at run time. Chapter 12, An LLVM backend, compiles a small language to native code. It parses into a tree, lowers the tree to LLVM's intermediate representation in SSA form, runs LLVM's optimization passes over it and emits ARM64 machine code that you can read with the skills from chapter 05.
+clox never builds a syntax tree. It emits each expression as soon as it parses it, so it never sees a whole function before generating code, and it does no optimization of the program it compiles. Every instruction still goes through the dispatch loop at run time. Chapter 12, An LLVM backend, compiles to native code instead. It starts by reading LLVM's intermediate representation, the SSA form that clang makes from your own C functions, next to the clox bytecode for the same loop. Then it teaches the small part of C++ that LLVM's tutorial needs, and you build Kaleidoscope: a front end that parses into a tree, lowers the tree to LLVM IR, runs LLVM's optimization passes over it and emits ARM64 machine code that you can read with the skills from chapter 05.

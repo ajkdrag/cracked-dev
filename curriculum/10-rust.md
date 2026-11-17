@@ -6,7 +6,7 @@ weeks: 8
 project: The chapter 07 Swiss table and the chapter 08 event-loop HTTP server ported to Rust, passing the same tests and benchmarked against the C versions.
 ---
 
-Chapter 09 ended with a job system in C: threads, a queue you tested and a memory model you wrote down. Before that you freed every allocation on every path, kept views into an arena valid only while the arena lived, closed every socket in the event loop exactly once and put a lock around shared data. All of those rules lived in your head and in comments. The compiler checked none of them. Sanitizers and tests found the mistakes after you made them.
+Chapter 09 ended with your HTTP server handing slow requests to a work-stealing job system, and with `docs/jobs-ordering.md`, where you wrote down who owns each shared variable and which release and acquire pair hands it from one thread to the next. Before that you freed every allocation on every path, kept views into an arena valid only while the arena lived, closed every socket in the event loop exactly once and put a lock around shared data. All of those rules lived in your head and in comments. The compiler checked none of them. Sanitizers and tests found the mistakes after you made them.
 
 Rust checks most of those rules when it compiles. Every value has one owner, and the value is freed when its owner goes out of scope. A reference is either shared or mutable, never both at once, and it cannot outlive the value it points to. Applied to threads, the same rules reject data races in code that does not use `unsafe`. Where the rules are too strict, you write `unsafe` and take over the proof, as you did in every line of C. This chapter teaches enough Rust to port two of your programs: the Swiss table from chapter 07 and the event-loop HTTP server from chapter 08. Both ports run the tests and benchmarks of the C originals, and you write down what each port cost and what the compiler caught.
 
@@ -96,7 +96,7 @@ For each variable in `count_words` you can say whether it owns its value or borr
 
 ## Structs, enums and errors: the Hack assembler
 
-A Rust `struct` is a C struct with methods attached in an `impl` block. A Rust `enum` is a tagged union whose tag the compiler checks. Each variant can carry its own data, and `match` must handle every variant or the program does not compile:
+The word counter needed only functions, a `Vec` and strings. The assembler from chapter 03 needs types of its own, because a line of Hack is an A-instruction, a C-instruction or a label. A Rust `struct` is a C struct with methods attached in an `impl` block. A Rust `enum` is a tagged union whose tag the compiler checks. Each variant can carry its own data, and `match` must handle every variant or the program does not compile:
 
 ```
   Rust                                         C, from chapter 03's point of view
@@ -115,7 +115,7 @@ A Rust `struct` is a C struct with methods attached in an `impl` block. A Rust `
 
 Two enums from the standard library replace two C conventions. `Option<T>` is either `Some(value)` or `None`, which replaces a NULL pointer. `Result<T, E>` is either `Ok(value)` or `Err(error)`, which replaces the `bool` return plus out-parameter of chapter 03's `encode_a`. The `?` operator returns early with the error when a `Result` is an `Err`, so a function that calls five fallible functions does not need five `if` blocks. `HashMap<String, u16>` replaces the symbol table you wrote with a linear scan.
 
-Strings in Rust are UTF-8. `String` owns its bytes and `&str` borrows them. Section 8.2 of the Rust Book, from step 1, explains why you cannot index a `String` by an integer. Hack source is ASCII, so this rarely matters here, but `str::lines()` and `trim()` do the line splitting and space removal that took a page of C. `str::lines()` also removes the `\r` of a `\r\n` ending. `println!("{:016b}", word)` prints a `u16` as 16 binary digits, which replaces `word_to_bits`.
+Strings in Rust are UTF-8. `String` owns its bytes and `&str` borrows them. Section 8.2 of the Rust Book, from step 1, explains why you cannot index a `String` by an integer. Hack source is ASCII, so this rarely matters here, but `str::lines()` and `trim()` do the line splitting and space removal that took a page of C. `str::lines()` also removes the `\r` of a `\r\n` ending. `println!("{:016b}", word)` prints a `u16` as 16 binary digits, which replaces `word_to_bits`. The build stores each error message as a `&'static str`, a string slice that stays valid for the whole run of the program. A string literal has that type. Step 3 explains the `'static` part.
 
 ### Study
 
@@ -138,7 +138,7 @@ Make a Cargo project `hasm` and port chapter 03's assembler, symbols included. S
 
 ## Generics, traits, lifetimes and too many linked lists
 
-Generics let one function or type work for many types. `fn largest<T: PartialOrd>(list: &[T]) -> &T` works for any `T` that can be compared. The compiler makes one copy of the code per type it is used with, like a macro in chapter 04 that the compiler type-checks. A trait is a set of methods that a type promises to provide. `PartialOrd` is a trait, and so are `Display` (formatting with `{}`), `Iterator` (a `next` method that returns an `Option`) and `Drop` (code that runs when a value is freed). Trait bounds such as `T: PartialOrd` say which promises the generic code relies on.
+Your assembler copies every symbol and label into a new `String`. To borrow from the source text instead, the types have to say how long each borrow lasts. That needs lifetimes, which the Rust Book teaches together with generics and traits. Generics let one function or type work for many types. `fn largest<T: PartialOrd>(list: &[T]) -> &T` works for any `T` that can be compared. The compiler makes one copy of the code per type it is used with, like a macro in chapter 04 that the compiler type-checks. A trait is a set of methods that a type promises to provide. `PartialOrd` is a trait, and so are `Display` (formatting with `{}`), `Iterator` (a `next` method that returns an `Option`) and `Drop` (code that runs when a value is freed). Trait bounds such as `T: PartialOrd` say which promises the generic code relies on.
 
 A lifetime is the compiler's name for how long a borrow stays valid. Most of the time the compiler infers it. You write one when a function or struct returns or stores a borrow and the compiler cannot tell where it came from:
 
@@ -152,7 +152,7 @@ This is the rule you followed in chapter 04 for a `Str` that pointed into an are
 
 Closures are anonymous functions that can capture variables from their surroundings. Iterator methods such as `map`, `filter` and `position` take closures, and step 6 passes closures to threads.
 
-The linked-list book exists because a linked list is easy in C and hard in safe Rust. Each node owns the next one through a `Box<T>`, Rust's owning heap pointer. Moving a value out of a node while the list still points to it is exactly what the borrow checker forbids, so the book teaches `Option::take`, `mem::replace`, `Drop` and iterators with lifetimes by running into each error and fixing it. The book was written for the 2018 edition. Where your compiler's message differs from the text, trust the compiler.
+The linked-list book exists because a linked list is easy in C and hard in safe Rust. Each node owns the next one through a `Box<T>`, Rust's owning heap pointer. The borrow checker forbids moving a value out of a node while the list still points to it, so the book teaches `Option::take`, `mem::replace`, `Drop` and iterators with lifetimes by running into each error and fixing it. The book was written for the 2018 edition. Where your compiler's message differs from the text, trust the compiler.
 
 ### Study
 
@@ -173,7 +173,7 @@ The linked-list book exists because a linked list is easy in C and hard in safe 
 
 ## The Swiss table in safe Rust
 
-The C Swiss table from chapter 07 kept three arrays in an arena: control bytes, keys and values. The Rust version keeps them in three `Vec`s that the table owns:
+You now know enough Rust to port a program whose speed you measured in C. The C Swiss table from chapter 07 kept three arrays in an arena: control bytes, keys and values. The Rust version keeps them in three `Vec`s that the table owns:
 
 ```rust
 pub struct Swiss {
@@ -251,7 +251,7 @@ The tests pass in a debug and a release build on the Mac and in the VM. You have
 
 ## Unsafe Rust, NEON and Miri
 
-`unsafe` unlocks five operations that the compiler cannot check: dereferencing a raw pointer, calling an `unsafe` function, using a mutable static, implementing an `unsafe` trait and reading a union field. It does not switch off the borrow checker for references. An `unsafe` block says "I checked this by hand", and the rest of the program trusts it. A safe function that contains an `unsafe` block must be correct for every input a safe caller could pass. Otherwise safe code can cause undefined behavior through it. The standard library puts a `// SAFETY:` comment above each `unsafe` block that states what the author checked. Do the same.
+The safe table from the last step matches a group with a scalar loop. The chapter 07 version used NEON, and in Rust the NEON intrinsics need `unsafe`. `unsafe` unlocks five operations that the compiler cannot check: dereferencing a raw pointer, calling an `unsafe` function, using a mutable static, implementing an `unsafe` trait and reading a union field. It does not switch off the borrow checker for references. An `unsafe` block says "I checked this by hand", and the rest of the program trusts it. A safe function that contains an `unsafe` block must be correct for every input a safe caller could pass. Otherwise safe code can cause undefined behavior through it. The standard library puts a `// SAFETY:` comment above each `unsafe` block that states what the author checked. Do the same.
 
 The NEON intrinsics from chapter 07 exist in Rust under the same names in `std::arch::aarch64`. A load such as `vld1q_u8` takes a raw pointer, so it is an `unsafe` function. The arithmetic intrinsics are safe functions marked as requiring the `neon` target feature. Rust still makes you call them from an `unsafe` block, or from a function marked `#[target_feature(enable = "neon")]`, even though both of your targets enable NEON by default. Leave out the `unsafe` and the compiler says so in its error: "the neon target feature being enabled in the build configuration does not remove the requirement to list it in `#[target_feature]`".
 
@@ -315,7 +315,7 @@ Miri passes the linked-list queue tests and the `Scalar` table tests, and you ha
 
 ## Threads, Send and Sync
 
-In chapter 09 you kept data races out of C by discipline. Rust encodes that discipline in two traits. A type is `Send` if a value of it can move to another thread. A type is `Sync` if a shared reference to it can be used from several threads at once. The compiler derives both for a struct from its fields. `Rc<T>`, a reference count without atomics, is neither. `Arc<T>` uses atomic counts and is `Send` and `Sync` when `T` allows it. `Cell` and `RefCell`, which allow mutation through a shared reference, can move to another thread but are not `Sync`. `Mutex<T>` is `Sync`, and the only way to reach the `T` inside is through the guard that `lock()` returns.
+Every test so far ran the table on one thread. In chapter 09 you kept data races out of C by discipline. Rust encodes that discipline in two traits. A type is `Send` if a value of it can move to another thread. A type is `Sync` if a shared reference to it can be used from several threads at once. The compiler derives both for a struct from its fields. `Rc<T>`, a reference count without atomics, is neither. `Arc<T>` uses atomic counts and is `Send` and `Sync` when `T` allows it. `Cell` and `RefCell`, which allow mutation through a shared reference, can move to another thread but are not `Sync`. `Mutex<T>` is `Sync`, and the only way to reach the `T` inside is through the guard that `lock()` returns.
 
 Your `Swiss` holds only `Vec`s of integers, so it is `Send` and `Sync` without a line of code. A shared `&Swiss` may go to many threads at once, which suits a read-only table. `std::thread::spawn` requires a `'static` closure, because the thread may outlive the function that started it. `std::thread::scope` joins every thread it started before it returns, so its threads can borrow local variables:
 
@@ -328,9 +328,9 @@ std::thread::scope(|s| {
 });                                               // every thread has joined here
 ```
 
-Writes need a lock. A sharded table puts one `Mutex<Swiss>` in each of N shards and picks the shard from the top bits of the hash, so threads that write different shards rarely wait for each other. Shards next to each other in memory can still slow each other down. A `Mutex<Swiss>` is about 100 bytes, and Apple's cache lines are 128 bytes, as you measured in chapter 07. Two neighboring shards then usually share a line, and every lock operation or `live` update on one shard pulls the line away from its neighbor. That effect is called false sharing. `#[repr(align(128))]` on a wrapper struct gives each shard its own line.
+Writes need a lock. A sharded table puts one `Mutex<Swiss>` in each of N shards and picks the shard from the top bits of the hash, so threads that write different shards rarely wait for each other. Shards next to each other in memory can still slow each other down. A `Mutex<Swiss>` is about 100 bytes, and Apple's cache lines are 128 bytes, as you measured in chapter 07. Two neighboring shards then usually share a line, and every lock operation or `live` update on one shard pulls the line away from its neighbor. That is the false sharing your chapter 09 counters measured. `#[repr(align(128))]` on a wrapper struct, the Rust form of `_Alignas(128)`, gives each shard its own line.
 
-Mara Bos is a former lead of the Rust library team. The first chapter of her book covers threads, scoped threads, `Rc` and `Arc`, interior mutability, `Send` and `Sync`, and Rust's `Mutex` for readers who know concurrency from another language.
+In chapter 09 you read chapter 7 of Mara Bos's Rust Atomics and Locks for the instructions and the hardware, and skipped the Rust. Her chapter 1 is the Rust side: threads, scoped threads, `Rc` and `Arc`, interior mutability, `Send` and `Sync`, and Rust's `Mutex`.
 
 ### Study
 
@@ -350,7 +350,7 @@ Mara Bos is a former lead of the Rust library team. The first chapter of her boo
 
 ## The event loop over epoll and kqueue
 
-The C server from chapter 08 used one thread, nonblocking sockets, a `loop.h` interface over `epoll` and `kqueue`, a fixed array of client slots and bounded buffers. The Rust port keeps that design. What changes is who closes what.
+The hash table is ported. The second port, the server, uses a different part of Rust: values that own operating-system resources such as sockets and descriptors. The C server from chapter 08 used one thread, nonblocking sockets, a `loop.h` interface over `epoll` and `kqueue`, a fixed array of client slots and bounded buffers. The Rust port keeps that design. What changes is who closes what.
 
 The standard library's `TcpListener` and `TcpStream` own their descriptors and close them when they are dropped. `set_nonblocking(true)` sets `O_NONBLOCK`, and a read that would block returns an error whose `kind()` is `std::io::ErrorKind::WouldBlock`, the Rust name for `EAGAIN`. Three chores from chapter 08 are already done for you. `TcpListener::bind` sets `SO_REUSEADDR` on Unix. The Rust runtime sets SIGPIPE to ignored before `main` runs, so a write to a closed peer returns an error of kind `BrokenPipe`. And a closed client cannot leak its descriptor, because dropping the `Client` drops its `TcpStream`. Only `epoll` and `kqueue` have no wrapper in the standard library, and you call them through the `libc` crate, which declares the C functions and structs for each platform.
 
@@ -386,7 +386,7 @@ mod kqueue;
 
 `BorrowedFd<'_>` is a descriptor borrowed for the length of the call. Any `TcpStream` hands one out through `as_fd()`, and the caller keeps ownership. The token is the client's slot index, as in mio, so an event leads straight to its `Client` without a search. `watch` must work for a new descriptor and for one already registered, because pausing and resuming reads changes the interest of a live client. On epoll, `EPOLL_CTL_ADD` fails with `EEXIST` for a registered descriptor, so the epoll version tries `EPOLL_CTL_MOD` first and falls back to `EPOLL_CTL_ADD` on `ENOENT`. On kqueue, `EV_ADD` updates a filter that already exists.
 
-The port comes from the command line. `std::env::args().nth(1)` returns it as an `Option<String>`, as in section 12.1, and `parse::<u16>()` turns it into a number, as in the guessing game of chapter 2.
+The port comes from the command line. `std::env::args().nth(1)` returns it as an `Option<String>`, as in section 12.1, and `parse::<u16>()` turns it into a number, as in the guessing game of the Rust Book's chapter 2.
 
 mio is the library that Tokio, Rust's main async runtime, uses to wait on sockets. Its `epoll.rs` and `kqueue.rs` files are each a few hundred lines that wrap these calls the way you are about to. Read them for three patterns. The descriptor of the epoll or kqueue instance is an `OwnedFd`. A `syscall!` macro turns a return value of -1 into `std::io::Error::last_os_error()`, the Rust form of `errno`. And `select` fills a `Vec` with spare capacity through a raw pointer and then sets its length with `set_len`, with a comment that says why that is sound. mio registers sockets edge-triggered, with `EPOLLET` and `EV_CLEAR`. Your loop stays level-triggered, as in chapter 08, so leave those flags out.
 
@@ -449,4 +449,4 @@ The parser tests pass, `tests/http.sh` passes against the Rust server on both ma
 
 You can now write Rust that does systems work. You read the borrow checker's errors as the bugs you used to find with sanitizers, you write traits and generics where the C version used macros or function pointers, and you keep `unsafe` in small blocks with a stated reason. You ported a SIMD hash table and an event-loop server, ran the C tests against them and measured both languages on your own machine.
 
-Chapter 11, Interpreters, bytecode VMs and Lua, goes back to C. You build clox from Crafting Interpreters, a bytecode virtual machine with a garbage collector, and then embed Lua in a C program. A garbage collector walks a graph of heap objects that point at each other in every direction, the shape that took a whole unsafe chapter in the linked-list book. Writing it in C first shows you exactly what the collector tracks. With this chapter behind you, you can also judge which parts of such a VM Rust would check and which would end up in `unsafe`.
+Chapter 11, Interpreters, bytecode VMs and Lua, goes back to C. It starts with a chunk of bytecode and the loop that runs it, the same fetch, decode and execute loop as your 8086 simulator and CHIP-8 emulator. From there Crafting Interpreters adds a scanner, a compiler, closures and a garbage collector until you have clox, a complete bytecode VM. The second half embeds Lua in your C HTTP server. A garbage collector walks heap objects that point at each other in every direction. In the linked-list book, a queue with one extra tail pointer already needed a whole unsafe chapter. Writing the collector in C shows you what it has to track, and with this chapter behind you, you can judge which parts of such a VM Rust would check and which would end up in `unsafe`.

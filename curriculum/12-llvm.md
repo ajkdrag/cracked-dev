@@ -6,7 +6,7 @@ weeks: 3
 project: Kaleidoscope, a small language of doubles, functions, loops and local variables, compiled by your own C++ front end through LLVM IR into a JIT and into object files that link with C on Linux and on the Mac.
 ---
 
-Chapter 11 ended with clox and an embedded Lua. clox scans, parses with a Pratt parser that writes bytecode while it parses, and runs that bytecode in a loop with a `switch` over opcodes. Every Lox program you ran went through that loop one instruction at a time. In chapter 05 you saw the other way: clang turns C into ARM64 instructions that the CPU runs directly.
+Chapter 11 ended with Lua handlers running inside your HTTP server. Before that you built clox. clox scans, parses with a Pratt parser that writes bytecode while it parses, and runs that bytecode in a loop with a `switch` over opcodes. Every Lox program you ran went through that loop one instruction at a time. In chapter 05 you saw the other way: clang turns C into ARM64 instructions that the CPU runs directly.
 
 This chapter builds a compiler that produces machine code. The language is Kaleidoscope, from LLVM's own tutorial. Every value is a 64-bit double, and the language has functions, `extern` declarations for C functions, `if`/`then`/`else`, a `for` loop and mutable local variables. You write the lexer, the parser and the AST in C++. Your code walks the AST and emits LLVM IR. LLVM optimizes that IR and turns it into ARM64 code, either straight into memory (a JIT) or into an object file that clang links with a C program. On top of the tutorial you add your own operators and a compile-to-file driver that can also target the Mac.
 
@@ -42,7 +42,7 @@ clang --version           # clang version 23.1.x
 
 `llvm.sh` adds the repository and installs clang 23. If `llvm.sh` fails, add the repository by hand. Put `deb http://apt.llvm.org/noble/ llvm-toolchain-noble-23 main` in a file under `/etc/apt/sources.list.d/`, save the key from `https://apt.llvm.org/llvm-snapshot.gpg.key` as `/etc/apt/trusted.gpg.d/apt.llvm.org.asc`, run `sudo apt update` and install `clang-23` before the other packages. `llvm-23-dev` brings the headers, the static libraries and `llvm-config`. `libclang-rt-23-dev` holds the sanitizer runtime, the versioned form of the `libclang-rt-dev` package from chapter 01. Keep the project in `~/code/kaleido` on the Mac and build it in the VM under `/mnt/mac/Users/<you>/code/kaleido`, as chapter 01 set up. Run `. ~/llvm23.sh` in every VM shell you use for this chapter. It puts the LLVM 23 tools first, so `clang`, `opt`, `llc` and `llvm-config` mean version 23.
 
-LLVM IR is a typed assembly language for a machine with an unlimited number of registers. A module holds functions. A function holds basic blocks. A basic block is a list of instructions that ends in exactly one terminator, such as `br` (branch) or `ret`, and control enters a block only at its top. Every value is named once, with `%`, and is never assigned again. That rule is static single assignment, SSA. A value that differs depending on how control arrived, like a loop counter, comes from a `phi` instruction at the top of a block. `phi` picks one of its inputs according to the block control came from.
+LLVM IR is a typed assembly language for a machine with an unlimited number of registers. A module holds functions. A function holds basic blocks. A basic block is a list of instructions that ends in exactly one terminator, such as `br` (branch) or `ret`, and control enters a block only at its top. Every value is named once, with `%`, and is never assigned again. That rule is static single assignment, SSA. A value that differs depending on how control arrived, like a loop counter, comes from a `phi` instruction at the top of a block. `phi` picks one of its inputs according to the block control came from. A block dominates a use when every path from the function's entry to the use passes through that block. An instruction can use a value only where the value's definition dominates it, so the value is certain to exist. A `phi` input only has to be available at the end of the predecessor block it comes from.
 
 Here is one loop in C, as clox would run the same loop written in Lox, and as LLVM IR:
 
@@ -79,7 +79,7 @@ One trap when you try this on clang's output: at `-O0`, clang marks every functi
 
 ### Study
 
-- [Sunny Young de la Sota (mcyoung): A Gentle Introduction to LLVM IR](https://mcyoung.xyz/2023/08/01/llvm-ir/) (read, 1 h 15 min): The whole post. It was picked because it teaches IR as a language you read, starting from small functions and building up to SSA, `phi`, `alloca` and `mem2reg`. Skim "Synchronization" and "Reinterpret Shenanigans". The examples are Rust on x86-64. The IR ideas carry over to ARM64 unchanged, and only the `target` lines and some attributes differ.
+- [Sunny Young de la Sota (mcyoung): A Gentle Introduction to LLVM IR](https://mcyoung.xyz/2023/08/01/llvm-ir/) (read, 1 h 15 min): The whole post. It was picked because it teaches IR as a language you read, starting from small functions and building up to SSA, `phi`, `alloca` and `mem2reg`. Skim "Synchronization" and "Reinterpret Shenanigans". The examples are Rust, which you can read after chapter 10, compiled for x86-64. The IR ideas carry over to ARM64 unchanged, and only the `target` lines and some attributes differ.
 - [LLVM Language Reference Manual (LLVM 23.1.0)](https://releases.llvm.org/23.1.0/docs/LangRef.html) (reference, as needed): "Identifiers", "Module Structure" and "Functions" under High Level Structure, then the entry for each instruction you meet: `alloca`, `load`, `store`, `br`, `phi`, `icmp`, `fcmp`, `fadd`, `call` and `ret`. Do not read it front to back.
 
 ### Build
@@ -107,7 +107,7 @@ opt -O2 -S ir/funcs.ll -o ir/funcs.o2.ll
 
 ## Enough C++ to read the tutorial
 
-The tutorial says it assumes you know C++. You need less than that. This is the list, with what you already know for each:
+Step 1 read IR that clang wrote. From step 3 on, your own program writes IR through LLVM's C++ API, following LLVM's Kaleidoscope tutorial. The tutorial says it assumes you know C++. You need less than that. This is the list, with what you already know for each:
 
 ```
   C or Rust you know                                C++ the tutorial uses
@@ -163,17 +163,17 @@ Write `cpp/rpn.cpp`, a calculator that turns reverse Polish notation into an exp
 
 ## A lexer, a parser and your first IR
 
-Kaleidoscope chapters 1 and 2 build the front end. The lexer, `gettok`, returns either a character's own value or a negative code for `def`, `extern`, identifiers and numbers. clox's scanner made a `Token` struct with a type and a slice of the source. Kaleidoscope keeps the current identifier and number in two globals instead. The parser is recursive descent with operator precedence for binary operators. `ParseBinOpRHS` does the same job as clox's `parsePrecedence`. It keeps parsing while the next operator binds at least as tightly as the current minimum. The difference is the output. clox emitted bytecode as it parsed. Kaleidoscope builds an AST and hands it on. A top-level expression becomes a function with no arguments named `__anon_expr`, so that later chapters can compile and call it.
+With the C++ from step 2 you can type the tutorial. Kaleidoscope chapters 1 and 2 build the front end. The lexer, `gettok`, returns either a character's own value or a negative code for `def`, `extern`, identifiers and numbers. clox's scanner made a `Token` struct with a type and a slice of the source. Kaleidoscope keeps the current identifier and number in two globals instead. The parser is recursive descent with operator precedence for binary operators. `ParseBinOpRHS` does the same job as clox's `parsePrecedence`. It keeps parsing while the next operator binds at least as tightly as the current minimum. The difference is the output. clox emitted bytecode as it parsed. Kaleidoscope builds an AST and hands it on. A top-level expression becomes a function with no arguments named `__anon_expr`, so that later chapters can compile and call it.
 
-Chapter 3 adds a virtual `codegen()` to every AST class. Three LLVM objects do the work. `LLVMContext` owns types and constants and hands out one shared copy of each, so the API says `ConstantFP::get` and not `new`. `Module` owns the functions you generate. `IRBuilder` keeps an insertion point inside a basic block and appends instructions there. The AST and the IR are owned differently. Your AST nodes live in `unique_ptr`s and are freed when the parser drops them. IR objects are owned by the module, so `codegen()` returns a raw `Value *` that you never free, the same arrangement as pointers into your chapter 04 arena. `verifyFunction` checks a finished function against the rules from step 1. Call it as `verifyFunction(*F, &errs())` and it prints the reason when it returns `true`, which means the function is broken.
+Tutorial chapter 3 adds a virtual `codegen()` to every AST class. Three LLVM objects do the work. `LLVMContext` owns types and constants and hands out one shared copy of each, so the API says `ConstantFP::get` and not `new`. `Module` owns the functions you generate. `IRBuilder` keeps an insertion point inside a basic block and appends instructions there. The AST and the IR are owned differently. Your AST nodes live in `unique_ptr`s and are freed when the parser drops them. IR objects are owned by the module, so `codegen()` returns a raw `Value *` that you never free, the same arrangement as pointers into your chapter 04 arena. `verifyFunction` checks a finished function against the rules from step 1. Call it as `verifyFunction(*F, &errs())` and it prints the reason when it returns `true`, which means the function is broken.
 
 Each chapter page ends with a full code listing. The 23.1.0 listings are the compiled example programs in `llvm/examples/Kaleidoscope/ChapterN/toy.cpp` at that release. Where the prose and the listing disagree, follow the listing. Type the code in. Do not paste it. Keep one file, `src/toy.cpp`, and commit at the end of each tutorial chapter so you can diff your version against the listing.
 
 Build lines, from the VM with `~/llvm23.sh` sourced:
 
 ```sh
-clang++ -g -O1 src/toy.cpp $(llvm-config --cxxflags) -o toy                    # chapter 2
-clang++ -g -O1 src/toy.cpp $(llvm-config --cxxflags --ldflags --system-libs --libs core) -o toy   # chapter 3
+clang++ -g -O1 src/toy.cpp $(llvm-config --cxxflags) -o toy                    # tutorial chapter 2
+clang++ -g -O1 src/toy.cpp $(llvm-config --cxxflags --ldflags --system-libs --libs core) -o toy   # tutorial chapter 3
 ```
 
 If the link step says it cannot find a library named by `--system-libs`, such as `-lzstd`, install that library's `-dev` package.
@@ -185,8 +185,8 @@ If the link step says it cannot find a library named by `--system-libs`, such as
 
 ### Build
 
-1. Chapters 1 and 2: `./toy` reads from standard input and prints what it parsed. Check the sample session in section 2.8.
-2. Chapter 3: `./toy` prints the IR for every definition, extern and top-level expression.
+1. Tutorial chapters 1 and 2: `./toy` reads from standard input and prints what it parsed. Check the sample session in section 2.8.
+2. Tutorial chapter 3: `./toy` prints the IR for every definition, extern and top-level expression.
 3. Add `/` as a binary operator with precedence 40, emitting `fdiv`.
 4. Fix the bug the end of section 3.4 describes. When a definition finds a function that an earlier `extern` declared, report an error if the argument counts differ, and otherwise rename the existing function's arguments to the definition's names. Use `F->arg_size()` for the count and loop over `F->args()` with `setName` to rename.
 5. Put the inputs below in `tests/ch3.ks` and run `./toy < tests/ch3.ks`.
@@ -211,7 +211,7 @@ def good(x) x*2;
 
 ## A JIT and the optimizer
 
-Chapter 4 adds two things. The first is optimization passes. `IRBuilder` already folds constants as it builds, but it cannot see that `(1+2+x)*(x+(1+2))` computes `x+3` twice. Four function passes fix that: `instcombine` (local rewrites), `reassociate` (reorders commutative operations so equal expressions look equal), `gvn` (global value numbering, which removes repeated computations) and `simplifycfg` (merges and deletes blocks). The pass manager setup takes about twenty lines, mostly four analysis managers that the passes query. Type it in without studying it.
+Your `toy` prints IR and never runs it. Tutorial chapter 4 adds two things. The first is optimization passes. `IRBuilder` already folds constants as it builds, but it cannot see that `(1+2+x)*(x+(1+2))` computes `x+3` twice. Four function passes fix that: `instcombine` (local rewrites), `reassociate` (reorders commutative operations so equal expressions look equal), `gvn` (global value numbering, which removes repeated computations) and `simplifycfg` (merges and deletes blocks). The pass manager setup takes about twenty lines, mostly four analysis managers that the passes query. Type it in without studying it.
 
 The second is the JIT. `KaleidoscopeJIT` is a small class built on LLVM's ORC JIT APIs. It lives in the LLVM source tree, not in the installed headers, so you copy it from the tag that matches your LLVM into `include/KaleidoscopeJIT.h`. `addModule` compiles a module into ARM64 code in memory. `lookup` returns the address of a symbol. The tutorial casts that address to `double (*)()` and calls it. That works because the JIT follows the platform calling convention from chapter 05, so the generated code is an ordinary function. A module is the unit the JIT compiles and frees, so the tutorial puts every function in its own module and removes each `__anon_expr` module after running it.
 
@@ -233,7 +233,7 @@ clang++ -g -O1 -rdynamic src/toy.cpp $(llvm-config --cxxflags --ldflags --system
 
 ### Build
 
-1. Chapter 4: the JIT, the four passes, `putchard` and `printd`.
+1. Tutorial chapter 4: the JIT, the four passes, `putchard` and `printd`.
 2. Add a command-line flag: `./toy -O0` skips `TheFPM->run` and leaves everything else the same.
 3. Run `def test(x) (1+2+x)*(x+(1+2));` with and without `-O0`. Copy the `-O0` definition into `opt/test.ll`, then run `opt -S -passes=reassociate opt/test.ll`, `opt -S -passes=gvn opt/test.ll` and `opt -S -passes=reassociate,gvn opt/test.ll`. Write down which pass makes the two additions identical and which one deletes the copy.
 4. Add `extern "C" double clockd()` to the host, returning `(double)clock() / CLOCKS_PER_SEC`. That is the same clock clox's `clock()` native reads.
@@ -245,13 +245,13 @@ clang++ -g -O1 -rdynamic src/toy.cpp $(llvm-config --cxxflags --ldflags --system
 
 ## Control flow, phi nodes and mem2reg
 
-Chapter 5 adds `if`/`then`/`else` and `for`. An `if` adds three blocks. The block that computes the condition ends in a conditional `br` to a `then` block or an `else` block. Both of those end in a `br` to a merge block, and the merge block starts with a `phi` that picks the value from whichever branch ran. The tutorial builds that `phi` by hand. Watch for one detail in section 5.2.5. Emitting the `then` expression can create blocks of its own, for a nested `if`, so the `phi` must name the block the builder is in after emitting it, `Builder->GetInsertBlock()`, and not the block where `then` started.
+So far every Kaleidoscope function is one basic block with no branches, so its IR has no `phi`. Tutorial chapter 5 adds `if`/`then`/`else` and `for`. An `if` adds three blocks. The block that computes the condition ends in a conditional `br` to a `then` block or an `else` block. Both of those end in a `br` to a merge block, and the merge block starts with a `phi` that picks the value from whichever branch ran. The tutorial builds that `phi` by hand. Watch for one detail in section 5.2.5. Emitting the `then` expression can create blocks of its own, for a nested `if`, so the `phi` must name the block the builder is in after emitting it, `Builder->GetInsertBlock()`, and not the block where `then` started.
 
 The `for` loop runs its body before it tests the end condition, so it has the shape of a C `do`/`while`. The body always runs at least once. Its loop variable is a `phi` at the top of the loop block, like `%i` in step 1's `ipow`.
 
-Chapter 7 adds `var`/`in` for local variables and `=` for assignment. Writing `phi` nodes by hand for every assignment would mean building SSA in the front end. The tutorial takes clang's route from step 1 instead. Every variable, including each function argument, gets an `alloca` in the function's entry block. Reads become `load` and writes become `store`. `PromotePass`, which is `mem2reg`, joins the pass list and turns the slots back into SSA values with `phi` nodes. `mem2reg` only promotes an `alloca` that sits in the entry block and is used only by plain loads and stores. The tutorial's helper `CreateEntryBlockAlloca` puts every slot there.
+Tutorial chapter 7 adds `var`/`in` for local variables and `=` for assignment. Writing `phi` nodes by hand for every assignment would mean building SSA in the front end. The tutorial takes clang's route from step 1 instead. Every variable, including each function argument, gets an `alloca` in the function's entry block. Reads become `load` and writes become `store`. `PromotePass`, which is `mem2reg`, joins the pass list and turns the slots back into SSA values with `phi` nodes. `mem2reg` only promotes an `alloca` that sits in the entry block and is used only by plain loads and stores. The tutorial's helper `CreateEntryBlockAlloca` puts every slot there.
 
-Chapter 7's examples use operators that chapter 6 lets the user define: `def binary : 1 (x y) y;` makes `:` a sequencing operator that evaluates both sides and returns the right one. You skip chapter 6, so make `:` built in. Give it precedence 1 in `BinopPrecedence` and have `BinaryExprAST::codegen` return `R` for it. Chapter 7's code also mentions `tok_binary`, `tok_unary` and token numbers from chapter 6. Leave those out. Your token numbers can differ.
+The examples in tutorial chapter 7 use operators that its chapter 6 lets the user define: `def binary : 1 (x y) y;` makes `:` a sequencing operator that evaluates both sides and returns the right one. You skip tutorial chapter 6, so make `:` built in. Give it precedence 1 in `BinopPrecedence` and have `BinaryExprAST::codegen` return `R` for it. The chapter 7 code also mentions `tok_binary`, `tok_unary` and token numbers from tutorial chapter 6. Leave those out. Your token numbers can differ.
 
 This step also times compiled code against clox. In chapter 11 you timed `fib(35)` in clox with `test/benchmark/fib.lox` and in Lua. You run the same function in your JIT and in C.
 
@@ -262,11 +262,11 @@ This step also times compiled code against clox. In chapter 11 you timed `fib(35
 
 ### Build
 
-1. Chapter 5. Check `def foo(x) if x < 10 then 0 else 1; foo(9); foo(11);` prints 0 and then 1.
+1. Tutorial chapter 5. Check `def foo(x) if x < 10 then 0 else 1; foo(9); foo(11);` prints 0 and then 1.
 2. Before running them, write down how many stars `printstar(100)`, `printstar(1)` and `printstar(0)` print with the definition from section 5.3. Then run them.
 3. Run `./toy -O0`, copy the IR for `printstar` and for a function with a nested `if` into `opt/cfg.ll`, and run `opt -passes=dot-cfg -disable-output opt/cfg.ll` in an empty directory. List it with `ls -a` to find the `.dot` files, install `graphviz`, and render them with `dot -Tpng`. Open the images on the Mac.
 4. Time `fib(35)` three ways, on the VM: in your release build of clox with `test/benchmark/fib.lox`, in your JIT with `def fib(x) if x < 3 then 1 else fib(x-1)+fib(x-2);` and `clockd()` before and after, and in C with `double fib(double x)` built with `clang -O2`. Write the three times in `NOTES.md`.
-5. Chapter 7, with `:` built in and `=` at precedence 2 as section 7.6 sets it.
+5. Tutorial chapter 7, with `:` built in and `=` at precedence 2 as section 7.6 sets it.
 6. Write `fibi` from section 7.4 without the `def binary` line, and check `fibi(10)`.
 7. Run the `printstar` calls from build task 2 again on the chapter 7 version. Its loop variable now lives in an `alloca`. The star counts must match the chapter 5 version. Compare `printstar`'s IR under `-O0` and with passes on, and find the `phi` that `mem2reg` made.
 
@@ -276,9 +276,9 @@ The `if` test prints 0 and 1, and your star-count predictions matched, or you ca
 
 ## Object files for Linux and the Mac
 
-Chapter 8 swaps the JIT for a file. You look up a target by its triple, the `<arch>-<vendor>-<sys>-<env>` string that names a platform, such as `aarch64-unknown-linux-gnu` in the VM. A `TargetMachine` made from that target knows the CPU, the data layout and how to emit code. `addPassesToEmitFile` runs the code generator over the module and writes an object file. Instruction selection picks ARM64 instructions for each IR instruction, and register allocation maps the unlimited SSA values onto 31 general-purpose and 32 floating-point registers. The code generator still runs on LLVM's older pass manager, and chapter 8 includes `LegacyPassManager.h` for it.
+Tutorial chapter 8 swaps the JIT from step 4 for a file. You look up a target by its triple, the `<arch>-<vendor>-<sys>-<env>` string that names a platform, such as `aarch64-unknown-linux-gnu` in the VM. A `TargetMachine` made from that target knows the CPU, the data layout and how to emit code. `addPassesToEmitFile` runs the code generator over the module and writes an object file. Instruction selection picks ARM64 instructions for each IR instruction, and register allocation maps the unlimited SSA values onto 31 general-purpose and 32 floating-point registers. The code generator still runs on LLVM's older pass manager, and tutorial chapter 8 includes `LegacyPassManager.h` for it.
 
-Make this a second program, `src/ksc.cpp`, copied from your chapter 7 `toy.cpp`. It has no JIT, reads a whole file from standard input into one module, and writes `output.o` at the end. Chapter 8's listing drops the optimization passes. Keep yours, or every variable stays an `alloca` slot in the object file. Create the `TargetMachine` before parsing, and set the module's target triple and data layout when you create the module, as the JIT version did with `TheJIT->getDataLayout()`.
+Make this a second program, `src/ksc.cpp`, copied from your `toy.cpp` as it stands after tutorial chapter 7. It has no JIT, reads a whole file from standard input into one module, and writes `output.o` at the end. The tutorial's chapter 8 listing drops the optimization passes. Keep yours, or every variable stays an `alloca` slot in the object file. Create the `TargetMachine` before parsing, and set the module's target triple and data layout when you create the module, as the JIT version did with `TheJIT->getDataLayout()`.
 
 `InitializeAllTargets` and the related calls link every backend into `ksc`. With all of them present, `ksc` can produce code for any target, and you use that to build an object file for the Mac from the VM. On the Mac, `clang -print-target-triple` prints its triple. Pass that string to `ksc`. The result is a Mach-O object file, the Mac format from chapter 05, with every symbol name given a leading underscore. `clang` on the Mac links it, and Apple's toolchain is all the Mac needs.
 
@@ -321,4 +321,4 @@ def absdiff(a b) if a < b then -(a - b) else a - b;
 
 You can now read LLVM IR, including the `alloca` and `phi` patterns that clang and rustc produce. You wrote a front end that emits SSA IR, you ran LLVM's passes and watched which pass changed what, and you sent the same IR through a JIT and through the code generator into object files for two operating systems. The C++ you learned covers the tutorial and not much more. You also measured how much an interpreter loop costs against compiled code for one recursive function.
 
-Chapter 13, Software rendering, starts the part on graphics and games. You write a rasterizer in C on top of an SDL3 platform layer: a frame loop, a pixel buffer and the math that takes a triangle to the screen. Its inner loops run millions of times per frame. Reading the IR and the assembly clang makes for them, and checking which loops the vectorizer from chapter 07 handled, uses what you practiced in this chapter.
+Chapter 13, Software rendering, starts the part on graphics and games and goes back to the window of chapter 06. Your CHIP-8 front end ran one SDL loop that polled input, ran the machine and pushed a 64 by 32 texture to the screen 60 times a second. Chapter 13 splits that loop into a platform layer and a game function the platform calls once per frame, then loads the game as a shared library that you rebuild and reload while it runs. On that base you write a rasterizer in C that computes every pixel of a 960 by 540 frame from triangles and a camera. Its inner loops run millions of times per frame. Reading the IR and the assembly clang makes for them, and checking which loops the vectorizer from chapter 07 handled, uses what you practiced in this chapter.
