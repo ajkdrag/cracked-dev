@@ -3,12 +3,12 @@ id: 02
 title: C foundations
 part: The machine and C
 weeks: 3
-project: A linked list, a growable array and a word counter in C, then three C functions matched to ARM64 assembly.
+project: A linked list, a growable array and a word counter in C, then three C functions matched to x86-64 assembly.
 ---
 
-Chapter 01 left you with clang and lldb on the Mac, an ARM64 Linux VM, and a `build.sh` that compiles with warnings as errors and sanitizers on. You can compile, run and step through a program. You have not written much C with it yet.
+Chapter 01 left you with Ubuntu under WSL2, clang, gcc and gdb, and a `build.sh` that compiles with warnings as errors and sanitizers on. You can compile, run and step through a program. You have not written much C with it yet.
 
-This chapter teaches enough C to build three small things: a linked list, a growable array and a word counter. All three own heap memory, so every allocation needs a clear owner and one place where it gets freed. At the end you put three of your own functions through the compiler and match each line of C to the ARM64 instructions it became.
+This chapter teaches enough C to build three small things: a linked list, a growable array and a word counter. All three own heap memory, so every allocation needs a clear owner and one place where it gets freed. At the end you put three of your own functions through the compiler and match each line of C to the x86-64 instructions it became.
 
 Most of the chapter is practice at keeping pairs of things apart: a pointer and the thing it points to, a string's length and its buffer's capacity, a variable's name and the bytes behind it. You draw these on paper first and then check the drawing against the real program in a debugger.
 
@@ -16,7 +16,9 @@ The chapter comes now because chapter 03 asks you to write an assembler in C. Th
 
 ## The build loop and a test pattern
 
-Before you write your own C, check that the loop from chapter 01 still works on the Mac and in Linux, and add the one piece chapter 01 did not have: a small test program per source file. Every Build in this chapter has test cases, and this pattern runs them.
+Before you write your own C, check that the loop from chapter 01 still works in WSL2, and add the one piece chapter 01 did not have: a small test program per source file. Every Build in this chapter has test cases, and this pattern runs them.
+
+If you started this chapter on the Mac, this step also moves that work over. The code you wrote there gets its first run under ASan and LeakSanitizer here.
 
 The pattern keeps the whole program in one translation unit, like `build.sh` does. The test file includes the `.c` file it tests, so it sees every function, including `static` ones. The preprocessor renames the tested file's `main` out of the way first:
 
@@ -44,7 +46,7 @@ int main(void) {
 }
 ```
 
-`const char *label` is how C passes a string that the function only reads. The pointers step assigns the section on `const`, and until then you can copy `check` as it is. `main` returns the failure count, so the exit status is 0 only when every check passed. A script that builds the test with the same flags as `build.sh` and runs it gives you a one-line command per step.
+`const char *label` passes a string that the function only reads. The pointers step assigns the section on `const`, and until then you can copy `check` as it is. `main` returns the failure count, so the exit status is 0 only when every check passed. A script that builds the test with the same flags as `build.sh` and runs it gives you a one-line command per step. Those flags include `-fsanitize=address,undefined`, so every test run is also an ASan, UBSan and LeakSanitizer run.
 
 `#define` and `#include` are preprocessor work. Clang runs four stages on every file, and you can stop it after each one to look at the output:
 
@@ -53,7 +55,7 @@ int main(void) {
      | clang -E hello.c        preprocessor: pastes #include files, expands macros
      v
   expanded C text
-     | clang -S hello.c        compiler: writes hello.s, ARM64 assembly as text
+     | clang -S hello.c        compiler: writes hello.s, x86-64 assembly as text
      v
   hello.s
      | clang -c hello.c        assembler: writes hello.o, machine code
@@ -64,27 +66,30 @@ int main(void) {
   hello
 ```
 
-The last step of this chapter reads `.s` output in detail. Here you only see that it exists.
+The last step of this chapter reads `.s` output in detail. Here you only see that it exists. Compiler Explorer shows the same `.s` output in a browser, next to the C, and it can color each C line to match the instructions it became. You set it up here once so that it is ready for the last step.
 
 ### Study
 
 - [Clang command guide](https://clang.llvm.org/docs/CommandGuide/clang.html) (read, 15 min): DESCRIPTION, which names the stages, and "Stage Selection Options". Under "Code Generation Options", read the `-O0` to `-O3` entries. Skip the rest.
+- [Compiler Explorer](https://godbolt.org/) (do, 20 min): The site opens in C++ mode, so choose C in the language box first. Pick the "x86-64 clang 18.1.0" compiler, the closest to clang 18 on Ubuntu 24.04, and turn off "Intel asm syntax" in the compiler pane's "Output..." menu so the listing reads like `clang -S` in WSL2. Newer clang versions sometimes produce different code from yours, so stay on 18.
 
 ### Build
 
-1. Run the `main.c` and `bugs.c` checks from chapter 01 once more on the Mac and in Linux. Fix anything that broke since.
+1. Run the `main.c` and `bugs.c` checks from chapter 01 once more in WSL2. Fix anything that broke since.
 2. Write `src/add.c` with `int add(int a, int b)` and a `main` that prints `add(2, 3)`. Write `tests/add_test.c` as above.
-3. Write `tests/run_add_test.sh`. It builds `tests/add_test.c` with the debug flags from `build.sh` into `out/`, runs the result, and exits with the test's status. Run it on the Mac and in Linux.
+3. Write `tests/run_add_test.sh`. It builds `tests/add_test.c` with the debug flags from `build.sh` into `out/Linux-debug/`, runs the result, and exits with the test's status. Take the compiler from `CC` the way `build.sh` does. Run the script with clang and again with `CC=gcc`.
 4. Add a check that is wrong on purpose, such as `add(2, 2) == 5`. Run the script and check its exit status. Remove the wrong check.
-5. Run `clang -E`, `clang -S` and `clang -c` on `src/add.c`. Find the `#include <stdio.h>` contents in the `-E` output, the `add` function in the `.s` file, and confirm with `file` that the `.o` file is an object file and not an executable.
+5. Run `clang -E`, `clang -S` and `clang -c` on `src/add.c`. Find the `#include <stdio.h>` contents in the `-E` output, the `add` function in the `.s` file, and confirm with `file` that the `.o` file is an object file and not an executable. `file` calls it "ELF 64-bit LSB relocatable, x86-64".
+6. Paste `add` into Compiler Explorer with the settings above. Add `-O0` in the compiler options box, then change it to `-O1`, and find the `add` function from your `.s` file in each listing. You do not need to understand the instructions yet.
+7. If you wrote programs and tests for later steps of this chapter on the Mac before you moved to WSL2, rebuild and rerun every one of them now with the full debug flags, under clang and under gcc. Change any test script that builds with `-fsanitize=undefined` alone to the flags from `build.sh`. On the Mac, ASan could hang and LeakSanitizer never ran, so this is the first leak check that code gets. Expect three kinds of failure. A Mac-only header such as `<malloc/malloc.h>` does not exist on Linux. gcc and clang each report some warnings the other does not, and `-Werror` turns them into errors. LeakSanitizer reports blocks that a `main` never freed, even where the counters in the tests balanced. Fix each one in the source rather than by dropping a flag.
 
 ### Done when
 
-`sh build.sh add` builds with no output from clang on both machines. `sh tests/run_add_test.sh; echo $?` prints two OK lines and `0`. With the wrong check added, it prints one FAIL line and a nonzero status. You can say which stage produced each of the three files from step 5.
+`sh build.sh add` builds with no output from clang. `sh tests/run_add_test.sh; echo $?` prints two OK lines, `0 failure(s)` and a final `0`, with clang and with gcc. With the wrong check added, it prints one FAIL line, `1 failure(s)` and a nonzero status. You can say which stage produced each of the three files from item 5. The `-O1` listing of `add` in Compiler Explorer has fewer instructions than the `-O0` one. Every program and test from item 7 builds under both compilers and its tests pass with no ASan, UBSan or LeakSanitizer report.
 
 ## Expressions, control flow, functions, arrays and structs
 
-The test pattern needs functions to test. This step writes the first ones. You know Python, so most of C's control flow reads as familiar syntax. The differences that matter for this chapter: every variable has a fixed type and size, integer division truncates, an `int` can overflow, and a function receives copies of its arguments.
+The test pattern needs functions to test. This step writes the first ones. You know Python, so most of C's control flow reads as familiar syntax. The differences that matter for this chapter: every variable has a fixed type and size, integer division truncates, an `int` can overflow, and a function receives copies of its arguments. You saw the overflow in chapter 01, where UBSan stopped `add_one(INT_MAX)` in `bugs.c`. Python would have given you a bigger number. C gives you undefined behavior, and the debug build turns that into a report.
 
 Arrays and structs are the two ways C groups values. An array is values of one type placed back to back. A struct is fields of different types laid out in the order you declare them. A struct can be copied whole by assignment or by passing it to a function. An array cannot be assigned or passed whole. Passing arrays to functions needs pointers, which come in the next step, so in this step keep each array inside the function that declares it.
 
@@ -108,7 +113,7 @@ The program prints 0, 8 and 111 for the Collatz cases, 212 for 100 Celsius, and 
 
 ## Pointers and lifetimes on paper
 
-The last step kept every array inside the function that declared it, and `stats_average` could not change the caller's struct. Both limits go away once a function receives an address instead of a copy. Memory is one long array of bytes, and every byte has an address. A variable is a name for some of those bytes. A pointer is a variable that holds an address. The addresses below are made up. The layout is exact for your Mac:
+The last step kept every array inside the function that declared it, and `stats_average` could not change the caller's struct. Both limits go away once a function receives an address instead of a copy. Memory is one long array of bytes, and every byte has an address. A variable is a name for some of those bytes. A pointer is a variable that holds an address. The addresses below are made up, and the compiler decides where each local goes, so `x` and `p` may not sit next to each other in your build. The sizes and the byte order are exact for x86-64 Linux:
 
 ```
   int x = 42;
@@ -134,9 +139,28 @@ Every object also has a lifetime: the stretch of the run during which its bytes 
   allocated   malloc'd blocks            live from malloc until free
 ```
 
+Each kind lives in its own region of the process's memory. On x86-64 Linux the map looks like this:
+
+```
+  high addresses
+    stack      automatic: locals and parameters, grows down as functions are called
+      |
+      v
+    (unmapped gap, shared libraries such as libc)
+      ^
+      |
+    heap       allocated: malloc'd blocks, grows up
+    data       static: globals and static locals
+    rodata     string literals, read-only
+    text       your compiled functions
+  low addresses
+```
+
+A function call takes a fresh slice of the stack for its locals, called its stack frame. The return hands the slice back, and the next call reuses the same bytes for its own locals. Two steps from now you find each region in a running program.
+
 The pointer variable has its own lifetime, separate from the lifetime of the object it points to. Holding a pointer to an object does not extend the object's lifetime. If a function returns the address of one of its locals, the caller gets an address whose object is already dead. Clang warns about the simple case. Allocated lifetime comes in the linked list step, where you first call `malloc`.
 
-Draw before you run. For every program in this step, draw boxes for variables and arrows for pointers on paper, then step through it in Python Tutor and compare. Python Tutor runs your code on its own Linux server, so the addresses will differ from your Mac. The arrows should point the same way.
+Draw before you run. For every program in this step, draw boxes for variables and arrows for pointers on paper, then step through it in Python Tutor and compare. Python Tutor runs your code on its own server, so the addresses will differ from the ones your program prints. The arrows should point the same way.
 
 ### Study
 
@@ -176,13 +200,15 @@ Pointer arithmetic moves in whole elements. If `p` is an `int *`, `p + 1` is 4 b
 
 A parameter like `const char *s` says the function only reads through `s`. Clang rejects a write through it. `build.sh` also turns on `-Wconversion`, and `tolower` returns an `int`, so storing its result in a `char` is an error until you write the cast yourself: `*s = (char)tolower((unsigned char)*s)`. Cast other narrowing assignments between `int`, `char` and `size_t` the same way, on purpose.
 
-Your copy function should refuse to write past the destination. The standard `strcpy` trusts the caller, so it is the API to understand here and the wrong contract for your own bounded copy.
+The functions in `<ctype.h>`, such as `isalpha` and `tolower`, take an `int` that must be either `EOF` or a value that fits in an `unsigned char`. Anything else is undefined behavior. `char` is signed on x86-64 Linux, so a byte above 127 in a `char` is a negative number. The `(unsigned char)` cast inside the call turns it back into a value from 128 to 255.
+
+Your copy function should refuse to write past the destination. The standard `strcpy` trusts the caller, so it is the API to understand here and the wrong contract for your own bounded copy. `strncpy` looks like the bounded version, but when `src` does not fit in `n` bytes it writes `n` bytes and no terminator. The `string.h` functions you meet most often, in code and in compiler output, are `strlen`, `strcpy`, `strcmp` and `memcpy`. Look up the first two while you write their replacements. Read the other two once, so you know them when a call to one turns up in the last step's assembly. For each of the four, note whether the function or the caller is responsible for the size.
 
 ### Study
 
 - [Beej's Guide to C: Strings](https://beej.us/guide/bgc/html/split/strings.html) (read, 30 min): All of chapter 7, sections 7.1 to 7.7.
 - [Beej's Guide to C: Pointers II, Arithmetic](https://beej.us/guide/bgc/html/split/pointers2.html) (read, 40 min): Sections 11.1 to 11.3. Section 11.3 on `void *` is needed for the memory dump in the next step.
-- [Beej's C Library Reference: ctype.h](https://beej.us/guide/bgclr/html/split/ctype.html) (reference, as needed): `isalpha()`, `isspace()`, `tolower()` and `toupper()`. Note what each page says about passing values that fit in an `unsigned char`.
+- [Beej's C Library Reference: string.h](https://beej.us/guide/bgclr/html/split/stringref.html) (reference, as needed): The entries 26.15 `strlen()`, 26.2 `strcpy()` with `strncpy()`, 26.5 `strcmp()` with `memcmp()`, and 26.1 `memcpy()` with `memmove()`. Skip the rest.
 
 ### Build
 
@@ -198,13 +224,13 @@ Also declare `int nums[4]` and `char text[4]`, print `&nums[0]`, `&nums[0] + 1`,
 
 ### Done when
 
-All tests pass. Break each function on purpose with an off-by-one change (copy one byte fewer, stop the reverse one step early) and confirm at least one test fails for each change. For every test of `str_copy` you can name each byte it reads and writes, including the terminator.
+All tests pass. Break each function on purpose with an off-by-one change (copy one byte fewer, stop the reverse one step early) and confirm at least one test fails for each change. For every test of `str_copy` you can name each byte it reads and writes, including the terminator. You can say what `strncpy(buf, "abc", 3)` leaves in `buf` and why your `str_copy` returns -1 for the same input.
 
 ## Checking drawings against real memory
 
-Python Tutor showed you arrows. This step reads the real bytes two ways: from inside the program with a dump function, and from outside it with lldb.
+Python Tutor showed you arrows. This step reads the real bytes two ways: from inside the program with a dump function, and from outside it with gdb.
 
-Every object can be read as a sequence of `unsigned char`. That is how you see byte order and padding. Your Mac and your Linux VM are both little-endian, so an `int` holding `0x12345678` is stored lowest byte first: `78 56 34 12`. A struct may contain padding bytes between fields so that each field starts at an address the hardware handles well, usually a multiple of the field's size. Their values are whatever was in memory before.
+Every object can be read as a sequence of `unsigned char`, which shows byte order and padding. x86-64 is little-endian, so an `int` holding `0x12345678` is stored lowest byte first: `78 56 34 12`. A struct may contain padding bytes between fields so that each field starts at an address the hardware handles well, usually a multiple of the field's size. Their values are whatever was in memory before.
 
 ```
   struct Pair { char a; int b; };      sizeof is 8, not 5
@@ -213,12 +239,15 @@ Every object can be read as a sequence of `unsigned char`. That is how you see b
           [a]  [pad] [pad] [pad]  [b    b     b     b]
 ```
 
-Chapter 01 taught you breakpoints, `bt`, `up` and watchpoints in lldb. Here you add `memory read`, which prints raw bytes at an address. Its entry in the GDB to LLDB command map from chapter 01 shows the flags for size, count and format. In lldb, `x/8xb &value` does the same with gdb's short syntax.
+Chapter 01 taught you breakpoints, `bt`, `up` and watchpoints in gdb, and showed `x` once on an array of ints. Here you use `x` for raw bytes. `x/8xb &value` prints 8 units, in hex (`x`), each one byte (`b`) wide, starting at the address of `value`. Start gdb with `ASAN_OPTIONS=detect_leaks=0` as in chapter 01, because LeakSanitizer cannot run under a debugger.
+
+gdb can also show the memory map from the pointers step. `info proc mappings` prints one line per mapped region of the running process: start and end address, permissions such as `r-xp` (readable, executable) or `rw-p` (readable, writable), and the file the region comes from. The heap and the stack appear as `[heap]` and `[stack]`. Your executable appears several times, once per segment: the `r-xp` line holds the code, a `r--p` line holds string literals and an `rw-p` line holds globals. ASan moves locals onto a stack of its own and serves `malloc` from its own region, so for this part build with UBSan alone: `SAN=undefined sh build.sh regions`. gdb also turns off address randomization, so addresses inside gdb differ from the ones a plain run prints.
 
 ### Study
 
 - [Beej's Guide to C: Multibyte Values](https://beej.us/guide/bgc/html/split/pointers-iii-pointers-to-pointers-and-more.html#multibyte-values) (read, 15 min): Section 23.2 only. Section 23.1 on pointers to pointers comes in the next step.
 - [Beej's Guide to C: Padding Bytes](https://beej.us/guide/bgc/html/split/structs-ii-more-fun-with-structs.html#struct-padding-bytes) (read, 10 min): Sections 20.5 and 20.6 only.
+- [Debugging with GDB: Examining Memory](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Memory.html) (reference, as needed): Section 10.6, the `x/nfu addr` command. Look up the letters for count, format and unit size there.
 
 ### Build
 
@@ -229,15 +258,17 @@ Write `src/dump.c` with `void dump_bytes(const void *p, size_t n)` that prints `
 3. A `struct Pair { char a; int b; }` and its `offsetof` values.
 4. An `int *` that points at the int from part 1. Compare its bytes with what `%p` prints.
 
-Then open your `swap_ints` test in lldb. Set a breakpoint on `swap_ints`, run, and use `bt`, `frame variable`, `up` and `memory read` to read the two caller ints as raw bytes before and after the swap. Set a watchpoint on one of the caller's ints and continue until it fires.
+Then open your `swap_ints` test in gdb. Set a breakpoint on `swap_ints`, run, and use `bt`, `info args` (the parameters, as `info locals` shows the locals), `up` and `x/4xb` to read the two caller ints as raw bytes before and after the swap. From the caller's frame, set a watchpoint on one of its ints with `watch` and continue until it fires.
+
+Last, write `src/regions.c` with a global `int g`, a string literal `const char *s = "literal"`, a local `int l` and a block `int *h = malloc(sizeof *h)`, and free `h` before `main` returns. `malloc(n)` returns the address of `n` bytes on the heap, or NULL when it fails, and `free` gives the bytes back. The linked list step covers both properly. Here you only need one block to see where it lives, so check `h` for NULL and return 1 if it is. Build it with `SAN=undefined sh build.sh regions` and open it in gdb. Break on the line that frees `h`, print `&g`, `s`, `&l` and `h`, then run `info proc mappings` and find the line whose start and end addresses contain each one.
 
 ### Done when
 
-Before each dump, you write down the bytes you expect, and the output matches. The bytes lldb shows for each caller int match `dump_bytes` for the same value. The watchpoint stops on the line in `swap_ints` that writes to that int. You can point at the padding bytes in the `struct Pair` dump.
+Before each dump, you write down the bytes you expect, and the output matches. The bytes gdb shows for each caller int match `dump_bytes` for the same value. The watchpoint stops inside `swap_ints` and prints the old and new value. gdb shows the line after the write, the next one to run, so you can name the line that did the write. You can point at the padding bytes in the `struct Pair` dump. For `regions`, `l` falls in `[stack]`, `h` in `[heap]`, `g` in an `rw-p` line of your executable and the literal in a `r--p` line of it, and you can match each to its lifetime from the pointers step.
 
 ## A linked list that owns its nodes
 
-So far every object had automatic or static lifetime. `malloc` gives you a block whose lifetime you control: it starts when `malloc` returns and ends when you pass the pointer to `free`. Nothing frees it for you. A pointer to a freed block still holds an address, and using it is a bug that ASan reports as heap-use-after-free.
+Apart from the one block in `regions`, every object so far had automatic or static lifetime. `malloc` gives you a block whose lifetime you control: it starts when `malloc` returns and ends when you pass the pointer to `free`. Nothing frees it for you. A pointer to a freed block still holds an address, and using it is a bug that ASan reports as heap-use-after-free.
 
 A linked list is a chain of separately allocated nodes. The list owns every node, and one function frees them all. Write the owner of each allocation down before you write the code that creates it.
 
@@ -285,7 +316,7 @@ void counted_free(void *p) {
 }
 ```
 
-Put the counters and the wrappers in `src/counted.h`. Each program in this chapter is one translation unit, so `list.c`, `vec.c` and `wordcount.c` each `#include "counted.h"` and get their own copy. When a test ends, `alloc_count == free_count` means every block was freed. The counters work on the Mac. Run the same tests under ASan in the Linux VM to catch leaks and bad accesses the counters cannot see.
+Put the counters and the wrappers in `src/counted.h`. Each program in this chapter is one translation unit, so `list.c`, `vec.c` and `wordcount.c` each `#include "counted.h"` and get their own copy. When a test ends, `alloc_count == free_count` means every block was freed. The counters check your own bookkeeping, and they let a test fail an allocation on purpose. ASan and LeakSanitizer in the debug build catch the bad accesses and leaks the counters cannot see, such as a block from plain `malloc` or a read past the end of a node.
 
 ### Study
 
@@ -307,7 +338,7 @@ Test an empty list, one node and five nodes for every function. Remove the head,
 
 ### Done when
 
-All tests pass with balanced counters on the Mac. The same tests run clean under ASan in the Linux VM. Delete the `free` in `list_free` on purpose and confirm that LeakSanitizer in the VM reports the leaked nodes. For every `malloc` in `list.c` you can name the function that frees it.
+All tests pass with balanced counters and no ASan or LeakSanitizer report. Delete the `free` in `list_free` on purpose and confirm that LeakSanitizer reports the leaked nodes and points at the `malloc` in `counted_malloc`. For every `malloc` in `list.c` you can name the function that frees it.
 
 ## A growable array
 
@@ -341,8 +372,8 @@ Add `counted_realloc` to `counted.h`. Write it like `counted_malloc`, and count 
 
 ### Study
 
-- [Beej's Guide to C: Manual Memory Allocation](https://beej.us/guide/bgc/html/split/manual-memory-allocation.html#changing-allocated-size-with-realloc) (read, 20 min): Sections 12.5 to 12.5.2. The `readline` example in 12.5.1 grows a buffer one character at a time, and you reuse that pattern in the word counter.
-- [Linux man page: malloc(3)](https://man7.org/linux/man-pages/man3/malloc.3.html) (reference, as needed): The `realloc()` and `reallocarray()` paragraphs under DESCRIPTION and the RETURN VALUE section. On the Mac, `man realloc` gives Apple's version.
+- [Beej's Guide to C: Manual Memory Allocation](https://beej.us/guide/bgc/html/split/manual-memory-allocation.html#changing-allocated-size-with-realloc) (read, 20 min): Sections 12.5 to 12.5.2. The `readline` example in 12.5.1 reads with `fgetc` and doubles the buffer when it is full. You reuse that pattern in the word counter, but stop at `EOF` instead of a newline.
+- [Linux man page: malloc(3)](https://man7.org/linux/man-pages/man3/malloc.3.html) (reference, as needed): The `realloc()` and `reallocarray()` paragraphs under DESCRIPTION and the RETURN VALUE section. This is the glibc behavior your WSL2 programs get.
 
 ### Build
 
@@ -358,7 +389,7 @@ Test:
 
 ### Done when
 
-All tests pass with balanced counters on the Mac and clean under ASan in the VM. Save a pointer to `data[1]`, push until the array grows, then read through the saved pointer in the VM: ASan should report heap-use-after-free if the block moved. You can explain which pointers stay valid after a push that grows the array and which do not.
+All tests pass with balanced counters and no sanitizer report. Save a pointer to `data[1]`, push until the array grows, then read through the saved pointer. ASan should report heap-use-after-free if the block moved. You can explain which pointers stay valid after a push that grows the array and which do not.
 
 ## A word counter, then its assembly
 
@@ -380,30 +411,38 @@ Lookup is a linear scan over the entries. For each entry, compare the stored wor
 
 Reading all of standard input uses `fgetc` and the growing-buffer pattern from Beej's `readline` in the previous step. Append each character to a `char` buffer that doubles when full, stop at `EOF`, add the terminator, then hand the buffer to the table.
 
-The second half of the step is assembly. Chapter 05 teaches you to write it. Here you only read it. Start from one function you already wrote. This is `swap_ints` compiled by clang for your Mac at `-O1`:
+The second half of the step is assembly. Chapter 05 teaches you to write it. Here you only read it. Start from one function you already wrote. This is `swap_ints` compiled by clang for x86-64 Linux at `-O1`, in AT&T syntax, which gcc, clang, objdump and gdb all print by default on Linux:
 
 ```
-  void swap_ints(int *a, int *b)       a arrives in x0, b in x1
+  void swap_ints(int *a, int *b)        a arrives in rdi, b in rsi
 
-  _swap_ints:
-      ldr  w8, [x0]        tmp = *a      load 4 bytes from the address in x0
-      ldr  w9, [x1]        w9 = *b       load 4 bytes from the address in x1
-      str  w9, [x0]        *a = w9       store 4 bytes to the address in x0
-      str  w8, [x1]        *b = tmp      store 4 bytes to the address in x1
-      ret                                jump back to the address in x30
+  swap_ints:
+      movl  (%rdi), %eax     tmp = *a     load 4 bytes from the address in rdi
+      movl  (%rsi), %ecx     ecx = *b     load 4 bytes from the address in rsi
+      movl  %ecx, (%rdi)     *a = ecx     store 4 bytes to the address in rdi
+      movl  %eax, (%rsi)     *b = tmp     store 4 bytes to the address in rsi
+      retq                                pop the return address off the stack, jump there
 ```
 
-Pointers are 8 bytes, so they travel in 64-bit `x` registers. Ints are 4 bytes, so they are loaded into 32-bit `w` registers. At `-O0` the same function first stores `x0` and `x1` into stack slots and reloads them before every use, because each C variable gets its own slot in memory. Dive Into Systems compiles with plain `gcc`, which means `-O0`, so its listings follow the C line by line.
+AT&T syntax writes the source first and the destination last. Parentheses mean memory: `(%rdi)` means the bytes at the address held in `rdi`, and `%rdi` alone means the register. The suffix on the instruction gives the size: `b` for 1 byte, `l` for 4, `q` for 8. x86-64 has no separate load and store instructions. `mov` loads when the parentheses are on the source and stores when they are on the destination. Pointers are 8 bytes, so they travel in 64-bit registers, whose names start with `r`. Ints are 4 bytes, so they go into the 32-bit lower halves, whose names start with `e`: `%eax` is the low half of `%rax`.
 
-Two Mac details. Function names get a leading underscore (`_swap_ints`). And `char` is signed on Apple ARM64 but unsigned on ARM64 Linux, so the byte load in `str_len` at `-O0` is `ldrsb` on the Mac and `ldrb` in the VM. Both load one byte. `ldrsb` also copies the byte's sign bit into the upper bits of the register.
+At `-O0` the same function opens with `pushq %rbp` and `movq %rsp, %rbp` to set up a stack frame. Then it stores `%rdi` and `%rsi` into stack slots such as `-8(%rbp)` and reloads them before every use, because each C variable gets its own slot in memory. Dive Into Systems compiles with plain `gcc`, which means `-O0`, so its listings follow the C line by line.
 
-Three more forms show up in the Build. `ldrb w9, [x0, x8]` loads the byte at the address `x0 + x8`, which is how clang writes `s[n]` with `n` kept in `x8`. `cbz` and `cbnz` branch when a register is zero or nonzero, which covers a NULL check and a loop that stops at the 0 byte. `bl` puts the return address in `x30` before it jumps, so a function that calls another function overwrites its own return address. Clang saves `x29`, the frame pointer, and `x30` on the stack first with an `stp` like `stp x29, x30, [sp, #-48]!` and restores both with `ldp` before `ret`.
+Your listings will differ from the book's in four small ways. The book's listings come from objdump, which leaves the size suffix off when a register operand already gives the size, so the `movl %ecx, (%rdi)` that `clang -S` writes prints as `mov %ecx,(%rdi)` in objdump and gdb. clang's `-S` output prints `retq` and `callq`, and gcc and objdump print `ret` and `call` for the same instructions. Ubuntu's gcc starts every function with `endbr64`, a marker for a control-flow protection feature, which the book's listings do not have. It changes nothing your function computes. Ubuntu also builds position-independent executables, so objdump shows addresses like `1149` where the book shows `400526`.
+
+`char` is signed on x86-64 Linux. So clang's `-O0` `str_len` loads each byte with `movsbl`, which copies the byte's sign bit into the upper 24 bits of `%eax`. `movzbl` fills those bits with zeros instead. It appears where your C casts a byte to `unsigned char`, as in the call to `tolower`.
+
+A few more forms show up in the Build. `cmpb $0, (%rdi,%rax)` compares the byte at the address `rdi + rax` with 0. Clang writes `s[n] != '\0'` this way when `n` is kept in `rax`. A number in front of the parentheses adds a constant: `1(%rdi,%rax)` is `rdi + rax + 1`. `testq %rax, %rax` followed by `je` jumps when `rax` is zero. A NULL check compiles to this pair. `xorl %eax, %eax` sets `eax` to 0, the usual way to write a zero return value or NULL. A global variable such as `alloc_calls` is addressed relative to the instruction pointer: `movl alloc_calls(%rip), %eax` loads it, and `incl alloc_count(%rip)` adds 1 to a global in place. `callq malloc@PLT` is an ordinary call to `malloc`, made through a table that the dynamic linker fills in with the address of `malloc` in libc. Chapter 05 explains that table. `call` pushes the return address onto the stack and `ret` pops it, so the return address sits on the stack in memory. A function that calls another one and needs some of its values afterwards keeps them in registers the callee must preserve, such as `%rbx` and `%r14`. It saves the caller's values of those registers with `pushq` at the start and restores them with `popq` before `ret`.
+
+You can check these claims in gdb instead of taking them on trust. `b swap_ints` stops after the function's opening instructions, at the first line of C. `b *swap_ints`, with the star, stops at the function's address, before its first instruction runs. `info registers rdi rsi rsp` prints those registers. `x/gx $rsp` prints the 8 bytes at the top of the stack, and `info symbol` on an address names the function it falls in. `disassemble` prints the instructions of the current function with an arrow at the next one. `stepi` runs one instruction, and `x/i $pc` prints the instruction at the program counter. gdb prints instructions the way objdump does, without size suffixes.
+
+Compiler Explorer from the first step gives you a second view of the same output. Stay on clang 18.1.0 there. Newer clang versions replace the whole `str_len` loop with a jump to `strlen`, which you will not see on your machine.
 
 ### Study
 
 - [Beej's Guide to C: File Input/Output](https://beej.us/guide/bgc/html/split/file-inputoutput.html) (read, 30 min): Sections 9.1 to 9.3.1. Skip formatted input and binary I/O.
-- [Dive Into Systems: ARM Assembly Basics](https://diveintosystems.org/book/C9-ARM64/basics.html) (read, 3 h): Sections 9.1, 9.2, 9.3.1, all of 9.4 (9.4.1 to 9.4.3) and all of 9.5 (9.5.1 to 9.5.3). Section 9.5.3 traces the `stp x29, x30` and `ldp` pair at the start and end of `main`. Use the "Next" links. Stop before 9.6 on recursion. The book compiles with gcc on ARM64 Linux, so run its examples in your VM with `gcc -O0` and `objdump -d`.
-- [Compiler Explorer](https://godbolt.org/) (do, 1 h): Pick the "armv8-a clang" compiler, which targets ARM64 Linux. Paste one function at a time and compare `-O0` with `-O1`. On the Mac, `clang -S -O1 -o - src/strings.c` shows the Apple version.
+- [Dive Into Systems: 64-bit x86 Assembly](https://diveintosystems.org/book/C7-x86_64/index.html) (read, 2.5 h): The chapter introduction on this page, on AT&T and Intel syntax. The pages have no "Next" link, so open each section from the contents list on the left: 7.1 (7.1.1 to 7.1.5), 7.2, from 7.3 only the opening table of arithmetic instructions and 7.3.3, all of 7.4 (7.4.1 to 7.4.3) and all of 7.5 (7.5.1 to 7.5.3). Skip 7.3.1 on shifts and 7.3.2 on bitwise instructions, which your three functions do not use. Section 7.3.3 covers `lea`, which clang uses for plain arithmetic. Section 7.5 traces `call`, `ret` and the `push %rbp` and `leave` pair at the start and end of a function. Stop before 7.6 on recursion. Chapter 05 continues from there. The book compiles with gcc on x86-64 Linux, so run its examples in WSL2 with `gcc` and `objdump -d`. Where the book shows `callq`, `retq` and `leaveq`, your objdump prints `call`, `ret` and `leave`.
+- [Beej's C Library Reference: ctype.h](https://beej.us/guide/bgclr/html/split/ctype.html) (reference, as needed): The chapter introduction on why these functions need an `unsigned char` value, then the `isalpha()` and `tolower()` entries.
 
 ### Build
 
@@ -427,23 +466,29 @@ Include `counted.h` and use the counted allocators from the last two steps. Test
 - Allocation fails on the word copy, on the first array growth (the copy must be freed), on a later growth (old entries intact) and halfway through `table_add_text` (the words before the failure stay counted).
 - Counters balance after every test.
 
-Then compare against the shell on a long text. On the Mac, `man ls | col -b > ls.txt` gives you one. Both commands below print sorted `count word` lines:
+Then compare against the shell on a long text. `ls --help > ls.txt` gives you one. Both commands below print sorted `count word` lines:
 
 ```sh
-./out/Darwin-debug/wordcount < ls.txt | sort > mine.txt
+./out/Linux-debug/wordcount < ls.txt | sort > mine.txt
 LC_ALL=C tr -cs 'A-Za-z' '\n' < ls.txt | LC_ALL=C tr 'A-Z' 'a-z' \
   | grep -v '^$' | sort | uniq -c | awk '{print $1, $2}' | sort > shell.txt
 diff mine.txt shell.txt
 ```
 
-Part 2, the assembly. Take three functions: `swap_ints`, `str_len`, and the function in your word counter that copies a word with `malloc`. For each, get the ARM64 output at `-O0` and at `-O1`, paste the `-O1` version into a comment block above the C function, and annotate every instruction with the C it came from. In `str_len`, find the byte load, the counter increment and the branch that jumps back to the top of the loop. In the copy function, find the `bl` that calls `malloc`, the instruction that checks the result for NULL, and the `stp` that saves `x29` and `x30` before the call. Clang at `-O1` may replace your copy loop with a call to `memcpy`. If it does, find that call too. Any other `stp` and `ldp` pairs, on registers from `x19` upward, save registers your function is required to preserve. Chapter 05 explains that rule.
+Part 2, the assembly. Take three functions: `swap_ints`, `str_len`, and the function in your word counter that copies a word with `malloc`. For each, get the x86-64 output at `-O0` and at `-O1` with `clang -S -o -`, paste the `-O1` version into a comment block above the C function, and annotate every instruction with the C it came from. Lines that start with a dot and do not end in a colon, such as `.cfi_def_cfa_offset 16`, `.type`, `.size`, `.globl` and `.p2align`, are directives, notes for the assembler and the debugger. They produce no machine code. Leave them out of your copy. Keep the labels, such as `.LBB1_1:`, because the branches name them as their targets. In `str_len`, find the byte load, the counter increment and the branch that jumps back to the top of the loop. Clang 18 at `-O1` folds the load into the `cmpb` and counts with `leaq`, which does not touch the flags, so the `jne` after it still tests the `cmpb` result.
+
+In the copy function, find the `callq` to `malloc`, or the inlined body of `counted_malloc` before it, since clang at `-O1` copies a small function into its caller. Find the instruction that computes `malloc`'s argument into `%rdi`, the `testq` and `je` that check the result for NULL, and the `pushq` instructions that save registers before the call. If your copy calls `tolower`, glibc's `<ctype.h>` turns it into one call to `__ctype_tolower_loc`, which returns a lowercase table, and a table lookup per byte. A copy without `tolower` may become a call to `memcpy`. If it does, find that call too. Pushes and pops of `%rbx`, `%rbp` and `%r12` to `%r15` save registers your function is required to preserve. A lone `pushq %rax` whose value nothing reads keeps the stack pointer a multiple of 16 at the call. Chapter 05 explains both rules.
+
+Then watch `swap_ints` run. Copy it into `src/swap_demo.c` with a `main` that swaps two local ints and prints them. Build that file without `build.sh`, because the sanitizer checks grow the 18 instructions of gcc's `-O0` `swap_ints` to almost 100: `gcc -g -O0 -o out/Linux-debug/swap_demo src/swap_demo.c`. Start it in gdb, set `b *swap_ints` and run. The `a=` and `b=` values gdb prints in the stop line are not set up yet at this point, so ignore them. Run `info registers rdi rsi rsp`, then `up`, `p &x` and `p &y` (use your own variable names), and compare the addresses with `rdi` and `rsi`. Go back with `down`, run `x/gx $rsp` and `info symbol` on the value it prints. Then run `disassemble`, find the `-O0` frame setup and the stack slots from the bridge, and `stepi` through the function with `x/i $pc` after each step until `ret` has run.
+
+Optional, on the Mac: `clang -S -O1 -o - src/strings.c` prints the same functions in ARM64. `swap_ints` becomes two `ldr` and two `str`, and `ret` jumps to the address in register `x30` instead of popping it off the stack.
 
 ### Done when
 
-All word counter tests pass with balanced counters on the Mac and clean under ASan in the VM, and `diff mine.txt shell.txt` prints nothing. For each of the three functions you have an annotated `-O1` listing, and you can point at the register each argument arrives in, the register the result leaves in, and every load, store and branch. You can say what changed between `-O0` and `-O1` for `swap_ints`.
+All word counter tests pass with balanced counters and no ASan, UBSan or LeakSanitizer report, and `diff mine.txt shell.txt` prints nothing. For each of the three functions you have an annotated `-O1` listing, and you can point at the register each argument arrives in, the register the result leaves in, and every load, store and branch. You can say what changed between `-O0` and `-O1` for `swap_ints`. In gdb you saw `rdi` and `rsi` hold the addresses of the caller's two ints, `info symbol` named a spot inside the caller as the return address on the stack, and `stepi` past `ret` landed you back in the caller at the instruction after the `call`.
 
 ## Where this leads
 
 You can now write C that owns heap memory and frees it on every path, test the failure paths on purpose, read raw bytes in a debugger, and look at the instructions the compiler produced.
 
-What you cannot yet explain is the hardware that runs those instructions. You saw `ldr`, `add` and `ret` move values between registers and memory, but you have not seen how a register, the program counter or the step from one instruction to the next is built. Chapter 03, From gates to a CPU, builds them from logic gates up to a working CPU, and then asks you to write an assembler in C. It starts away from C, in a browser-based hardware simulator, where you build every basic gate out of NAND. C comes back in its last two steps. The assembler reads a text file, splits lines into fields and keeps a symbol table, so your string functions and word table carry over.
+What you cannot yet explain is the hardware that runs those instructions. You saw `mov` move values between registers and memory, `cmpb` and `jne` drive a loop, and `call` and `ret` pass the return address through the stack, but you have not seen how a register, the program counter or the step from one instruction to the next is built. Chapter 03, From gates to a CPU, builds them from logic gates up to a working CPU, and then asks you to write an assembler in C. It starts away from C, in a browser-based hardware simulator, where you build every basic gate out of NAND. C comes back in its last two steps. The assembler reads a text file, splits lines into fields and keeps a symbol table, so your string functions and word table carry over.

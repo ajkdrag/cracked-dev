@@ -34,7 +34,7 @@ Write down the whole machine state before you write any code. All of it fits in 
   keys       16 keys, 0 to F, each held or not
 ```
 
-An instruction is two bytes, high byte first. That is big-endian, the opposite of the 8086 and of your Mac. The top 4 bits pick the instruction class. The other three nibbles are operands, and each instruction uses one of a few fixed splits:
+An instruction is two bytes, high byte first. That is big-endian, the opposite of the 8086 and of the x86-64 CPU in your laptop. The top 4 bits pick the instruction class. The other three nibbles are operands, and each instruction uses one of a few fixed splits:
 
 ```
   opcode 0xD123
@@ -101,7 +101,7 @@ The core has no `main`, so the runner, the front end and the tests can include i
 
 ### Done when
 
-The splash screen and the IBM logo print in `#` characters and match the README pictures, built with `sh build.sh chip8` on the Mac and in Linux with the sanitizers on. At 1000 cycles both pictures are unchanged and there is no error, because each ROM ends in a jump to itself. Running `3-corax+.ch8` stops with an error that names an opcode you have not written yet and its address.
+The splash screen and the IBM logo print in `#` characters and match the README pictures, from `./out/Linux-debug/chip8` built with `sh build.sh chip8` with the sanitizers on, and again after `CC=gcc sh build.sh chip8`. At 1000 cycles both pictures are unchanged and there is no error, because each ROM ends in a jump to itself. Running `3-corax+.ch8` stops with an error that names an opcode you have not written yet and its address.
 
 ## The rest of the instruction set and the flag register
 
@@ -171,7 +171,7 @@ The stack holds 16 addresses. A 2NNN with a full stack and a 00EE with an empty 
 
 ### Done when
 
-The unit tests pass with no sanitizer report on the Mac and in Linux. Corax+ shows only check marks, and so does the flags test. With the planted bug, the entries for 8XY4 in the HAPPY and CARRY rows lose their third and fourth check marks, the ones for VF used as an operand. You can say why the first two marks stayed.
+The unit tests pass with no ASan, UBSan or LeakSanitizer report, built with clang and with `CC=gcc`. Corax+ shows only check marks, and so does the flags test. With the planted bug, the entries for 8XY4 in the HAPPY and CARRY rows lose their third and fourth check marks, the ones for VF used as an operand. You can say why the first two marks stayed.
 
 ## A window, a 60 Hz frame and the keypad
 
@@ -187,7 +187,7 @@ void chip8_frame(Chip8 *c, int ipf) {
 }
 ```
 
-Your Mac's display may refresh at 60 Hz, at 120 Hz, or at a rate that varies. The host loop therefore cannot run exactly one CHIP-8 frame per pass. It measures real elapsed time and runs as many 1/60 s frames as fit, carrying the remainder over. Glenn Fiedler calls this an accumulator. His version keeps seconds in a `double`. You can keep nanoseconds in a `uint64_t` and stay exact by scaling by 60 instead of dividing:
+Your laptop's panel may refresh at 60 Hz, at 120 Hz or at 144 Hz. Under WSL2 your window does not reach the panel directly. WSLg, the part of WSL that shows Linux windows, runs a compositor inside the WSL virtual machine and hands each window to Windows over a Remote Desktop connection. Whether and when a frame waits for the display depends on that whole chain. The host loop therefore cannot run exactly one CHIP-8 frame per pass. It measures real elapsed time and runs as many 1/60 s frames as fit, carrying the remainder over. Glenn Fiedler calls this an accumulator. His version keeps seconds in a `double`. You can keep nanoseconds in a `uint64_t` and stay exact by scaling by 60 instead of dividing:
 
 ```c
 uint64_t now = SDL_GetTicksNS();
@@ -202,7 +202,24 @@ while (acc >= 1000000000ull) {     // one CHIP-8 frame is 1e9 of those units
 
 The cap matters when the program stops for a while, in the debugger or with the lid closed. Without it, the emulator would try to catch up on minutes of frames at once.
 
-SDL3 gives you the window, the pixels on it and the keyboard. It works the same way on macOS, Linux and Windows. Install it on the Mac with `brew install sdl3 pkgconf`. `pkg-config --cflags --libs sdl3` prints the flags you need: `-I` adds the directory with SDL's headers, `-L` the directory with the library, and `-l` names the library to link. Add `$LIBS` at the end of the compiler line in `build.sh`, then build the front end with `LIBS="$(pkg-config --cflags --libs sdl3)" sh build.sh chip8_sdl`. The front end runs on the Mac only. The VM has no display, and Ubuntu 24.04 has no SDL3 package. The core, the runner and the tests keep running on both machines.
+SDL3 gives you the window, the pixels on it, the keyboard and, in the next step, the sound. It works the same way on Linux and on Windows. In WSL2 the window and the sound both go through WSLg. WSLg needs Windows 11, or Windows 10 build 19044 or later with WSL installed from the Microsoft Store. It sets `DISPLAY`, `WAYLAND_DISPLAY` and `PULSE_SERVER` in your shell, so that programs find its display servers and its PulseAudio sound server. Microsoft's page [Run Linux GUI apps with WSL](https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps) lists the requirements. Check WSLg before you build anything. Run `sudo apt install -y x11-apps pulseaudio-utils`. Then `xeyes` should open a window on your Windows desktop, and `pactl info` should print a "Server Name" line. If the window does not come up, run `wsl --update` and then `wsl --shutdown` in PowerShell, open Ubuntu again and retry. If it still fails, work through Microsoft's checklist [Diagnosing "cannot open display" type issues with WSLg](https://github.com/microsoft/wslg/wiki/Diagnosing-%22cannot-open-display%22-type-issues-with-WSLg), which starts with `echo $DISPLAY`.
+
+Ubuntu 24.04 has no SDL3 package, so you build SDL3 from source. The "Build Dependencies" section of SDL's [README-linux](https://wiki.libsdl.org/SDL3/README-linux#build-dependencies) lists the Ubuntu packages. Install the Ubuntu 18.04 list and the four extra packages it names for 22.04 and later. Without `libpulse-dev` in that list, SDL builds with no PulseAudio support and your emulator stays silent. Then build the current release, 3.4.20 at the time of writing, the way [README-cmake](https://wiki.libsdl.org/SDL3/README-cmake#building-sdl-on-unix) describes. Keep the source outside your project:
+
+```sh
+mkdir -p ~/src && cd ~/src
+curl -LO https://github.com/libsdl-org/SDL/releases/download/release-3.4.20/SDL3-3.4.20.tar.gz
+tar xzf SDL3-3.4.20.tar.gz && cd SDL3-3.4.20
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+sudo cmake --install build --prefix /usr/local
+```
+
+The first `cmake` prints a summary near its end. Its "Video drivers" line must include `x11` and `wayland`, and its "Audio drivers" line must include `pulseaudio`. If one is missing, a package from the list is missing. Install it, delete `build` and run the three commands again. The build takes a few minutes. Afterwards `pkg-config --modversion sdl3` prints `3.4.20`, and `pkg-config --cflags --libs sdl3` prints the flags you need: `-I` adds the directory with SDL's headers, `-L` the directory with the library, `-l` names the library to link, and `-Wl,-rpath,/usr/local/lib` records the library's directory in your program, so the loader finds it at run time. Add `$LIBS` at the end of the compiler line in `build.sh`, then build the front end with `LIBS="$(pkg-config --cflags --libs sdl3)" sh build.sh chip8_sdl`. The core, the runner and the tests do not need SDL.
+
+After `SDL_Init`, print `SDL_GetCurrentVideoDriver()`. Under WSLg it is `x11` or `wayland`. WSLg serves both, and `SDL_VIDEO_DRIVER=x11` or `SDL_VIDEO_DRIVER=wayland` in front of the command picks one if the window misbehaves under the other.
+
+The debug build of the front end ends with a LeakSanitizer report even when your code frees everything and calls `SDL_Quit`. System libraries that SDL loads keep some memory until the process exits. The first one you meet is usually `libdbus-1.so`, the library SDL uses to talk to desktop services. Look at the stack of each report. If none of its frames is in your `src/` files, add a line naming the library to a file `lsan.supp`, such as `leak:libdbus-1.so`, and run the front end with `LSAN_OPTIONS=suppressions=lsan.supp`. LeakSanitizer then prints the suppressions it used and stays quiet otherwise. Never suppress a leak whose stack runs through your own code.
 
 The SDL examples use SDL's callback entry points instead of `main`. Write a plain `main` and move the pieces:
 
@@ -221,7 +238,7 @@ int main(int argc, char **argv) {
 }
 ```
 
-Draw the display through a 64 by 32 texture with format `SDL_PIXELFORMAT_XRGB8888` and access `SDL_TEXTUREACCESS_STREAMING`. Set its scale mode to `SDL_SCALEMODE_NEAREST`, or SDL blurs the pixels when it stretches them. Each pass, fill a `uint32_t pixels[32][64]` with `0xFFFFFF` or `0x000000`, call `SDL_UpdateTexture` with a pitch of `64 * 4`, and draw it with `SDL_RenderTexture(renderer, texture, NULL, NULL)` to fill a 640 by 320 window. `SDL_SetRenderVSync(renderer, 1)` makes `SDL_RenderPresent` wait for the display, so the loop does not spin.
+Draw the display through a 64 by 32 texture with format `SDL_PIXELFORMAT_XRGB8888` and access `SDL_TEXTUREACCESS_STREAMING`. Set its scale mode to `SDL_SCALEMODE_NEAREST`, or SDL blurs the pixels when it stretches them. Each pass, fill a `uint32_t pixels[32][64]` with `0xFFFFFF` or `0x000000`, call `SDL_UpdateTexture` with a pitch of `64 * 4`, and draw it with `SDL_RenderTexture(renderer, texture, NULL, NULL)` to fill a 640 by 320 window. `SDL_SetRenderVSync(renderer, 1)` asks `SDL_RenderPresent` to wait for the display, so the loop does not spin. Under WSLg the wait depends on the chain described above, and item 4 of the Build below measures what you get.
 
 Map keys by scancode, which is the physical position of the key, so the layout works on any keyboard. The usual mapping puts the COSMAC VIP keypad on the left side of the keyboard:
 
@@ -239,21 +256,22 @@ FX0A completes the instruction set. It waits in two phases. While no key is held
 
 ### Study
 
-- [SDL3 examples: renderer/07-streaming-textures](https://examples.libsdl.org/SDL3/renderer/07-streaming-textures/) (do, 30 min): The official example for a texture you rewrite every frame. Build it on the Mac against your Homebrew SDL3 and run it. Then change it to fill a 64 by 32 texture from an array with `SDL_UpdateTexture`, in place of `SDL_LockTextureToSurface`. The surface functions it uses are not needed.
+- [SDL3 examples: renderer/07-streaming-textures](https://examples.libsdl.org/SDL3/renderer/07-streaming-textures/) (do, 30 min): The official example for a texture you rewrite every frame. Its source is also in your SDL directory, at `examples/renderer/07-streaming-textures/streaming-textures.c`. Build it with `cc streaming-textures.c $(pkg-config --cflags --libs sdl3)` and run it. Then change it to fill a 64 by 32 texture from an array with `SDL_UpdateTexture`, in place of `SDL_LockTextureToSurface`. The surface functions it uses are not needed.
 - [Glenn Fiedler: Fix Your Timestep!](https://gafferongames.com/post/fix_your_timestep/) (read, 20 min): From "Fixed delta time" through "Free the physics". Read "integrate" as "run one CHIP-8 frame". Skip "The final touch", which interpolates physics state and has no CHIP-8 counterpart.
 - [SDL3 wiki: API by name](https://wiki.libsdl.org/SDL3/CategoryAPI) (reference, as needed): One page per function and struct. Look up `SDL_CreateWindowAndRenderer`, `SDL_CreateTexture`, `SDL_SetTextureScaleMode`, `SDL_UpdateTexture`, `SDL_PollEvent`, `SDL_KeyboardEvent`, `SDL_Scancode`, `SDL_GetTicksNS` and `SDL_SetRenderVSync`. Every page has the signature and the return value. Most functions return `false` on failure and `SDL_GetError()` says why.
 
 ### Build
 
 1. Add `chip8_frame` to the core. Change the runner to `chip8 ROM FRAMES [MENU]`. It runs FRAMES frames at IPF 15. If MENU is given, it writes that byte, the menu value, to address `0x1FF` after loading. The Timendus menus read that address and skip the menu, as their README sections explain.
-2. Write `src/chip8_sdl.c` with the loop above: a 640 by 320 window, vsync on, the streaming texture, the accumulator and the key table. Its command line is `chip8_sdl ROM [IPF] [MENU]`. IPF and MENU are both numbers, so to give MENU you give IPF too.
+2. Build SDL3 as above after `xeyes` and `pactl info` work. Write `src/chip8_sdl.c` with the loop above: a 640 by 320 window, vsync on, the streaming texture, the accumulator and the key table. Check the return value of `SDL_SetRenderVSync` and print `SDL_GetError()` if it fails. Print the video driver name at startup. Its command line is `chip8_sdl ROM [IPF] [MENU]`. IPF and MENU are both numbers, so to give MENU you give IPF too.
 3. Add FX0A to the core and unit tests for it: with `keys[5]` held, a step leaves the machine waiting and V3 unchanged. After `keys[5]` goes false, the next step sets V3 = 5 and the machine runs on.
-4. Once per second of real time, print the number of CHIP-8 frames that ran in that second.
+4. Once per second of real time, print two numbers: the CHIP-8 frames that ran in that second and the passes through the host loop.
 5. Read the "Keypad test" section of the Timendus README and run `6-keypad.ch8` in the window. Try all three modes.
+6. Optional, on the Mac: install SDL3 with `brew install sdl3 pkgconf`, build the same front end and compare its pass count with vsync on. There `SDL_RenderPresent` waits for a native display.
 
 ### Done when
 
-The IBM logo shows in the window as sharp white blocks. The frame counter prints 60 each second with IPF 15 and with IPF 1000, and still 60 after you turn vsync off. In the keypad test, mode 1 lights the keys you hold, mode 2 lights the keys you do not hold, and mode 3 shows a check mark and "all good". In mode 3 the program does not move on while you keep the key held.
+The IBM logo shows in the window as sharp white blocks, and the driver line names `x11` or `wayland`. The frame counter prints 60 each second with IPF 15 and with IPF 1000, and still 60 after you turn vsync off. The first second can come out short while the window opens. The pass count shows what vsync does under WSLg on your machine: near your panel's refresh rate means `SDL_RenderPresent` waited, and hundreds or thousands mean it did not, so the loop keeps one core busy. You can say why the frame count stays at 60 either way. The front end exits with status 0 under `LSAN_OPTIONS=suppressions=lsan.supp`, and no line in `lsan.supp` matches your own code. In the keypad test, mode 1 lights the keys you hold, mode 2 lights the keys you do not hold, and mode 3 shows a check mark and "all good". In mode 3 the program does not move on while you keep the key held.
 
 ## Quirks, display wait and the beep
 
@@ -276,12 +294,12 @@ typedef struct {
 
 The "vip" preset sets the first four to true and the last two to false, which matches the behavior you built in steps 1 and 2. The "octo" preset sets all six to false. Octo is the CHIP-8 development environment most modern games were written in, and its own source gives those defaults. You need that preset for the games in step 5.
 
-The sound timer drives a buzzer. While ST is above zero, the speaker beeps. SDL3 plays sound through an audio stream: you open it with a sample format and a rate, and push samples into it. A square wave is enough, a constant value that flips sign every few samples. At 8000 samples per second, flipping every 4 samples gives a 1000 Hz tone. The SDL example keeps half a second of audio queued, which would make every beep start and stop half a second late. Keep the queue short instead. After each CHIP-8 frame, if fewer than about three frames of samples are queued, push one frame's worth, 8000 / 60, about 134 samples. Push the square wave if ST is above zero and zeros if it is not. `SDL_GetAudioStreamQueued` counts bytes, not samples. With 32-bit float samples as in the example, one frame is about 134 times 4 bytes, so three frames are about 1600 bytes.
+The sound timer drives a buzzer. While ST is above zero, the speaker beeps. SDL3 plays sound through an audio stream: you open it with a sample format and a rate, and push samples into it. A square wave is enough, a constant value that flips sign every few samples. At 8000 samples per second, flipping every 4 samples gives a 1000 Hz tone. The SDL example keeps half a second of audio queued, which would make every beep start and stop half a second late. Under WSLg the sound also takes a longer path than on a native machine: from SDL to WSLg's PulseAudio server, then over the Remote Desktop connection to Windows, and each stage keeps its own buffer. You cannot shorten that part, so keep your own queue short. Check the driver too. `SDL_GetCurrentAudioDriver()` should return `pulseaudio`. If it returns `alsa`, SDL could not reach WSLg's sound server, and `echo $PULSE_SERVER` and `pactl info` from step 3 show why. After each CHIP-8 frame, if fewer than about three frames of samples are queued, push one frame's worth, 8000 / 60, about 134 samples. Push the square wave if ST is above zero and zeros if it is not. `SDL_GetAudioStreamQueued` counts bytes, not samples. With 32-bit float samples as in the example, one frame is about 134 times 4 bytes, so three frames are about 1600 bytes.
 
 ### Study
 
 - [Steffen Schümann: Classic CHIP-8 Technical Reference](https://chip8kb.gulrak.net/reference/variants/classic-chip-8/#7-chip-8-quirks) (read, 15 min): Section 7, "CHIP-8 Quirks", and the paragraph on display wait at the end of "Specific Notes on Opcodes". The "COSMAC VIP" box after that paragraph explains why a draw can take two frames on the real machine. You do not need to emulate that.
-- [SDL3 examples: audio/01-simple-playback](https://examples.libsdl.org/SDL3/audio/01-simple-playback/) (do, 20 min): Build and run it. It opens a stream with `SDL_OpenAudioDeviceStream`, starts it with `SDL_ResumeAudioStreamDevice`, and feeds a sine wave with `SDL_PutAudioStreamData` whenever `SDL_GetAudioStreamQueued` is low. Change the sine to a square wave and the queue limit to three frames before you move the code into your front end.
+- [SDL3 examples: audio/01-simple-playback](https://examples.libsdl.org/SDL3/audio/01-simple-playback/) (do, 20 min): Its source is in your SDL directory at `examples/audio/01-simple-playback/simple-playback.c`. Build and run it like the texture example, and check that you hear the tone through Windows. It opens a stream with `SDL_OpenAudioDeviceStream`, starts it with `SDL_ResumeAudioStreamDevice`, and feeds a sine wave with `SDL_PutAudioStreamData` whenever `SDL_GetAudioStreamQueued` is low. Change the sine to a square wave and the queue limit to three frames before you move the code into your front end.
 
 ### Build
 
@@ -289,15 +307,15 @@ The sound timer drives a buzzer. While ST is above zero, the speaker beeps. SDL3
 2. Make `chip8_frame` stop after a DXYN when `display_wait` is on. Give the front end and the runner an optional quirks preset, `vip` or `octo`. The full command lines are now `chip8 ROM FRAMES [vip|octo] [MENU] [trace]` and `chip8_sdl ROM [IPF] [vip|octo] [MENU] [BREAK]`. The runner tells its optional arguments apart by their form: a preset name, a number, or the word `trace`. In the front end the first number is IPF, the second is MENU, and BREAK starts with `0x`. The `trace` and `BREAK` arguments come in step 5.
 3. Read the "Quirks test" section of the Timendus README. Run `5-quirks.ch8` with menu value 1 in the runner for 300 frames, then in the window.
 4. Turn each quirk flag around in turn, and run the test again. Then run it with IPF 5.
-5. Add the audio stream to the front end, and add `SDL_INIT_AUDIO` to the flags of `SDL_Init`. Read the "Beep test" section and run `7-beep.ch8`. Keypad B is the C key on your keyboard.
+5. Add the audio stream to the front end, add `SDL_INIT_AUDIO` to the flags of `SDL_Init`, and print `SDL_GetCurrentAudioDriver()` next to the video driver. Read the "Beep test" section and run `7-beep.ch8`. Keypad B is the C key on your keyboard.
 
 ### Done when
 
-The quirks test shows six check marks with the vip preset, the same screen as the README picture. Each flipped flag changes its own row to a cross, and IPF 5 shows SLOW for display wait. The beep test plays SOS in time with the flashing speaker icon, and holding C beeps for as long as you hold it. You can say why the timers are decremented before the instructions of a frame and not after.
+The quirks test shows six check marks with the vip preset, the same screen as the README picture. Each flipped flag changes its own row to a cross, and IPF 5 shows SLOW for display wait. The audio driver is `pulseaudio`. The beep test plays SOS, three short beeps, three long and three short, with the same rhythm as the flashing speaker icon. Under WSLg the sound can trail the icon by a fraction of a second. Holding C beeps for as long as you hold it, give or take that delay. You can say why the timers are decremented before the instructions of a frame and not after.
 
 ## A debugger, regression tests and real games
 
-The test ROMs tell you that something is wrong, and roughly which instruction. A game that misbehaves tells you less. You need to see the machine state at the moment it goes wrong. lldb from chapter 01 shows the state of your C program, but you want the state of the CHIP-8 machine: PC, the opcode, V0 to VF, I, the stack pointer and the timers, one instruction at a time. Three tools cover most bugs:
+The test ROMs tell you that something is wrong, and roughly which instruction. A game that misbehaves tells you less. You need to see the machine state at the moment it goes wrong. gdb from chapter 01 shows the state of your C program, but you want the state of the CHIP-8 machine: PC, the opcode, V0 to VF, I, the stack pointer and the timers, one instruction at a time. Three tools cover most bugs:
 
 - A trace. The runner prints one line per instruction to `stderr`, so `stdout` keeps the display. Write the address, the opcode and the registers, in a fixed format that `grep` and `diff` can work with.
 - Pause, single step and a breakpoint in the window. While paused, one key runs one instruction and prints the state. A breakpoint address on the command line pauses the machine when PC reaches it.
@@ -326,15 +344,15 @@ Some entries also carry `vfOrderQuirks`. Octo's default for it, false, writes VF
 1. Add the trace to the runner as the optional last argument, `trace`. One line per instruction, for example `0x2A4 8F14 V0=00 V1=80 ... VF=80 I=0x300 SP=1 DT=00 ST=00`.
 2. In the front end, Space pauses and resumes, N runs one instruction while paused and prints the same line, and the optional BREAK argument, a hex address such as `0x2A4`, sets a breakpoint. Parse the digits after `0x` with the hex digit code from chapter 04's `\u` escapes.
 3. Plant the 8XY4 bug from step 2 again. In the trace of `4-flags.ch8`, find the first 8XY4 whose X or Y is F. Set a breakpoint at its address in the window, step over it, and compare VF and VX with what the instruction should produce. Remove the bug.
-4. Write `tests/run_roms.sh`. It builds the runner, runs ROMs 1 to 5 headless with fixed frame counts (300 frames is enough for each, with menu value 1 for the quirks test), and diffs each output with `tests/golden/<rom>.txt`. Create the golden files once, after you have checked each screen against its README picture. The script exits nonzero on any difference.
+4. Write `tests/run_roms.sh`. It builds the runner with `sh build.sh chip8`, so a `CC` you set carries through, then runs ROMs 1 to 5 headless with fixed frame counts (300 frames is enough for each, with menu value 1 for the quirks test), and diffs each output with `tests/golden/<rom>.txt`. Create the golden files once, after you have checked each screen against its README picture. The script exits nonzero on any difference.
 5. Play the four games. Set IPF from `tickrate` and the quirks from `options`.
 
 ### Done when
 
-`sh tests/run_roms.sh; echo $?` prints 0 on the Mac and in Linux. With the planted bug, it fails on `4-flags` and `5-quirks` and passes the other three. The quirks test uses the same instruction and shows ERR2 in its clipping row. Stepping over the buggy instruction shows VF overwritten before the add reads it. You can stop at a breakpoint and step through a subroutine call and its return. Each of the four games reaches its playfield. Keys 7 and 9 slide the paddle in `br8kout`, keys 5, 7, 8 and 9 move the gunman in `outlaw`, key 5 makes the player fall in `down8`, and keys 7 and 9 move the player in `caveexplorer`, as the `howto` fields in `programs.json` and the caveexplorer source say.
+`sh tests/run_roms.sh; echo $?` prints 0, and so does the same script with `CC=gcc`. With the planted bug, it fails on `4-flags` and `5-quirks` and passes the other three. The quirks test uses the same instruction and shows ERR2 in its clipping row. Stepping over the buggy instruction shows VF overwritten before the add reads it. You can stop at a breakpoint and step through a subroutine call and its return. Each of the four games reaches its playfield. Keys 7 and 9 slide the paddle in `br8kout`, keys 5, 7, 8 and 9 move the gunman in `outlaw`, key 5 makes the player fall in `down8`, and keys 7 and 9 move the player in `caveexplorer`, as the `howto` fields in `programs.json` and the caveexplorer source say.
 
 ## Where this leads
 
 You have built a computer in software and checked it against a reference. That finishes part one.
 
-You have not measured how fast any of this runs. The emulator does 15 instructions per frame and the host could do millions, so speed never came up. Real programs are slow for reasons you cannot see by reading the code, so chapter 07, Memory hierarchy, measurement and SIMD, starts with measurement. It returns to Casey Muratori's Performance-Aware Programming course, whose Part 1 gave you the 8086 decoder. Its first step times one array sum in Python and in C with a monotonic clock and explains the gap with five causes. Then it writes a generator for a JSON file of point pairs and a haversine distance processor that parses that file with your chapter 04 JSON parser. That processor is the baseline the rest of the chapter profiles and speeds up, through your own timers and profiler, caches, data layout and the vector instructions that your Mac and your VM both have.
+You have not measured how fast any of this runs. The emulator does 15 instructions per frame and the host could do millions, so speed never came up. Real programs are slow for reasons you cannot see by reading the code, so chapter 07, Memory hierarchy, measurement and SIMD, starts with measurement. It returns to Casey Muratori's Performance-Aware Programming course, whose Part 1 gave you the 8086 decoder. Casey works on x86-64, the instruction set of your laptop, so the instructions he writes and reads run on your CPU in WSL2. His Windows calls need Linux replacements, and his assembly files take their arguments in the Windows registers, which you change to the System V ones from chapter 05. The chapter's first step times one array sum in Python and in C with a monotonic clock and explains the gap with five causes. Then it writes a generator for a JSON file of point pairs and a haversine distance processor that parses that file with your chapter 04 JSON parser. That processor is the baseline the rest of the chapter profiles and speeds up: with timers built on the `rdtsc` instruction, your own profiler, loops in x86-64 assembly that probe the core and the caches, data layout, and AVX2, the 256-bit vector instructions of your CPU.

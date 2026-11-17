@@ -6,13 +6,13 @@ weeks: 6
 project: The Hack CPU in HDL plus an assembler written in C.
 ---
 
-Chapter 02 ended with you reading ARM64 output from clang. You watched `ldr` load a value from an address into a register, `str` store it back and `ret` jump to the address in `x30`. You can name what each instruction does. You cannot yet say what a register is made of, how the machine picks the next instruction, or why an instruction is a number.
+Chapter 02 ended with you reading x86-64 output from clang. You watched `movl` load a value from an address into a register and store it back, `cmpb` and `jne` drive a loop, and `ret` pop the return address off the stack and jump to it. You can name what each instruction does. You cannot yet say what a register is made of, how the machine picks the next instruction, or why an instruction is a number.
 
 This chapter answers those questions by building a computer. You start from one logic gate, NAND, and build every other gate from it. Then you build an adder, an arithmetic logic unit (ALU), registers, RAM, a CPU and finally the whole Hack computer, a 16-bit machine designed for teaching. The chips are written in a small hardware description language (HDL) and tested in a simulator that runs in your browser. The last two steps leave the simulator and return to C: you write an assembler that turns Hack assembly text into the 16-bit words your CPU runs.
 
 The main source for the chapter is Nand2Tetris, the course by Noam Nisan and Shimon Schocken, which covers this exact path. Its site gives away the book chapters as PDFs, a test script for every chip, and an online IDE with the simulators. You follow its projects 1 to 6, one project per step except the assembler, which gets two. Two small extras fill gaps: Charles Petzold's interactive circuits for two's complement and flip-flops, and one short chapter of Beej's Guide to C for the bit operations in the assembler.
 
-The chapter comes now because every later chapter assumes the picture it builds. Chapter 04 talks about how data sits in memory. Chapter 05 decodes real x86 instructions, which is your assembler run backwards. Chapter 06 builds a whole machine in software.
+The chapter comes now because every later chapter assumes the picture it builds. Chapter 04 talks about how data sits in memory. Chapter 05 decodes 8086 machine code, which is your assembler run backwards. Chapter 06 builds a whole machine in software.
 
 ## Gates from NAND
 
@@ -38,14 +38,21 @@ The multiplexer (Mux) is the chip to understand best, because the ALU and the CP
 
 The DMux does the reverse: it sends one input to one of two outputs and puts 0 on the other. The 16-bit versions apply the same gate to each of 16 wires at once. A group of wires carrying one value is called a bus, and HDL writes it as `a[16]`.
 
-Set up the tools first. Open the Hardware Simulator in the [Nand2Tetris online IDE](https://nand2tetris.github.io/web-ide/chip). It needs no install and runs the same on your Mac as anywhere else. By default it keeps your files in browser storage. If you use Chrome or another Chromium browser, open Settings and choose desktop storage with a folder inside your repository, so your HDL files live on disk and in git. In Safari or Firefox, use the IDE's download button for your `.hdl` files at the end of every session.
+Set up the tools first. Open the Hardware Simulator in the [Nand2Tetris online IDE](https://nand2tetris.github.io/web-ide/chip) in Chrome or Edge on Windows. It needs no install. By default it keeps your files in browser storage, which lives inside the browser and outside your repository. Point it at a folder in your repository instead:
 
-The course site gives away chapters 1 to 4 and 6 from the book's first edition, and chapter 5 and the appendices from the second. The IDE ships second-edition project files. The editions differ in small details. Where they disagree, the files in the IDE are right.
+1. In the IDE's settings, under "Project files", choose "Use Desktop Storage" and click "Download the projects folder". It opens a Google Drive page for `projects.zip`. Download the file, which lands in your Windows Downloads folder.
+2. In Ubuntu, from your repository root, run `sudo apt install unzip`, then `unzip /mnt/c/Users/<your Windows user>/Downloads/projects.zip -d nand2tetris`. Windows sometimes keeps Downloads elsewhere, such as in OneDrive or on another drive. If `unzip` cannot find the file, find it in File Explorer, hold Shift, right-click it and choose "Copy as path". Then run `unzip "$(wslpath 'C:\path\you\copied\projects.zip')" -d nand2tetris`, with the copied path pasted inside the single quotes and its own double quotes removed. You get `nand2tetris/projects/` with one numbered folder per project.
+3. Commit the untouched stubs once: `git add nand2tetris && git commit -m "Nand2Tetris project stubs"`. From now on `git status` shows exactly which chips you changed.
+4. Run `wslpath -w nand2tetris/projects`. It prints the Windows path of that folder. In the IDE's settings, click "Select Projects Folder" and paste the path into the address bar of the folder dialog. Use the form that starts with `\\wsl.localhost\`. If `wslpath` prints `\\wsl$\`, replace that part with `\\wsl.localhost\`. Chapter 01 showed you the `\\wsl$\` form, and both forms name the same folder, but Chrome and Edge reject folders reached through `\\wsl$\`. Keep the folder inside your Linux home directory, as `nand2tetris/projects` in your repository is.
+
+From then on the IDE reads and writes the files in your repository, and you commit them from Ubuntu like any other file. If the IDE writes `.out` files next to the tests, add the line `nand2tetris/**/*.out` to your `.gitignore`. If the folder dialog rejects the path, update the browser and try again. If that does not help, switch back to browser storage. Then use the IDE's download button for your `.hdl` files at the end of every session and copy them from `/mnt/c/Users/<your Windows user>/Downloads` into the repository. Firefox has no desktop storage, so it needs the same fallback.
+
+The course site gives away chapters 1 to 4 and 6 from the book's first edition, and chapter 5 and the appendices from the second. `projects.zip` and the IDE hold second-edition project files. The editions differ in small details. Where they disagree, the project files are right.
 
 ### Study
 
 - [Nand2Tetris, chapter 1: Boolean Logic](https://www.nand2tetris.org/_files/ugd/44046b_f2c9e41f0b204a34ab78be0ae4953128.pdf) (read, 1 h 30 min): Sections 1.1 to 1.3 and 1.5. Skip 1.4 Perspective.
-- [Nand2Tetris, Appendix 2: Hardware Description Language](https://drive.google.com/file/d/1dPj4XNby9iuAs-47U9k3xtYy9hJ-ET0T/view?usp=sharing) (read, 40 min): A2.1 to A2.3. A2.2 on buses is the part you will look up most, including how to take bits `x[i..j]` of a part's output. Stop before A2.4, which the memory step uses.
+- [Nand2Tetris, Appendix 2: Hardware Description Language](https://drive.google.com/file/d/1dPj4XNby9iuAs-47U9k3xtYy9hJ-ET0T/view?usp=sharing) (read, 50 min): A2.1 to A2.3, then A2.6 HDL Survival Guide. A2.2 on buses is the part you will look up most, including how to take bits `x[i..j]` of a part's output. Read A2.6, three pages of tips, before your fifth chip. It explains why you build chips in the book's order (a part whose `.hdl` is still a stub fails), that an unconnected pin is set to 0 without an error, and how to test a chip in isolation to find which part is broken. A2.6 was written for the old Java simulator, so skip its advice on the File menu and on moving windows. Skip A2.4 and A2.5 for now. The memory step uses A2.4.
 - [Online IDE: Hardware Simulator guide](https://nand2tetris.github.io/web-ide/user_guide/chip.pdf) (reference, as needed): Two pages on the HDL editor, the pins panel, the test panel and the diff table that shows where a test failed.
 
 ### Build
@@ -56,7 +63,7 @@ Before writing each of the first six chips, write its truth table and a Boolean 
 
 ### Done when
 
-Every project 1 test script runs to the end with no comparison failures. You can write Xor using only Nand on paper without looking at your HDL. You can explain why moving a line under `PARTS:` to another position does not change the chip, and why none of these chips can remember a value.
+Every project 1 test script runs to the end with no comparison failures. `git status` in Ubuntu lists your changed `.hdl` files under `nand2tetris/projects/1` as modified. You can write Xor using only Nand on paper without looking at your HDL. You can explain why moving a line under `PARTS:` to another position does not change the chip, and why none of these chips can remember a value.
 
 ## Binary numbers, adders and the ALU
 
@@ -73,7 +80,7 @@ Negative numbers use two's complement. In 16 bits, `-x` is stored as the bit pat
  -32768   1000 0000 0000 0000   0x8000
 ```
 
-A half adder adds two bits and gives a sum bit and a carry bit. A full adder adds three bits, which are two input bits plus the carry from the column to the right. Chain 16 full adders and you have Add16. The carry out of bit 15 is dropped, which is why 16-bit addition wraps around.
+A half adder adds two bits and gives a sum bit and a carry bit. A full adder adds three bits, which are two input bits plus the carry from the column to the right. Chain 16 full adders and you have Add16. The carry out of bit 15 is dropped, so 16-bit addition wraps around.
 
 The Hack ALU takes two 16-bit inputs, `x` and `y`, and six control bits. It always runs the same pipeline, and the control bits choose what happens at each stage:
 
@@ -92,7 +99,7 @@ Every row of the ALU table follows from one identity: flipping all bits of `a` g
 ### Study
 
 - [Nand2Tetris, chapter 2: Boolean Arithmetic](https://www.nand2tetris.org/_files/ugd/44046b_89c60703ebfc4bf39acef13bdc050f5d.pdf) (read, 1 h): Sections 2.1 to 2.3 and 2.5. Skip 2.4 Perspective.
-- [Code, interactive illustrations: chapter 16](https://codehiddenlanguage.com/Chapter16/) (do, 15 min): Charles Petzold's companion site to his book Code. Use the eight-bit adder/subtractor and watch the XOR gates flip the second number while the carry-in adds 1. That is two's complement negation done by gates. Then add two large positive numbers in the two's complement adder and watch the Overflow output turn on. The site is free. The book is not needed.
+- [Code, interactive illustrations: chapter 16](https://codehiddenlanguage.com/Chapter16/) (do, 15 min): Charles Petzold's companion site to his book Code. Use the eight-bit adder/subtractor and watch the XOR gates flip the second number while the carry-in adds 1. The inverted bits plus the carry-in of 1 form two's complement negation. Then add two large positive numbers in the two's complement adder and watch the Overflow output turn on. The site is free. The book is not needed.
 
 ### Build
 
@@ -126,9 +133,9 @@ A one-bit register (Bit) is a DFF plus a Mux that feeds the DFF either a new val
          load = 1: store in at the next cycle
 ```
 
-A Register is 16 Bits sharing one `load` wire. RAM8 is eight Registers. A DMux8Way sends `load` to the register chosen by the address, and a Mux8Way16 picks that register's output. Bigger RAM is made from smaller RAM: the high address bits pick a block and the low bits pick a word inside it. These are the registers and memory addresses you saw in chapter 02. `x0` is a register like this one, 64 bits wide. The address in `ldr w8, [x0]` selects a word in a RAM like the one you build here.
+A Register is 16 Bits sharing one `load` wire. RAM8 is eight Registers. A DMux8Way sends `load` to the register chosen by the address, and a Mux8Way16 picks that register's output. Bigger RAM is made from smaller RAM: the high address bits pick a block and the low bits pick a word inside it. These are the registers and memory addresses you saw in chapter 02. `%rdi` is a register like this one, 64 bits wide. The address in `movl (%rdi), %eax` selects memory the way the address input of your RAM selects a word. Your RAM holds one 16-bit word per address. x86-64 memory holds one byte per address, so `movl` reads the four bytes at addresses `rdi` to `rdi + 3`.
 
-The program counter (PC) holds the address of the next instruction. Each cycle it either resets to 0, loads a new value, adds 1, or keeps its value, in that order of priority. A jump is the PC loading a value instead of adding 1.
+The program counter (PC) holds the address of the next instruction. Each cycle it either resets to 0, loads a new value, adds 1, or keeps its value, in that order of priority. A jump is the PC loading a value instead of adding 1. On x86-64 the program counter is called `%rip`, and gdb's `info registers rip` prints it. The `jne` at the bottom of your `str_len` loop from chapter 02 loads `%rip` with the address of the loop's first instruction, and `ret` loads it with the address it pops off the stack.
 
 In the simulator, a test script's `tick` and `tock` are the two halves of a clock cycle. Read the outputs in a test's `.cmp` file as values after each half.
 
@@ -160,9 +167,9 @@ Hack has two registers. `D` holds data. `A` holds data or an address. `M` is not
                address in A if the result is greater than 0
 ```
 
-A C-instruction has three optional fields, `dest=comp;jump`. `comp` is one of the ALU functions you built. `dest` says which of A, D and M receive the result. `jump` compares the result with 0 and, if the test passes, loads the PC from `A`. So a jump always takes two instructions: `@LOOP` to put the target address in A, then a C-instruction with a jump field.
+A C-instruction has three optional fields, `dest=comp;jump`. `comp` is one of the ALU functions you built. `dest` says which of A, D and M receive the result. `jump` compares the result with 0 and, if the test passes, loads the PC from `A`. So a jump always takes two instructions: `@LOOP` to put the target address in A, then a C-instruction with a jump field. Hack source can use `(LABEL)` lines for jump targets and `@name` for variables, as section 4.2.4 shows, and the CPU Emulator accepts them. Use them freely in this step. The assembler steps explain how they turn into numbers.
 
-Compare this with chapter 02. ARM64's `ldr w8, [x0]` loads from the address in a register in one instruction. In Hack that takes `@R0`, `A=M` to put the address in A, then `D=M`. Hack has no load or store instruction. Every access to memory goes through `M`.
+Compare this with chapter 02. x86-64's `movl (%rdi), %eax` loads from the address held in the register `%rdi`. Hack's `D=M` does the same with the address in A. x86-64 has sixteen general registers to keep pointers in, and Hack has two, so a Hack pointer usually waits in RAM. Following a pointer stored in RAM[0] takes `@R0`, `A=M` to put the address in A, then `D=M`. Like x86-64, Hack has no separate load and store instructions. Where x86-64 puts parentheses around a register to name memory, Hack writes `M`, which always means the word at the address in A.
 
 Every instruction is a 16-bit word. This is how `D=M+1;JGT` becomes `1111110111010001`:
 
@@ -187,16 +194,17 @@ You run these programs in the IDE's [CPU Emulator](https://nand2tetris.github.io
 
 ### Build
 
-Write the two programs of project 4 in the IDE's CPU Emulator:
+Write the two programs of project 4 in the IDE's CPU Emulator, then one of your own:
 
 1. `Mult.asm` computes `R2 = R0 * R1` by repeated addition. Assume both inputs are 0 or more and the product fits. Test with `Mult.tst`.
 2. `Fill.asm` loops forever. While any key is held, it blackens every pixel. When no key is held, it clears every pixel. Test it by hand with the keyboard enabled, then with `FillAutomatic.tst`.
+3. `Sum.asm` adds up an array. R0 holds the address of the first element, R1 the number of elements, and the program writes the sum to R2. In C it is a loop over `p[i]` with a pointer and a length, as in chapter 02's pointer arithmetic step. Here the pointer waits in RAM, so the loop needs the `A=M` pattern from above. There is no test script, so set RAM by hand in the emulator: R0 = 100, R1 = 5 and RAM[100] to RAM[104] = 3, 1, 4, 1, 5.
 
-Then encode by hand, on paper, the first six instructions of `MaxL.asm` from the IDE's project 6 folder: `@0`, `D=M`, `@1`, `D=D-M`, `@10`, `D;JGT`.
+Then encode by hand, on paper, the first six instructions of `MaxL.asm` from project 6, which is `nand2tetris/projects/6/max/MaxL.asm` in your repository: `@0`, `D=M`, `@1`, `D=D-M`, `@10`, `D;JGT`.
 
 ### Done when
 
-`Mult.tst` and `FillAutomatic.tst` pass, and `Fill.asm` works by hand. Your six hand-encoded words match the first six lines of `Max.hack` in the IDE's project 5 folder, which the official assembler produced. For each line of `Mult.asm` you can say what A, D and M hold after it runs.
+`Mult.tst` and `FillAutomatic.tst` pass, and `Fill.asm` works by hand. `Sum.asm` leaves 14 in R2 for the array above and 0 when R1 is 0. Your six hand-encoded words match the first six lines of `nand2tetris/projects/5/Max.hack`, which the official assembler produced. For each line of `Mult.asm` you can say what A, D and M hold after it runs.
 
 ## The CPU and the computer
 
@@ -219,7 +227,7 @@ The programs from the last step ran on the IDE's built-in CPU. Now you build you
             else PC = PC + 1 --------------------------------+
 ```
 
-A real ARM64 core runs the same loop on many instructions at once, out of order, with caches in between. Chapter 07 covers those.
+A real x86-64 core runs the same loop on many instructions at once, out of order, with caches in between. Chapter 07 covers those.
 
 The decode step needs no decoder chip. The instruction bits go straight to the parts as control wires. Bit 15 picks between the instruction and the ALU output as the A register's input. The `a` bit is the `sel` of a Mux16 that feeds A or `inM` into the ALU. The six `c` bits are the ALU's control pins. The three `d` bits become the load pins of A and D and the `writeM` output. The jump bits combine with the ALU's `zr` and `ng` into one bit that drives the PC's `load`. The load pins of A and D, `writeM` and the jump bit must also check bit 15, because an A-instruction must not write D or jump.
 
@@ -233,6 +241,8 @@ The Memory chip joins RAM16K, the Screen and the Keyboard into one address space
 ### Build
 
 Implement Memory, CPU and Computer. Use the built-in ARegister and DRegister inside the CPU, as the book suggests. They behave like your Register, and the simulator can show their values.
+
+Build the CPU in three passes. First handle A-instructions only, with the PC always adding 1. Then add C-instructions without jumps. Then add the jumps. Before the third pass, write a table on paper with one row per `j1 j2 j3` value from the jump table in figure 4.5 of chapter 4, and four columns for `zr` and `ng`: both 0, `zr` only, `ng` only, both 1 (which never happens). Fill each cell with the PC's `load` bit. JGT, for example, loads when neither `zr` nor `ng` is 1. Write your HDL from the table. The early passes fail parts of `CPU.tst`. Use the failing rows in the diff table to check that only the instructions you have not handled yet fail.
 
 Test in this order: `Memory.tst`, then `CPU.tst` and `CPU-external.tst`, then `ComputerAdd.tst`, `ComputerMax.tst` and `ComputerRect.tst`.
 
@@ -265,20 +275,21 @@ Most of the program is chapter 02's word counter with a different input format. 
   print bits 15 down to 0 as '0' and '1', then '\n'
 ```
 
-Keep each table as an array of structs, such as `struct Code { const char *text; unsigned bits; }`, and look up a field with a linear scan. A field is a slice of the line, so compare it with a table entry using `strncmp(field, text, n) == 0 && text[n] == '\0'`, where `n` is the field's length, or `memcmp` once you know the lengths match. Parse the number after `@` yourself. The character `'0'` has code 48 and the digits follow it in order, so `c - '0'` is the digit's value. For each digit, `value = value * 10 + (c - '0')`. Build the output word with shifts and OR, and turn it into text by testing `(word >> i) & 1` for `i` from 15 down to 0.
+Keep each table as an array of structs, such as `struct Code { const char *text; unsigned bits; }`, and look up a field with a linear scan. The array initializer and the struct initializer from chapter 02 combine, one brace pair per entry: `static const struct Code dest_table[] = { {"M", 1}, {"D", 2}, {"MD", 3} };` with the rest of the rows after them. A field is a slice of the line, so compare it with a table entry using `strncmp(field, text, n) == 0 && text[n] == '\0'`, where `n` is the field's length, or `memcmp` once you know the lengths match. Both functions are in entry 26.5 of the Beej library reference that chapter 02 gave you for `string.h`. Read it again for what each one returns. Parse the number after `@` yourself. The character `'0'` has code 48 and the digits follow it in order, so `c - '0'` is the digit's value. For each digit, `value = value * 10 + (c - '0')`. Build the output word with shifts and OR, and turn it into text by testing `(word >> i) & 1` for `i` from 15 down to 0.
 
-Three details trip people up. Files from other sources, such as the old desktop Nand2Tetris zip, may end lines with `\r\n`, so treat `\r` as a space. The book's dest table lists `MD`, but the compiled Rect and Pong programs also write `DM`, so accept both spellings for the same bits. An unknown mnemonic is an error: print the line number and the text to `stderr` and exit with status 1.
+Three details trip people up. Every file from `projects.zip` ends its lines with `\r\n`, the Windows line ending from chapter 01, so treat `\r` as a space. The book's dest table lists `MD`, and so do the project files, but the copies of Rect and Pong built into the IDE's browser storage write `DM`. Accept both spellings for the same bits, so either copy assembles. An unknown mnemonic is an error: print the line number and the text to `stderr` and exit with status 1.
 
 The program reads standard input and writes standard output, like `wordcount`. Build it with `sh build.sh hasm` and run it from your repository root:
 
 ```sh
-./out/Darwin-debug/hasm < MaxL.asm > MaxL.hack
+./out/Linux-debug/hasm < MaxL.asm > MaxL.hack
 ```
 
-To check your output you need the `.asm` files and official `.hack` files on disk. With desktop storage they are already in your folder. Otherwise, use the IDE's settings to download the projects folder. Copy project 6's `.asm` files into your repository root. Project 5's folder holds `Add.hack`, `Max.hack` and `Rect.hack` from the official assembler. They are the same programs as project 6's `Add.asm`, `Max.asm` and `Rect.asm`. Make a `ref/raw/` directory and copy those three into it. The IDE stores them with stray blank lines and sometimes no final newline, so keep only the 16-bit lines before comparing:
+To check your output you need the `.asm` files and the official `.hack` files. Both came with `projects.zip` in the first step. Copy project 6's `.asm` files into your repository root with `cp nand2tetris/projects/6/*/*.asm .`. Project 5's folder holds `Add.hack`, `Max.hack` and `Rect.hack` from the official assembler. They are the same programs as project 6's `Add.asm`, `Max.asm` and `Rect.asm`. Their lines end in `\r\n` and yours end in `\n`, so strip the `\r` into a `ref/` directory before comparing:
 
 ```sh
-grep -E '^[01]{16}$' ref/raw/Max.hack > ref/Max.hack
+mkdir -p ref
+tr -d '\r' < nand2tetris/projects/5/Max.hack > ref/Max.hack
 diff ref/Max.hack MaxL.hack
 ```
 
@@ -309,11 +320,11 @@ Write `tests/hasm_test.c` in the chapter 02 pattern: it includes `../src/hasm.c`
 - `word_to_bits(0xFDD1, s)` gives `"1111110111010001"`.
 - `assemble` on `"@2\nD=A\n@3\nD=D+A\n@0\nM=D\n"` gives the six words of `Add.hack`, and on `"@2\nD=Q\n"` returns false.
 
-Then assemble `Add.asm`, `MaxL.asm`, `RectL.asm` and `PongL.asm`. Compare the first three against project 5's files with `diff` as above. For `PongL.asm`, open the IDE's [Assembler](https://nand2tetris.github.io/web-ide/asm), load `PongL.asm`, translate it, paste your output into the compare panel and run the compare.
+Then assemble `Add.asm`, `MaxL.asm`, `RectL.asm` and `PongL.asm`. Compare the first three against project 5's files with `diff` as above. For `PongL.asm`, open the IDE's [Assembler](https://nand2tetris.github.io/web-ide/asm), load `PongL.asm`, translate it, paste your output into the compare panel and run the compare. In Ubuntu, `clip.exe < PongL.hack` copies the file to the Windows clipboard.
 
 ### Done when
 
-All unit tests pass on the Mac and run clean under ASan in the Linux VM. `diff` prints nothing for Add, MaxL and RectL, and the IDE's compare reports no differences for PongL. Break the `DM` alias on purpose and confirm that RectL and PongL then fail with an error message naming a line.
+`sh tests/run_hasm_test.sh` passes with clang and with `CC=gcc`, with no ASan, UBSan or LeakSanitizer report. `diff` prints nothing for Add, MaxL and RectL, and the IDE's compare reports no differences for PongL. Delete the `MD` entry from your dest table on purpose and confirm that RectL and PongL then fail with an error message naming a line. Put the entry back.
 
 ## Labels, variables and Pong
 
@@ -335,7 +346,7 @@ The assembler reads the program twice:
           (NAME)          emit nothing
 ```
 
-The first pass exists because a jump can name a label that appears later in the file. Labels count only real instructions, so a label line does not move the counter. Variables get addresses in the order they first appear in the second pass. The table owns a heap copy of every name and frees them all at the end, like `table_free` in chapter 02. A symbol that starts with a digit is a number, not a name.
+A jump can name a label that appears later in the file, so the first pass collects all labels before any code is emitted. Labels count only real instructions, so a label line does not move the counter. Variables get addresses in the order they first appear in the second pass. The table owns a heap copy of every name and frees them all at the end, like `table_free` in chapter 02. A symbol that starts with a digit is a number, not a name.
 
 Pong has about 27,000 instructions and nearly 900 labels. A linear scan of the table for every `@` line still finishes in well under a second, so keep the scan. Chapter 07 comes back to faster tables.
 
@@ -363,17 +374,17 @@ Extend `hasm_test.c`:
 Then assemble `Max.asm`, `Rect.asm` and `Pong.asm`. Each must give exactly the same output as your previous step gave for its "L" version:
 
 ```sh
-./out/Darwin-debug/hasm < Pong.asm > Pong.hack
-./out/Darwin-debug/hasm < PongL.asm > PongL.hack
+./out/Linux-debug/hasm < Pong.asm > Pong.hack
+./out/Linux-debug/hasm < PongL.asm > PongL.hack
 diff Pong.hack PongL.hack
 ```
 
 ### Done when
 
-`diff` prints nothing for Max, Rect and Pong. The IDE's compare panel, used as in the previous step, reports no differences for `Pong.asm` translated by the IDE against your `Pong.hack`. The tests pass with balanced counters on the Mac and clean under ASan in the VM. Load your `Pong.hack` into the CPU Emulator, enable the keyboard and play a round on code your assembler produced.
+`diff` prints nothing for Max, Rect and Pong. The IDE's compare panel, used as in the previous step, reports no differences for `Pong.asm` translated by the IDE against your `Pong.hack`. The tests pass with balanced counters and no sanitizer report under clang and gcc. Load your `Pong.hack` into the CPU Emulator, enable the keyboard and play a round on code your assembler produced.
 
 ## Where this leads
 
-You built a computer from NAND gates and wrote the tool that produces its programs. You can now say what a register is, how RAM selects a word by address, how an instruction's bits drive the ALU and the registers, and how the program counter picks the next instruction. When chapter 02's `ldr w8, [x0]` runs, you know roughly what happens inside.
+You built a computer from NAND gates and wrote the tool that produces its programs. You can now say what a register is, how RAM selects a word by address, how an instruction's bits drive the ALU and the registers, and how the program counter picks the next instruction. When chapter 02's `movl (%rdi), %eax` runs, you know roughly what happens inside.
 
-Hack is a minimal machine. It has one data size, no bytes, no stack and no call instruction. Real C programs on your Mac work with bytes, structs, stacks and allocators, and they break in ways Hack cannot show you. Chapter 04, C properly: memory, undefined behavior, arenas, goes back to C with the machine model from this chapter. It starts where your ALU stopped: the same two's complement bits, now 8 to 64 bits wide, with C's integer types and the rules that convert between them. Then you will see how C lays out data in memory, which code the compiler is allowed to assume never runs, and how to replace the many small `malloc` calls in your symbol table with an arena. The text parsing you did here grows into a JSON parser there.
+Hack is a minimal machine. It has one data size, no bytes, no stack and no call instruction. Real C programs on x86-64 work with bytes, structs, stacks and allocators, and they break in ways Hack cannot show you. Chapter 04, C properly: memory, undefined behavior, arenas, goes back to C with the machine model from this chapter. It starts where your ALU stopped: the same two's complement bits, now 8 to 64 bits wide, with C's integer types and the rules that convert between them. Then you will see how C lays out data in memory, which code the compiler is allowed to assume never runs, and how to replace the many small `malloc` calls in your symbol table with an arena. The text parsing you did here grows into a JSON parser there.
