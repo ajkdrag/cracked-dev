@@ -1,6 +1,13 @@
 // HTML for every page and fragment the server returns.
 import { marked } from "marked";
 
+const kindLabels = {
+  read: "Read",
+  watch: "Watch",
+  do: "Do",
+  reference: "Reference",
+};
+
 export function homePage(book) {
   const current = book.chapters.find(
     (chapter) => chapter.id === book.currentChapterId,
@@ -10,47 +17,45 @@ export function homePage(book) {
     0,
   );
   const main = `
-    <header class="page-bar">
-      <h1>Contents</h1>
-      <span class="page-bar-meta">${book.chapters.length} chapters, about ${totalWeeks} weeks at 12 h/week</span>
-    </header>
-    <div class="contents">
-      ${continueStrip(current)}
-      <p class="how-to">Read the chapters in order. Each step names what to study, what to build and when to stop. Progress comes from LEARNING.md.</p>
-      ${groupByPart(book.chapters)
-        .map(
-          ({ part, chapters }) => `
-        <h2 class="part-heading">${escapeHtml(part)}</h2>
-        <table class="contents-table">
-          ${chapters.map((chapter) => contentsRow(chapter, book.currentChapterId)).join("")}
-        </table>`,
-        )
-        .join("")}
+    <div class="page">
+      <article class="page-content">
+        <h1>Contents</h1>
+        <p class="lead">${book.chapters.length} chapters, about ${totalWeeks} weeks at 12 hours a week. Read the chapters in order. Each step names what to study, what to build and when to stop.</p>
+        ${continueCard(current)}
+        ${groupByPart(book.chapters)
+          .map(
+            ({ part, chapters }) => `
+          <h2 class="part-heading">${escapeHtml(part)}</h2>
+          <div class="contents-list">
+            ${chapters.map(contentsRow).join("")}
+          </div>`,
+          )
+          .join("")}
+      </article>
     </div>`;
   return layout(book, { title: "Contents", activeChapterId: null, main });
 }
 
-function continueStrip(chapter) {
+function continueCard(chapter) {
   const nextItem = chapter.checklist.find((item) => !item.done);
   return `
-    <a class="continue-strip" href="/chapter/${chapter.id}">
-      <span class="label">Continue</span>
-      <span class="chapter-number">${chapter.id}</span>
-      <strong>${escapeHtml(chapter.title)}</strong>
-      <span class="continue-item">${nextItem ? inlineMarkdown(nextItem.text) : ""}</span>
-      <span class="progress-count">${progressCount(chapter)}</span>
+    <a class="card-link" href="/chapter/${chapter.id}">
+      <span class="card-link-label">Continue, ${progressCount(chapter)} done</span>
+      <span class="card-link-title">${chapter.id}. ${escapeHtml(chapter.title)}</span>
+      ${nextItem ? `<span class="card-link-note">${inlineMarkdown(nextItem.text)}</span>` : ""}
     </a>`;
 }
 
-function contentsRow(chapter, currentChapterId) {
+function contentsRow(chapter) {
   return `
-    <tr class="${chapter.id === currentChapterId ? "is-current" : ""}">
-      <td class="chapter-number">${chapter.id}</td>
-      <td class="contents-title"><a href="/chapter/${chapter.id}">${escapeHtml(chapter.title)}</a></td>
-      <td class="contents-project">${inlineMarkdown(chapter.project)}</td>
-      <td class="contents-weeks">${chapter.weeks} wk</td>
-      <td class="progress-count">${progressCount(chapter)}</td>
-    </tr>`;
+    <a class="contents-row" href="/chapter/${chapter.id}">
+      <span class="contents-number">${chapter.id}</span>
+      <span class="contents-text">
+        <span class="contents-title">${escapeHtml(chapter.title)}</span>
+        <span class="contents-project">${inlineMarkdown(chapter.project)}</span>
+      </span>
+      <span class="contents-weeks">${chapter.weeks} wk</span>
+    </a>`;
 }
 
 export function chapterPage(book, chapter) {
@@ -58,25 +63,21 @@ export function chapterPage(book, chapter) {
   const previous = book.chapters[index - 1];
   const next = book.chapters[index + 1];
   const main = `
-    <header class="page-bar">
-      <span class="chapter-number">${chapter.id}</span>
-      <h1>${escapeHtml(chapter.title)}</h1>
-      <span class="page-bar-meta">${escapeHtml(chapter.part)}, ${chapter.weeks} weeks, ${chapter.steps.length} steps</span>
-      <nav class="page-bar-nav">
-        ${previous ? `<a href="/chapter/${previous.id}" title="${escapeHtml(previous.title)}">&larr; ${previous.id}</a>` : ""}
-        ${next ? `<a href="/chapter/${next.id}" title="${escapeHtml(next.title)}">${next.id} &rarr;</a>` : ""}
-      </nav>
-    </header>
-    <div class="chapter-body">
-      <article class="chapter content">
-        <p class="project"><span class="label">Project</span> ${inlineMarkdown(chapter.project)}</p>
-        ${blockMarkdown(chapter.opening)}
+    <div class="page">
+      <article class="page-content">
+        <p class="eyebrow">Chapter ${chapter.id}, ${escapeHtml(chapter.part)}, ${chapter.weeks} weeks</p>
+        <h1>${escapeHtml(chapter.title)}</h1>
+        <p class="lead">${inlineMarkdown(chapter.project)}</p>
+        <div class="content prose">${blockMarkdown(chapter.opening)}</div>
         ${chapter.steps.map(stepSection).join("")}
         <section class="closing" id="where-this-leads">
           <h2>Where this leads</h2>
-          ${blockMarkdown(chapter.closing)}
-          ${next ? `<a class="next-chapter" href="/chapter/${next.id}"><span class="label">Next</span> <span class="chapter-number">${next.id}</span> ${escapeHtml(next.title)} &rarr;</a>` : ""}
+          <div class="content prose">${blockMarkdown(chapter.closing)}</div>
         </section>
+        <nav class="pager">
+          ${previous ? pagerCard("Previous", previous) : "<span></span>"}
+          ${next ? pagerCard("Next", next) : "<span></span>"}
+        </nav>
       </article>
       ${chapterRail(chapter)}
     </div>`;
@@ -87,33 +88,45 @@ export function chapterPage(book, chapter) {
   });
 }
 
+function pagerCard(label, chapter) {
+  return `
+    <a class="card-link pager-${label.toLowerCase()}" href="/chapter/${chapter.id}">
+      <span class="card-link-label">${label}</span>
+      <span class="card-link-title">${chapter.id}. ${escapeHtml(chapter.title)}</span>
+    </a>`;
+}
+
 function stepSection(step) {
   return `
     <section class="step" id="step-${step.number}">
-      <h2><span class="step-number">${step.number}</span><span>${inlineMarkdown(step.title)}</span></h2>
-      ${blockMarkdown(step.bridge)}
+      <h2><span class="step-number">${step.number}.</span> ${inlineMarkdown(step.title)}</h2>
+      <div class="content prose">${blockMarkdown(step.bridge)}</div>
+      <h3>Study</h3>
       <ul class="study">
         ${step.resources
           .map(
             (resource) => `
           <li>
-            <span class="kind kind-${resource.kind}">${resource.kind}</span>
             <a class="study-title" href="${escapeHtml(resource.url)}" target="_blank" rel="noopener noreferrer">${inlineMarkdown(resource.title)}</a>
-            <span class="study-time">${escapeHtml(resource.time)}</span>
+            <span class="study-meta">${kindLabels[resource.kind]}, ${escapeHtml(resource.time)}</span>
             <p class="study-scope">${inlineMarkdown(resource.scope)}</p>
           </li>`,
           )
           .join("")}
       </ul>
-      <div class="task build"><h3>Build</h3>${blockMarkdown(step.build)}</div>
-      <div class="task done-when"><h3>Done when</h3>${blockMarkdown(step.doneWhen)}</div>
+      <h3>Build</h3>
+      <div class="content prose">${blockMarkdown(step.build)}</div>
+      <div class="done-when">
+        <h3>Done when</h3>
+        <div class="content prose">${blockMarkdown(step.doneWhen)}</div>
+      </div>
     </section>`;
 }
 
 function chapterRail(chapter) {
   const checklist = chapter.checklist.length
     ? `
-      <h2>Checklist <span class="progress-count">${progressCount(chapter)}</span></h2>
+      <h2>Checklist, ${progressCount(chapter)}</h2>
       <ul class="rail-checklist">
         ${chapter.checklist
           .map(
@@ -125,15 +138,15 @@ function chapterRail(chapter) {
     : "";
   return `
     <aside class="rail">
-      <h2>Steps</h2>
+      <h2>On this page</h2>
       <ol class="rail-steps">
         ${chapter.steps
           .map(
             (step) =>
-              `<li><a href="#step-${step.number}" data-step-link><span class="step-number">${step.number}</span><span>${inlineMarkdown(step.title)}</span></a></li>`,
+              `<li><a href="#step-${step.number}" data-step-link>${step.number}. ${inlineMarkdown(step.title)}</a></li>`,
           )
           .join("")}
-        <li><a href="#where-this-leads" data-step-link><span class="step-number">&rarr;</span>Where this leads</a></li>
+        <li><a href="#where-this-leads" data-step-link>Where this leads</a></li>
       </ol>
       ${checklist}
     </aside>`;
@@ -149,13 +162,9 @@ export function searchResults(hits, query) {
       (hit) => `
       <div class="search-hit">
         <a class="search-hit-main" href="${hit.href}" data-search-hit>
-          <span class="kind kind-${hit.kind}">${hit.kind}</span>
-          <span class="chapter-number">${hit.chapterId}</span>
-          <span class="search-hit-text">
-            <strong>${escapeHtml(hit.title)}</strong>
-            <span class="search-hit-context">${escapeHtml(hit.context)}</span>
-            <span class="search-hit-snippet">${escapeHtml(hit.snippet)}</span>
-          </span>
+          <span class="search-hit-title">${escapeHtml(hit.title)}</span>
+          <span class="search-hit-context">${escapeHtml(hit.context)}</span>
+          <span class="search-hit-snippet">${escapeHtml(hit.snippet)}</span>
         </a>
         ${hit.externalUrl ? `<a class="search-hit-open" href="${escapeHtml(hit.externalUrl)}" target="_blank" rel="noopener noreferrer" hx-boost="false" title="Open the resource">open &nearr;</a>` : ""}
       </div>`,
@@ -165,8 +174,12 @@ export function searchResults(hits, query) {
 
 export function messagePage(book, title, message) {
   const main = `
-    <header class="page-bar"><h1>${escapeHtml(title)}</h1></header>
-    <div class="contents"><pre class="message">${escapeHtml(message)}</pre></div>`;
+    <div class="page">
+      <article class="page-content">
+        <h1>${escapeHtml(title)}</h1>
+        <pre class="message">${escapeHtml(message)}</pre>
+      </article>
+    </div>`;
   return layout(book, { title, activeChapterId: null, main });
 }
 
