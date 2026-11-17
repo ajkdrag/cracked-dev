@@ -57,17 +57,18 @@ test("no resource comes from a banned site", () => {
     }
 });
 
-test("assigned material is assigned once in the whole book", () => {
+test("the same sections of a resource are assigned once in the whole book", () => {
   const assignedIn = new Map();
   for (const { chapter, step } of steps)
     for (const resource of step.resources) {
       if (resource.kind === "reference") continue;
+      const assignment = `${resource.url} ${resource.scope}`;
       const place = `chapter ${chapter.id}, step "${step.title}"`;
       assert.ok(
-        !assignedIn.has(resource.url),
-        `${resource.url} is assigned in ${assignedIn.get(resource.url)} and in ${place}`,
+        !assignedIn.has(assignment),
+        `${resource.url} is assigned in ${assignedIn.get(assignment)} and in ${place}`,
       );
-      assignedIn.set(resource.url, place);
+      assignedIn.set(assignment, place);
     }
 });
 

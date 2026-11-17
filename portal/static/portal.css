@@ -209,6 +209,14 @@ kbd {
   font-size: 0.85rem !important;
 }
 
+.contents-weeks {
+  width: 64px;
+}
+
+.contents-table .progress-count {
+  width: 40px;
+}
+
 .contents-weeks,
 .contents-table .progress-count {
   white-space: nowrap;

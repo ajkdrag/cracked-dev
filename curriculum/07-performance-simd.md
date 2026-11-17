@@ -6,7 +6,7 @@ weeks: 10
 project: The haversine pipeline profiled and sped up on the Mac with your own timers, profiler and repetition tester, then a SIMD hash table measured against your chapter 04 hash trie.
 ---
 
-Chapter 06 ended with a CHIP-8 emulator that runs 15 instructions per frame on a host that could run millions. Speed never came up in part one. Your programs were correct, tested against golden files, and you could read the instructions clang made from them. You never asked how long any of it took, or why. In this chapter you measure it, and you explain each number with a model of the hardware. The chapter opens part two of the book, on the operating system and concurrency, because both are judged by speed. Chapter 08 explains the page faults you count here, and the timers, profiler and repetition tester you write here measure the work of the chapters after it.
+Chapter 06 ended with a CHIP-8 emulator that runs 15 instructions per frame on a host that could run millions. Speed never came up in part one. Your programs were correct, tested against golden files, and you could read the instructions clang made from them. You never asked how long any of it took, or why. In this chapter you measure it, and you explain each number with a model of the hardware. The chapter opens part two of the book, Performance and the operating system. Chapter 08 explains the page faults you count here, and chapter 09 spreads work across cores. The timers, profiler and repetition tester you write here measure the work of both.
 
 The backbone is Casey Muratori's Performance-Aware Programming course on Computer Enhance, the course whose Part 1 gave you the 8086 decoder in chapter 05. You follow its Prologue, Part 2 (Basic Profiling), most of Part 3 (Moving Data) and the start of Part 5 (Computation). Keep the [table of contents](https://www.computerenhance.com/p/table-of-contents) open. Every post named below is linked from it, and each post has the video, notes and often a transcript. The code listings live in the [course repository](https://github.com/cmuratori/computer_enhance/tree/main/perfaware), in the folders `part1` to `part5`.
 
@@ -296,7 +296,7 @@ The calibrated frequency varies by less than 1% between runs. You have a table o
 
 ## Branch prediction and the out-of-order core
 
-A CPU fetches instructions far ahead of the ones it is executing. At a conditional branch it does not know yet which way to go, so it predicts and keeps going. A correct guess costs nothing. A wrong guess throws away all the work done on the wrong path and restarts at the right one. Predictors learn patterns, so a branch taken every third time can be as cheap as one never taken. Random data defeats them.
+Every probe in step 5 had one branch, the loop's own `b.ne`, and it went the same way on every iteration but the last. Real code branches on data. A CPU fetches instructions far ahead of the ones it is executing. At a conditional branch it does not know yet which way to go, so it predicts and keeps going. A correct guess costs nothing. A wrong guess throws away all the work done on the wrong path and restarts at the right one. Predictors learn patterns, so a branch taken every third time can be as cheap as one never taken. Random data defeats them.
 
 Casey's test loop reads one byte per iteration and branches on its low bit. The data decides the pattern: all zeros, all ones, alternating, one in three, one in four, random. The ARM64 version uses `tbnz`, which tests one bit of a register and branches if that bit is 1:
 
@@ -441,7 +441,7 @@ Profile every change separately, in the order above, and keep a table of total t
 
 ## SIMD lanes with NEON
 
-A SIMD instruction does the same operation on every lane of a vector register. A 128-bit NEON register holds four `float` lanes or two `double` lanes:
+`hav2` now stores the same field of consecutive pairs side by side, and step 1 showed clang's NEON instructions in the vectorized sum loops. This step writes those instructions yourself. A SIMD instruction does the same operation on every lane of a vector register. A 128-bit NEON register holds four `float` lanes or two `double` lanes:
 
 ```
   scalar:  a0+b0   a1+b1   a2+b2   a3+b3            4 instructions
