@@ -191,24 +191,20 @@ export function messagePage(book, title, message) {
 function layout(book, { title, activeChapterId, main }) {
   const chapters = book?.chapters ?? [];
   return `<!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${escapeHtml(title)} / cracked-dev</title>
   <link rel="stylesheet" href="/vendor/bulma.css">
   <link rel="stylesheet" href="/static/portal.css">
-  <script src="/static/theme.js"></script>
   <script src="/vendor/htmx.js" defer></script>
   <script src="/static/portal.js" defer></script>
 </head>
 <body hx-boost="true">
   <div class="shell">
     <aside class="sidebar">
-      <div class="sidebar-top">
-        <a class="brand" href="/">cracked-dev</a>
-        <button class="theme-button" type="button" data-cycle-theme title="Switch between system, light and dark"></button>
-      </div>
+      <a class="brand" href="/">cracked-dev</a>
       <button class="search-button" type="button" data-open-search>Search<kbd>&#8984;K</kbd></button>
       <nav class="chapter-list">
         ${groupByPart(chapters)

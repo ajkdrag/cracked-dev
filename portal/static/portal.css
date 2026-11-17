@@ -1,5 +1,5 @@
 /* Layout and typography on top of Bulma. Colors come from Bulma's variables,
-   so light and dark mode follow the system setting. */
+   and the page always uses the light theme. */
 :root {
   --sidebar-width: 290px;
   --rail-width: 240px;
@@ -49,26 +49,9 @@ kbd {
   border-right: 1px solid var(--line);
 }
 
-.sidebar-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 1rem;
-}
-
-.theme-button {
-  border: 0;
-  background: none;
-  font: 0.8rem var(--sans);
-  color: var(--muted);
-  cursor: pointer;
-}
-
-.theme-button:hover {
-  color: var(--strong);
-}
-
 .brand {
+  display: block;
+  margin-bottom: 1rem;
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--strong);
@@ -635,9 +618,8 @@ kbd {
     border-right: 0;
     border-bottom: 1px solid var(--line);
   }
-  .sidebar-top {
+  .brand {
     margin: 0;
-    gap: 1rem;
   }
   .chapter-list {
     display: none;

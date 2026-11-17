@@ -11,7 +11,6 @@ const port = Number(process.env.PORT || 8913);
 const staticFiles = {
   "/static/portal.css": ["static/portal.css", "text/css"],
   "/static/portal.js": ["static/portal.js", "text/javascript"],
-  "/static/theme.js": ["static/theme.js", "text/javascript"],
   "/vendor/bulma.css": ["node_modules/bulma/css/bulma.min.css", "text/css"],
   "/vendor/htmx.js": [
     "node_modules/htmx.org/dist/htmx.min.js",
