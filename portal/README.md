@@ -73,7 +73,7 @@ A file that breaks the format makes every page show the parser's message, with t
 
 ## Progress
 
-`LEARNING.md` calls a chapter a phase. The `Phase:` line names the chapter whose items sit under `## Checklist`. Other chapters get a `### Phase <id>` block under `## Done phases`. Ids are the chapter numbers (`01`, `02`, ...). The portal only displays the checklists.
+`LEARNING.md` calls a chapter a phase. The `Phase:` line names the chapter whose items sit under `## Checklist`. Other chapters get a `### Phase <id>` block under `## Done phases`. Ids are the chapter numbers (`00`, `01`, `02`, ...). The portal only displays the checklists.
 
 ## Checks
 
