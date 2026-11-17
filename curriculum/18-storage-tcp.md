@@ -2,7 +2,7 @@
 id: 18
 title: Storage and network internals
 part: Storage, networks and real codebases
-weeks: 8
+weeks: 10
 project: A key-value store with a checksummed log, crash tests on a simulated disk, a B+ tree on a buffer pool and a page-level write-ahead log, then a userspace TCP over a Linux TUN device that serves a file to curl through 5% packet loss.
 ---
 
@@ -12,7 +12,7 @@ The storage half starts with the simplest store that survives a crash: one appen
 
 The network half runs in the Linux VM. A TUN device hands your program the raw IP packets that the kernel routes to an address, and takes your replies. You parse IPv4 and TCP headers, answer with resets, then write the TCP state machine from RFC 9293 until `nc` and `curl` on the same machine talk to your stack as to any other host. The last two steps add retransmission and congestion control, and drop packets on purpose to prove they work.
 
-You lean on four earlier chapters. Chapter 04 gave you the arena, the hash trie, byte-level parsing and libFuzzer. Chapter 07 gave you the repetition tester. Chapter 08 gave you `fork`, `kill` and pipes from the shell, xv6's logging layer, sockets, the event loop and the HTTP subset. The chapter does not cover SQL, concurrent transactions, `O_DIRECT`, `io_uring` or IPv6. Each is a separate subject, and none of them changes how durability or TCP works.
+You lean most on three earlier chapters. Chapter 04 gave you the arena, the hash trie, byte-level parsing and libFuzzer. Chapter 07 gave you the repetition tester. Chapter 08 gave you `fork`, `kill` and pipes from the shell, xv6's logging layer, sockets, the event loop and the HTTP subset. The chapter does not cover SQL, concurrent transactions, `O_DIRECT`, `io_uring` or IPv6. Each is a separate subject, and none of them changes how durability or TCP works.
 
 ## A log that survives a crash
 

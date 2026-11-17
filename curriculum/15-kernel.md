@@ -69,6 +69,8 @@ The tutorial's code lives in the `phil-opp/blog_os` repository on GitHub, with o
    $T/llvm-nm target/x86_64-blog_os/debug/blog_os | grep _start
    ```
 
+   Chapter 05 showed you the sections of an object file: `.text`, `.data`, `.bss` and `.rodata`. A linked executable adds a second view of the same bytes, the program headers. Each `LOAD` entry, also called a segment, tells a loader to map a range of the file at a virtual address with read, write and execute flags. Several sections with the same flags share one segment. The bootloader reads the program headers and ignores the section headers. `--headers` prints both tables, so you can see which sections fall into which segment.
+
    In `NOTES.md`, write down the entry point address, the `LOAD` segments with their virtual addresses and flags, and which segment holds `_start`.
 
 ### Done when
@@ -77,7 +79,7 @@ The tutorial's code lives in the `phil-opp/blog_os` repository on GitHub, with o
 
 ## Printing: the VGA buffer, the serial port and tests
 
-A kernel talks to devices in two ways on x86. The VGA text buffer is memory-mapped I/O. The video hardware reads the 80 by 25 character cells from physical address `0xb8000`, so a store to that address changes the screen. The compiler does not know that, and it may drop a store that nothing in the program reads back. The post wraps the buffer in `Volatile` to forbid that. Chapter 04 showed you what an optimizer assumes about ordinary memory, and device memory breaks those assumptions.
+The "Hello World!" from step 1 wrote bytes straight into screen memory through a raw pointer. This step turns that into a proper writer and adds a second output. A kernel talks to devices in two ways on x86. The VGA text buffer is memory-mapped I/O. The video hardware reads the 80 by 25 character cells from physical address `0xb8000`, so a store to that address changes the screen. The compiler does not know that, and it may drop a store that nothing in the program reads back. The post wraps the buffer in `Volatile` to forbid that. Chapter 04 showed you what an optimizer assumes about ordinary memory, and device memory breaks those assumptions.
 
 The serial port uses the other way, port I/O. x86 has a separate 16-bit address space for devices, reached with the `in` and `out` instructions. A 16550 UART sits at port `0x3F8`. QEMU connects it to your terminal when you pass `-serial stdio`. From the next step on, you print to the serial port. Serial output still works when the screen is garbage, and you can copy and search its text.
 
@@ -103,7 +105,7 @@ The tutorial explains `macro_rules!` as far as its `println!` needs. Keep the QE
 
 ## CPU exceptions, double faults and a debugger
 
-An exception is an event the CPU raises when it cannot complete the current instruction, or when the instruction asks for one, as `int3` does. x86 numbers them 0 to 31: 0 is divide error, 3 is breakpoint, 6 is invalid opcode, 8 is double fault, 13 is general protection fault and 14 is page fault. The Interrupt Descriptor Table (IDT) holds one entry per vector with the handler's address and some options. The `lidt` instruction tells the CPU where the table is. xv6 on RISC-V had one trap address in `stvec` and a cause register. x86 dispatches on the vector instead.
+With output on serial and a test runner, you can now make the kernel fail on purpose and check what it does next. An exception is an event the CPU raises when it cannot complete the current instruction, or when the instruction asks for one, as `int3` does. x86 numbers them 0 to 31: 0 is divide error, 3 is breakpoint, 6 is invalid opcode, 8 is double fault, 13 is general protection fault and 14 is page fault. The Interrupt Descriptor Table (IDT) holds one entry per vector with the handler's address and some options. The `lidt` instruction tells the CPU where the table is. xv6 on RISC-V had one trap address in `stvec` and a cause register. x86 dispatches on the vector instead.
 
 The two ISAs also save state differently. RISC-V copied the pc into `sepc` and saved nothing else. x86 pushes an interrupt stack frame onto the stack before it jumps to the handler:
 
@@ -173,7 +175,7 @@ Keys you type appear on the screen. Over 60 seconds by a clock, the counter grow
 
 ## Paging on x86-64
 
-In chapter 08 you walked RISC-V's Sv39 tables: three levels and a 39-bit address. x86-64 uses four levels and a 48-bit address. Each level is a 4 KB table of 512 eight-byte entries, so each level uses 9 bits of the address, and the last 12 bits are the offset into the page. Bits 48 to 63 must copy bit 47, or the CPU raises a general protection fault. `CR3` holds the physical address of the level 4 table, the job `satp` did on RISC-V. `invlpg` drops one stale translation from the TLB, as `sfence.vma` did.
+The stack overflow in step 3 hit a guard page that the bootloader had left unmapped. So far every mapping came from the bootloader. This step reads its page tables and then adds mappings of your own. In chapter 08 you walked RISC-V's Sv39 tables: three levels and a 39-bit address. x86-64 uses four levels and a 48-bit address. Each level is a 4 KB table of 512 eight-byte entries, so each level uses 9 bits of the address, and the last 12 bits are the offset into the page. Bits 48 to 63 must copy bit 47, or the CPU raises a general protection fault. `CR3` holds the physical address of the level 4 table, the job `satp` did on RISC-V. `invlpg` drops one stale translation from the TLB, as `sfence.vma` did.
 
 ```
   virtual address 0x0000_4444_4444_0000
@@ -288,4 +290,4 @@ The cooperative version prints A and B in strict alternation. In the preemptive 
 
 You have written each mechanism of a kernel once with nothing beneath it but the bootloader. You filled in the IDT, gave the double fault its own stack, acknowledged the PIC by hand, built page mappings from a frame allocator, put a heap on top and switched between tasks on the timer. Your kernel also knew where every device lived: the screen at `0xb8000`, the UART at port `0x3F8`, the keyboard at port `0x60`. It had no user mode, no files and one CPU, and every new device would need register-level code of its own.
 
-Chapter 16, Linux drivers, moves to a kernel that has all of that. You compile Linux for ARM64, boot it under QEMU and write a driver for an emulated PCI device. Linux's core owns the interrupt entry, the page tables and the scheduler you just wrote. A driver fills in interfaces that the core calls, and it asks the PCI core where its device lives instead of hard-coding an address.
+Chapter 16, Linux drivers, moves to a kernel that has all of that. You compile Linux for ARM64, boot it under QEMU with a root file system of one program, load your first modules into it, and then write a driver for an emulated PCI device. Linux's core owns the interrupt entry, the page tables and the scheduler you just wrote. A driver fills in interfaces that the core calls, and it asks the PCI core where its device lives instead of hard-coding an address.
