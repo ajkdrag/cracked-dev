@@ -441,7 +441,7 @@ Profile every change separately, in the order above, and keep a table of total t
 
 ## SIMD lanes with NEON
 
-`hav2` now stores the same field of consecutive pairs side by side, and step 1 showed clang's NEON instructions in the vectorized sum loops. This step writes those instructions yourself. A SIMD instruction does the same operation on every lane of a vector register. A 128-bit NEON register holds four `float` lanes or two `double` lanes:
+`hav2` now stores the same field of consecutive pairs side by side, and step 1 showed clang's NEON instructions in the vectorized sum loops. In this step you write those instructions yourself. A SIMD instruction does the same operation on every lane of a vector register. A 128-bit NEON register holds four `float` lanes or two `double` lanes:
 
 ```
   scalar:  a0+b0   a1+b1   a2+b2   a3+b3            4 instructions
@@ -571,4 +571,4 @@ All four tests pass for every match version with no sanitizer report. Your bench
 
 You can now measure a program on your own machine with timers you calibrated, a profiler and a repetition tester you wrote. You can turn a time into cycles, explain it with latency, throughput, branch prediction and the cache level the data lives in, and check the explanation with a probe. You sped up a real pipeline by removing waste first and adding SIMD second, with an oracle that checked every version, and you built a hash table whose layout follows from what a lookup touches.
 
-Some of what you measured happened outside your program. Page faults, the cost of `fread` and the memory you get from `malloc` are the operating system's work, and you saw them only as counts and times. Chapter 08, Operating systems, shows that work from the kernel's side. You work through selected labs of the xv6 teaching kernel, then write a shell, a `malloc` and an event-loop server. The profiler and repetition tester come with you, and chapter 10 ports this hash table to Rust and benchmarks the two versions against each other.
+Some of what you measured happened outside your program. Page faults, the cost of `fread` and the memory you get from `malloc` are the operating system's work, and you saw them only as counts and times. Chapter 08, Operating systems, shows that work from the kernel's side. It starts with xv6, a small Unix that MIT wrote for teaching, running in your Linux machine: first the process and file descriptor interface a program sees, through the system calls `fork`, `exec` and `wait`, and five small xv6 programs. From there it alternates between labs that change the xv6 kernel and programs on your own machines: a shell, a `malloc` built on `mmap` and an event-loop server. One of the labs extends the kernel's page fault handler, the code behind the faults you counted in step 4. The repetition tester comes with you to time a system call, and chapter 10 ports this hash table to Rust and benchmarks the two versions against each other.

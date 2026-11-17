@@ -122,7 +122,7 @@ Add one case with three lines: `ls | grep c | wc -l > out.txt &`, then `sleep 1`
 
 ## System calls: from ecall to the kernel and back
 
-In chapter 05 your ARM64 `hello` put a number in x8 and executed `svc #0`. The CPU switched to a privileged mode and jumped to an address the kernel had chosen at boot. OSTEP calls this design limited direct execution. A program runs directly on the CPU at full speed, in a mode where it cannot touch devices, page tables or other processes' memory. The only ways into the kernel are traps: a system call instruction, a fault such as a bad memory access, or an interrupt from a device or the timer. Each one switches the CPU to supervisor mode and jumps to the kernel's trap handler.
+Your shell makes several system calls for every command line: `fork`, `execvp`, `pipe`, `dup2`, `waitpid`. This step follows one of them into the kernel. In chapter 05 your ARM64 `hello` put a number in x8 and executed `svc #0`. The CPU switched to a privileged mode and jumped to an address the kernel had chosen at boot. OSTEP calls this design limited direct execution. A program runs directly on the CPU at full speed, in a mode where it cannot touch devices, page tables or other processes' memory. The only ways into the kernel are traps: a system call instruction, a fault such as a bad memory access, or an interrupt from a device or the timer. Each one switches the CPU to supervisor mode and jumps to the kernel's trap handler.
 
 On RISC-V the system call instruction is `ecall`. xv6 passes the call number in a7 and the arguments in a0 to a5, and puts the result back in a0. Here is one `write` in xv6:
 
@@ -169,7 +169,7 @@ A system call costs more than a function call, because of the mode switch and th
 
 ## Page tables
 
-Every address a user program uses is virtual. The CPU translates it to a physical address through a page table that the kernel builds, one table per process. RISC-V's Sv39 scheme, which xv6 uses, splits the low 39 bits of a virtual address into three 9-bit indexes and a 12-bit offset:
+In the system call step, `sys_write` copied the user's buffer into the kernel and checked every address on the way. That check is a walk of the process's page table, which this step covers. Every address a user program uses is virtual. The CPU translates it to a physical address through a page table that the kernel builds, one table per process. RISC-V's Sv39 scheme, which xv6 uses, splits the low 39 bits of a virtual address into three 9-bit indexes and a 12-bit offset:
 
 ```
   virtual address (Sv39, low 39 bits used)
@@ -325,7 +325,7 @@ The driver runs one million operations with three different seeds, with `mm_chec
 
 ## The xv6 file system
 
-A file system is a data structure on a disk that has to survive a crash at any moment. The xv6 file system has the same parts as larger Unix file systems, in a few C files under `kernel/`. It is built in layers:
+The kernel track has one lab left. Since step 1 you have called `open`, `read` and `write` on files, and the descriptor table showed only the first layer of what sits behind them. A file system is a data structure on a disk that has to survive a crash at any moment. The xv6 file system has the same parts as larger Unix file systems, in a few C files under `kernel/`. It is built in layers:
 
 ```
   file descriptor   read(fd, ...), the per-process table from step 1
@@ -435,7 +435,7 @@ Parse with the `Str` and `str_cut` functions from chapter 04, as you parsed JSON
 
 RFC 9112 is the only place in this step that defines the framing, so read its sections before you write the parser. Take three things from it: the grammar of the request line and field lines with their CRLF endings, how `Content-Length` and `Transfer-Encoding` decide whether a body follows, and when a connection stays open for the next request.
 
-Load every file to serve into memory at startup, into a table keyed by its URL path. Take the files from the command line, for example `./httpd 8080 www index.html style.css`, which maps `/index.html` to the bytes of `www/index.html`. Read them with `fopen` from chapter 02 and `fread` from chapter 04. A request path that is not in the table gets 404. With exact lookup, a path like `/../etc/passwd` cannot reach the disk at all. It also keeps the loop free of disk reads. A nonblocking socket does not make `read` on a file nonblocking, and a slow disk read would stall every client. Moving that work to other threads comes in chapter 09.
+Load every file to serve into memory at startup, into a table keyed by its URL path. Take the files from the command line, for example `./httpd 8080 www index.html style.css`, which maps `/index.html` to the bytes of `www/index.html`. Read them with `fopen` and `fread`, as your CHIP-8 runner read its ROM in chapter 06. A request path that is not in the table gets 404. With exact lookup, a path like `/../etc/passwd` cannot reach the disk at all. It also keeps the loop free of disk reads. A nonblocking socket does not make `read` on a file nonblocking, and a slow disk read would stall every client. Moving that work to other threads comes in chapter 09.
 
 ### Study
 
@@ -457,4 +457,4 @@ Load every file to serve into memory at startup, into a table keyed by its URL p
 
 You have changed a real kernel in six places. You can trace a `write` from the user stub to the disk, add a system call, change a page table, explain what the kernel does on a store fault to a copy-on-write page, and say which registers `swtch` saves. In user space you wrote a shell that drives `fork`, `exec`, pipes and signals, an allocator that carves `mmap` pages into blocks, and a server that handles hundreds of sockets in one thread.
 
-Two things are still missing. Your server uses one core of a machine that has many, and any blocking work, such as a disk read, stalls every client. And the xv6 code you modified is full of `acquire` and `release` calls that you were told to take on trust. Chapter 09, Concurrency and parallelism, covers both. It starts from the context switch you traced in xv6, explains what a lock does at the level of atomic instructions and memory ordering, and ends with a job system built on a queue you test and a memory model you state.
+Two things are still missing. Your server uses one core of a machine that has many, and any blocking work, such as a disk read, stalls every client. And the xv6 code you modified is full of `acquire` and `release` calls that you were told to take on trust. Chapter 09, Concurrency and parallelism, covers both. It starts with threads. A thread is the saved registers and stack that `swtch` handled in xv6, scheduled by Linux or macOS, and two threads that share one address space can lose increments in a plain `counter++`. From there it builds locks from single atomic instructions, returns to xv6 for one more lab on its locks, and adds condition variables, memory ordering and a lock-free ring. It ends with a job system built on a queue you test and a memory model you state, and moves the server's slow requests onto it.
