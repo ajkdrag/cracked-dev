@@ -236,6 +236,78 @@ kbd {
   font-size: inherit;
 }
 
+/* Figures: SVG drawn with currentColor plus these classes */
+.figure {
+  margin: 1.75rem 0;
+}
+
+.figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  font-family: var(--sans);
+  color: var(--bulma-text);
+}
+
+.figure svg text {
+  fill: currentColor;
+}
+
+.figure svg .fig-mono {
+  font-family: var(--mono);
+}
+
+.figure svg .fig-muted {
+  fill: var(--muted);
+}
+
+.figure svg .fig-line {
+  stroke: currentColor;
+  fill: none;
+}
+
+.figure svg .fig-box {
+  stroke: currentColor;
+  fill: var(--tint);
+}
+
+.figure svg .fig-accent {
+  stroke: var(--accent);
+  fill: var(--bulma-link-soft);
+}
+
+.figure svg text.fig-accent-text,
+.figure svg .fig-accent-fill {
+  fill: var(--accent);
+  stroke: none;
+}
+
+.figure svg .fig-accent-line {
+  stroke: var(--accent);
+  fill: none;
+}
+
+.figure figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* Callouts: a blockquote that starts with a bold label */
+.prose blockquote {
+  margin: 0 0 1.1rem;
+  padding: 0.75rem 1rem;
+  border: 0;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  background: var(--tint);
+}
+
+.prose blockquote p:last-child {
+  margin-bottom: 0;
+}
+
 /* Study list */
 .study {
   border: 1px solid var(--line);

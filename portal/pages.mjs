@@ -1,5 +1,9 @@
 // HTML for every page and fragment the server returns.
+import fs from "node:fs";
 import { marked } from "marked";
+import { ChapterFormatError } from "./book.mjs";
+
+const figuresDirectory = new URL("../curriculum/figures/", import.meta.url);
 
 const kindLabels = {
   read: "Read",
@@ -261,7 +265,21 @@ function progressCount(chapter) {
 }
 
 function blockMarkdown(text) {
-  return openLinksInNewTab(marked.parse(text));
+  return inlineFigures(openLinksInNewTab(marked.parse(text)));
+}
+
+// A paragraph that holds only `![caption](figures/name.svg)` becomes the SVG
+// itself, so the drawing takes its colors from the page theme.
+function inlineFigures(html) {
+  return html.replace(
+    /<p><img src="figures\/([\w-]+\.svg)" alt="([^"]*)"><\/p>/g,
+    (paragraph, fileName, caption) => {
+      const file = new URL(fileName, figuresDirectory);
+      if (!fs.existsSync(file))
+        throw new ChapterFormatError(`missing figure: figures/${fileName}`);
+      return `<figure class="figure">${fs.readFileSync(file, "utf8")}<figcaption>${caption}</figcaption></figure>`;
+    },
+  );
 }
 
 function inlineMarkdown(text) {

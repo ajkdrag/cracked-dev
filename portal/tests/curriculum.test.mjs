@@ -26,14 +26,14 @@ const steps = book.chapters.flatMap((chapter) =>
   chapter.steps.map((step) => ({ chapter, step })),
 );
 
-test("chapters are numbered 01 upward and each file name starts with its id", () => {
+test("chapters are numbered 00 upward and each file name starts with its id", () => {
   const fileNames = fs
     .readdirSync(curriculumDirectory)
     .filter((name) => name.endsWith(".md"))
     .sort();
 
   book.chapters.forEach((chapter, index) => {
-    assert.equal(chapter.id, String(index + 1).padStart(2, "0"));
+    assert.equal(chapter.id, String(index).padStart(2, "0"));
     assert.ok(fileNames[index].startsWith(`${chapter.id}-`));
   });
 });
@@ -72,8 +72,31 @@ test("the same sections of a resource are assigned once in the whole book", () =
     }
 });
 
+test("every figure a chapter uses exists and takes its colors from the page", () => {
+  const figuresDirectory = new URL("figures/", curriculumDirectory);
+  for (const name of fs.readdirSync(curriculumDirectory)) {
+    if (!name.endsWith(".md")) continue;
+    const text = fs.readFileSync(new URL(name, curriculumDirectory), "utf8");
+    for (const [, figureName] of text.matchAll(
+      /\]\(figures\/([\w-]+\.svg)\)/g,
+    )) {
+      const svg = fs.readFileSync(
+        new URL(figureName, figuresDirectory),
+        "utf8",
+      );
+      assert.match(svg, /viewBox=/, figureName);
+      assert.doesNotMatch(
+        svg,
+        /#[0-9a-fA-F]{3,6}\b|rgb\(|<style|<script/,
+        figureName,
+      );
+    }
+  }
+});
+
 test("chapter prose has no em dashes, semicolons outside code or curly quotes", () => {
   for (const name of fs.readdirSync(curriculumDirectory)) {
+    if (!name.endsWith(".md")) continue;
     const prose = fs
       .readFileSync(new URL(name, curriculumDirectory), "utf8")
       .replace(/```[\s\S]*?```/g, "")

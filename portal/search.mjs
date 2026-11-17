@@ -89,7 +89,7 @@ function snippetAround(body, words) {
 function plainText(markdown) {
   return markdown
     .replace(/```[\s\S]*?```/g, " ")
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/!?\[([^\]]+)\]\([^)]+\)/g, "$1")
     .replace(/[`*_#>]/g, "")
     .replace(/\s+/g, " ")
     .trim();
