@@ -46,6 +46,7 @@ document.addEventListener("keydown", (event) => {
 });
 
 document.addEventListener("click", (event) => {
+  if (event.target.closest("[data-cycle-theme]")) cycleTheme();
   if (event.target.closest("[data-open-search]")) openSearch();
   if (event.target.closest("[data-close-search]")) closeSearch();
   // A hit inside the open chapter only changes the hash, so nothing swaps
@@ -83,4 +84,9 @@ function highlightVisibleStep() {
 highlightVisibleStep();
 document.addEventListener("htmx:afterSettle", (event) => {
   if (event.target === document.body) highlightVisibleStep();
+});
+
+showThemeName();
+document.addEventListener("htmx:afterSettle", (event) => {
+  if (event.target === document.body) showThemeName();
 });

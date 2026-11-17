@@ -20,12 +20,12 @@ book.mjs                   parses both into the book
 search.mjs                 keyword search over the book
 pages.mjs                  HTML for the pages and the search results
 server.mjs                 routes
-static/                    portal.css and portal.js
+static/                    portal.css, portal.js and theme.js
 check-links.mjs            fetches every resource URL and lists dead ones
 tests/                     parser, search and book checks
 ```
 
-The server renders plain HTML. htmx swaps pages without a full reload and Bulma supplies the base styles. Light and dark mode follow the system setting.
+The server renders plain HTML. htmx swaps pages without a full reload and Bulma supplies the base styles. The word next to the title in the sidebar switches the theme between system, light and dark.
 
 The server reads the chapter files and `LEARNING.md` on every request. Reload the page after an edit.
 

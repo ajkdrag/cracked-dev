@@ -49,9 +49,26 @@ kbd {
   border-right: 1px solid var(--line);
 }
 
-.brand {
-  display: block;
+.sidebar-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
   margin-bottom: 1rem;
+}
+
+.theme-button {
+  border: 0;
+  background: none;
+  font: 0.8rem var(--sans);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.theme-button:hover {
+  color: var(--strong);
+}
+
+.brand {
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--strong);
@@ -546,8 +563,9 @@ kbd {
     border-right: 0;
     border-bottom: 1px solid var(--line);
   }
-  .brand {
+  .sidebar-top {
     margin: 0;
+    gap: 1rem;
   }
   .chapter-list {
     display: none;
