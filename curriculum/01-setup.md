@@ -197,7 +197,7 @@ previously allocated by thread T0 here:
     #1 in use_after_free src/bugs.c:20                             <- who allocated it
 ```
 
-A sanitized program runs about twice as slow, which is fine for debug builds. ASan and UBSan both run on macOS, as the Supported Platforms section of the ASan page says. That page also offers leak detection on macOS through `ASAN_OPTIONS=detect_leaks=1`, but Apple's clang does not support it. Do all leak checks in Linux.
+A sanitized program runs about twice as slow, which is fine for debug builds. ASan and UBSan both run on macOS, as the Supported Platforms section of the ASan page says. That page also offers leak detection on macOS through `ASAN_OPTIONS=detect_leaks=1`, but Apple's clang does not support it. Do all leak checks in Linux. Some macOS and Xcode combinations hang at startup in an ASan build. If yours does, build with `SAN=undefined sh build.sh` on the Mac and run the ASan build in Linux.
 
 Return to "Dynamic run-time checks" in Wellons' post from the build script step. He prefers UBSan's trap mode. This chapter keeps the printed reports while you learn to read them. Note his `ASAN_OPTIONS` line. The debugger step uses it.
 

@@ -269,9 +269,7 @@ Keep each table as an array of structs, such as `struct Code { const char *text;
 
 Three details trip people up. Files from other sources, such as the old desktop Nand2Tetris zip, may end lines with `\r\n`, so treat `\r` as a space. The book's dest table lists `MD`, but the compiled Rect and Pong programs also write `DM`, so accept both spellings for the same bits. An unknown mnemonic is an error: print the line number and the text to `stderr` and exit with status 1.
 
-The program reads standard input and writes standard output, like `wordcount`:
-
-Build it with `sh build.sh hasm` and run it from your repository root:
+The program reads standard input and writes standard output, like `wordcount`. Build it with `sh build.sh hasm` and run it from your repository root:
 
 ```sh
 ./out/Darwin-debug/hasm < MaxL.asm > MaxL.hack
@@ -302,7 +300,7 @@ Write `src/hasm.c` with these functions and a `main` that ties them together:
 
 `main` reads standard input, calls `assemble`, prints each word with `word_to_bits` and `printf`, frees everything and returns 0, or 1 after an error.
 
-Write `src/hasm_test.c` that prints OK or FAIL per case and a failure count:
+Write `tests/hasm_test.c` in the chapter 02 pattern: it includes `../src/hasm.c` with `main` renamed, prints OK or FAIL per case and returns the failure count. Copy `tests/run_add_test.sh` to `tests/run_hasm_test.sh` to build and run it:
 
 - `encode_c("D=M+1;JGT")` gives 0xFDD1, `"0;JMP"` gives 0xEA87, `"M=D"` gives 0xE308, `"AM=M-1"` gives 0xFCA8, and `"DM=M+1"` gives the same word as `"MD=M+1"`.
 - `encode_a("21")` gives 0x0015, `"32767"` passes, and `"32768"`, `""` and `"2x"` fail.
