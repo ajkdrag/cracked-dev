@@ -65,7 +65,7 @@ An SM keeps many warps resident at once, each with its own registers already all
 
 ## First kernels: indexing, bounds and errors
 
-CUDA C++ is C++ with a few additions, and the kernels in this chapter use little C++ beyond the C-with-a-few-things style of chapter 19. `nvcc` compiles a `.cu` file. It splits the file into device code, which it compiles for the GPU, and host code, which it hands to the system's C++ compiler. A kernel is a function marked `__global__`. The host launches it with the grid and block sizes between triple angle brackets:
+Step 1 left you with a working toolkit and a table of what your card has. Now you write code for it. CUDA C++ is C++ with a few additions, and the kernels in this chapter use little C++ beyond the C-with-a-few-things style of chapter 19. `nvcc` compiles a `.cu` file. It splits the file into device code, which it compiles for the GPU, and host code, which it hands to the system's C++ compiler. A kernel is a function marked `__global__`. The host launches it with the grid and block sizes between triple angle brackets:
 
 ```cpp
 __global__ void vadd(const float *a, const float *b, float *c, int n)
@@ -111,7 +111,7 @@ Every size passes in `vadd`, `saxpy` and `grid2d`, and `compute-sanitizer` print
 
 ## Memory bandwidth, coalescing and the profiler
 
-Chapter 07 measured your Mac's DRAM bandwidth with a read loop. The GPU version of that loop is a copy kernel: each thread loads one float and stores it elsewhere. Effective bandwidth is the bytes the kernel reads plus the bytes it writes, divided by its time. The theoretical peak comes from the memory clock and bus width in `deviceQuery`, doubled for double data rate. Check that number against the memory bandwidth on NVIDIA's spec page for your card. The two should agree.
+Your step 2 kernels are correct, and nothing yet tells you how fast they are or how fast they could be. Chapter 07 measured your Mac's DRAM bandwidth with a read loop. The GPU version of that loop is a copy kernel: each thread loads one float and stores it elsewhere. Effective bandwidth is the bytes the kernel reads plus the bytes it writes, divided by its time. The theoretical peak comes from the memory clock and bus width in `deviceQuery`, doubled for double data rate. Check that number against the memory bandwidth on NVIDIA's spec page for your card. The two should agree.
 
 Time kernels with CUDA events. An event is a marker in the GPU's command stream that records a timestamp when the GPU reaches it, so the time between two events covers only the GPU work between them. Do a warmup launch first. The first launch in a process pays for loading the module and waking the card. Then take the best of several runs, as with chapter 07's repetition tester.
 
@@ -235,7 +235,7 @@ Every reduction passes the exact test and the tolerance test for every n. The be
 
 ## Matrix multiply: naive, coalesced and tiled
 
-The project starts here. `C = A x B` with A of size M x K, B of size K x N, all row-major floats, takes 2MNK floating-point operations. The minimum traffic is reading A and B once and writing C once. For square 4096 matrices that is about 137 GFLOP against 201 MB, an arithmetic intensity far above the ridge point from step 4. Matrix multiply can be compute-bound. A naive kernel is nowhere near it, because each thread reads a whole row of A and a whole column of B from DRAM, and every input element is read N or M times.
+The project starts here. It puts the ceilings from steps 3 and 4 and the shared memory from step 5 to work on one operation. `C = A x B` with A of size M x K, B of size K x N, all row-major floats, takes 2MNK floating-point operations. The minimum traffic is reading A and B once and writing C once. For square 4096 matrices that is about 137 GFLOP against 201 MB, an arithmetic intensity far above the ridge point from step 4. Matrix multiply can be compute-bound. A naive kernel is nowhere near it, because each thread reads a whole row of A and a whole column of B from DRAM, and every input element is read N or M times.
 
 Tiling fixes that. A block loads a tile of A and a tile of B into shared memory, every thread of the block uses those tiles for its partial dot products, and the block moves to the next tiles along K. Each element read from DRAM is now used by a whole tile's worth of threads.
 
@@ -309,7 +309,7 @@ Every kernel passes the policy on every shape. Your best kernel reaches at least
 
 ## Tensor cores
 
-Since Volta, each SM also has tensor cores: units that multiply small matrices in one operation. A warp hands the tensor cores a 16 by 16 tile of A, a 16 by 16 tile of B and a 16 by 16 accumulator, and gets back D = A x B + C. The inputs are half precision and the accumulator is float. One such operation does 8192 floating-point operations, and the rate is several times the FP32 rate of the same card.
+Every kernel in step 7 is bounded by the FP32 peak you measured in step 4. Tensor cores raise that ceiling. Since Volta, each SM also has tensor cores: units that multiply small matrices in one operation. A warp hands the tensor cores a 16 by 16 tile of A, a 16 by 16 tile of B and a 16 by 16 accumulator, and gets back D = A x B + C. The inputs are half precision and the accumulator is float. One such operation does 8192 floating-point operations, and the rate is several times the FP32 rate of the same card.
 
 CUDA exposes them through the warp matrix functions in `nvcuda::wmma`. A fragment holds one tile, spread across the registers of the 32 threads of a warp in a layout the guide leaves unspecified. You never index a fragment element by position. You load a fragment from memory with `load_matrix_sync`, multiply with `mma_sync`, and store with `store_matrix_sync`. Every call is made by all 32 threads of the warp together, so all of them must reach it.
 
@@ -352,7 +352,7 @@ H1, H2 and `cublasGemmEx` pass the policy on every shape, or you have recorded t
 
 ## A fused softmax kernel
 
-Softmax of a row x is `exp(x[i] - m) / sum_j exp(x[j] - m)`, where m is the row's maximum. Subtracting m keeps every exponent at or below zero, so nothing overflows, and the result does not change. Each output needs the maximum and the sum of the whole row, which makes softmax two reductions followed by an elementwise pass. In PyTorch written out by hand, as `(x - x.max(1)).exp() / ...`, each operation is a separate kernel that reads and writes the whole matrix. Horace He's bandwidth section counts the cost of that. A fused kernel reads each row from DRAM once or twice and writes it once. Softmax does a handful of operations per byte, so it is memory-bound, and your target is the copy bandwidth from step 3.
+Matrix multiply does enough arithmetic per byte to sit right of the ridge point from step 4. The second kernel of the project sits left of it. Softmax of a row x is `exp(x[i] - m) / sum_j exp(x[j] - m)`, where m is the row's maximum. Subtracting m keeps every exponent at or below zero, so nothing overflows, and the result does not change. Each output needs the maximum and the sum of the whole row, which makes softmax two reductions followed by an elementwise pass. In PyTorch written out by hand, as `(x - x.max(1)).exp() / ...`, each operation is a separate kernel that reads and writes the whole matrix. Horace He's bandwidth section counts the cost of that. A fused kernel reads each row from DRAM once or twice and writes it once. Softmax does a handful of operations per byte, so it is memory-bound, and your target is the copy bandwidth from step 3.
 
 Your `rowstats` kernel from step 5 already computes the maximum and the sum per row. The plain fused kernel does three passes over the row inside one block: maximum, then the sum of `exp(x - m)`, then the outputs. The online normalizer from Milakov and Gimelshein merges the first two passes. Keep a running maximum m and a running sum d. When a new element raises the maximum from m to m', the old sum was computed against the wrong maximum, and multiplying it by `exp(m - m')` corrects it:
 
@@ -424,4 +424,4 @@ Your looped Triton softmax passes the step 9 tests and policy. You have one tabl
 
 You can now write a CUDA kernel, check it with a CPU oracle under a stated error policy, find its bottleneck with `ncu` and the SASS, and explain its speed from the bandwidth and arithmetic peaks you measured on your own card. You took matrix multiply from a naive kernel far below cuBLAS to a large fraction of it, then onto tensor cores. You wrote a softmax that reads each row once, called it from PyTorch, and saw what Triton automates. Each kernel was one operation with a fixed shape, launched from a C++ harness you wrote for that operation.
 
-A deep learning framework needs much more around those kernels: tensors of any shape and stride, broadcasting, a graph that records every operation, and a backward pass that computes gradients through all of it. Chapter 21, A tensor library, builds that from scratch in MiniTorch. Its module 3 asks for map, zip, reduce and matrix multiply kernels on the GPU, written with the same Numba syntax as GPU Puzzles, and your tiling, reductions and occupancy work from this chapter decide how fast they run.
+A deep learning framework needs much more around those kernels: tensors of any shape and stride, broadcasting, a graph that records every operation, and a backward pass that computes gradients through all of it. Chapter 21, A tensor library, builds that from scratch in MiniTorch, a teaching library written in Python. It starts away from the GPU, on the Mac: a Python environment pinned for Numba, property tests with Hypothesis, and automatic differentiation for single numbers. Strides and broadcasting come next, the `row * N + col` arithmetic of your 2D kernels extended to any number of dimensions. The GPU comes back in module 3, which asks for map, zip, reduce and matrix multiply kernels written with the same Numba syntax as GPU Puzzles. Your tiling, reductions and occupancy work from this chapter decide how fast they run.

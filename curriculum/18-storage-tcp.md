@@ -160,7 +160,7 @@ A test with a pool of 8 frames writes 10,000 pages with known contents, reads th
 
 ## A B+ tree on the buffer pool
 
-A B+ tree is a search tree whose nodes are pages. Interior pages hold keys and child page numbers. Leaf pages hold the keys and values, sorted, with a pointer to the next leaf for range scans. All leaves sit at the same depth. A lookup reads one page per level, and with a few hundred keys per page, three or four levels hold millions of keys.
+The last step gave you pages that hold sorted records and a pool that caches them. This step builds the index on top of both. A B+ tree is a search tree whose nodes are pages. Interior pages hold keys and child page numbers. Leaf pages hold the keys and values, sorted, with a pointer to the next leaf for range scans. All leaves sit at the same depth. A lookup reads one page per level, and with a few hundred keys per page, three or four levels hold millions of keys.
 
 ```
                      [ 40 | 80 ]                 root (interior)
@@ -229,7 +229,7 @@ Group commit puts many puts behind one `fsync`. Your store runs on one thread, s
 
 ## Raw IP packets from a TUN device
 
-The storage half is finished. Everything from here on runs in the Linux VM. The TUN interface in this chapter is Linux's, and macOS has its own utun devices with a different API. A TUN device is a network interface whose other end is a file descriptor. When the kernel routes a packet to the interface, your program reads one IPv4 packet from the descriptor. When your program writes a packet to the descriptor, the kernel receives it as if it had arrived from a network. Give the interface the address 10.0.0.1 and route 10.0.0.0/24 to it. The kernel then sends everything for 10.0.0.2 to your program, which plays the host 10.0.0.2. Programs in the VM such as `nc`, `curl` and `tcpdump` are your test peers.
+The storage half is finished. Everything from here on runs in the Linux VM. The TUN interface in this chapter is Linux's, and macOS has its own utun devices with a different API. A TUN device is a network interface whose other end is a file descriptor. When the kernel routes a packet to the interface, your program reads one IPv4 packet from the descriptor. When your program writes a packet to the descriptor, the kernel receives it as if it had arrived from a network. Give the interface the address 10.0.0.1 and route 10.0.0.0/24 to it. The `/24` says that the first 24 bits of an address name the network, so 10.0.0.0/24 covers 10.0.0.0 to 10.0.0.255. `ip addr add` with that suffix adds the route for you. The kernel then sends everything for 10.0.0.2 to your program, which plays the host 10.0.0.2. Programs in the VM such as `nc`, `curl` and `tcpdump` are your test peers.
 
 ```
    nc / curl            kernel TCP/IP              tun0 10.0.0.1           your program
@@ -291,7 +291,7 @@ The parser accepts every captured packet, rejects every truncation, and survives
 
 ## The TCP state machine: handshake, data and close
 
-A TCP connection is two byte streams, one in each direction. Every byte has a 32-bit sequence number. The SYN and the FIN each take one number as well. Each side keeps a handful of variables, the transmission control block. For sending: `SND.UNA`, the oldest byte not yet acknowledged, `SND.NXT`, the next byte to send, and `SND.WND`, the window the peer advertised. For receiving: `RCV.NXT`, the next byte expected, and `RCV.WND`, the free space in your receive buffer.
+Version 0 of your stack answers every SYN with a reset. This step makes it accept the connection instead, which means keeping state for it. A TCP connection is two byte streams, one in each direction. Every byte has a 32-bit sequence number. The SYN and the FIN each take one number as well. Each side keeps a handful of variables, the transmission control block. For sending: `SND.UNA`, the oldest byte not yet acknowledged, `SND.NXT`, the next byte to send, and `SND.WND`, the window the peer advertised. For receiving: `RCV.NXT`, the next byte expected, and `RCV.WND`, the free space in your receive buffer.
 
 ```
   send side          SND.UNA            SND.NXT          SND.UNA + SND.WND
@@ -385,4 +385,4 @@ With 5% loss in both directions, 10 runs of `curl -o out http://10.0.0.2:8080/bi
 
 You have built a store that keeps every acknowledged write through any crash your simulated disk can produce, with a checksummed log, a B+ tree on a buffer pool, and checkpoints that can run any number of times. You have also built a TCP that a Linux kernel accepts as a peer, keeps its byte stream intact through lost and reordered packets, and backs off when the path loses data.
 
-The production versions of these programs are much larger. SQLite's pager and b-tree files, the Linux TCP stack and Redis's persistence code solve the same problems with decades of fixes on top. Chapter 19, Reading real code and contributing, teaches you to find your way through code bases of that size. You pick one project such as SQLite, Lua, Redis or TigerBeetle, read it with the questions this chapter gave you, and land a fix in it.
+The production versions of these programs are much larger. SQLite's pager and b-tree files, the Linux TCP stack and Redis's persistence code solve the same problems with decades of fixes on top. Chapter 19, Reading real code and contributing, teaches you to find your way through code bases of that size. It works in Valkey, the open source fork of Redis. You build it at a pinned version in the Linux VM, map its source with an old guide by Redis's creator, and follow one `SET` with a debugger from the socket, through an event loop like your chapter 08 one, to the reply. On the way you find the system call behind its append-only file's `fsync`, the call you measured here. Then you find a bug or an untested path in Valkey and send the project a change.
