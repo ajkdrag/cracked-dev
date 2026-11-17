@@ -1,0 +1,57 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="Pass 1 counts instructions and records each label, here END = 6. Pass 2 encodes every line, looks up END, and gives the new variables n and sum the addresses 16 and 17">
+  <defs>
+    <marker id="03-two-passes-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="36" font-size="13" font-weight="600">program</text>
+  <text class="fig-muted" x="176" y="36" text-anchor="end" font-size="12">count</text>
+  <text x="520" y="36" font-size="13" font-weight="600">pass 2 writes</text>
+  <text class="fig-mono" x="44" y="62" font-size="13">@n</text>
+  <text class="fig-mono fig-muted" x="176" y="62" text-anchor="end" font-size="13">0</text>
+  <text class="fig-mono" x="520" y="62" font-size="12">@16, new variable n</text>
+  <text class="fig-mono" x="44" y="90" font-size="13">D=M</text>
+  <text class="fig-mono fig-muted" x="176" y="90" text-anchor="end" font-size="13">1</text>
+  <text class="fig-muted" x="520" y="90" font-size="12">C-instruction, encoded</text>
+  <text class="fig-mono" x="44" y="118" font-size="13">@END</text>
+  <text class="fig-mono fig-muted" x="176" y="118" text-anchor="end" font-size="13">2</text>
+  <text class="fig-mono" x="520" y="118" font-size="12">@6, from the table</text>
+  <text class="fig-mono" x="44" y="146" font-size="13">D;JEQ</text>
+  <text class="fig-mono fig-muted" x="176" y="146" text-anchor="end" font-size="13">3</text>
+  <text class="fig-muted" x="520" y="146" font-size="12">C-instruction, encoded</text>
+  <text class="fig-mono" x="44" y="174" font-size="13">@sum</text>
+  <text class="fig-mono fig-muted" x="176" y="174" text-anchor="end" font-size="13">4</text>
+  <text class="fig-mono" x="520" y="174" font-size="12">@17, new variable sum</text>
+  <text class="fig-mono" x="44" y="202" font-size="13">M=D</text>
+  <text class="fig-mono fig-muted" x="176" y="202" text-anchor="end" font-size="13">5</text>
+  <text class="fig-muted" x="520" y="202" font-size="12">C-instruction, encoded</text>
+  <text class="fig-mono fig-accent-text" x="30" y="230" font-size="13">(END)</text>
+  <text class="fig-muted" x="520" y="230" font-size="12">no output</text>
+  <text class="fig-mono" x="44" y="258" font-size="13">@END</text>
+  <text class="fig-mono fig-muted" x="176" y="258" text-anchor="end" font-size="13">6</text>
+  <text class="fig-mono" x="520" y="258" font-size="12">@6, from the table</text>
+  <text class="fig-mono" x="44" y="286" font-size="13">0;JMP</text>
+  <text class="fig-mono fig-muted" x="176" y="286" text-anchor="end" font-size="13">7</text>
+  <text class="fig-muted" x="520" y="286" font-size="12">C-instruction, encoded</text>
+  <text x="350.0" y="36" text-anchor="middle" font-size="13" font-weight="600">symbol table</text>
+  <rect class="fig-box" x="250" y="50" width="200" height="32"/>
+  <text class="fig-mono" x="262" y="71" font-size="13">R0 ... KBD</text>
+  <text class="fig-muted" x="440" y="71" text-anchor="end" font-size="11">23 predefined</text>
+  <rect class="fig-accent" x="250" y="90" width="200" height="32"/>
+  <text class="fig-mono" x="262" y="111" font-size="13">END</text>
+  <text class="fig-mono" x="350" y="111" text-anchor="middle" font-size="13">6</text>
+  <text class="fig-muted" x="440" y="111" text-anchor="end" font-size="11">pass 1</text>
+  <rect class="fig-box" x="250" y="130" width="200" height="32"/>
+  <text class="fig-mono" x="262" y="151" font-size="13">n</text>
+  <text class="fig-mono" x="350" y="151" text-anchor="middle" font-size="13">16</text>
+  <text class="fig-muted" x="440" y="151" text-anchor="end" font-size="11">pass 2</text>
+  <rect class="fig-box" x="250" y="170" width="200" height="32"/>
+  <text class="fig-mono" x="262" y="191" font-size="13">sum</text>
+  <text class="fig-mono" x="350" y="191" text-anchor="middle" font-size="13">17</text>
+  <text class="fig-muted" x="440" y="191" text-anchor="end" font-size="11">pass 2</text>
+  <path class="fig-accent-line" d="M84 226 L215 226 L215 106 L248 106" marker-end="url(#03-two-passes-arrow)"/>
+  <text class="fig-accent-text" x="222" y="230" font-size="12">pass 1:</text>
+  <text class="fig-accent-text" x="222" y="246" font-size="12">END is 6</text>
+  <text class="fig-muted" x="350" y="292" text-anchor="middle" font-size="12">pass 1 adds labels with the count</text>
+  <text class="fig-muted" x="350" y="310" text-anchor="middle" font-size="12">pass 2 adds variables from 16 up</text>
+</svg>

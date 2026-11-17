@@ -1,0 +1,39 @@
+<svg viewBox="0 0 720 220" role="img" aria-label="Not ties both inputs of one Nand to the same wire, and And feeds the output of a Nand into a second Nand that works as a Not">
+  <defs>
+    <marker id="03-nand-gates-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="170" y="34" text-anchor="middle" font-size="14" font-weight="600">Not</text>
+  <text class="fig-mono" x="30" y="114" font-size="13">in</text>
+  <line class="fig-line" x1="50" y1="110" x2="100" y2="110"/>
+  <circle class="fig-accent-fill" cx="100" cy="110" r="3.5"/>
+  <path class="fig-line" d="M100 110 L100 92 L138 92" marker-end="url(#03-nand-gates-arrow)"/>
+  <path class="fig-line" d="M100 110 L100 128 L138 128" marker-end="url(#03-nand-gates-arrow)"/>
+  <rect class="fig-box" x="140" y="75" width="80" height="70" rx="6"/>
+  <text x="180.0" y="115.0" text-anchor="middle" font-size="14" font-weight="600">Nand</text>
+  <text class="fig-muted" x="150" y="96" font-size="11">a</text>
+  <text class="fig-muted" x="150" y="132" font-size="11">b</text>
+  <line class="fig-line" x1="220" y1="110" x2="288" y2="110" marker-end="url(#03-nand-gates-arrow)"/>
+  <text class="fig-mono" x="296" y="114" font-size="13">out</text>
+  <text class="fig-mono" x="170" y="180" text-anchor="middle" font-size="12">Nand(0, 0) = 1</text>
+  <text class="fig-mono" x="170" y="198" text-anchor="middle" font-size="12">Nand(1, 1) = 0</text>
+  <text x="530" y="34" text-anchor="middle" font-size="14" font-weight="600">And</text>
+  <text class="fig-mono" x="380" y="96" font-size="13">a</text>
+  <text class="fig-mono" x="380" y="132" font-size="13">b</text>
+  <line class="fig-line" x1="396" y1="92" x2="418" y2="92" marker-end="url(#03-nand-gates-arrow)"/>
+  <line class="fig-line" x1="396" y1="128" x2="418" y2="128" marker-end="url(#03-nand-gates-arrow)"/>
+  <rect class="fig-box" x="420" y="75" width="80" height="70" rx="6"/>
+  <text x="460.0" y="115.0" text-anchor="middle" font-size="14" font-weight="600">Nand</text>
+  <line class="fig-line" x1="500" y1="110" x2="540" y2="110"/>
+  <text class="fig-mono" x="520" y="102" text-anchor="middle" font-size="12">w</text>
+  <circle class="fig-accent-fill" cx="540" cy="110" r="3.5"/>
+  <path class="fig-line" d="M540 110 L540 92 L568 92" marker-end="url(#03-nand-gates-arrow)"/>
+  <path class="fig-line" d="M540 110 L540 128 L568 128" marker-end="url(#03-nand-gates-arrow)"/>
+  <rect class="fig-accent" x="570" y="75" width="80" height="70" rx="6"/>
+  <text x="610.0" y="115.0" text-anchor="middle" font-size="14" font-weight="600">Nand</text>
+  <line class="fig-line" x1="650" y1="110" x2="676" y2="110" marker-end="url(#03-nand-gates-arrow)"/>
+  <text class="fig-mono" x="681" y="114" font-size="13">out</text>
+  <text class="fig-accent-text" x="610" y="166" text-anchor="middle" font-size="12">works as Not</text>
+  <text class="fig-mono" x="500" y="198" text-anchor="middle" font-size="12">And(a, b) = Not(Nand(a, b))</text>
+</svg>

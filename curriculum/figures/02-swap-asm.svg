@@ -1,0 +1,26 @@
+<svg viewBox="0 0 720 280" role="img" aria-label="Each C line of swap_ints is joined to the instruction or instructions it became at -O1. tmp has no memory slot: it stays in eax">
+  <text x="20" y="22" font-size="13" font-weight="600">C</text>
+  <text x="400" y="22" font-size="13" font-weight="600">clang -S -O1, x86-64</text>
+  <text class="fig-mono" x="20" y="50" font-size="13" xml:space="preserve">void swap_ints(int *a, int *b) {</text>
+  <text class="fig-mono" x="20" y="100" font-size="13" xml:space="preserve">    int tmp = *a;</text>
+  <text class="fig-mono" x="20" y="145" font-size="13" xml:space="preserve">    *a = *b;</text>
+  <text class="fig-mono" x="20" y="195" font-size="13" xml:space="preserve">    *b = tmp;</text>
+  <text class="fig-mono" x="20" y="230" font-size="13" xml:space="preserve">}</text>
+  <text class="fig-mono" x="400" y="50" font-size="13">swap_ints:</text>
+  <text class="fig-mono" x="400" y="100" font-size="13">movl (%rdi), %eax</text>
+  <text class="fig-mono fig-muted" x="580" y="100" font-size="12">eax = *a</text>
+  <text class="fig-mono" x="400" y="130" font-size="13">movl (%rsi), %ecx</text>
+  <text class="fig-mono fig-muted" x="580" y="130" font-size="12">ecx = *b</text>
+  <text class="fig-mono" x="400" y="160" font-size="13">movl %ecx, (%rdi)</text>
+  <text class="fig-mono fig-muted" x="580" y="160" font-size="12">*a = ecx</text>
+  <text class="fig-mono" x="400" y="195" font-size="13">movl %eax, (%rsi)</text>
+  <text class="fig-mono fig-muted" x="580" y="195" font-size="12">*b = eax</text>
+  <text class="fig-mono" x="400" y="230" font-size="13">retq</text>
+  <text class="fig-mono fig-muted" x="580" y="230" font-size="12">return</text>
+  <line class="fig-accent-line" x1="200" y1="96" x2="388" y2="96" stroke-dasharray="3 3"/>
+  <line class="fig-accent-line" x1="200" y1="141" x2="388" y2="126" stroke-dasharray="3 3"/>
+  <line class="fig-accent-line" x1="200" y1="141" x2="388" y2="156" stroke-dasharray="3 3"/>
+  <line class="fig-accent-line" x1="200" y1="191" x2="388" y2="191" stroke-dasharray="3 3"/>
+  <line class="fig-accent-line" x1="200" y1="226" x2="388" y2="226" stroke-dasharray="3 3"/>
+  <text class="fig-muted" x="20" y="266" font-size="12">a arrives in %rdi and b in %rsi. tmp never touches memory: it lives in %eax.</text>
+</svg>

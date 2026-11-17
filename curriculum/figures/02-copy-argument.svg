@@ -1,0 +1,35 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="Calling stats_average copies the four fields of main's struct into a second struct that belongs to stats_average">
+  <defs>
+    <marker id="02-copy-argument-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="20" width="260" height="210" rx="6"/>
+  <text x="40" y="46" font-size="14" font-weight="600">main</text>
+  <text class="fig-mono" x="40" y="74" font-size="13">struct Stats s</text>
+  <rect class="fig-accent" x="40" y="86" width="220" height="104" rx="6"/>
+  <text class="fig-mono" x="60" y="110" font-size="13">min</text>
+  <text class="fig-mono" x="130" y="110" font-size="13">-1</text>
+  <text class="fig-mono" x="60" y="130" font-size="13">max</text>
+  <text class="fig-mono" x="130" y="130" font-size="13">42</text>
+  <text class="fig-mono" x="60" y="150" font-size="13">sum</text>
+  <text class="fig-mono" x="130" y="150" font-size="13">107</text>
+  <text class="fig-mono" x="60" y="170" font-size="13">count</text>
+  <text class="fig-mono" x="130" y="170" font-size="13">8</text>
+  <line class="fig-line" x1="280" y1="138" x2="438" y2="138" marker-end="url(#02-copy-argument-arrow)"/>
+  <text class="fig-muted" x="359" y="128" text-anchor="middle" font-size="12">the call copies</text>
+  <text class="fig-muted" x="359" y="158" text-anchor="middle" font-size="12">all 16 bytes</text>
+  <rect class="fig-box" x="440" y="20" width="260" height="210" rx="6"/>
+  <text x="460" y="46" font-size="14" font-weight="600">stats_average</text>
+  <text class="fig-mono" x="460" y="74" font-size="13">struct Stats s</text>
+  <rect class="fig-box" x="460" y="86" width="220" height="104" rx="6"/>
+  <text class="fig-mono" x="480" y="110" font-size="13">min</text>
+  <text class="fig-mono" x="550" y="110" font-size="13">-1</text>
+  <text class="fig-mono" x="480" y="130" font-size="13">max</text>
+  <text class="fig-mono" x="550" y="130" font-size="13">42</text>
+  <text class="fig-mono" x="480" y="150" font-size="13">sum</text>
+  <text class="fig-mono" x="550" y="150" font-size="13">107</text>
+  <text class="fig-mono" x="480" y="170" font-size="13">count</text>
+  <text class="fig-mono" x="550" y="170" font-size="13">8</text>
+  <text class="fig-muted" x="570" y="212" text-anchor="middle" font-size="12">a change here stays here</text>
+</svg>

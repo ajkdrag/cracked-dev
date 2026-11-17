@@ -1,0 +1,24 @@
+<svg viewBox="0 0 720 290" role="img" aria-label="Windows runs a WSL2 virtual machine, and Ubuntu 24.04 runs inside it on the same x86-64 CPU">
+  <defs>
+    <marker id="00-wsl-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="230" width="680" height="40" rx="6"/>
+  <text x="360" y="255" text-anchor="middle" font-size="14" font-weight="600">Your laptop: x86-64 CPU, memory, disk</text>
+  <rect class="fig-box" x="20" y="20" width="220" height="190" rx="6"/>
+  <text x="130" y="46" text-anchor="middle" font-size="14" font-weight="600">Windows</text>
+  <text class="fig-muted" x="130" y="110" text-anchor="middle" font-size="12">PowerShell</text>
+  <text class="fig-muted" x="130" y="132" text-anchor="middle" font-size="12">File Explorer</text>
+  <text class="fig-muted" x="130" y="154" text-anchor="middle" font-size="12">Start menu</text>
+  <rect class="fig-box" x="300" y="20" width="400" height="190" rx="6"/>
+  <text x="500" y="46" text-anchor="middle" font-size="14" font-weight="600">WSL2 virtual machine</text>
+  <rect class="fig-accent" x="320" y="62" width="360" height="132" rx="6"/>
+  <text x="500" y="86" text-anchor="middle" font-size="14" font-weight="600">Ubuntu 24.04</text>
+  <rect class="fig-box" x="340" y="100" width="320" height="36" rx="6"/>
+  <text x="500" y="123" text-anchor="middle" font-size="13">bash, clang, gdb, your programs</text>
+  <rect class="fig-box" x="340" y="146" width="320" height="36" rx="6"/>
+  <text x="500" y="169" text-anchor="middle" font-size="13">Linux kernel</text>
+  <line class="fig-line" x1="240" y1="115" x2="298" y2="115" marker-end="url(#00-wsl-arrow)"/>
+  <text class="fig-muted" x="269" y="105" text-anchor="middle" font-size="12">runs</text>
+</svg>

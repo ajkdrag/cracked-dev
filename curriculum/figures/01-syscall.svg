@@ -1,0 +1,28 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="Inside the process, main calls printf, printf calls write, and write makes a system call that asks the kernel to send the bytes to the terminal">
+  <defs>
+    <marker id="01-syscall-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="20" width="680" height="96" rx="6"/>
+  <text class="fig-muted" x="36" y="40" font-size="12">your process</text>
+  <rect class="fig-box" x="60" y="54" width="150" height="44" rx="6"/>
+  <text class="fig-mono" x="135" y="81" text-anchor="middle" font-size="13">main</text>
+  <rect class="fig-box" x="290" y="54" width="150" height="44" rx="6"/>
+  <text class="fig-mono" x="365" y="81" text-anchor="middle" font-size="13">printf</text>
+  <rect class="fig-box" x="520" y="54" width="160" height="44" rx="6"/>
+  <text class="fig-mono" x="600" y="81" text-anchor="middle" font-size="13">write(1, ...)</text>
+  <line class="fig-line" x1="210" y1="76" x2="288" y2="76" marker-end="url(#01-syscall-arrow)"/>
+  <text class="fig-muted" x="249" y="68" text-anchor="middle" font-size="12">calls</text>
+  <line class="fig-line" x1="440" y1="76" x2="518" y2="76" marker-end="url(#01-syscall-arrow)"/>
+  <text class="fig-muted" x="479" y="68" text-anchor="middle" font-size="12">calls</text>
+  <line class="fig-accent-line" x1="600" y1="100" x2="600" y2="168" marker-end="url(#01-syscall-arrow)"/>
+  <text class="fig-accent-text" x="590" y="142" text-anchor="end" font-size="12">system call</text>
+  <rect class="fig-accent" x="400" y="170" width="300" height="56" rx="6"/>
+  <text x="550" y="194" text-anchor="middle" font-size="14" font-weight="600">kernel</text>
+  <text class="fig-muted" x="550" y="213" text-anchor="middle" font-size="12">does the work the process may not</text>
+  <rect class="fig-box" x="20" y="170" width="200" height="56" rx="6"/>
+  <text x="120" y="203" text-anchor="middle" font-size="14" font-weight="600">terminal</text>
+  <line class="fig-line" x1="400" y1="198" x2="222" y2="198" marker-end="url(#01-syscall-arrow)"/>
+  <text class="fig-muted" x="311" y="190" text-anchor="middle" font-size="12">sends the bytes</text>
+</svg>

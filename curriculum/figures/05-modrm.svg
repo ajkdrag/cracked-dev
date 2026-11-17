@@ -1,0 +1,27 @@
+<svg viewBox="0 0 720 230" role="img" aria-label="The mod and r/m fields pick the operand: mod 11 means r/m is a register, and the three lower mod values give a memory address built from bx, bp, si and di, with 0, 1 or 2 displacement bytes following.">
+  <text x="40" y="34" font-size="13" font-weight="600">mod field</text>
+  <rect class="fig-accent" x="40" y="46" width="300" height="28" rx="6"/>
+  <text class="fig-mono" x="52" y="65" font-size="13">11</text>
+  <text x="110" y="65" font-size="13">r/m names a register</text>
+  <rect class="fig-box" x="40" y="80" width="300" height="28" rx="6"/>
+  <text class="fig-mono" x="52" y="99" font-size="13">00</text>
+  <text x="110" y="99" font-size="13">[ r/m ], no displacement</text>
+  <rect class="fig-box" x="40" y="114" width="300" height="28" rx="6"/>
+  <text class="fig-mono" x="52" y="133" font-size="13">01</text>
+  <text x="110" y="133" font-size="13">[ r/m + disp8 ]</text>
+  <rect class="fig-box" x="40" y="148" width="300" height="28" rx="6"/>
+  <text class="fig-mono" x="52" y="167" font-size="13">10</text>
+  <text x="110" y="167" font-size="13">[ r/m + disp16 ]</text>
+
+  <text x="390" y="34" font-size="13" font-weight="600">r/m memory form (mod is 00, 01 or 10)</text>
+  <rect class="fig-box" x="390" y="46" width="300" height="96" rx="6"/>
+  <text class="fig-mono" x="406" y="68" font-size="13">000  bx + si</text>
+  <text class="fig-mono" x="560" y="68" font-size="13">100  si</text>
+  <text class="fig-mono" x="406" y="92" font-size="13">001  bx + di</text>
+  <text class="fig-mono" x="560" y="92" font-size="13">101  di</text>
+  <text class="fig-mono" x="406" y="116" font-size="13">010  bp + si</text>
+  <text class="fig-mono" x="560" y="116" font-size="13">110  bp</text>
+  <text class="fig-mono" x="406" y="140" font-size="13">011  bp + di</text>
+  <text class="fig-mono" x="560" y="140" font-size="13">111  bx</text>
+  <text class="fig-muted" x="390" y="166" font-size="12">mod 00 with r/m 110 is a direct 16-bit address, not [bp]</text>
+</svg>

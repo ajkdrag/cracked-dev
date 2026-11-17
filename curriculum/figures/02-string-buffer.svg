@@ -1,0 +1,39 @@
+<svg viewBox="0 0 720 230" role="img" aria-label="The string cat uses three bytes of an eight-byte buffer, followed by the zero byte that ends it, so its length is 3 and the buffer capacity is 8">
+  <text class="fig-mono" x="80" y="36" font-size="14" font-weight="600">char buf[8] = "cat";</text>
+  <text class="fig-mono fig-muted" x="115" y="62" text-anchor="middle" font-size="11">0</text>
+  <rect class="fig-accent" x="80" y="70" width="70" height="50"/>
+  <text class="fig-mono" x="115" y="101" text-anchor="middle" font-size="14">c</text>
+  <text class="fig-mono fig-muted" x="185" y="62" text-anchor="middle" font-size="11">1</text>
+  <rect class="fig-accent" x="150" y="70" width="70" height="50"/>
+  <text class="fig-mono" x="185" y="101" text-anchor="middle" font-size="14">a</text>
+  <text class="fig-mono fig-muted" x="255" y="62" text-anchor="middle" font-size="11">2</text>
+  <rect class="fig-accent" x="220" y="70" width="70" height="50"/>
+  <text class="fig-mono" x="255" y="101" text-anchor="middle" font-size="14">t</text>
+  <text class="fig-mono fig-muted" x="325" y="62" text-anchor="middle" font-size="11">3</text>
+  <rect class="fig-accent" x="290" y="70" width="70" height="50"/>
+  <text class="fig-mono" x="325" y="101" text-anchor="middle" font-size="14">\0</text>
+  <text class="fig-mono fig-muted" x="395" y="62" text-anchor="middle" font-size="11">4</text>
+  <rect class="fig-box" x="360" y="70" width="70" height="50"/>
+  <text class="fig-mono fig-muted" x="395" y="101" text-anchor="middle" font-size="14">0</text>
+  <text class="fig-mono fig-muted" x="465" y="62" text-anchor="middle" font-size="11">5</text>
+  <rect class="fig-box" x="430" y="70" width="70" height="50"/>
+  <text class="fig-mono fig-muted" x="465" y="101" text-anchor="middle" font-size="14">0</text>
+  <text class="fig-mono fig-muted" x="535" y="62" text-anchor="middle" font-size="11">6</text>
+  <rect class="fig-box" x="500" y="70" width="70" height="50"/>
+  <text class="fig-mono fig-muted" x="535" y="101" text-anchor="middle" font-size="14">0</text>
+  <text class="fig-mono fig-muted" x="605" y="62" text-anchor="middle" font-size="11">7</text>
+  <rect class="fig-box" x="570" y="70" width="70" height="50"/>
+  <text class="fig-mono fig-muted" x="605" y="101" text-anchor="middle" font-size="14">0</text>
+  <line class="fig-line" x1="82" y1="136" x2="288" y2="136"/>
+  <line class="fig-line" x1="82" y1="130" x2="82" y2="136"/>
+  <line class="fig-line" x1="288" y1="130" x2="288" y2="136"/>
+  <text x="185" y="154" text-anchor="middle" font-size="13">length 3: what strlen counts</text>
+  <line class="fig-accent-line" x1="292" y1="136" x2="358" y2="136"/>
+  <line class="fig-accent-line" x1="292" y1="130" x2="292" y2="136"/>
+  <line class="fig-accent-line" x1="358" y1="130" x2="358" y2="136"/>
+  <text class="fig-accent-text" x="325" y="154" text-anchor="middle" font-size="13">terminator</text>
+  <line class="fig-line" x1="82" y1="190" x2="638" y2="190"/>
+  <line class="fig-line" x1="82" y1="184" x2="82" y2="190"/>
+  <line class="fig-line" x1="638" y1="184" x2="638" y2="190"/>
+  <text x="360" y="208" text-anchor="middle" font-size="13">capacity 8: the bytes the buffer owns</text>
+</svg>

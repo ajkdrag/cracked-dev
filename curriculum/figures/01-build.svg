@@ -1,0 +1,26 @@
+<svg viewBox="0 0 720 230" role="img" aria-label="build.sh compiles src/name.c with the warning flags, and writes the debug or the release executable into its own directory under out">
+  <defs>
+    <marker id="01-build-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="90" width="150" height="50" rx="6"/>
+  <text class="fig-mono" x="95.0" y="120.0" text-anchor="middle" font-size="14">src/w.c</text>
+  <rect class="fig-accent" x="230" y="60" width="210" height="110" rx="6"/>
+  <text class="fig-mono" x="335" y="88" text-anchor="middle" font-size="14" font-weight="600">build.sh</text>
+  <text class="fig-mono" x="335" y="112" text-anchor="middle" font-size="12">clang -std=gnu11</text>
+  <text class="fig-muted" x="335" y="132" text-anchor="middle" font-size="12">warning flags</text>
+  <text class="fig-muted" x="335" y="152" text-anchor="middle" font-size="12">mode flags</text>
+  <line class="fig-line" x1="170" y1="115" x2="228" y2="115" marker-end="url(#01-build-arrow)"/>
+  <text class="fig-muted" x="199" y="105" text-anchor="middle" font-size="12">reads</text>
+  <rect class="fig-box" x="500" y="40" width="200" height="56" rx="6"/>
+  <text class="fig-mono" x="600.0" y="64.0" text-anchor="middle" font-size="13">out/Linux-debug/w</text>
+  <text class="fig-muted" x="600.0" y="83.0" text-anchor="middle" font-size="12">debug build</text>
+  <rect class="fig-box" x="500" y="134" width="200" height="56" rx="6"/>
+  <text class="fig-mono" x="600.0" y="158.0" text-anchor="middle" font-size="13">out/Linux-release/w</text>
+  <text class="fig-muted" x="600.0" y="177.0" text-anchor="middle" font-size="12">release build</text>
+  <line class="fig-line" x1="440" y1="68" x2="498" y2="68" marker-end="url(#01-build-arrow)"/>
+  <text class="fig-muted" x="469" y="59" text-anchor="middle" font-size="12">debug</text>
+  <line class="fig-line" x1="440" y1="162" x2="498" y2="162" marker-end="url(#01-build-arrow)"/>
+  <text class="fig-muted" x="469" y="153" text-anchor="middle" font-size="12">release</text>
+</svg>

@@ -1,0 +1,51 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="The simulator builds Not from your HDL, the test script sets its input and records each output as a row, and every row must match the same row of Not.cmp">
+  <defs>
+    <marker id="03-chip-test-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="30" width="200" height="86" rx="6"/>
+  <text x="32" y="50" font-size="13" font-weight="600">Not.hdl</text>
+  <text class="fig-mono" x="32" y="72" font-size="12">CHIP Not {</text>
+  <text class="fig-mono" x="32" y="89" font-size="12">  IN in; OUT out;</text>
+  <text class="fig-mono" x="32" y="106" font-size="12">  PARTS: your wiring }</text>
+  <rect class="fig-box" x="20" y="136" width="200" height="86" rx="6"/>
+  <text x="32" y="156" font-size="13" font-weight="600">Not.tst</text>
+  <text class="fig-mono" x="32" y="182" font-size="12">set in 0, eval, output;</text>
+  <text class="fig-mono" x="32" y="202" font-size="12">set in 1, eval, output;</text>
+  <rect class="fig-accent" x="270" y="86" width="140" height="80" rx="6"/>
+  <text x="340" y="116" text-anchor="middle" font-size="14" font-weight="600">simulator</text>
+  <text class="fig-muted" x="340" y="136" text-anchor="middle" font-size="12">builds the chip,</text>
+  <text class="fig-muted" x="340" y="152" text-anchor="middle" font-size="12">runs the script</text>
+  <line class="fig-line" x1="220" y1="73" x2="268" y2="106" marker-end="url(#03-chip-test-arrow)"/>
+  <text class="fig-muted" x="250" y="80" font-size="12">loads</text>
+  <line class="fig-line" x1="220" y1="179" x2="268" y2="148" marker-end="url(#03-chip-test-arrow)"/>
+  <text class="fig-muted" x="250" y="180" font-size="12">runs</text>
+  <text x="510" y="58" text-anchor="middle" font-size="13" font-weight="600">rows written</text>
+  <rect class="fig-box" x="460" y="68" width="100" height="84" rx="6"/>
+  <line class="fig-line" x1="460" y1="96" x2="560" y2="96"/>
+  <line class="fig-line" x1="510" y1="68" x2="510" y2="152"/>
+  <text class="fig-muted" x="485" y="87" text-anchor="middle" font-size="12">in</text>
+  <text class="fig-muted" x="535" y="87" text-anchor="middle" font-size="12">out</text>
+  <text class="fig-mono" x="485" y="118" text-anchor="middle" font-size="13">0</text>
+  <text class="fig-mono" x="535" y="118" text-anchor="middle" font-size="13">1</text>
+  <text class="fig-mono" x="485" y="142" text-anchor="middle" font-size="13">1</text>
+  <text class="fig-mono" x="535" y="142" text-anchor="middle" font-size="13">0</text>
+  <text x="650" y="58" text-anchor="middle" font-size="13" font-weight="600">Not.cmp</text>
+  <rect class="fig-box" x="600" y="68" width="100" height="84" rx="6"/>
+  <line class="fig-line" x1="600" y1="96" x2="700" y2="96"/>
+  <line class="fig-line" x1="650" y1="68" x2="650" y2="152"/>
+  <text class="fig-muted" x="625" y="87" text-anchor="middle" font-size="12">in</text>
+  <text class="fig-muted" x="675" y="87" text-anchor="middle" font-size="12">out</text>
+  <text class="fig-mono" x="625" y="118" text-anchor="middle" font-size="13">0</text>
+  <text class="fig-mono" x="675" y="118" text-anchor="middle" font-size="13">1</text>
+  <text class="fig-mono" x="625" y="142" text-anchor="middle" font-size="13">1</text>
+  <text class="fig-mono" x="675" y="142" text-anchor="middle" font-size="13">0</text>
+  <line class="fig-line" x1="410" y1="126" x2="458" y2="112" marker-end="url(#03-chip-test-arrow)"/>
+  <text class="fig-muted" x="434" y="108" text-anchor="middle" font-size="12">writes</text>
+  <text class="fig-accent-text" x="580" y="122" text-anchor="middle" font-size="14" font-weight="600">=</text>
+  <text class="fig-accent-text" x="580" y="146" text-anchor="middle" font-size="14" font-weight="600">=</text>
+  <text class="fig-accent-text" x="580" y="186" text-anchor="middle" font-size="12">every row must match</text>
+  <text class="fig-muted" x="580" y="206" text-anchor="middle" font-size="12">a row that differs shows</text>
+  <text class="fig-muted" x="580" y="222" text-anchor="middle" font-size="12">in the diff table</text>
+</svg>

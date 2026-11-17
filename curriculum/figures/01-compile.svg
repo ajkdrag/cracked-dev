@@ -1,0 +1,40 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="python3 translates and runs the script on every run, while clang translates main.c once into an executable that the CPU runs directly">
+  <defs>
+    <marker id="01-compile-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="30" font-size="13" font-weight="600">Python</text>
+  <rect class="fig-box" x="20" y="42" width="125" height="56" rx="6"/>
+  <text class="fig-mono" x="82.5" y="66.0" text-anchor="middle" font-size="14">hi.py</text>
+  <text class="fig-muted" x="82.5" y="85.0" text-anchor="middle" font-size="12">text you write</text>
+  <rect class="fig-box" x="205" y="42" width="310" height="56" rx="6"/>
+  <text x="360.0" y="66.0" text-anchor="middle" font-size="14" font-weight="600">python3</text>
+  <text class="fig-muted" x="360.0" y="85.0" text-anchor="middle" font-size="12">translates hi.py and runs it, on every run</text>
+  <rect class="fig-box" x="575" y="42" width="125" height="56" rx="6"/>
+  <text x="637.5" y="66.0" text-anchor="middle" font-size="14" font-weight="600">output</text>
+  <text class="fig-muted" x="637.5" y="85.0" text-anchor="middle" font-size="12">on the terminal</text>
+  <line class="fig-line" x1="145" y1="70" x2="203" y2="70" marker-end="url(#01-compile-arrow)"/>
+  <text class="fig-muted" x="175.0" y="61" text-anchor="middle" font-size="12">reads</text>
+  <line class="fig-line" x1="515" y1="70" x2="573" y2="70" marker-end="url(#01-compile-arrow)"/>
+  <text class="fig-muted" x="545.0" y="61" text-anchor="middle" font-size="12">prints</text>
+  <text x="20" y="150" font-size="13" font-weight="600">C</text>
+  <rect class="fig-box" x="20" y="162" width="125" height="56" rx="6"/>
+  <text class="fig-mono" x="82.5" y="186.0" text-anchor="middle" font-size="14">main.c</text>
+  <text class="fig-muted" x="82.5" y="205.0" text-anchor="middle" font-size="12">text you write</text>
+  <rect class="fig-accent" x="205" y="162" width="125" height="56" rx="6"/>
+  <text x="267.5" y="186.0" text-anchor="middle" font-size="14" font-weight="600">clang</text>
+  <text class="fig-muted" x="267.5" y="205.0" text-anchor="middle" font-size="12">translates once</text>
+  <rect class="fig-box" x="390" y="162" width="125" height="56" rx="6"/>
+  <text class="fig-mono" x="452.5" y="186.0" text-anchor="middle" font-size="14">hello</text>
+  <text class="fig-muted" x="452.5" y="205.0" text-anchor="middle" font-size="12">runs on the CPU</text>
+  <rect class="fig-box" x="575" y="162" width="125" height="56" rx="6"/>
+  <text x="637.5" y="186.0" text-anchor="middle" font-size="14" font-weight="600">output</text>
+  <text class="fig-muted" x="637.5" y="205.0" text-anchor="middle" font-size="12">on the terminal</text>
+  <line class="fig-line" x1="145" y1="190" x2="203" y2="190" marker-end="url(#01-compile-arrow)"/>
+  <text class="fig-muted" x="175.0" y="181" text-anchor="middle" font-size="12">reads</text>
+  <line class="fig-line" x1="330" y1="190" x2="388" y2="190" marker-end="url(#01-compile-arrow)"/>
+  <text class="fig-muted" x="360.0" y="181" text-anchor="middle" font-size="12">writes</text>
+  <line class="fig-line" x1="515" y1="190" x2="573" y2="190" marker-end="url(#01-compile-arrow)"/>
+  <text class="fig-muted" x="545.0" y="181" text-anchor="middle" font-size="12">prints</text>
+</svg>

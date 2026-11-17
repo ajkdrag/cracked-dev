@@ -1,0 +1,38 @@
+<svg viewBox="0 0 720 260" role="img" aria-label="ASan surrounds the array with red zones and records which bytes are owned, and the read of a[4] lands in a red zone, so ASan stops the program">
+  <defs>
+    <marker id="01-asan-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="70" y="62" font-size="12">memory</text>
+  <text class="fig-muted" x="70" y="154" font-size="12">ASan&#x27;s record of owned bytes</text>
+  <rect class="fig-box" x="70" y="72" width="90" height="44" rx="6"/>
+  <text class="fig-muted" x="115.0" y="99" text-anchor="middle" font-size="12">red zone</text>
+  <rect class="fig-box" x="70" y="164" width="90" height="40" rx="6"/>
+  <text class="fig-muted" x="115.0" y="189" text-anchor="middle" font-size="12">not owned</text>
+  <rect class="fig-box" x="160" y="72" width="90" height="44" rx="6"/>
+  <text class="fig-mono" x="205.0" y="99" text-anchor="middle" font-size="13">a[0]</text>
+  <rect class="fig-box" x="160" y="164" width="90" height="40" rx="6"/>
+  <text class="fig-muted" x="205.0" y="189" text-anchor="middle" font-size="12">owned</text>
+  <rect class="fig-box" x="250" y="72" width="90" height="44" rx="6"/>
+  <text class="fig-mono" x="295.0" y="99" text-anchor="middle" font-size="13">a[1]</text>
+  <rect class="fig-box" x="250" y="164" width="90" height="40" rx="6"/>
+  <text class="fig-muted" x="295.0" y="189" text-anchor="middle" font-size="12">owned</text>
+  <rect class="fig-box" x="340" y="72" width="90" height="44" rx="6"/>
+  <text class="fig-mono" x="385.0" y="99" text-anchor="middle" font-size="13">a[2]</text>
+  <rect class="fig-box" x="340" y="164" width="90" height="40" rx="6"/>
+  <text class="fig-muted" x="385.0" y="189" text-anchor="middle" font-size="12">owned</text>
+  <rect class="fig-box" x="430" y="72" width="90" height="44" rx="6"/>
+  <text class="fig-mono" x="475.0" y="99" text-anchor="middle" font-size="13">a[3]</text>
+  <rect class="fig-box" x="430" y="164" width="90" height="40" rx="6"/>
+  <text class="fig-muted" x="475.0" y="189" text-anchor="middle" font-size="12">owned</text>
+  <rect class="fig-accent" x="520" y="72" width="90" height="44" rx="6"/>
+  <text x="565.0" y="99" text-anchor="middle" font-size="12">red zone</text>
+  <rect class="fig-accent" x="520" y="164" width="90" height="40" rx="6"/>
+  <text class="fig-accent-text" x="565.0" y="189" text-anchor="middle" font-size="12">not owned</text>
+  <text class="fig-mono fig-accent-text" x="565.0" y="32" text-anchor="middle" font-size="13">read a[4]</text>
+  <line class="fig-accent-line" x1="565.0" y1="38" x2="565.0" y2="70" marker-end="url(#01-asan-arrow)"/>
+  <line class="fig-accent-line" x1="565.0" y1="116" x2="565.0" y2="162" marker-end="url(#01-asan-arrow)"/>
+  <text class="fig-accent-text" x="573.0" y="144" font-size="12">looks up</text>
+  <text x="340" y="236" text-anchor="middle" font-size="13">not owned: ASan stops the program with a stack-buffer-overflow report</text>
+</svg>

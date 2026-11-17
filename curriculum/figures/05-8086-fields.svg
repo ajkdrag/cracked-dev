@@ -1,0 +1,71 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="The two bytes 89 d9 of mov cx, bx: byte one is a six-bit opcode then the d and w bits, byte two is the two-bit mod field, the three-bit reg field and the three-bit r/m field.">
+  <text class="fig-mono" x="56" y="36" font-size="13" font-weight="600">byte 1 = 0x89</text>
+  <rect class="fig-box" x="56" y="48" width="38" height="34" rx="6"/>
+  <text class="fig-mono" x="75" y="70" text-anchor="middle" font-size="14">1</text>
+  <rect class="fig-box" x="94" y="48" width="38" height="34" rx="6"/>
+  <text class="fig-mono" x="113" y="70" text-anchor="middle" font-size="14">0</text>
+  <rect class="fig-box" x="132" y="48" width="38" height="34" rx="6"/>
+  <text class="fig-mono" x="151" y="70" text-anchor="middle" font-size="14">0</text>
+  <rect class="fig-box" x="170" y="48" width="38" height="34" rx="6"/>
+  <text class="fig-mono" x="189" y="70" text-anchor="middle" font-size="14">0</text>
+  <rect class="fig-box" x="208" y="48" width="38" height="34" rx="6"/>
+  <text class="fig-mono" x="227" y="70" text-anchor="middle" font-size="14">1</text>
+  <rect class="fig-box" x="246" y="48" width="38" height="34" rx="6"/>
+  <text class="fig-mono" x="265" y="70" text-anchor="middle" font-size="14">0</text>
+  <rect class="fig-accent" x="284" y="48" width="38" height="34" rx="6"/>
+  <text class="fig-mono" x="303" y="70" text-anchor="middle" font-size="14">0</text>
+  <rect class="fig-accent" x="322" y="48" width="38" height="34" rx="6"/>
+  <text class="fig-mono" x="341" y="70" text-anchor="middle" font-size="14">1</text>
+
+  <line class="fig-line" x1="59" y1="90" x2="281" y2="90"/>
+  <line class="fig-line" x1="59" y1="85" x2="59" y2="90"/>
+  <line class="fig-line" x1="281" y1="85" x2="281" y2="90"/>
+  <text x="170" y="106" text-anchor="middle" font-size="13">opcode</text>
+  <text class="fig-muted" x="170" y="122" text-anchor="middle" font-size="12">mov r/m, reg</text>
+  <line class="fig-line" x1="287" y1="90" x2="319" y2="90"/>
+  <line class="fig-line" x1="287" y1="85" x2="287" y2="90"/>
+  <line class="fig-line" x1="319" y1="85" x2="319" y2="90"/>
+  <text x="303" y="106" text-anchor="middle" font-size="13">d</text>
+  <line class="fig-line" x1="325" y1="90" x2="357" y2="90"/>
+  <line class="fig-line" x1="325" y1="85" x2="325" y2="90"/>
+  <line class="fig-line" x1="357" y1="85" x2="357" y2="90"/>
+  <text x="341" y="106" text-anchor="middle" font-size="13">w</text>
+  <text class="fig-muted" x="303" y="138" text-anchor="middle" font-size="12">d = 0: reg is the source</text>
+  <text class="fig-muted" x="303" y="154" text-anchor="middle" font-size="12">w = 1: 16-bit operands</text>
+
+  <text class="fig-mono" x="56" y="192" font-size="13" font-weight="600">byte 2 = 0xd9</text>
+  <rect class="fig-box" x="56" y="204" width="38" height="34" rx="6"/>
+  <text class="fig-mono" x="75" y="226" text-anchor="middle" font-size="14">1</text>
+  <rect class="fig-box" x="94" y="204" width="38" height="34" rx="6"/>
+  <text class="fig-mono" x="113" y="226" text-anchor="middle" font-size="14">1</text>
+  <rect class="fig-box" x="132" y="204" width="38" height="34" rx="6"/>
+  <text class="fig-mono" x="151" y="226" text-anchor="middle" font-size="14">0</text>
+  <rect class="fig-box" x="170" y="204" width="38" height="34" rx="6"/>
+  <text class="fig-mono" x="189" y="226" text-anchor="middle" font-size="14">1</text>
+  <rect class="fig-box" x="208" y="204" width="38" height="34" rx="6"/>
+  <text class="fig-mono" x="227" y="226" text-anchor="middle" font-size="14">1</text>
+  <rect class="fig-box" x="246" y="204" width="38" height="34" rx="6"/>
+  <text class="fig-mono" x="265" y="226" text-anchor="middle" font-size="14">0</text>
+  <rect class="fig-box" x="284" y="204" width="38" height="34" rx="6"/>
+  <text class="fig-mono" x="303" y="226" text-anchor="middle" font-size="14">0</text>
+  <rect class="fig-box" x="322" y="204" width="38" height="34" rx="6"/>
+  <text class="fig-mono" x="341" y="226" text-anchor="middle" font-size="14">1</text>
+
+  <line class="fig-line" x1="59" y1="246" x2="129" y2="246"/>
+  <line class="fig-line" x1="59" y1="241" x2="59" y2="246"/>
+  <line class="fig-line" x1="129" y1="241" x2="129" y2="246"/>
+  <text x="94" y="262" text-anchor="middle" font-size="13">mod</text>
+  <text class="fig-muted" x="94" y="278" text-anchor="middle" font-size="12">11 = register</text>
+  <line class="fig-line" x1="135" y1="246" x2="243" y2="246"/>
+  <line class="fig-line" x1="135" y1="241" x2="135" y2="246"/>
+  <line class="fig-line" x1="243" y1="241" x2="243" y2="246"/>
+  <text x="189" y="262" text-anchor="middle" font-size="13">reg</text>
+  <text class="fig-muted" x="189" y="278" text-anchor="middle" font-size="12">011 = bx</text>
+  <line class="fig-line" x1="249" y1="246" x2="357" y2="246"/>
+  <line class="fig-line" x1="249" y1="241" x2="249" y2="246"/>
+  <line class="fig-line" x1="357" y1="241" x2="357" y2="246"/>
+  <text x="303" y="262" text-anchor="middle" font-size="13">r/m</text>
+  <text class="fig-muted" x="303" y="278" text-anchor="middle" font-size="12">001 = cx</text>
+
+  <text class="fig-mono fig-accent-text" x="208" y="312" text-anchor="middle" font-size="15" font-weight="600">mov cx, bx</text>
+</svg>

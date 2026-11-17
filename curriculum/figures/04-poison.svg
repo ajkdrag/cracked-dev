@@ -1,0 +1,32 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="The arena block in three states: all poisoned when the arena is made, A and B unpoisoned after two allocations, and after a call that used a scratch copy, the bytes of its object C poisoned again while beg stays after B.">
+  <defs>
+    <marker id="04-poison-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="53" font-size="13">1. arena made</text>
+  <rect class="fig-accent" x="200" y="30" width="480" height="36"/>
+  <text class="fig-muted" x="440" y="53" text-anchor="middle" font-size="12">poisoned</text>
+  <line class="fig-accent-line" x1="200" y1="92" x2="200" y2="70" marker-end="url(#04-poison-arrow)"/>
+  <text class="fig-mono fig-accent-text" x="200" y="106" text-anchor="middle" font-size="12">beg</text>
+  <text x="20" y="153" font-size="13">2. two allocs</text>
+  <rect class="fig-box" x="200" y="130" width="60" height="36"/>
+  <text class="fig-mono" x="230" y="153" text-anchor="middle" font-size="12">A</text>
+  <rect class="fig-box" x="260" y="130" width="100" height="36"/>
+  <text class="fig-mono" x="310" y="153" text-anchor="middle" font-size="12">B</text>
+  <rect class="fig-accent" x="360" y="130" width="320" height="36"/>
+  <text class="fig-muted" x="520" y="153" text-anchor="middle" font-size="12">poisoned</text>
+  <line class="fig-accent-line" x1="360" y1="192" x2="360" y2="170" marker-end="url(#04-poison-arrow)"/>
+  <text class="fig-mono fig-accent-text" x="360" y="206" text-anchor="middle" font-size="12">beg</text>
+  <text x="20" y="253" font-size="13">3. after scratch call</text>
+  <rect class="fig-box" x="200" y="230" width="60" height="36"/>
+  <text class="fig-mono" x="230" y="253" text-anchor="middle" font-size="12">A</text>
+  <rect class="fig-box" x="260" y="230" width="100" height="36"/>
+  <text class="fig-mono" x="310" y="253" text-anchor="middle" font-size="12">B</text>
+  <rect class="fig-accent" x="360" y="230" width="120" height="36" stroke-dasharray="4 3"/>
+  <text class="fig-muted" x="420" y="253" text-anchor="middle" font-size="12">C, poisoned again</text>
+  <rect class="fig-accent" x="480" y="230" width="200" height="36"/>
+  <text class="fig-muted" x="580" y="253" text-anchor="middle" font-size="12">poisoned</text>
+  <line class="fig-accent-line" x1="360" y1="292" x2="360" y2="270" marker-end="url(#04-poison-arrow)"/>
+  <text class="fig-mono fig-accent-text" x="360" y="306" text-anchor="middle" font-size="12">beg</text>
+</svg>

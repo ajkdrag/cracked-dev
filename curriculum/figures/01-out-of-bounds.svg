@@ -1,0 +1,36 @@
+<svg viewBox="0 0 720 210" role="img" aria-label="The array a owns 16 bytes, and a[4] reads the 4 bytes right after them, which belong to something else">
+  <defs>
+    <marker id="01-out-of-bounds-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <line class="fig-line" x1="164" y1="52" x2="556" y2="52"/>
+  <line class="fig-line" x1="164" y1="58" x2="164" y2="52"/>
+  <line class="fig-line" x1="556" y1="58" x2="556" y2="52"/>
+  <text x="360" y="38" text-anchor="middle" font-size="13">int a[4]: 16 bytes the program owns</text>
+  <rect class="fig-box" x="60" y="90" width="100" height="48" rx="6"/>
+  <text class="fig-muted" x="110.0" y="119" text-anchor="middle" font-size="12">other data</text>
+  <rect class="fig-box" x="160" y="90" width="100" height="48" rx="6"/>
+  <text class="fig-mono" x="210.0" y="80" text-anchor="middle" font-size="13">a[0]</text>
+  <text class="fig-mono" x="210.0" y="120" text-anchor="middle" font-size="16">1</text>
+  <text class="fig-mono fig-muted" x="160" y="158" text-anchor="middle" font-size="12">+0</text>
+  <rect class="fig-box" x="260" y="90" width="100" height="48" rx="6"/>
+  <text class="fig-mono" x="310.0" y="80" text-anchor="middle" font-size="13">a[1]</text>
+  <text class="fig-mono" x="310.0" y="120" text-anchor="middle" font-size="16">2</text>
+  <text class="fig-mono fig-muted" x="260" y="158" text-anchor="middle" font-size="12">+4</text>
+  <rect class="fig-box" x="360" y="90" width="100" height="48" rx="6"/>
+  <text class="fig-mono" x="410.0" y="80" text-anchor="middle" font-size="13">a[2]</text>
+  <text class="fig-mono" x="410.0" y="120" text-anchor="middle" font-size="16">3</text>
+  <text class="fig-mono fig-muted" x="360" y="158" text-anchor="middle" font-size="12">+8</text>
+  <rect class="fig-box" x="460" y="90" width="100" height="48" rx="6"/>
+  <text class="fig-mono" x="510.0" y="80" text-anchor="middle" font-size="13">a[3]</text>
+  <text class="fig-mono" x="510.0" y="120" text-anchor="middle" font-size="16">4</text>
+  <text class="fig-mono fig-muted" x="460" y="158" text-anchor="middle" font-size="12">+12</text>
+  <rect class="fig-accent" x="560" y="90" width="100" height="48" rx="6"/>
+  <text class="fig-mono fig-accent-text" x="610.0" y="80" text-anchor="middle" font-size="13">a[4]</text>
+  <text class="fig-mono" x="610.0" y="120" text-anchor="middle" font-size="16">?</text>
+  <text class="fig-mono fig-muted" x="560" y="158" text-anchor="middle" font-size="12">+16</text>
+  <text class="fig-mono fig-muted" x="660" y="158" text-anchor="middle" font-size="12">+20</text>
+  <text class="fig-accent-text" x="610.0" y="186" text-anchor="middle" font-size="12">not yours: another variable</text>
+  <text class="fig-muted" x="132" y="158" text-anchor="end" font-size="12">bytes from a</text>
+</svg>

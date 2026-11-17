@@ -1,0 +1,45 @@
+<svg viewBox="0 0 720 270" role="img" aria-label="After @21, register A holds 21, so M names RAM[21], which holds 7, and D=M+1 puts 8 into D">
+  <defs>
+    <marker id="03-hack-model-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="40" width="300" height="200" rx="6"/>
+  <text x="40" y="62" font-size="14" font-weight="600">CPU</text>
+  <rect class="fig-accent" x="50" y="80" width="100" height="44" rx="6"/>
+  <text x="70" y="107" font-size="14" font-weight="600">A</text>
+  <text class="fig-mono" x="128" y="107" text-anchor="middle" font-size="14">21</text>
+  <rect class="fig-box" x="50" y="170" width="100" height="44" rx="6"/>
+  <text x="70" y="197" font-size="14" font-weight="600">D</text>
+  <text class="fig-mono" x="128" y="197" text-anchor="middle" font-size="14">8</text>
+  <rect class="fig-box" x="210" y="150" width="80" height="64" rx="6"/>
+  <text x="250" y="178" text-anchor="middle" font-size="14" font-weight="600">ALU</text>
+  <text class="fig-mono" x="250" y="198" text-anchor="middle" font-size="12">M+1</text>
+  <line class="fig-accent-line" x1="210" y1="192" x2="152" y2="192" marker-end="url(#03-hack-model-arrow)"/>
+  <text class="fig-accent-text" x="181" y="184" text-anchor="middle" font-size="12">8</text>
+  <text x="500" y="34" text-anchor="middle" font-size="14" font-weight="600">RAM</text>
+  <rect class="fig-box" x="440" y="50" width="120" height="30"/>
+  <text class="fig-mono fig-muted" x="452" y="70" font-size="12">19</text>
+  <text class="fig-mono" x="520" y="70" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="440" y="86" width="120" height="30"/>
+  <text class="fig-mono fig-muted" x="452" y="106" font-size="12">20</text>
+  <text class="fig-mono" x="520" y="106" text-anchor="middle" font-size="13">3</text>
+  <rect class="fig-accent" x="440" y="122" width="120" height="30"/>
+  <text class="fig-mono fig-muted" x="452" y="142" font-size="12">21</text>
+  <text class="fig-mono" x="520" y="142" text-anchor="middle" font-size="13">7</text>
+  <rect class="fig-box" x="440" y="158" width="120" height="30"/>
+  <text class="fig-mono fig-muted" x="452" y="178" font-size="12">22</text>
+  <text class="fig-mono" x="520" y="178" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="440" y="194" width="120" height="30"/>
+  <text class="fig-mono fig-muted" x="452" y="214" font-size="12">23</text>
+  <text class="fig-mono" x="520" y="214" text-anchor="middle" font-size="13">12</text>
+  <text class="fig-accent-text" x="572" y="142" font-size="13">M = RAM[A]</text>
+  <path class="fig-accent-line" d="M150 102 L380 102 L380 130 L438 130" marker-end="url(#03-hack-model-arrow)"/>
+  <text class="fig-muted" x="265" y="94" text-anchor="middle" font-size="12">A selects a word</text>
+  <path class="fig-accent-line" d="M440 144 L404 144 L404 170 L292 170" marker-end="url(#03-hack-model-arrow)"/>
+  <text class="fig-muted" x="346" y="162" text-anchor="middle" font-size="12">reads 7</text>
+  <text class="fig-mono" x="572" y="222" font-size="13">@21</text>
+  <text class="fig-muted" x="624" y="222" font-size="12">A = 21</text>
+  <text class="fig-mono" x="572" y="244" font-size="13">D=M+1</text>
+  <text class="fig-muted" x="624" y="244" font-size="12">D = 7 + 1</text>
+</svg>

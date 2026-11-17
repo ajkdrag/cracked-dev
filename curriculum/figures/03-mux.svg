@@ -1,0 +1,33 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="Inside a Mux with a = 0, b = 1 and sel = 1: the lower And passes b, the upper And outputs 0, and the Or passes the 1 from b to out">
+  <defs>
+    <marker id="03-mux-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-mono" x="20" y="69" font-size="13">a = 0</text>
+  <text class="fig-mono" x="20" y="154" font-size="13">sel = 1</text>
+  <text class="fig-mono" x="20" y="239" font-size="13">b = 1</text>
+  <line class="fig-line" x1="76" y1="65" x2="298" y2="65" marker-end="url(#03-mux-arrow)"/>
+  <line class="fig-accent-line" x1="80" y1="150" x2="110" y2="150"/>
+  <line class="fig-line" x1="110" y1="150" x2="148" y2="150" marker-end="url(#03-mux-arrow)"/>
+  <path class="fig-accent-line" d="M110 150 L110 205 L298 205" marker-end="url(#03-mux-arrow)"/>
+  <circle class="fig-accent-fill" cx="110" cy="150" r="3.5"/>
+  <rect class="fig-box" x="150" y="125" width="70" height="50" rx="6"/>
+  <text x="185.0" y="155.0" text-anchor="middle" font-size="14" font-weight="600">Not</text>
+  <path class="fig-line" d="M220 150 L250 150 L250 95 L298 95" marker-end="url(#03-mux-arrow)"/>
+  <text class="fig-mono" x="258" y="128" font-size="12">0</text>
+  <line class="fig-accent-line" x1="76" y1="235" x2="298" y2="235" marker-end="url(#03-mux-arrow)"/>
+  <rect class="fig-box" x="300" y="50" width="80" height="60" rx="6"/>
+  <text x="340.0" y="85.0" text-anchor="middle" font-size="14" font-weight="600">And</text>
+  <rect class="fig-accent" x="300" y="190" width="80" height="60" rx="6"/>
+  <text x="340.0" y="225.0" text-anchor="middle" font-size="14" font-weight="600">And</text>
+  <path class="fig-line" d="M380 80 L420 80 L420 135 L478 135" marker-end="url(#03-mux-arrow)"/>
+  <text class="fig-mono" x="428" y="108" font-size="12">0</text>
+  <path class="fig-accent-line" d="M380 220 L440 220 L440 165 L478 165" marker-end="url(#03-mux-arrow)"/>
+  <text class="fig-accent-text" x="448" y="196" font-size="12">1</text>
+  <rect class="fig-accent" x="480" y="120" width="80" height="60" rx="6"/>
+  <text x="520.0" y="155.0" text-anchor="middle" font-size="14" font-weight="600">Or</text>
+  <line class="fig-accent-line" x1="560" y1="150" x2="618" y2="150" marker-end="url(#03-mux-arrow)"/>
+  <text class="fig-mono" x="626" y="154" font-size="13">out = 1</text>
+  <text class="fig-mono" x="340" y="284" text-anchor="middle" font-size="12">(a And Not sel) Or (b And sel)</text>
+</svg>

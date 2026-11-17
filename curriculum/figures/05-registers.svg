@@ -1,0 +1,29 @@
+<svg viewBox="0 0 720 352" role="img" aria-label="Find the callee-saved row. Those are the only registers a function must restore before it returns.">
+  <text x="40" y="34" font-size="13" font-weight="600">role</text>
+  <text x="250" y="34" font-size="13" font-weight="600">registers</text>
+  <text x="700" y="34" text-anchor="end" font-size="13" font-weight="600">who preserves it</text>
+  <rect class="fig-accent" x="230" y="50" width="330" height="36" rx="6"/>
+  <text class="fig-mono" x="250" y="73" font-size="14">rdi  rsi  rdx  rcx  r8  r9</text>
+  <text x="40" y="73" font-size="13">arguments 1-6</text>
+  <text class="fig-muted" x="700" y="73" text-anchor="end" font-size="12">caller-saved</text>
+  <rect class="fig-accent" x="230" y="98" width="330" height="36" rx="6"/>
+  <text class="fig-mono" x="250" y="121" font-size="14">rax</text>
+  <text x="40" y="121" font-size="13">result</text>
+  <text class="fig-muted" x="700" y="121" text-anchor="end" font-size="12">caller-saved</text>
+  <rect class="fig-box" x="230" y="146" width="330" height="36" rx="6"/>
+  <text class="fig-mono" x="250" y="169" font-size="14">r10  r11</text>
+  <text x="40" y="169" font-size="13">scratch</text>
+  <text class="fig-muted" x="700" y="169" text-anchor="end" font-size="12">caller-saved</text>
+  <rect class="fig-box" x="230" y="194" width="330" height="36" rx="6"/>
+  <text class="fig-mono" x="250" y="217" font-size="14">rbx  rbp  r12  r13  r14  r15</text>
+  <text x="40" y="217" font-size="13">you must restore</text>
+  <text class="fig-muted" x="700" y="217" text-anchor="end" font-size="12">callee-saved</text>
+  <rect class="fig-accent" x="230" y="242" width="330" height="36" rx="6"/>
+  <text class="fig-mono" x="250" y="265" font-size="14">xmm0 ... xmm7</text>
+  <text x="40" y="265" font-size="13">float args / result</text>
+  <text class="fig-muted" x="700" y="265" text-anchor="end" font-size="12">caller-saved</text>
+  <rect class="fig-box" x="230" y="290" width="330" height="36" rx="6"/>
+  <text class="fig-mono" x="250" y="313" font-size="14">rsp</text>
+  <text x="40" y="313" font-size="13">stack pointer</text>
+  <text class="fig-muted" x="700" y="313" text-anchor="end" font-size="12">points at the stack top</text>
+</svg>

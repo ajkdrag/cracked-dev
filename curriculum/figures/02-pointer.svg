@@ -1,0 +1,26 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="The pointer p lives at 0x1008 and holds 0x1000, the address of x, so following p reaches the int 42">
+  <defs>
+    <marker id="02-pointer-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-mono" x="40" y="44" font-size="14" font-weight="600">int *p</text>
+  <text class="fig-muted" x="240" y="44" text-anchor="end" font-size="12">lives at 0x1008, 8 bytes</text>
+  <rect class="fig-accent" x="40" y="56" width="200" height="60" rx="6"/>
+  <text class="fig-mono" x="140" y="92" text-anchor="middle" font-size="14">0x1000</text>
+  <line class="fig-line" x1="240" y1="86" x2="478" y2="86" marker-end="url(#02-pointer-arrow)"/>
+  <text class="fig-muted" x="359" y="76" text-anchor="middle" font-size="12">points at</text>
+  <text class="fig-mono" x="480" y="44" font-size="14" font-weight="600">int x</text>
+  <text class="fig-muted" x="680" y="44" text-anchor="end" font-size="12">lives at 0x1000, 4 bytes</text>
+  <rect class="fig-box" x="480" y="56" width="200" height="60" rx="6"/>
+  <text class="fig-mono" x="580" y="92" text-anchor="middle" font-size="14">42</text>
+  <text class="fig-mono" x="40" y="166" font-size="13">p</text>
+  <text class="fig-mono" x="100" y="166" font-size="13">0x1000</text>
+  <text class="fig-muted" x="200" y="166" font-size="12">the value stored in p</text>
+  <text class="fig-mono" x="40" y="192" font-size="13">&amp;p</text>
+  <text class="fig-mono" x="100" y="192" font-size="13">0x1008</text>
+  <text class="fig-muted" x="200" y="192" font-size="12">the address of p itself</text>
+  <text class="fig-mono" x="40" y="218" font-size="13">*p</text>
+  <text class="fig-mono" x="100" y="218" font-size="13">42</text>
+  <text class="fig-muted" x="200" y="218" font-size="12">follow the arrow: the 4 bytes at 0x1000, read as an int</text>
+</svg>

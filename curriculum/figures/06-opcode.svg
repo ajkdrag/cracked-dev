@@ -1,0 +1,47 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="The instruction 0xD123 split into its fields: the class D, the register numbers X and Y, the constant N, and the wider fields NN and NNN made of the low byte and the low 12 bits">
+  <text class="fig-mono" x="140" y="36" font-size="14" font-weight="600">op = 0xD123, the bytes D1 23</text>
+  <rect class="fig-accent" x="140" y="50" width="110" height="40" rx="6"/>
+  <text class="fig-mono" x="195" y="76" text-anchor="middle" font-size="16" font-weight="600">D</text>
+  <rect class="fig-box" x="250" y="50" width="110" height="40" rx="6"/>
+  <text class="fig-mono" x="305" y="76" text-anchor="middle" font-size="16" font-weight="600">1</text>
+  <rect class="fig-box" x="360" y="50" width="110" height="40" rx="6"/>
+  <text class="fig-mono" x="415" y="76" text-anchor="middle" font-size="16" font-weight="600">2</text>
+  <rect class="fig-box" x="470" y="50" width="110" height="40" rx="6"/>
+  <text class="fig-mono" x="525" y="76" text-anchor="middle" font-size="16" font-weight="600">3</text>
+  <line class="fig-line" x1="144" y1="104" x2="246" y2="104"/>
+  <line class="fig-line" x1="144" y1="99" x2="144" y2="104"/>
+  <line class="fig-line" x1="246" y1="99" x2="246" y2="104"/>
+  <text x="195" y="122" text-anchor="middle" font-size="13" font-weight="600">class</text>
+  <text class="fig-muted" x="195" y="139" text-anchor="middle" font-size="12">D: draw a sprite</text>
+  <text class="fig-mono fig-muted" x="195" y="156" text-anchor="middle" font-size="12">op >> 12</text>
+  <line class="fig-line" x1="254" y1="104" x2="356" y2="104"/>
+  <line class="fig-line" x1="254" y1="99" x2="254" y2="104"/>
+  <line class="fig-line" x1="356" y1="99" x2="356" y2="104"/>
+  <text x="305" y="122" text-anchor="middle" font-size="13" font-weight="600">X</text>
+  <text class="fig-muted" x="305" y="139" text-anchor="middle" font-size="12">VX is V1</text>
+  <text class="fig-mono fig-muted" x="305" y="156" text-anchor="middle" font-size="12">op >> 8 &amp; 0xF</text>
+  <line class="fig-line" x1="364" y1="104" x2="466" y2="104"/>
+  <line class="fig-line" x1="364" y1="99" x2="364" y2="104"/>
+  <line class="fig-line" x1="466" y1="99" x2="466" y2="104"/>
+  <text x="415" y="122" text-anchor="middle" font-size="13" font-weight="600">Y</text>
+  <text class="fig-muted" x="415" y="139" text-anchor="middle" font-size="12">VY is V2</text>
+  <text class="fig-mono fig-muted" x="415" y="156" text-anchor="middle" font-size="12">op >> 4 &amp; 0xF</text>
+  <line class="fig-line" x1="474" y1="104" x2="576" y2="104"/>
+  <line class="fig-line" x1="474" y1="99" x2="474" y2="104"/>
+  <line class="fig-line" x1="576" y1="99" x2="576" y2="104"/>
+  <text x="525" y="122" text-anchor="middle" font-size="13" font-weight="600">N</text>
+  <text class="fig-muted" x="525" y="139" text-anchor="middle" font-size="12">3 rows</text>
+  <text class="fig-mono fig-muted" x="525" y="156" text-anchor="middle" font-size="12">op &amp; 0xF</text>
+  <line class="fig-line" x1="364" y1="184" x2="576" y2="184"/>
+  <line class="fig-line" x1="364" y1="179" x2="364" y2="184"/>
+  <line class="fig-line" x1="576" y1="179" x2="576" y2="184"/>
+  <text x="470" y="202" text-anchor="middle" font-size="13" font-weight="600">NN = 0x23</text>
+  <text class="fig-muted" x="470" y="219" text-anchor="middle" font-size="12">the low byte, a constant</text>
+  <text class="fig-mono fig-muted" x="470" y="236" text-anchor="middle" font-size="12">op &amp; 0xFF</text>
+  <line class="fig-line" x1="254" y1="264" x2="576" y2="264"/>
+  <line class="fig-line" x1="254" y1="259" x2="254" y2="264"/>
+  <line class="fig-line" x1="576" y1="259" x2="576" y2="264"/>
+  <text x="415" y="282" text-anchor="middle" font-size="13" font-weight="600">NNN = 0x123</text>
+  <text class="fig-muted" x="415" y="299" text-anchor="middle" font-size="12">the low 12 bits, an address</text>
+  <text class="fig-mono fig-muted" x="415" y="316" text-anchor="middle" font-size="12">op &amp; 0xFFF</text>
+</svg>

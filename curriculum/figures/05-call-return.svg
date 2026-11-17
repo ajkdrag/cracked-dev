@@ -1,0 +1,37 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="Before a call the stack holds the caller's data. call pushes the return address and lowers rsp. ret pops the return address and raises rsp back to where it was">
+  <defs>
+    <marker id="05-call-return-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="360" y="26" text-anchor="middle" font-size="12">the stack grows downward, so rsp moves down on a push</text>
+
+  <text x="110" y="58" text-anchor="middle" font-size="13" font-weight="600">before call</text>
+  <rect class="fig-box" x="40" y="70" width="140" height="34" rx="6"/>
+  <text x="110" y="92" text-anchor="middle" font-size="13">caller's data</text>
+  <text class="fig-mono fig-accent-text" x="110" y="128" text-anchor="middle" font-size="12">rsp</text>
+  <line class="fig-accent-line" x1="40" y1="112" x2="180" y2="112"/>
+
+  <line class="fig-line" x1="200" y1="110" x2="255" y2="110" marker-end="url(#05-call-return-arrow)"/>
+  <text class="fig-muted" x="227" y="100" text-anchor="middle" font-size="12">call</text>
+
+  <text x="360" y="58" text-anchor="middle" font-size="13" font-weight="600">inside the callee</text>
+  <rect class="fig-box" x="290" y="70" width="140" height="34" rx="6"/>
+  <text x="360" y="92" text-anchor="middle" font-size="13">caller's data</text>
+  <rect class="fig-accent" x="290" y="104" width="140" height="34" rx="6"/>
+  <text x="360" y="126" text-anchor="middle" font-size="13">return address</text>
+  <text class="fig-mono fig-accent-text" x="360" y="162" text-anchor="middle" font-size="12">rsp</text>
+  <line class="fig-accent-line" x1="290" y1="146" x2="430" y2="146"/>
+
+  <line class="fig-line" x1="450" y1="110" x2="505" y2="110" marker-end="url(#05-call-return-arrow)"/>
+  <text class="fig-muted" x="477" y="100" text-anchor="middle" font-size="12">ret</text>
+
+  <text x="610" y="58" text-anchor="middle" font-size="13" font-weight="600">after ret</text>
+  <rect class="fig-box" x="540" y="70" width="140" height="34" rx="6"/>
+  <text x="610" y="92" text-anchor="middle" font-size="13">caller's data</text>
+  <text class="fig-mono fig-accent-text" x="610" y="128" text-anchor="middle" font-size="12">rsp</text>
+  <line class="fig-accent-line" x1="540" y1="112" x2="680" y2="112"/>
+
+  <text class="fig-muted" x="360" y="212" text-anchor="middle" font-size="13">call pushes the return address and jumps, ret pops it and jumps back</text>
+  <text class="fig-muted" x="360" y="236" text-anchor="middle" font-size="13">the stack ends exactly as it started</text>
+</svg>

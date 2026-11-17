@@ -1,0 +1,33 @@
+<svg viewBox="0 0 720 190" role="img" aria-label="After each CHIP-8 frame the loop pushes one frame of samples, a square wave while ST is above zero and zeros otherwise, into an audio stream that holds about three frames, and SDL plays the stream at 8000 samples a second">
+  <defs>
+    <marker id="06-audio-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="60" width="150" height="70" rx="6"/>
+  <text x="95" y="84" text-anchor="middle" font-size="13" font-weight="600">after each frame</text>
+  <text class="fig-muted" x="95" y="104" text-anchor="middle" font-size="12">if fewer than</text>
+  <text class="fig-muted" x="95" y="120" text-anchor="middle" font-size="12">3 frames queued</text>
+  <line class="fig-line" x1="170" y1="95" x2="208" y2="95" marker-end="url(#06-audio-arrow)"/>
+  <text class="fig-muted" x="189" y="87" text-anchor="middle" font-size="12">push</text>
+  <rect class="fig-accent" x="210" y="60" width="150" height="70" rx="6"/>
+  <text x="285" y="82" text-anchor="middle" font-size="13" font-weight="600">134 samples</text>
+  <polyline class="fig-accent-line" points="225,116 225,96 240,96 240,116 255,116 255,96 270,96 270,116 285,116 285,96 300,96 300,116 315,116 315,96 330,96 330,116 345,116"/>
+  <text class="fig-muted" x="285" y="150" text-anchor="middle" font-size="12">a square wave while ST &gt; 0</text>
+  <text class="fig-muted" x="285" y="166" text-anchor="middle" font-size="12">zeros when ST is 0</text>
+  <line class="fig-line" x1="360" y1="95" x2="398" y2="95" marker-end="url(#06-audio-arrow)"/>
+  <text class="fig-muted" x="379" y="87" text-anchor="middle" font-size="12">into</text>
+  <rect class="fig-box" x="400" y="70" width="60" height="50" rx="4"/>
+  <text class="fig-muted" x="430" y="100" text-anchor="middle" font-size="12">frame</text>
+  <rect class="fig-box" x="460" y="70" width="60" height="50" rx="4"/>
+  <text class="fig-muted" x="490" y="100" text-anchor="middle" font-size="12">frame</text>
+  <rect class="fig-box" x="520" y="70" width="60" height="50" rx="4"/>
+  <text class="fig-muted" x="550" y="100" text-anchor="middle" font-size="12">frame</text>
+  <text x="490" y="48" text-anchor="middle" font-size="13" font-weight="600">audio stream</text>
+  <text class="fig-muted" x="490" y="150" text-anchor="middle" font-size="12">about 1600 bytes</text>
+  <line class="fig-line" x1="580" y1="95" x2="618" y2="95" marker-end="url(#06-audio-arrow)"/>
+  <text class="fig-muted" x="599" y="87" text-anchor="middle" font-size="12">plays</text>
+  <rect class="fig-box" x="620" y="60" width="80" height="70" rx="6"/>
+  <text x="660" y="90" text-anchor="middle" font-size="13" font-weight="600">SDL</text>
+  <text class="fig-muted" x="660" y="110" text-anchor="middle" font-size="12">8000 per s</text>
+</svg>

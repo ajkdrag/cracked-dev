@@ -1,0 +1,108 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="UTF-8 stores a code point in 1 to 4 bytes. The first byte's leading bits say how many bytes follow, every later byte starts with 10, and the code point's bits fill the x positions.">
+  <defs>
+    <marker id="04-utf8-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="20" y="30" font-size="12">code points</text>
+  <text class="fig-muted" x="176" y="30" font-size="12">UTF-8 bytes</text>
+  <text class="fig-muted" x="656" y="30" font-size="12">x bits</text>
+  <text class="fig-mono" x="20" y="66" font-size="13">U+0000 to U+007F</text>
+  <rect class="fig-box" x="176" y="44" width="108" height="34" rx="6"/>
+  <text class="fig-mono fig-muted" x="190.0" y="66" text-anchor="middle" font-size="14">0</text>
+  <text class="fig-mono fig-accent-text" x="201.5" y="66" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="213.0" y="66" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="224.5" y="66" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="236.0" y="66" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="247.5" y="66" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="259.0" y="66" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="270.5" y="66" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="656" y="66" font-size="13">7</text>
+  <text class="fig-mono" x="20" y="116" font-size="13">U+0080 to U+07FF</text>
+  <rect class="fig-box" x="176" y="94" width="108" height="34" rx="6"/>
+  <text class="fig-mono fig-muted" x="190.0" y="116" text-anchor="middle" font-size="14">1</text>
+  <text class="fig-mono fig-muted" x="201.5" y="116" text-anchor="middle" font-size="14">1</text>
+  <text class="fig-mono fig-muted" x="213.0" y="116" text-anchor="middle" font-size="14">0</text>
+  <text class="fig-mono fig-accent-text" x="224.5" y="116" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="236.0" y="116" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="247.5" y="116" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="259.0" y="116" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="270.5" y="116" text-anchor="middle" font-size="14">x</text>
+  <rect class="fig-box" x="292" y="94" width="108" height="34" rx="6"/>
+  <text class="fig-mono fig-muted" x="306.0" y="116" text-anchor="middle" font-size="14">1</text>
+  <text class="fig-mono fig-muted" x="317.5" y="116" text-anchor="middle" font-size="14">0</text>
+  <text class="fig-mono fig-accent-text" x="329.0" y="116" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="340.5" y="116" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="352.0" y="116" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="363.5" y="116" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="375.0" y="116" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="386.5" y="116" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="656" y="116" font-size="13">11</text>
+  <text class="fig-mono" x="20" y="166" font-size="13">U+0800 to U+FFFF</text>
+  <rect class="fig-box" x="176" y="144" width="108" height="34" rx="6"/>
+  <text class="fig-mono fig-muted" x="190.0" y="166" text-anchor="middle" font-size="14">1</text>
+  <text class="fig-mono fig-muted" x="201.5" y="166" text-anchor="middle" font-size="14">1</text>
+  <text class="fig-mono fig-muted" x="213.0" y="166" text-anchor="middle" font-size="14">1</text>
+  <text class="fig-mono fig-muted" x="224.5" y="166" text-anchor="middle" font-size="14">0</text>
+  <text class="fig-mono fig-accent-text" x="236.0" y="166" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="247.5" y="166" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="259.0" y="166" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="270.5" y="166" text-anchor="middle" font-size="14">x</text>
+  <rect class="fig-box" x="292" y="144" width="108" height="34" rx="6"/>
+  <text class="fig-mono fig-muted" x="306.0" y="166" text-anchor="middle" font-size="14">1</text>
+  <text class="fig-mono fig-muted" x="317.5" y="166" text-anchor="middle" font-size="14">0</text>
+  <text class="fig-mono fig-accent-text" x="329.0" y="166" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="340.5" y="166" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="352.0" y="166" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="363.5" y="166" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="375.0" y="166" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="386.5" y="166" text-anchor="middle" font-size="14">x</text>
+  <rect class="fig-box" x="408" y="144" width="108" height="34" rx="6"/>
+  <text class="fig-mono fig-muted" x="422.0" y="166" text-anchor="middle" font-size="14">1</text>
+  <text class="fig-mono fig-muted" x="433.5" y="166" text-anchor="middle" font-size="14">0</text>
+  <text class="fig-mono fig-accent-text" x="445.0" y="166" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="456.5" y="166" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="468.0" y="166" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="479.5" y="166" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="491.0" y="166" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="502.5" y="166" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="656" y="166" font-size="13">16</text>
+  <text class="fig-mono" x="20" y="216" font-size="13">U+10000 to U+10FFFF</text>
+  <rect class="fig-box" x="176" y="194" width="108" height="34" rx="6"/>
+  <text class="fig-mono fig-muted" x="190.0" y="216" text-anchor="middle" font-size="14">1</text>
+  <text class="fig-mono fig-muted" x="201.5" y="216" text-anchor="middle" font-size="14">1</text>
+  <text class="fig-mono fig-muted" x="213.0" y="216" text-anchor="middle" font-size="14">1</text>
+  <text class="fig-mono fig-muted" x="224.5" y="216" text-anchor="middle" font-size="14">1</text>
+  <text class="fig-mono fig-muted" x="236.0" y="216" text-anchor="middle" font-size="14">0</text>
+  <text class="fig-mono fig-accent-text" x="247.5" y="216" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="259.0" y="216" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="270.5" y="216" text-anchor="middle" font-size="14">x</text>
+  <rect class="fig-box" x="292" y="194" width="108" height="34" rx="6"/>
+  <text class="fig-mono fig-muted" x="306.0" y="216" text-anchor="middle" font-size="14">1</text>
+  <text class="fig-mono fig-muted" x="317.5" y="216" text-anchor="middle" font-size="14">0</text>
+  <text class="fig-mono fig-accent-text" x="329.0" y="216" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="340.5" y="216" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="352.0" y="216" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="363.5" y="216" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="375.0" y="216" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="386.5" y="216" text-anchor="middle" font-size="14">x</text>
+  <rect class="fig-box" x="408" y="194" width="108" height="34" rx="6"/>
+  <text class="fig-mono fig-muted" x="422.0" y="216" text-anchor="middle" font-size="14">1</text>
+  <text class="fig-mono fig-muted" x="433.5" y="216" text-anchor="middle" font-size="14">0</text>
+  <text class="fig-mono fig-accent-text" x="445.0" y="216" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="456.5" y="216" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="468.0" y="216" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="479.5" y="216" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="491.0" y="216" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="502.5" y="216" text-anchor="middle" font-size="14">x</text>
+  <rect class="fig-box" x="524" y="194" width="108" height="34" rx="6"/>
+  <text class="fig-mono fig-muted" x="538.0" y="216" text-anchor="middle" font-size="14">1</text>
+  <text class="fig-mono fig-muted" x="549.5" y="216" text-anchor="middle" font-size="14">0</text>
+  <text class="fig-mono fig-accent-text" x="561.0" y="216" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="572.5" y="216" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="584.0" y="216" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="595.5" y="216" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="607.0" y="216" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="618.5" y="216" text-anchor="middle" font-size="14">x</text>
+  <text class="fig-mono fig-accent-text" x="656" y="216" font-size="13">21</text>
+</svg>

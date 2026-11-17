@@ -1,0 +1,41 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="Your emulator calls SDL3, SDL3 hands pixels to the WSLg compositor and samples to the PulseAudio server inside the WSL2 virtual machine, and WSLg sends both over Remote Desktop to a window and the speakers on Windows">
+  <defs>
+    <marker id="06-wslg-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="20" width="460" height="210" rx="6"/>
+  <text x="40" y="44" font-size="14" font-weight="600">WSL2 virtual machine, Ubuntu</text>
+  <rect class="fig-accent" x="40" y="100" width="110" height="50" rx="6"/>
+  <text x="95" y="121" text-anchor="middle" font-size="13" font-weight="600">chip8_sdl</text>
+  <text class="fig-muted" x="95" y="139" text-anchor="middle" font-size="12">your program</text>
+  <line class="fig-line" x1="150" y1="125" x2="188" y2="125" marker-end="url(#06-wslg-arrow)"/>
+  <text class="fig-muted" x="169" y="117" text-anchor="middle" font-size="12">calls</text>
+  <rect class="fig-box" x="190" y="100" width="80" height="50" rx="6"/>
+  <text x="230" y="121" text-anchor="middle" font-size="13" font-weight="600">SDL3</text>
+  <text class="fig-muted" x="230" y="139" text-anchor="middle" font-size="12">library</text>
+  <rect class="fig-box" x="330" y="60" width="130" height="50" rx="6"/>
+  <text x="395" y="81" text-anchor="middle" font-size="13" font-weight="600">compositor</text>
+  <text class="fig-muted" x="395" y="99" text-anchor="middle" font-size="12">X11 and Wayland</text>
+  <rect class="fig-box" x="330" y="160" width="130" height="50" rx="6"/>
+  <text x="395" y="181" text-anchor="middle" font-size="13" font-weight="600">PulseAudio</text>
+  <text class="fig-muted" x="395" y="199" text-anchor="middle" font-size="12">sound server</text>
+  <line class="fig-line" x1="270" y1="112" x2="328" y2="88" marker-end="url(#06-wslg-arrow)"/>
+  <text class="fig-muted" x="290" y="86" text-anchor="middle" font-size="12">pixels</text>
+  <line class="fig-line" x1="270" y1="138" x2="328" y2="182" marker-end="url(#06-wslg-arrow)"/>
+  <text class="fig-muted" x="282" y="182" text-anchor="middle" font-size="12">samples</text>
+  <text class="fig-muted" x="395" y="140" text-anchor="middle" font-size="12">both run by WSLg</text>
+
+  <rect class="fig-box" x="530" y="20" width="170" height="210" rx="6"/>
+  <text x="550" y="44" font-size="14" font-weight="600">Windows</text>
+  <rect class="fig-accent" x="550" y="60" width="130" height="50" rx="6"/>
+  <text x="615" y="81" text-anchor="middle" font-size="13" font-weight="600">a window</text>
+  <text class="fig-muted" x="615" y="99" text-anchor="middle" font-size="12">on the desktop</text>
+  <rect class="fig-box" x="550" y="160" width="130" height="50" rx="6"/>
+  <text x="615" y="181" text-anchor="middle" font-size="13" font-weight="600">speakers</text>
+  <text class="fig-muted" x="615" y="199" text-anchor="middle" font-size="12">or headphones</text>
+  <line class="fig-line" x1="460" y1="85" x2="548" y2="85" marker-end="url(#06-wslg-arrow)"/>
+  <text class="fig-muted" x="505" y="77" text-anchor="middle" font-size="12">RDP</text>
+  <line class="fig-line" x1="460" y1="185" x2="548" y2="185" marker-end="url(#06-wslg-arrow)"/>
+  <text class="fig-muted" x="505" y="177" text-anchor="middle" font-size="12">RDP</text>
+</svg>

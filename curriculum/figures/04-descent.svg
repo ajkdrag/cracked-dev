@@ -1,0 +1,75 @@
+<svg viewBox="0 0 720 616" role="img" aria-label="Parsing [1,[true]]: json_parse calls parse_value, which sees [ and calls parse_array. That calls parse_value for 1, which calls parse_number, and parse_value for the inner array, which calls parse_array, parse_value and parse_literal.">
+  <defs>
+    <marker id="04-descent-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="20" y="46" font-size="12">input</text>
+  <rect class="fig-box" x="210" y="24" width="30" height="32"/>
+  <text class="fig-mono" x="225" y="45" text-anchor="middle" font-size="15">[</text>
+  <text class="fig-mono fig-muted" x="225" y="72" text-anchor="middle" font-size="11">0</text>
+  <rect class="fig-box" x="240" y="24" width="30" height="32"/>
+  <text class="fig-mono" x="255" y="45" text-anchor="middle" font-size="15">1</text>
+  <text class="fig-mono fig-muted" x="255" y="72" text-anchor="middle" font-size="11">1</text>
+  <rect class="fig-box" x="270" y="24" width="30" height="32"/>
+  <text class="fig-mono" x="285" y="45" text-anchor="middle" font-size="15">,</text>
+  <text class="fig-mono fig-muted" x="285" y="72" text-anchor="middle" font-size="11">2</text>
+  <rect class="fig-box" x="300" y="24" width="30" height="32"/>
+  <text class="fig-mono" x="315" y="45" text-anchor="middle" font-size="15">[</text>
+  <text class="fig-mono fig-muted" x="315" y="72" text-anchor="middle" font-size="11">3</text>
+  <rect class="fig-box" x="330" y="24" width="30" height="32"/>
+  <text class="fig-mono" x="345" y="45" text-anchor="middle" font-size="15">t</text>
+  <text class="fig-mono fig-muted" x="345" y="72" text-anchor="middle" font-size="11">4</text>
+  <rect class="fig-box" x="360" y="24" width="30" height="32"/>
+  <text class="fig-mono" x="375" y="45" text-anchor="middle" font-size="15">r</text>
+  <text class="fig-mono fig-muted" x="375" y="72" text-anchor="middle" font-size="11">5</text>
+  <rect class="fig-box" x="390" y="24" width="30" height="32"/>
+  <text class="fig-mono" x="405" y="45" text-anchor="middle" font-size="15">u</text>
+  <text class="fig-mono fig-muted" x="405" y="72" text-anchor="middle" font-size="11">6</text>
+  <rect class="fig-box" x="420" y="24" width="30" height="32"/>
+  <text class="fig-mono" x="435" y="45" text-anchor="middle" font-size="15">e</text>
+  <text class="fig-mono fig-muted" x="435" y="72" text-anchor="middle" font-size="11">7</text>
+  <rect class="fig-box" x="450" y="24" width="30" height="32"/>
+  <text class="fig-mono" x="465" y="45" text-anchor="middle" font-size="15">]</text>
+  <text class="fig-mono fig-muted" x="465" y="72" text-anchor="middle" font-size="11">8</text>
+  <rect class="fig-box" x="480" y="24" width="30" height="32"/>
+  <text class="fig-mono" x="495" y="45" text-anchor="middle" font-size="15">]</text>
+  <text class="fig-mono fig-muted" x="495" y="72" text-anchor="middle" font-size="11">9</text>
+  <rect class="fig-box" x="275" y="92" width="170" height="44" rx="6"/>
+  <text class="fig-mono" x="360" y="111" text-anchor="middle" font-size="13">json_parse</text>
+  <text class="fig-mono fig-muted" x="360" y="128" text-anchor="middle" font-size="12">bytes 0 to 9</text>
+  <rect class="fig-box" x="275" y="162" width="170" height="44" rx="6"/>
+  <text class="fig-mono" x="360" y="181" text-anchor="middle" font-size="13">parse_value</text>
+  <text class="fig-mono fig-muted" x="360" y="198" text-anchor="middle" font-size="12">sees [ at 0</text>
+  <rect class="fig-accent" x="275" y="232" width="170" height="44" rx="6"/>
+  <text class="fig-mono" x="360" y="251" text-anchor="middle" font-size="13">parse_array</text>
+  <text class="fig-mono fig-muted" x="360" y="268" text-anchor="middle" font-size="12">[ 1 , ... ]</text>
+  <rect class="fig-box" x="115" y="312" width="170" height="44" rx="6"/>
+  <text class="fig-mono" x="200" y="331" text-anchor="middle" font-size="13">parse_value</text>
+  <text class="fig-mono fig-muted" x="200" y="348" text-anchor="middle" font-size="12">sees 1 at 1</text>
+  <rect class="fig-box" x="435" y="312" width="170" height="44" rx="6"/>
+  <text class="fig-mono" x="520" y="331" text-anchor="middle" font-size="13">parse_value</text>
+  <text class="fig-mono fig-muted" x="520" y="348" text-anchor="middle" font-size="12">sees [ at 3</text>
+  <rect class="fig-box" x="115" y="392" width="170" height="44" rx="6"/>
+  <text class="fig-mono" x="200" y="411" text-anchor="middle" font-size="13">parse_number</text>
+  <text class="fig-mono fig-muted" x="200" y="428" text-anchor="middle" font-size="12">reads 1</text>
+  <rect class="fig-accent" x="435" y="392" width="170" height="44" rx="6"/>
+  <text class="fig-mono" x="520" y="411" text-anchor="middle" font-size="13">parse_array</text>
+  <text class="fig-mono fig-muted" x="520" y="428" text-anchor="middle" font-size="12">[ ... ] at 3 to 8</text>
+  <rect class="fig-box" x="435" y="472" width="170" height="44" rx="6"/>
+  <text class="fig-mono" x="520" y="491" text-anchor="middle" font-size="13">parse_value</text>
+  <text class="fig-mono fig-muted" x="520" y="508" text-anchor="middle" font-size="12">sees t at 4</text>
+  <rect class="fig-box" x="435" y="552" width="170" height="44" rx="6"/>
+  <text class="fig-mono" x="520" y="571" text-anchor="middle" font-size="13">parse_literal</text>
+  <text class="fig-mono fig-muted" x="520" y="588" text-anchor="middle" font-size="12">reads true</text>
+  <line class="fig-line" x1="360" y1="136" x2="360" y2="160" marker-end="url(#04-descent-arrow)"/>
+  <line class="fig-line" x1="360" y1="206" x2="360" y2="230" marker-end="url(#04-descent-arrow)"/>
+  <line class="fig-line" x1="320" y1="276" x2="220" y2="310" marker-end="url(#04-descent-arrow)"/>
+  <line class="fig-line" x1="400" y1="276" x2="500" y2="310" marker-end="url(#04-descent-arrow)"/>
+  <line class="fig-line" x1="200" y1="356" x2="200" y2="390" marker-end="url(#04-descent-arrow)"/>
+  <line class="fig-line" x1="520" y1="356" x2="520" y2="390" marker-end="url(#04-descent-arrow)"/>
+  <line class="fig-line" x1="520" y1="436" x2="520" y2="470" marker-end="url(#04-descent-arrow)"/>
+  <line class="fig-line" x1="520" y1="516" x2="520" y2="550" marker-end="url(#04-descent-arrow)"/>
+  <text class="fig-muted" x="20" y="330" font-size="12">calls</text>
+  <text class="fig-muted" x="20" y="346" font-size="12">go down</text>
+</svg>

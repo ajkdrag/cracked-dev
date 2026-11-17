@@ -1,0 +1,35 @@
+<svg viewBox="0 0 720 230" role="img" aria-label="run_roms.sh runs each test ROM in the headless runner, compares the printed display with the golden file saved earlier, and exits with 1 if any output changed">
+  <defs>
+    <marker id="06-regression-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="50" width="120" height="54" rx="6"/>
+  <text x="80" y="73" text-anchor="middle" font-size="13" font-weight="600">4-flags.ch8</text>
+  <text class="fig-muted" x="80" y="91" text-anchor="middle" font-size="12">a test ROM</text>
+  <line class="fig-line" x1="140" y1="77" x2="188" y2="77" marker-end="url(#06-regression-arrow)"/>
+  <text class="fig-muted" x="164" y="69" text-anchor="middle" font-size="12">reads</text>
+  <rect class="fig-accent" x="190" y="50" width="160" height="54" rx="6"/>
+  <text x="270" y="73" text-anchor="middle" font-size="13" font-weight="600">chip8</text>
+  <text class="fig-muted" x="270" y="91" text-anchor="middle" font-size="12">300 frames, no window</text>
+  <line class="fig-line" x1="350" y1="77" x2="398" y2="77" marker-end="url(#06-regression-arrow)"/>
+  <text class="fig-muted" x="374" y="69" text-anchor="middle" font-size="12">prints</text>
+  <rect class="fig-box" x="400" y="50" width="120" height="54" rx="6"/>
+  <text x="460" y="73" text-anchor="middle" font-size="13" font-weight="600">the display</text>
+  <text class="fig-muted" x="460" y="91" text-anchor="middle" font-size="12">as text</text>
+  <line class="fig-line" x1="520" y1="77" x2="558" y2="77" marker-end="url(#06-regression-arrow)"/>
+  <text class="fig-muted" x="539" y="69" text-anchor="middle" font-size="12">into</text>
+  <rect class="fig-box" x="560" y="50" width="120" height="54" rx="6"/>
+  <text x="620" y="73" text-anchor="middle" font-size="13" font-weight="600">diff</text>
+  <text class="fig-muted" x="620" y="91" text-anchor="middle" font-size="12">line by line</text>
+  <rect class="fig-box" x="340" y="150" width="180" height="54" rx="6"/>
+  <text x="430" y="173" text-anchor="middle" font-size="13" font-weight="600">tests/golden/4-flags.txt</text>
+  <text class="fig-muted" x="430" y="191" text-anchor="middle" font-size="12">saved once, by eye</text>
+  <line class="fig-line" x1="520" y1="165" x2="585" y2="106" marker-end="url(#06-regression-arrow)"/>
+  <text class="fig-muted" x="470" y="132" text-anchor="middle" font-size="12">compared with</text>
+  <rect class="fig-box" x="590" y="150" width="110" height="54" rx="6"/>
+  <text x="645" y="173" text-anchor="middle" font-size="13" font-weight="600">exit status</text>
+  <text class="fig-muted" x="645" y="191" text-anchor="middle" font-size="12">1 on a change</text>
+  <line class="fig-line" x1="645" y1="104" x2="645" y2="148" marker-end="url(#06-regression-arrow)"/>
+  <text class="fig-muted" x="653" y="132" text-anchor="start" font-size="12">sets</text>
+</svg>

@@ -1,0 +1,46 @@
+<svg viewBox="0 0 720 350" role="img" aria-label="While fib(3) runs, rbp points at its saved rbp, which holds the address of fib(4)'s saved rbp, which holds the address of main's, so the saved rbp values chain every frame back to main.">
+  <defs>
+    <marker id="05-stack-frame-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="360" y="36" text-anchor="middle" font-size="12">high addresses</text>
+
+  <rect class="fig-accent" x="220" y="50" width="280" height="30" rx="6"/>
+  <text class="fig-mono" x="234" y="70" font-size="13">saved rbp</text>
+  <rect class="fig-box" x="220" y="82" width="280" height="30" rx="6"/>
+  <text class="fig-mono" x="234" y="102" font-size="13">locals</text>
+
+  <rect class="fig-box" x="220" y="114" width="280" height="30" rx="6"/>
+  <text class="fig-mono" x="234" y="134" font-size="13">return address</text>
+  <text class="fig-muted" x="488" y="134" text-anchor="end" font-size="12">into main</text>
+  <rect class="fig-accent" x="220" y="146" width="280" height="30" rx="6"/>
+  <text class="fig-mono" x="234" y="166" font-size="13">saved rbp</text>
+  <rect class="fig-box" x="220" y="178" width="280" height="30" rx="6"/>
+  <text class="fig-mono" x="234" y="198" font-size="13">saved rbx</text>
+
+  <rect class="fig-box" x="220" y="210" width="280" height="30" rx="6"/>
+  <text class="fig-mono" x="234" y="230" font-size="13">return address</text>
+  <text class="fig-muted" x="488" y="230" text-anchor="end" font-size="12">into fib(4)</text>
+  <rect class="fig-accent" x="220" y="242" width="280" height="30" rx="6"/>
+  <text class="fig-mono" x="234" y="262" font-size="13">saved rbp</text>
+  <rect class="fig-box" x="220" y="274" width="280" height="30" rx="6"/>
+  <text class="fig-mono" x="234" y="294" font-size="13">saved rbx</text>
+
+  <text class="fig-muted" x="360" y="326" text-anchor="middle" font-size="12">low addresses</text>
+
+  <path class="fig-line" d="M150 52 L142 52 L142 110 L150 110" fill="none"/>
+  <text x="132" y="86" text-anchor="end" font-size="13">main's frame</text>
+  <path class="fig-line" d="M150 116 L142 116 L142 206 L150 206" fill="none"/>
+  <text x="132" y="166" text-anchor="end" font-size="13">fib(4)'s frame</text>
+  <path class="fig-line" d="M150 212 L142 212 L142 302 L150 302" fill="none"/>
+  <text x="132" y="262" text-anchor="end" font-size="13">fib(3)'s frame</text>
+
+  <path class="fig-accent-line" d="M220 262 L196 262 L196 166 L218 166" fill="none" marker-end="url(#05-stack-frame-arrow)"/>
+  <path class="fig-accent-line" d="M220 156 L174 156 L174 65 L218 65" fill="none" marker-end="url(#05-stack-frame-arrow)"/>
+
+  <path class="fig-accent-line" d="M630 257 L504 257" fill="none" marker-end="url(#05-stack-frame-arrow)"/>
+  <text class="fig-mono fig-accent-text" x="640" y="262" font-size="13">%rbp</text>
+  <path class="fig-line" d="M630 289 L504 289" fill="none" marker-end="url(#05-stack-frame-arrow)"/>
+  <text class="fig-mono" x="640" y="294" font-size="13">%rsp</text>
+</svg>

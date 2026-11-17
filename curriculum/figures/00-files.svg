@@ -1,0 +1,20 @@
+<svg viewBox="0 0 720 230" role="img" aria-label="Projects live in Ubuntu&#x27;s own file system under the home directory, and the Windows drive under /mnt/c is reachable but slow">
+  <defs>
+    <marker id="00-files-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="210" y="20" width="300" height="56" rx="6"/>
+  <text x="360.0" y="44.0" text-anchor="middle" font-size="14" font-weight="600">Ubuntu: shell, clang, git</text>
+  <text class="fig-muted" x="360.0" y="63.0" text-anchor="middle" font-size="12">the tools that read your files</text>
+  <rect class="fig-accent" x="40" y="150" width="280" height="60" rx="6"/>
+  <text class="fig-mono" x="180.0" y="176.0" text-anchor="middle" font-size="14">~/code/hello</text>
+  <text class="fig-muted" x="180.0" y="195.0" text-anchor="middle" font-size="12">Linux file system: fast</text>
+  <rect class="fig-box" x="400" y="150" width="280" height="60" rx="6"/>
+  <text class="fig-mono" x="540.0" y="176.0" text-anchor="middle" font-size="14">/mnt/c/Users/&lt;you&gt;</text>
+  <text class="fig-muted" x="540.0" y="195.0" text-anchor="middle" font-size="12">Windows drive C: slow</text>
+  <line class="fig-accent-line" x1="260" y1="76" x2="200" y2="148" marker-end="url(#00-files-arrow)"/>
+  <text class="fig-accent-text" x="214" y="108" text-anchor="end" font-size="12">direct</text>
+  <line class="fig-line" x1="460" y1="76" x2="520" y2="148" marker-end="url(#00-files-arrow)"/>
+  <text class="fig-muted" x="506" y="108" font-size="12">crosses into Windows</text>
+</svg>

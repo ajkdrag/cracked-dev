@@ -1,0 +1,44 @@
+<svg viewBox="0 0 720 200" role="img" aria-label="int x = 42 occupies the four bytes at addresses 0x1000 to 0x1003, lowest byte first">
+  <text class="fig-mono" x="30" y="36" font-size="14" font-weight="600">int x = 42;</text>
+  <line class="fig-accent-line" x1="31" y1="68" x2="249" y2="68"/>
+  <line class="fig-accent-line" x1="31" y1="62" x2="31" y2="74"/>
+  <line class="fig-accent-line" x1="249" y1="62" x2="249" y2="74"/>
+  <text class="fig-accent-text" x="140" y="58" text-anchor="middle" font-size="13">x: an int, 4 bytes</text>
+  <rect class="fig-accent" x="30" y="80" width="55" height="44"/>
+  <text class="fig-mono" x="57.5" y="107" text-anchor="middle" font-size="14">2a</text>
+  <text class="fig-mono fig-muted" x="57.5" y="144" text-anchor="middle" font-size="11">0x1000</text>
+  <rect class="fig-accent" x="85" y="80" width="55" height="44"/>
+  <text class="fig-mono" x="112.5" y="107" text-anchor="middle" font-size="14">00</text>
+  <text class="fig-mono fig-muted" x="112.5" y="144" text-anchor="middle" font-size="11">0x1001</text>
+  <rect class="fig-accent" x="140" y="80" width="55" height="44"/>
+  <text class="fig-mono" x="167.5" y="107" text-anchor="middle" font-size="14">00</text>
+  <text class="fig-mono fig-muted" x="167.5" y="144" text-anchor="middle" font-size="11">0x1002</text>
+  <rect class="fig-accent" x="195" y="80" width="55" height="44"/>
+  <text class="fig-mono" x="222.5" y="107" text-anchor="middle" font-size="14">00</text>
+  <text class="fig-mono fig-muted" x="222.5" y="144" text-anchor="middle" font-size="11">0x1003</text>
+  <rect class="fig-box" x="250" y="80" width="55" height="44"/>
+  <text class="fig-mono fig-muted" x="277.5" y="107" text-anchor="middle" font-size="14">..</text>
+  <text class="fig-mono fig-muted" x="277.5" y="144" text-anchor="middle" font-size="11">0x1004</text>
+  <rect class="fig-box" x="305" y="80" width="55" height="44"/>
+  <text class="fig-mono fig-muted" x="332.5" y="107" text-anchor="middle" font-size="14">..</text>
+  <text class="fig-mono fig-muted" x="332.5" y="144" text-anchor="middle" font-size="11">0x1005</text>
+  <rect class="fig-box" x="360" y="80" width="55" height="44"/>
+  <text class="fig-mono fig-muted" x="387.5" y="107" text-anchor="middle" font-size="14">..</text>
+  <text class="fig-mono fig-muted" x="387.5" y="144" text-anchor="middle" font-size="11">0x1006</text>
+  <rect class="fig-box" x="415" y="80" width="55" height="44"/>
+  <text class="fig-mono fig-muted" x="442.5" y="107" text-anchor="middle" font-size="14">..</text>
+  <text class="fig-mono fig-muted" x="442.5" y="144" text-anchor="middle" font-size="11">0x1007</text>
+  <rect class="fig-box" x="470" y="80" width="55" height="44"/>
+  <text class="fig-mono fig-muted" x="497.5" y="107" text-anchor="middle" font-size="14">..</text>
+  <text class="fig-mono fig-muted" x="497.5" y="144" text-anchor="middle" font-size="11">0x1008</text>
+  <rect class="fig-box" x="525" y="80" width="55" height="44"/>
+  <text class="fig-mono fig-muted" x="552.5" y="107" text-anchor="middle" font-size="14">..</text>
+  <text class="fig-mono fig-muted" x="552.5" y="144" text-anchor="middle" font-size="11">0x1009</text>
+  <rect class="fig-box" x="580" y="80" width="55" height="44"/>
+  <text class="fig-mono fig-muted" x="607.5" y="107" text-anchor="middle" font-size="14">..</text>
+  <text class="fig-mono fig-muted" x="607.5" y="144" text-anchor="middle" font-size="11">0x100a</text>
+  <rect class="fig-box" x="635" y="80" width="55" height="44"/>
+  <text class="fig-mono fig-muted" x="662.5" y="107" text-anchor="middle" font-size="14">..</text>
+  <text class="fig-mono fig-muted" x="662.5" y="144" text-anchor="middle" font-size="11">0x100b</text>
+  <text class="fig-muted" x="30" y="176" font-size="12">42 is 0x0000002a. x86-64 stores the lowest byte first.</text>
+</svg>

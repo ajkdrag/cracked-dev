@@ -1,0 +1,20 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="While sum runs, the stack holds main's frame with scores, n and total, and below it sum's frame, frame 0, with a, n, total and i, and up and down move between them">
+  <defs>
+    <marker id="01-call-stack-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="120" y="40" width="440" height="76" rx="6"/>
+  <text x="140" y="66" font-size="14" font-weight="600">frame 1: main</text>
+  <text class="fig-muted" x="540" y="66" text-anchor="end" font-size="12">called sum</text>
+  <text class="fig-mono" x="140" y="96" font-size="13">scores = {90, 72, 85, 64, 99}, n, total</text>
+  <rect class="fig-accent" x="120" y="126" width="440" height="76" rx="6"/>
+  <text x="140" y="152" font-size="14" font-weight="600">frame 0: sum</text>
+  <text class="fig-accent-text" x="540" y="152" text-anchor="end" font-size="12">running now</text>
+  <text class="fig-mono" x="140" y="182" font-size="13">a = address of scores, n, total, i</text>
+  <line class="fig-line" x1="600" y1="170" x2="600" y2="76" marker-end="url(#01-call-stack-arrow)"/>
+  <text class="fig-mono" x="610" y="128" font-size="13">up</text>
+  <line class="fig-line" x1="650" y1="76" x2="650" y2="170" marker-end="url(#01-call-stack-arrow)"/>
+  <text class="fig-mono" x="660" y="128" font-size="13">down</text>
+  <text class="fig-muted" x="340" y="230" text-anchor="middle" font-size="12">bt lists frame 0 first, then its callers</text>
+</svg>

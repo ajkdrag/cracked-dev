@@ -1,0 +1,21 @@
+<svg viewBox="0 0 720 210" role="img" aria-label="With &gt; out.txt the shell connects stdout of ls to a file, and stderr still goes to the terminal">
+  <defs>
+    <marker id="01-redirect-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-mono" x="360" y="34" text-anchor="middle" font-size="14">ls /home /nope &gt; out.txt</text>
+  <rect class="fig-box" x="60" y="64" width="180" height="120" rx="6"/>
+  <text class="fig-mono" x="150" y="120" text-anchor="middle" font-size="14">ls</text>
+  <text class="fig-muted" x="150" y="140" text-anchor="middle" font-size="12">process</text>
+  <rect class="fig-accent" x="480" y="64" width="180" height="50" rx="6"/>
+  <text class="fig-mono" x="570.0" y="85.0" text-anchor="middle" font-size="14">out.txt</text>
+  <text class="fig-muted" x="570.0" y="104.0" text-anchor="middle" font-size="12">file</text>
+  <rect class="fig-box" x="480" y="134" width="180" height="50" rx="6"/>
+  <text x="570.0" y="155.0" text-anchor="middle" font-size="14" font-weight="600">terminal</text>
+  <text class="fig-muted" x="570.0" y="174.0" text-anchor="middle" font-size="12">your screen</text>
+  <line class="fig-accent-line" x1="240" y1="89" x2="478" y2="89" marker-end="url(#01-redirect-arrow)"/>
+  <text class="fig-accent-text" x="359" y="80" text-anchor="middle" font-size="12">1 stdout: the listing</text>
+  <line class="fig-line" x1="240" y1="159" x2="478" y2="159" marker-end="url(#01-redirect-arrow)"/>
+  <text class="fig-muted" x="359" y="150" text-anchor="middle" font-size="12">2 stderr: the error</text>
+</svg>

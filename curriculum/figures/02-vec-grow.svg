@@ -1,0 +1,67 @@
+<svg viewBox="0 0 720 410" role="img" aria-label="Before the push, data and saved both point into a block of 4 ints. After realloc moves the elements to a block of 8, data points at the new block and saved still points into the freed old block">
+  <defs>
+    <marker id="02-vec-grow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="30" font-size="13" font-weight="600">Before: 4 ints, the block is full</text>
+  <rect class="fig-box" x="20" y="44" width="160" height="84" rx="6"/>
+  <text class="fig-mono" x="36" y="68" font-size="13">data</text>
+  <circle class="fig-accent-fill" cx="150" cy="64" r="4"/>
+  <text class="fig-mono" x="36" y="94" font-size="13">len</text>
+  <text class="fig-mono" x="150" y="94" text-anchor="middle" font-size="13">4</text>
+  <text class="fig-mono" x="36" y="118" font-size="13">cap</text>
+  <text class="fig-mono" x="150" y="118" text-anchor="middle" font-size="13">4</text>
+  <rect class="fig-accent" x="260" y="44" width="50" height="40"/>
+  <text class="fig-mono" x="285" y="69" text-anchor="middle" font-size="13">1</text>
+  <rect class="fig-accent" x="310" y="44" width="50" height="40"/>
+  <text class="fig-mono" x="335" y="69" text-anchor="middle" font-size="13">2</text>
+  <rect class="fig-accent" x="360" y="44" width="50" height="40"/>
+  <text class="fig-mono" x="385" y="69" text-anchor="middle" font-size="13">3</text>
+  <rect class="fig-accent" x="410" y="44" width="50" height="40"/>
+  <text class="fig-mono" x="435" y="69" text-anchor="middle" font-size="13">4</text>
+  <line class="fig-line" x1="150" y1="64" x2="258" y2="64" marker-end="url(#02-vec-grow-arrow)"/>
+  <rect class="fig-box" x="20" y="140" width="160" height="36" rx="6"/>
+  <text class="fig-mono" x="100" y="163" text-anchor="middle" font-size="13">int *saved</text>
+  <line class="fig-line" x1="180" y1="158" x2="333" y2="86" marker-end="url(#02-vec-grow-arrow)"/>
+  <text class="fig-muted" x="476" y="69" font-size="12">one heap block, 16 bytes</text>
+  <text class="fig-mono fig-muted" x="200" y="200" font-size="12">vec_push(&amp;v, 5) calls realloc for 8 ints</text>
+  <text x="20" y="236" font-size="13" font-weight="600">After: realloc moved the elements</text>
+  <rect class="fig-box" x="20" y="250" width="160" height="84" rx="6"/>
+  <text class="fig-mono" x="36" y="274" font-size="13">data</text>
+  <circle class="fig-accent-fill" cx="150" cy="270" r="4"/>
+  <text class="fig-mono" x="36" y="300" font-size="13">len</text>
+  <text class="fig-mono" x="150" y="300" text-anchor="middle" font-size="13">5</text>
+  <text class="fig-mono" x="36" y="324" font-size="13">cap</text>
+  <text class="fig-mono" x="150" y="324" text-anchor="middle" font-size="13">8</text>
+  <rect class="fig-accent" x="260" y="250" width="50" height="40"/>
+  <text class="fig-mono" x="285" y="275" text-anchor="middle" font-size="13">1</text>
+  <rect class="fig-accent" x="310" y="250" width="50" height="40"/>
+  <text class="fig-mono" x="335" y="275" text-anchor="middle" font-size="13">2</text>
+  <rect class="fig-accent" x="360" y="250" width="50" height="40"/>
+  <text class="fig-mono" x="385" y="275" text-anchor="middle" font-size="13">3</text>
+  <rect class="fig-accent" x="410" y="250" width="50" height="40"/>
+  <text class="fig-mono" x="435" y="275" text-anchor="middle" font-size="13">4</text>
+  <rect class="fig-accent" x="460" y="250" width="50" height="40"/>
+  <text class="fig-mono" x="485" y="275" text-anchor="middle" font-size="13">5</text>
+  <rect class="fig-accent" x="510" y="250" width="50" height="40"/>
+  <text class="fig-mono fig-muted" x="535" y="275" text-anchor="middle" font-size="13">?</text>
+  <rect class="fig-accent" x="560" y="250" width="50" height="40"/>
+  <text class="fig-mono fig-muted" x="585" y="275" text-anchor="middle" font-size="13">?</text>
+  <rect class="fig-accent" x="610" y="250" width="50" height="40"/>
+  <text class="fig-mono fig-muted" x="635" y="275" text-anchor="middle" font-size="13">?</text>
+  <line class="fig-line" x1="150" y1="270" x2="258" y2="270" marker-end="url(#02-vec-grow-arrow)"/>
+  <rect class="fig-box" x="260" y="306" width="50" height="40" stroke-dasharray="4 3"/>
+  <text class="fig-mono fig-muted" x="285" y="331" text-anchor="middle" font-size="13">1</text>
+  <rect class="fig-box" x="310" y="306" width="50" height="40" stroke-dasharray="4 3"/>
+  <text class="fig-mono fig-muted" x="335" y="331" text-anchor="middle" font-size="13">2</text>
+  <rect class="fig-box" x="360" y="306" width="50" height="40" stroke-dasharray="4 3"/>
+  <text class="fig-mono fig-muted" x="385" y="331" text-anchor="middle" font-size="13">3</text>
+  <rect class="fig-box" x="410" y="306" width="50" height="40" stroke-dasharray="4 3"/>
+  <text class="fig-mono fig-muted" x="435" y="331" text-anchor="middle" font-size="13">4</text>
+  <text class="fig-muted" x="476" y="331" font-size="12">the old block, freed by realloc</text>
+  <rect class="fig-box" x="20" y="346" width="160" height="36" rx="6"/>
+  <text class="fig-mono" x="100" y="369" text-anchor="middle" font-size="13">int *saved</text>
+  <line class="fig-accent-line" x1="180" y1="364" x2="333" y2="348" marker-end="url(#02-vec-grow-arrow)"/>
+  <text class="fig-accent-text" x="200" y="396" font-size="12">saved still holds the old address: reading through it is a use after free</text>
+</svg>

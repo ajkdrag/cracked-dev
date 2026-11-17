@@ -1,0 +1,43 @@
+<svg viewBox="0 0 720 230" role="img" aria-label="The byte 01101000: its bit positions add up to 104, and its two groups of four bits are the hex digits 6 and 8">
+  <defs>
+    <marker id="01-byte-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="108" y="40" text-anchor="end" font-size="12">worth</text>
+  <text class="fig-muted" x="108" y="80" text-anchor="end" font-size="12">bit</text>
+  <text class="fig-muted" x="150.0" y="40" text-anchor="middle" font-size="12">128</text>
+  <rect class="fig-box" x="120" y="54" width="60" height="40" rx="6"/>
+  <text class="fig-mono" x="150.0" y="80" text-anchor="middle" font-size="16">0</text>
+  <text class="fig-muted" x="210.0" y="40" text-anchor="middle" font-size="12">64</text>
+  <rect class="fig-accent" x="180" y="54" width="60" height="40" rx="6"/>
+  <text class="fig-mono" x="210.0" y="80" text-anchor="middle" font-size="16">1</text>
+  <text class="fig-muted" x="270.0" y="40" text-anchor="middle" font-size="12">32</text>
+  <rect class="fig-accent" x="240" y="54" width="60" height="40" rx="6"/>
+  <text class="fig-mono" x="270.0" y="80" text-anchor="middle" font-size="16">1</text>
+  <text class="fig-muted" x="330.0" y="40" text-anchor="middle" font-size="12">16</text>
+  <rect class="fig-box" x="300" y="54" width="60" height="40" rx="6"/>
+  <text class="fig-mono" x="330.0" y="80" text-anchor="middle" font-size="16">0</text>
+  <text class="fig-muted" x="390.0" y="40" text-anchor="middle" font-size="12">8</text>
+  <rect class="fig-accent" x="360" y="54" width="60" height="40" rx="6"/>
+  <text class="fig-mono" x="390.0" y="80" text-anchor="middle" font-size="16">1</text>
+  <text class="fig-muted" x="450.0" y="40" text-anchor="middle" font-size="12">4</text>
+  <rect class="fig-box" x="420" y="54" width="60" height="40" rx="6"/>
+  <text class="fig-mono" x="450.0" y="80" text-anchor="middle" font-size="16">0</text>
+  <text class="fig-muted" x="510.0" y="40" text-anchor="middle" font-size="12">2</text>
+  <rect class="fig-box" x="480" y="54" width="60" height="40" rx="6"/>
+  <text class="fig-mono" x="510.0" y="80" text-anchor="middle" font-size="16">0</text>
+  <text class="fig-muted" x="570.0" y="40" text-anchor="middle" font-size="12">1</text>
+  <rect class="fig-box" x="540" y="54" width="60" height="40" rx="6"/>
+  <text class="fig-mono" x="570.0" y="80" text-anchor="middle" font-size="16">0</text>
+  <line class="fig-line" x1="124" y1="110" x2="356" y2="110"/>
+  <line class="fig-line" x1="124" y1="104" x2="124" y2="110"/>
+  <line class="fig-line" x1="356" y1="104" x2="356" y2="110"/>
+  <line class="fig-line" x1="364" y1="110" x2="596" y2="110"/>
+  <line class="fig-line" x1="364" y1="104" x2="364" y2="110"/>
+  <line class="fig-line" x1="596" y1="104" x2="596" y2="110"/>
+  <text class="fig-mono" x="240" y="134" text-anchor="middle" font-size="14">0110 = 6</text>
+  <text class="fig-mono" x="480" y="134" text-anchor="middle" font-size="14">1000 = 8</text>
+  <text x="360" y="178" text-anchor="middle" font-size="14" font-weight="600">hex 0x68  =  64 + 32 + 8  =  decimal 104</text>
+  <text class="fig-muted" x="360" y="204" text-anchor="middle" font-size="12">In ASCII, 104 is the letter h.</text>
+</svg>

@@ -1,0 +1,49 @@
+<svg viewBox="0 0 720 260" role="img" aria-label="A watchpoint on total stops the program at every change, and the values go 0, 72, 157, 221, 320, so the first score, 90, was never added">
+  <defs>
+    <marker id="01-watch-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-mono" x="148" y="77" text-anchor="end" font-size="13">scores</text>
+  <text class="fig-mono fig-muted" x="200.0" y="44" text-anchor="middle" font-size="12">scores[0]</text>
+  <rect class="fig-accent" x="160" y="52" width="80" height="40" rx="6"/>
+  <text class="fig-mono" x="200.0" y="77" text-anchor="middle" font-size="14">90</text>
+  <text class="fig-mono fig-muted" x="280.0" y="44" text-anchor="middle" font-size="12">scores[1]</text>
+  <rect class="fig-box" x="240" y="52" width="80" height="40" rx="6"/>
+  <text class="fig-mono" x="280.0" y="77" text-anchor="middle" font-size="14">72</text>
+  <text class="fig-mono fig-muted" x="360.0" y="44" text-anchor="middle" font-size="12">scores[2]</text>
+  <rect class="fig-box" x="320" y="52" width="80" height="40" rx="6"/>
+  <text class="fig-mono" x="360.0" y="77" text-anchor="middle" font-size="14">85</text>
+  <text class="fig-mono fig-muted" x="440.0" y="44" text-anchor="middle" font-size="12">scores[3]</text>
+  <rect class="fig-box" x="400" y="52" width="80" height="40" rx="6"/>
+  <text class="fig-mono" x="440.0" y="77" text-anchor="middle" font-size="14">64</text>
+  <text class="fig-mono fig-muted" x="520.0" y="44" text-anchor="middle" font-size="12">scores[4]</text>
+  <rect class="fig-box" x="480" y="52" width="80" height="40" rx="6"/>
+  <text class="fig-mono" x="520.0" y="77" text-anchor="middle" font-size="14">99</text>
+  <text class="fig-accent-text" x="200.0" y="112" text-anchor="middle" font-size="12">never added</text>
+  <text class="fig-muted" x="50" y="150" font-size="12">total at each watchpoint stop</text>
+  <rect class="fig-box" x="50" y="162" width="70" height="40" rx="6"/>
+  <text class="fig-mono" x="85.0" y="187" text-anchor="middle" font-size="14">?</text>
+  <line class="fig-line" x1="120" y1="182" x2="158" y2="182" marker-end="url(#01-watch-arrow)"/>
+  <text class="fig-mono fig-muted" x="140.0" y="174" text-anchor="middle" font-size="12">= 0</text>
+  <rect class="fig-box" x="160" y="162" width="70" height="40" rx="6"/>
+  <text class="fig-mono" x="195.0" y="187" text-anchor="middle" font-size="14">0</text>
+  <line class="fig-line" x1="230" y1="182" x2="268" y2="182" marker-end="url(#01-watch-arrow)"/>
+  <text class="fig-mono fig-muted" x="250.0" y="174" text-anchor="middle" font-size="12">+72</text>
+  <rect class="fig-box" x="270" y="162" width="70" height="40" rx="6"/>
+  <text class="fig-mono" x="305.0" y="187" text-anchor="middle" font-size="14">72</text>
+  <line class="fig-line" x1="340" y1="182" x2="378" y2="182" marker-end="url(#01-watch-arrow)"/>
+  <text class="fig-mono fig-muted" x="360.0" y="174" text-anchor="middle" font-size="12">+85</text>
+  <rect class="fig-box" x="380" y="162" width="70" height="40" rx="6"/>
+  <text class="fig-mono" x="415.0" y="187" text-anchor="middle" font-size="14">157</text>
+  <line class="fig-line" x1="450" y1="182" x2="488" y2="182" marker-end="url(#01-watch-arrow)"/>
+  <text class="fig-mono fig-muted" x="470.0" y="174" text-anchor="middle" font-size="12">+64</text>
+  <rect class="fig-box" x="490" y="162" width="70" height="40" rx="6"/>
+  <text class="fig-mono" x="525.0" y="187" text-anchor="middle" font-size="14">221</text>
+  <line class="fig-line" x1="560" y1="182" x2="598" y2="182" marker-end="url(#01-watch-arrow)"/>
+  <text class="fig-mono fig-muted" x="580.0" y="174" text-anchor="middle" font-size="12">+99</text>
+  <rect class="fig-accent" x="600" y="162" width="70" height="40" rx="6"/>
+  <text class="fig-mono" x="635.0" y="187" text-anchor="middle" font-size="14">320</text>
+  <text class="fig-muted" x="85.0" y="226" text-anchor="middle" font-size="12">garbage</text>
+  <text class="fig-muted" x="635.0" y="226" text-anchor="middle" font-size="12">sum returns</text>
+</svg>
