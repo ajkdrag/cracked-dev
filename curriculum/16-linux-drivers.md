@@ -6,7 +6,7 @@ weeks: 3
 project: A Linux driver for QEMU's edu PCI device that exposes a character device with blocking reads, handles the device's interrupt with work deferred to process context, and maps an event ring into user space, all loaded into a kernel you compile and boot yourself.
 ---
 
-Chapter 15 ended with a kernel of your own booting on QEMU. You filled in an interrupt table, acknowledged the interrupt controller by hand, built page tables and switched between two tasks. Every device that kernel touched needed code you wrote from the register level up.
+Chapter 15 ended with a kernel of your own booting on QEMU. You filled in an interrupt table, acknowledged the interrupt controller by hand, built page tables and switched between two tasks. Every device that kernel touched needed code you wrote from the register level up. That kernel ran on x86-64. Here the guest is ARM64, the same architecture as your Mac and your OrbStack machine, so the kernel builds natively there. The driver code is the same on both.
 
 Linux supports thousands of devices, so it splits the work. The kernel core owns the interrupt entry path, the page tables, the scheduler and the file system. A driver fills in interfaces that the core calls. A character driver fills in a table of functions that the kernel calls when a process opens, reads, writes or maps a file in `/dev`. A PCI driver fills in a `probe` function that the kernel calls when it finds a matching device on the bus. An interrupt handler is a function the kernel calls after its own entry code has saved the registers and found out which device fired. This chapter has you write one driver that does all three, for a device that QEMU emulates for teaching.
 
@@ -33,11 +33,11 @@ The OrbStack page also says, under "Nested virtualization", that Apple Silicon c
 
 The kernel needs a root file system to run anything. The smallest one is an initramfs: a cpio archive that the kernel unpacks into a RAM file system at boot. The kernel then runs `/init` from it as process 1. Yours holds one static binary, busybox, which provides a shell and the usual tools (`ls`, `dmesg`, `insmod`, `mount`) as one program. `/init` is a shell script that mounts `/proc`, `/sys` and `/dev`, mounts your `~/drivers` directory at `/mnt` and starts a shell. Any program you run in the guest must be linked statically, because the guest has no C library.
 
-Read the initramfs document for the idea and the file list format. It names the packing tool `scripts/gen_init_cpio`. In current kernels the tool is `usr/gen_init_cpio`, built with the kernel.
+Read the initramfs document for the idea and the file list format.
 
 ### Study
 
-- [Linux kernel docs: Ramfs, rootfs and initramfs](https://docs.kernel.org/filesystems/ramfs-rootfs-initramfs.html) (read, 30 min): By Rob Landley. Read "What is ramfs?", "What is rootfs?", "What is initramfs?", "Populating initramfs" and "Contents of initramfs". Skip the comparisons with ramdisk and tmpfs and "Future directions".
+- [Linux kernel docs: Ramfs, rootfs and initramfs](https://docs.kernel.org/filesystems/ramfs-rootfs-initramfs.html) (read, 15 min): By Rob Landley. Read "What is initramfs?" and "Populating initramfs". Skip the rest. The page names the packing tool `scripts/gen_init_cpio`. In 6.18 it is `usr/gen_init_cpio`, built with the kernel.
 - [QEMU docs: 'virt' generic virtual platform](https://www.qemu.org/docs/master/system/arm/virt.html) (reference, as needed): "Supported devices" lists what the board emulates. "Linux guest kernel configuration" confirms that `defconfig` covers it.
 - [Linux kernel docs: Debugging kernel and modules via gdb](https://docs.kernel.org/process/debugging/gdb-kernel-debugging.html) (reference, as needed): "Setup" for attaching gdb to QEMU, and the `lx-dmesg` and `lx-symbols` commands under "Examples of using the Linux-provided gdb helpers".
 
@@ -124,13 +124,13 @@ clean:
 	$(MAKE) -C $(KDIR) M=$(CURDIR) clean
 ```
 
-Code in a module is kernel code, with the kernel's rules. There is no C library, so `printf` becomes `pr_info` and `malloc` becomes `kmalloc`. Floating point is off limits. The stack is 16 KB on ARM64 and does not grow. Every function runs in some context. Your init function runs in user context, on behalf of the `insmod` process, and may sleep. An interrupt handler runs in hard interrupt context and must not. Rusty Russell's guide names these contexts, and the next four steps keep asking which one a piece of code runs in.
+A module runs in the kernel's address space with no C library. `printf` becomes `pr_info` and `malloc` becomes `kmalloc`. Floating point is off limits. The stack is 16 KB on ARM64 and does not grow. Every function runs in some context. Your init function runs in user context, on behalf of the `insmod` process, and may sleep. An interrupt handler runs in hard interrupt context and must not. Rusty Russell's guide names these contexts, and the next four steps keep asking which one a piece of code runs in.
 
-A bad pointer dereference in a module does not kill one process. The kernel prints an oops: the faulting address, the registers and a call trace with entries like `oops_init+0x14/0x30 [oops]`. That entry means 0x14 bytes into `oops_init`, a function 0x30 bytes long, in module `oops`. `gdb oops.ko`, then `list *oops_init+0x14`, turns it into a source line, because your modules carry debug information from the kernel's configuration. The process that triggered the oops dies, and the kernel may be left in a broken state. Reboot the guest after every oops.
+A bad pointer dereference in a module makes the kernel print an oops: the faulting address, the registers and a call trace with entries like `oops_init+0x14/0x30 [oops]`. That entry means 0x14 bytes into `oops_init`, a function 0x30 bytes long, in module `oops`. `gdb oops.ko`, then `list *oops_init+0x14`, turns it into a source line, because your modules carry debug information from the kernel's configuration. The process that triggered the oops dies, and the kernel may be left in a broken state. Reboot the guest after every oops.
 
 ### Study
 
-- [The Linux Kernel Module Programming Guide](https://sysprog21.github.io/lkmpg/#hello-world) (read, 1 h 30 min): Sections 4.1 to 4.5, then 5.1 to 5.6. Skip the part of 4.1 about `sudo` and `env_reset`, which does not apply in the guest, and skip 1.8, whose QEMU scripts build an x86 guest.
+- [The Linux Kernel Module Programming Guide](https://sysprog21.github.io/lkmpg/#hello-world) (read, 1 h 15 min): Sections 4.1 to 4.5, then 5.1 to 5.5. Skip the part of 4.1 about `sudo` and `env_reset`, which does not apply in the guest. Skip 5.6, because the next step covers character devices from a fuller source.
 - [Unreliable Guide To Hacking The Linux Kernel](https://docs.kernel.org/kernel-hacking/hacking.html) (read, 30 min): By Rusty Russell. Read "Introduction", "The Players" with its three subsections, and "Some Basic Rules". Skip the rest until a later step points back to it.
 - [Linux kernel docs: Bug hunting](https://docs.kernel.org/admin-guide/bug-hunting.html) (reference, as needed): "Finding the bug's location", the gdb subsection. Its examples are 32-bit x86 oopses. The `list *function+offset` method works the same on ARM64.
 
@@ -176,22 +176,22 @@ The guest has `devtmpfs` but your driver does not create a device node. Read the
 ### Study
 
 - [Linux Kernel Labs: Character device drivers](https://linux-kernel-labs.github.io/refs/heads/master/labs/device_drivers.html) (read, 1 h 15 min): From the University POLITEHNICA of Bucharest's Linux kernel course. Read from "Overview" through "Waiting queues", which includes "Access to the address space of the process" and "ioctl". Skip "Exercises" and "Extra Exercises". They need the course's x86 VM and skeleton code.
-- [Unreliable Guide To Locking](https://docs.kernel.org/kernel-hacking/locking.html#locking-in-the-linux-kernel) (read, 20 min): By Rusty Russell. Read "Locking in the Linux Kernel" through "Locking Only In User Context", then "What Functions Are Safe To Call From Interrupts?" with "Some Functions Which Sleep". Skip the sections in between, which cover softirqs and timers.
+- [Unreliable Guide To Locking](https://docs.kernel.org/kernel-hacking/locking.html#locking-in-the-linux-kernel) (read, 20 min): By Rusty Russell. Read "Locking in the Linux Kernel" through "Locking Only In User Context", then "What Functions Are Safe To Call From Interrupts?" with "Some Functions Which Sleep". Skip everything in between, from "Locking Between User Context and Softirqs" to "Data Which Mostly Used By An IRQ Handler". The hard IRQ rule from that range comes back in the interrupt step through the Bucharest interrupts lab.
 
 ### Build
 
 1. `kpipe.c`: a 4096-byte ring buffer, a mutex and two wait queues in one `struct kpipe`. Register one minor with `alloc_chrdev_region` and `cdev_add`. In `open`, set `file->private_data` from `inode->i_cdev` with `container_of`, as the lab shows. Undo every registration in reverse order on any init failure and in exit.
 2. `read` and `write` follow the shape above. Each returns the number of bytes it moved, which may be fewer than asked. A count of zero returns 0 at once. With `O_NONBLOCK`, an empty or full buffer returns `-EAGAIN`.
 3. `ioctl` with two commands built with `_IOR` and `_IO`, the shorthand forms of the lab's `_IOC`: `KPIPE_LEVEL` copies the number of buffered bytes to a user `int`, and `KPIPE_CLEAR` empties the buffer and wakes writers. Unknown commands return `-ENOTTY`. Put the command numbers in `kpipe.h`, shared with user space.
-4. `kpipetest.c`, built in the OrbStack machine with `gcc -static`. `kpipetest w N` writes N bytes of the pattern `i * 7 % 251` in chunks of random size up to 10,000. `kpipetest r N` reads N bytes in random chunks and checks the pattern. `kpipetest errors` checks that a read into address 1 returns `EFAULT`, a nonblocking read on an empty pipe returns `EAGAIN`, an unknown ioctl returns `ENOTTY`, and `KPIPE_LEVEL` reports a value it just wrote.
+4. `kpipetest.c`, built in the OrbStack machine with `gcc -static`. `kpipetest w N` writes N bytes of the pattern `i * 7 % 251` in chunks of random size up to 10,000. `kpipetest r N` reads N bytes in random chunks and checks the pattern. `kpipetest errors` checks that a read into address 1 returns `EFAULT`, a nonblocking read on an empty pipe returns `EAGAIN`, an unknown ioctl returns `ENOTTY`, and `KPIPE_LEVEL` reports a value it just wrote. `kpipetest r` installs a `SIGINT` handler with `sigaction` and no `SA_RESTART`, as in the signal(7) section "Interruption of system calls and library functions by signal handlers" from chapter 08, and prints "read: EINTR" when `read` fails with `EINTR`.
 
 ### Done when
 
-In the guest, `./kpipetest w 1000000 & ./kpipetest r 1000000` reports no mismatch, and `./kpipetest errors` passes. A reader blocked on an empty pipe returns `EINTR` when you send it `kill -INT`. `rmmod kpipe` fails while any process holds the device open and succeeds after the last one closes it. You can say why the mutex is dropped before the wait and why the condition is checked again after it.
+In the guest, `./kpipetest w 1000000 & ./kpipetest r 1000000` reports no mismatch, and `./kpipetest errors` passes. Start `./kpipetest r 10 &` on an empty pipe, then `kill -INT` it. It prints "read: EINTR". `rmmod kpipe` fails while any process holds the device open and succeeds after the last one closes it. You can say why the mutex is dropped before the wait and why the condition is checked again after it.
 
 ## A PCI driver for QEMU's edu device
 
-The pipe had no hardware behind it. Now you drive a device. QEMU's `edu` device exists for teaching driver writing. It sits on the PCI bus with vendor ID 0x1234 and device ID 0x11e8. It exposes 1 MB of registers through its first base address register (BAR 0). It computes factorials, raises interrupts on request and performs DMA. Its specification is one page. Read all of it before writing code.
+The pipe had no hardware behind it. Now you drive a device. QEMU's `edu` device exists for teaching driver writing. It sits on the PCI bus with vendor ID 0x1234 and device ID 0x11e8. It exposes 1 MB of registers through its first base address register (BAR 0). It computes factorials, raises interrupts on request and performs DMA. Its specification is one page.
 
 Software can discover PCI devices. At boot the kernel walks the bus, reads each device's configuration space and records the vendor and device IDs and the address ranges of its BARs. Your driver registers a `struct pci_driver` with a table of IDs it supports. For each match, the PCI core calls your `probe` with a `struct pci_dev`. You never hard-code a physical address. Your kernel in chapter 15 knew where its devices lived. A PCI driver asks the core.
 
@@ -207,9 +207,11 @@ Software can discover PCI devices. At boot the kernel walks the bus, reads each 
 
 The factorial runs in a separate QEMU thread, so a result is ready only when the "computing" bit clears. For this step your `read` polls that bit with `usleep_range(10, 20)` between checks and gives up with `-ETIMEDOUT` after 100 ms. Polling is legal here because `read` runs in user context and may sleep. The device computes in 32 bits, so 13! wraps modulo 2^32.
 
+None of the readings covers `usleep_range`, or the `ktime_get_ns`, `READ_ONCE` and `smp_store_release` calls of later steps. Each is a one-line call. Look up each signature and its comment in your kernel tree: `include/linux/delay.h`, `include/linux/timekeeping.h`, `include/asm-generic/rwonce.h` and `include/asm-generic/barrier.h`.
+
 ### Study
 
-- [QEMU docs: EDU device](https://www.qemu.org/docs/master/specs/edu.html) (read, 15 min): The whole page. Leave "DMA controller" for later, as this chapter does not use DMA.
+- [QEMU docs: EDU device](https://www.qemu.org/docs/master/specs/edu.html) (read, 15 min): Everything except "DMA controller". This chapter does not use DMA.
 - [Linux kernel docs: How To Write Linux PCI Drivers](https://docs.kernel.org/PCI/pci.html) (read, 50 min): By Martin Mares and Grant Grundler. Read 1.1, 1.2, 1.4.1, 1.4.2, 1.4.5, then 1.5.5 to 1.5.7 and 1.11 on write posting. Skip 1.4.3, 1.4.4 and 1.5.3 to 1.5.4, which cover DMA. Leave 1.4.6, 1.5.1 and 1.5.2 for the next step.
 - [Linux kernel docs: Bus-Independent Device Accesses](https://docs.kernel.org/driver-api/device-io.html#memory-mapped-io) (reference, as needed): "Memory Mapped IO" and "__iomem pointer tokens" for why `ioread32` exists, "Differences between I/O access functions" for the `ioread32` family, and `pci_iomap` under "Higher-level ioremap abstractions". Skip "Port Space Accesses", which is an x86 feature.
 
@@ -217,9 +219,9 @@ The factorial runs in a separate QEMU thread, so a result is ready only when the
 
 1. `edu.c`: an ID table with `PCI_DEVICE(0x1234, 0x11e8)` and `MODULE_DEVICE_TABLE(pci, ...)`. `module_pci_driver(edu_driver)` writes the module's init and exit functions for you, which call `pci_register_driver` and `pci_unregister_driver`. Allocate one `struct edu` per device in `probe` with `kzalloc` and attach it with `pci_set_drvdata`.
 2. `probe`: `pci_enable_device`, `pci_request_regions`, `pci_iomap` of BAR 0. Print the major and minor version from the identification register with `dev_info`, which is `pr_info` with the device's name in front. Write a value to the liveness register and fail `probe` with `-ENODEV` unless you read back its complement. Unwind with `goto` labels in reverse order on every failure.
-3. Move the character device code from `kpipe.c` into `struct edu`. `write` takes exactly 4 bytes, a `u32` n, writes it to the factorial register and returns 4. `read` takes at least 4 bytes, polls as described, and returns the result as a `u32`. A mutex keeps two processes from interleaving their write and read.
+3. Move the character device code from `kpipe.c` into `struct edu`. `write` takes exactly 4 bytes, a `u32` n, writes it to the factorial register and returns 4. `read` takes at least 4 bytes, polls as described, and returns the result as a `u32`. A mutex keeps two processes from interleaving their write and read. Make the node by hand as in the previous step: `mknod /dev/edu c <major> 0`.
 4. `remove` reverses `probe`: `cdev_del`, `unregister_chrdev_region`, `pci_iounmap`, `pci_release_regions`, `pci_disable_device`, `kfree`.
-5. `edutest.c`: for n from 0 to 13, write n, read the result and compare it with a 32-bit factorial computed in user space.
+5. `edutest.c`, built with `gcc -static`: open `/dev/edu`, then for n from 0 to 13, write n, read the result and compare it with a 32-bit factorial computed in user space.
 
 ### Done when
 
@@ -229,46 +231,45 @@ The factorial runs in a separate QEMU thread, so a result is ready only when the
 
 Polling makes `read` wake up again and again to check one bit. The edu device can raise an interrupt instead: set bit 0x80 in the status register before writing n, and the device raises interrupt 0x01 when the factorial is done. Writing any value to register 0x60 raises an interrupt with that value. The handler reads the interrupt status register at 0x24, writes the same bits to 0x64 to acknowledge them, and returns `IRQ_HANDLED`. If it does not acknowledge, the device keeps the interrupt raised.
 
-In chapter 15 your handler ran straight from the vector table. In Linux, the kernel's entry code saves the registers, asks the interrupt controller which line fired and calls every handler registered on that line. You register with `request_irq`. A PCI device can signal on a shared pin (INTx) or by writing a message to the interrupt controller (MSI). `pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES)` picks whichever works, and `pci_irq_vector(pdev, 0)` gives the Linux IRQ number to pass to `request_irq`. On the `virt` board you get MSI. Pass `IRQF_SHARED` and return `IRQ_NONE` when the status register is zero, so the handler is also correct on a shared INTx line.
+In chapter 15 your handler ran straight from the vector table. In Linux, the kernel's entry code saves the registers, asks the interrupt controller which line fired and calls every handler registered on that line. You register with `request_irq`. A PCI device can signal on a shared pin (INTx) or by writing a message to the interrupt controller (MSI). `pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES)` picks whichever works, and `pci_irq_vector(pdev, 0)` gives the Linux IRQ number to pass to `request_irq`. On the `virt` board you get MSI. Pass `IRQF_SHARED` and return `IRQ_NONE` when the status register is zero, so the handler is also correct on a shared INTx line. The PCI guide from the previous step covers this in the three sections you skipped there: 1.4.6 "Register IRQ handler", 1.5.1 "Stop IRQs on the device" and 1.5.2 "Release the IRQ". Read them now, about 15 minutes. Section 1.4.6 notes that `request_irq` enables the interrupt at once, so your handler can run before `request_irq` even returns. Everything the handler touches must be ready by then.
 
 An MSI is a memory write that the device makes to the interrupt controller. A PCI device may write to memory only when its bus master bit is set, and `pci_enable_device` does not set it. Call `pci_set_master` in `probe`, as section 1.4.1 of the PCI guide describes. Without it the edu device sets its status bit and no interrupt ever arrives.
 
 The handler runs in hard interrupt context. It must not sleep, so it cannot take your mutex, call `copy_to_user` or allocate with `GFP_KERNEL`. Data shared between the handler and your `read` needs a spinlock. In process context take it with `spin_lock_irqsave` or `spin_lock_irq`, which also disable interrupts on the local CPU. Otherwise the handler could interrupt you on the same CPU and spin forever on the lock you hold. In the handler a plain `spin_lock` is enough. The handler stores the result, sets a done flag and calls `wake_up_interruptible`. `read` waits on the queue with `wait_event_interruptible` instead of polling.
 
-Some work after an interrupt is slow or needs to sleep. Here that work is keeping an event log: a 64-entry array of records with a timestamp, the interrupt status bits and the result register. User space reads the log with an ioctl, and the ioctl calls `copy_to_user`, which may sleep. So the log needs the mutex, and the handler cannot take the mutex. The handler instead appends a record to a 16-entry pending array under the spinlock and calls `schedule_work`. A kernel worker thread later runs your work function in process context. It moves the pending records out under the spinlock, then appends them to the log under the mutex. If the pending array is full, the handler counts a dropped record.
+Some work after an interrupt is slow or needs to sleep. The handler should do the minimum and hand the rest to process context. Here the rest is bookkeeping: each interrupt produces a record with a timestamp, the interrupt status bits and the result register. The driver keeps a count of all records and the newest one, and user space reads both with an ioctl. That state lives under the mutex with the rest of the device's process-context state, and the handler cannot take the mutex. So the handler appends the record to a 16-entry pending array under the spinlock and calls `schedule_work`. A kernel worker thread later runs your work function in process context. The work function moves the pending records out under the spinlock, then takes the mutex, adds them to the count and keeps the newest. If the pending array is full, the handler counts a dropped record instead. In the next step the same work function also writes each record into a ring that user space maps.
 
 ```
   device                 hard IRQ context                 process context
   irq ------> handler: read 0x24, ack 0x64,      ----> worker: take pending
               spin_lock, store result,                  under spin_lock_irq,
-              add record to pending[16],                mutex_lock, append
-              wake_up(readq), schedule_work             to log, mutex_unlock
+              add record to pending[16],                mutex_lock, count,
+              wake_up(readq), schedule_work             keep newest, unlock
                      |
                      +----> read() wakes in the process that called it
 ```
 
 An interrupt tells the driver that the device needs attention. It does not count events. If the device raises a second interrupt while the first is still pending in the interrupt controller, the two merge into one. The edu interrupt status register is a bitmask, so two raises with the same value also look like one. Your handler must handle every bit it finds in one call.
 
-Teardown order matters. `free_irq` waits for a running handler to finish and stops new ones, so after it nothing can call `schedule_work`. Then `cancel_work_sync` waits for queued work to finish. Only then may `remove` free the state the work function uses. The lab mentions `flush_scheduled_work`. Current kernels warn when a module calls it, so use `cancel_work_sync` on your own work item.
+`free_irq` waits for a running handler to finish and stops new ones, so after it nothing can call `schedule_work`. Then `cancel_work_sync` waits for queued work to finish. Only then may `remove` free the state the work function uses. The lab mentions `flush_scheduled_work`. Current kernels warn when a module calls it, so use `cancel_work_sync` on your own work item.
 
 ### Study
 
 - [Linux Kernel Labs: I/O access and Interrupts](https://linux-kernel-labs.github.io/refs/heads/master/labs/interrupts.html#interrupt-handling) (read, 45 min): Read the end of "Background information", from "When we need to access shared resources", on locking between an interrupt handler and process context. Then read "Interrupt handling" with its four subsections. Skip "Accessing the hardware", which is x86 I/O ports, and the exercises, which use the x86 keyboard controller.
 - [Linux Kernel Labs: Deferred work](https://linux-kernel-labs.github.io/refs/heads/master/labs/deferred_work.html#background-information) (read, 30 min): "Background information", then "Workqueues". Skip "Softirqs", "Kernel threads" and the exercises. Tasklets, in the skipped part, are being phased out of the kernel.
-- [Linux kernel docs: How To Write Linux PCI Drivers](https://docs.kernel.org/PCI/pci.html#register-irq-handler) (read, 15 min): The parts you skipped last step: 1.4.6 "Register IRQ handler", then 1.5.1 "Stop IRQs on the device" and 1.5.2 "Release the IRQ".
 
 ### Build
 
-1. In `probe`, call `pci_set_master` after `pci_enable_device`. After mapping BAR 0, call `pci_alloc_irq_vectors`, then `request_irq(pci_irq_vector(pdev, 0), edu_irq, IRQF_SHARED, "edu", edu)`. Log which kind of vector you got with `pdev->msi_enabled`. Add the matching `free_irq` and `pci_free_irq_vectors` to the unwind path and to `remove`.
+1. In `probe`, call `pci_set_master` after `pci_enable_device`. After mapping BAR 0, quiesce the device as section 1.4.6 asks: clear bit 0x80 in the status register and acknowledge any pending bits by writing the value of 0x24 to 0x64. Call `spin_lock_init`, `init_waitqueue_head` and `INIT_WORK` for the state of builds 2 and 4 here too. Then call `pci_alloc_irq_vectors`, then `request_irq(pci_irq_vector(pdev, 0), edu_irq, IRQF_SHARED, "edu", edu)`. Log which kind of vector you got with `pdev->msi_enabled`. Add the matching `free_irq` and `pci_free_irq_vectors` to the unwind path and to `remove`.
 2. Replace polling. `write` clears the done flag under the spinlock, sets bit 0x80 in the status register and writes n. The handler reads 0x24, acknowledges, and on bit 0x01 reads the result and sets done. `read` waits with `wait_event_interruptible` and returns `-ERESTARTSYS` on a signal.
 3. Add an ioctl `EDU_RAISE` that writes its argument to register 0x60. Reject 0 and values with bit 0x01 set, which would look like a finished factorial.
-4. Add a `work_struct`, the pending array and the 64-entry log to `struct edu`. The handler stamps each record with `ktime_get_ns`. Add an ioctl `EDU_EVENTS` that copies the number of records ever logged, the dropped count and the newest 64 records to a user struct, under the mutex. In `remove`, call `free_irq` before `cancel_work_sync`.
+4. Add a `work_struct`, the pending array, the dropped count, the record count and the newest record to `struct edu`. The handler stamps each record with `ktime_get_ns`. Add an ioctl `EDU_STATS` that copies the record count, the dropped count and the newest record to a user struct. Copy them into a local struct under the mutex, unlock, then call `copy_to_user`. In `remove`, call `free_irq` before `cancel_work_sync`.
 5. Break it on purpose. Put a `mutex_lock` and `mutex_unlock` on your mutex inside the handler, load the module and run `edutest`. Read the `DEBUG_ATOMIC_SLEEP` report, then remove the lines.
-6. Extend `edutest` with `edutest raise N`, which issues N `EDU_RAISE` calls with value 0x10, and `edutest events`, which prints the log. Write a stress script that runs `edutest raise 2000` and then `rmmod edu` straight after it exits, 20 times in a row with `insmod` in between.
+6. Extend `edutest` with `edutest raise N`, which issues N `EDU_RAISE` calls with value 0x10, and `edutest stats`, which prints what `EDU_STATS` returns. Write a stress script that runs `edutest raise 2000` and then `rmmod edu` straight after it exits, 20 times in a row with `insmod` in between.
 
 ### Done when
 
-`./edutest` still matches all 14 values, now without polling. Each factorial waits for its own interrupt, so `grep edu /proc/interrupts` grows by exactly 14 per run and `edutest events` shows 14 new records with status 0x01 and the right results. After `edutest raise 10000` the count grows by fewer than 10,000, and you can explain where the rest went. You can say whether your device uses MSI or INTx. The broken handler produced a "BUG: sleeping function called from invalid context" report and you can point at the line in the report that names your handler. The stress script finishes 20 rounds with no oops and no warning in `dmesg`. You can say what could go wrong in `remove` if `cancel_work_sync` came before `free_irq`.
+`./edutest` still matches all 14 values, now without polling. Each factorial waits for its own interrupt, so `grep edu /proc/interrupts` grows by exactly 14 per run. `edutest stats` shows the record count up by 14 and a newest record with status 0x01 and the value 13! mod 2^32, 1932053504. Around `edutest raise 10000`, the growth of the record count plus the growth of the dropped count equals the growth in `/proc/interrupts`. That total may be below 10,000, and you can explain where the missing raises went. You can say whether your device uses MSI or INTx. The broken handler produced a "BUG: sleeping function called from invalid context" report and you can point at the line in the report that names your handler. The stress script finishes 20 rounds with no oops and no warning in `dmesg`. You can say what could go wrong in `remove` if `cancel_work_sync` came before `free_irq`.
 
 ## mmap: an event ring shared with user space
 
@@ -300,17 +301,17 @@ The page has to outlive every mapping of it. The mapping holds a reference to th
 
 ### Build
 
-1. In `probe`, allocate the ring with `get_zeroed_page(GFP_KERNEL)` and free it with `free_page` in `remove` and in the unwind path. The work function appends each record to the ring as well as to the log.
+1. In `probe`, allocate the ring with `get_zeroed_page(GFP_KERNEL)` and free it with `free_page` in `remove` and in the unwind path. The work function now also writes each record it takes from the pending array into the ring, outside the mutex, since it is the ring's only writer.
 2. `mmap`: accept only an offset of 0 and a length of exactly one page, refuse writable mappings as above, then `remap_pfn_range(vma, vma->vm_start, virt_to_phys(ring) >> PAGE_SHIFT, PAGE_SIZE, vma->vm_page_prot)`.
-3. `edumon.c`: open the device, map the ring read-only, and print each new event as it appears. `edumon` polls `head` every millisecond, or at an interval in milliseconds given as its argument. It reports laps and how many events each lap lost.
-4. Add `edutest loop N`, which computes 5! N times. `edutest` checks that a `PROT_READ | PROT_WRITE` mapping fails with `EPERM` and that a two-page mapping fails with `EINVAL`.
+3. `edumon.c`: open `/dev/edu`, map the ring read-only with `mmap(NULL, 4096, PROT_READ, MAP_SHARED, fd, 0)`, and print each new event as it appears. `edumon` polls `head` every millisecond, or at an interval in milliseconds given as its argument. It reports laps and how many events each lap lost.
+4. Add `edutest loop N`, which computes 5! N times. With a read-only file descriptor the kernel refuses a shared writable mapping with `EACCES` before your driver sees it, so `edutest` opens the device `O_RDWR` for this test. It checks that a `PROT_READ | PROT_WRITE`, `MAP_SHARED` mapping fails with `EPERM` and that a two-page mapping fails with `EINVAL`.
 
 ### Done when
 
-With `./edumon &` running, `./edutest` makes it print 14 events with status 0x01, increasing timestamps and the factorial results, the same records `edutest events` shows. `./edumon 2000 &` followed by `./edutest loop 1000` reports a lap. Writable and oversized mappings fail with the expected errors. `rmmod edu` fails while `edumon` runs and succeeds after you stop it. `grep edu /proc/$(pidof edumon)/maps` shows the mapping with permissions `r--s`. You can say which line of the work function makes an event visible to `edumon` and why the order of the two stores matters.
+With `./edumon &` running, `./edutest` makes it print 14 events with status 0x01, increasing timestamps and the factorial results. The last one matches the newest record `edutest stats` shows. `./edumon 2000 &` followed by `./edutest loop 1000` reports a lap. Writable and oversized mappings fail with the expected errors. `rmmod edu` fails while `edumon` runs and succeeds after you stop it. `grep edu /proc/$(pidof edumon)/maps` shows the mapping with permissions `r--s`. You can say which line of the work function makes an event visible to `edumon` and why the order of the two stores matters.
 
 ## Where this leads
 
-You now have a driver that a production kernel calls in three different ways. The PCI core calls `probe` when it finds your device. The file system calls your file operations when a process uses `/dev`. The interrupt core calls your handler when the device fires, and a kernel thread runs your deferred work. Each entry point runs in a known context with known rules, and the kernel did the part your chapter 15 kernel did by hand: saving registers, finding the device and the handler, and owning the page tables.
+You now have a driver that a production kernel calls in three different ways. The PCI core calls `probe` when it finds your device. The file system calls your file operations when a process uses `/dev`. The interrupt core calls your handler when the device fires, and a kernel thread runs your deferred work.
 
-What Linux hid is the hardware itself. QEMU emulated a simple PCI device, and the PCI core found it, mapped it and routed its interrupt. Chapter 17, Embedded firmware, removes all of that. On the Raspberry Pi Pico 2's RP2350 there is no kernel and no bus enumeration. You read register addresses from a datasheet, write the startup code and linker script yourself, and turn on a pin by writing a bit at a fixed address. That chapter needs a Pico 2 and a debug probe, so order them now if you have not.
+Linux also hid the hardware from you. QEMU emulated a simple PCI device, and the PCI core found it, mapped it and routed its interrupt. Chapter 17, Embedded firmware, removes all of that. On the Raspberry Pi Pico 2's RP2350 there is no kernel and no bus enumeration. You read register addresses from a datasheet, write the startup code and linker script yourself, and turn on a pin by writing a bit at a fixed address. That chapter needs a Pico 2 and a debug probe, so order them now if you have not.
