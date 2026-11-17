@@ -8,7 +8,7 @@ project: A Rust kernel for x86-64 that boots on QEMU, handles exceptions and har
 
 Chapter 14 ended with two shipped games. Under each of them sat macOS. It loaded the program, mapped its memory, delivered keyboard events and scheduled its threads. In chapter 08 you saw that machinery from inside xv6. But someone else had booted xv6 and written its trap entry and its scheduler, and you changed parts of a kernel that already worked.
 
-This chapter opens the part on kernels and bare metal. You write a kernel from its first instruction. You follow Philipp Oppermann's Writing an OS in Rust from a binary with no standard library through output, exceptions, hardware interrupts, paging and a heap. That is eleven posts, and one author carries you through six steps. Then you leave the tutorial and add what it does not have: two tasks, each with its own stack, that the timer interrupt switches between.
+This chapter opens the part on kernels and bare metal. You write a kernel from its first instruction. You follow Philipp Oppermann's Writing an OS in Rust from a binary with no standard library through output, exceptions, hardware interrupts, paging and a heap. That is eleven posts by one author, spread over six steps. Then you leave the tutorial and add what it does not have: two tasks, each with its own stack, that the timer interrupt switches between.
 
 The kernel is in Rust. Chapter 10 taught you `unsafe`, and a kernel needs it in a few exact places: raw addresses, port I/O and the instructions that load CPU tables. The kernel targets x86-64, because the tutorial does and because it pins a BIOS bootloader that works. Your Mac cannot run x86 code, so QEMU emulates a whole PC in software. A kernel this small runs fine that way. You read x86-64 assembly and its calling convention in chapter 05. This chapter adds the privileged half of the same instruction set. Chapters 16 and 17 go back to ARM.
 
@@ -33,7 +33,7 @@ The boot path below is the contract you work inside. Everything above `_start` b
 
 Every Rust program you wrote so far linked the standard library, and `std` assumes an operating system underneath: files, threads, a heap and a C runtime that calls `main`. A kernel has none of those. `#![no_std]` drops `std` and keeps `core`, the part of the library that needs nothing from an OS. `core` has `Option`, iterators, slices and formatting. You then supply two things the runtime used to supply: a panic handler and an entry point named `_start`.
 
-The first post builds such a binary for an ARM microcontroller target, only to show that the linker errors go away when the target has no OS. The second post defines a custom target in a JSON file and recompiles `core` for it with Cargo's `build-std`. Three lines in that JSON file matter later. `"disable-redzone": true` turns off the red zone. The System V ABI from chapter 05 lets a leaf function use 128 bytes below `rsp` without moving `rsp`, and an interrupt would push its frame right on top of them. `"features": "-mmx,-sse,+soft-float"` keeps the compiler away from the SSE registers, so the kernel's whole register state is the 16 general registers plus flags. Step 7 depends on that.
+The first post gets rid of the linker errors by building for a target with no OS, an ARM microcontroller. The second post defines a custom target in a JSON file and recompiles `core` for it with Cargo's `build-std`. Three lines in that JSON file matter later. `"disable-redzone": true` turns off the red zone. The System V ABI from chapter 05 lets a leaf function use 128 bytes below `rsp` without moving `rsp`, and an interrupt would push its frame right on top of them. `"features": "-mmx,-sse,+soft-float"` keeps the compiler away from the SSE registers, so the kernel's whole register state is the 16 general registers plus flags. Step 7 depends on that.
 
 Do the chapter on the Mac. Install the tools with Homebrew:
 
@@ -96,7 +96,6 @@ The tutorial explains `macro_rules!` as far as its `println!` needs. Keep the QE
 1. Follow both posts.
 2. Add `run-args = ["-serial", "stdio", "-no-reboot"]` to `[package.metadata.bootimage]` in `Cargo.toml`, next to the post's `test-args`. Make the non-test panic handler print to serial as well as to the screen.
 3. Add your own test in `vga_buffer.rs`: print a line of 100 `x` characters and check, by reading the buffer back, that one row holds 80 of them and the row below holds the other 20.
-4. Add a `#[should_panic]`-style integration test of your own under `tests/`, modelled on the post's `should_panic.rs`, that fails an `assert_eq!` on purpose.
 
 ### Done when
 
@@ -104,7 +103,7 @@ The tutorial explains `macro_rules!` as far as its `println!` needs. Keep the QE
 
 ## CPU exceptions, double faults and a debugger
 
-An exception is the CPU refusing to go on with the current instruction. x86 numbers them 0 to 31: 0 is divide error, 3 is breakpoint, 6 is invalid opcode, 8 is double fault, 13 is general protection fault and 14 is page fault. The Interrupt Descriptor Table (IDT) holds one entry per vector with the handler's address and some options. The `lidt` instruction tells the CPU where the table is. xv6 on RISC-V had one trap address in `stvec` and a cause register. x86 dispatches on the vector instead.
+An exception is an event the CPU raises when it cannot complete the current instruction, or when the instruction asks for one, as `int3` does. x86 numbers them 0 to 31: 0 is divide error, 3 is breakpoint, 6 is invalid opcode, 8 is double fault, 13 is general protection fault and 14 is page fault. The Interrupt Descriptor Table (IDT) holds one entry per vector with the handler's address and some options. The `lidt` instruction tells the CPU where the table is. xv6 on RISC-V had one trap address in `stvec` and a cause register. x86 dispatches on the vector instead.
 
 The two ISAs also save state differently. RISC-V copied the pc into `sepc` and saved nothing else. x86 pushes an interrupt stack frame onto the stack before it jumps to the handler:
 
@@ -165,7 +164,7 @@ The post then provokes a deadlock. The main code holds the writer's spinlock, th
 ### Build
 
 1. Follow the post through keyboard input.
-2. Replace the dots with a tick counter: a `static TICKS: AtomicU64` that the timer handler increments. In `kernel_main`, print the count once per second of ticks, from a loop that runs `hlt` between checks.
+2. Replace the dots with a tick counter: a `static TICKS: AtomicU64` that the timer handler increments. In `kernel_main`, run a loop that executes `hlt` and prints the count each time it reaches a new multiple of 18.
 3. Comment out the EOI in the timer handler and run with `./debug.sh`. Count the `v=20` entries in `qemu.log`. Put the EOI back.
 
 ### Done when
@@ -174,7 +173,7 @@ Keys you type appear on the screen. Over 60 seconds by a clock, the counter grow
 
 ## Paging on x86-64
 
-In chapter 08 you walked RISC-V's Sv39 tables: three levels and a 39-bit address. x86-64 uses four levels and a 48-bit address. Each level is a 4 KB table of 512 eight-byte entries, so each level eats 9 bits of the address, and the last 12 bits are the offset into the page. Bits 48 to 63 must copy bit 47, or the CPU raises a general protection fault. `CR3` holds the physical address of the level 4 table, the job `satp` did on RISC-V. `invlpg` drops one stale translation from the TLB, as `sfence.vma` did.
+In chapter 08 you walked RISC-V's Sv39 tables: three levels and a 39-bit address. x86-64 uses four levels and a 48-bit address. Each level is a 4 KB table of 512 eight-byte entries, so each level uses 9 bits of the address, and the last 12 bits are the offset into the page. Bits 48 to 63 must copy bit 47, or the CPU raises a general protection fault. `CR3` holds the physical address of the level 4 table, the job `satp` did on RISC-V. `invlpg` drops one stale translation from the TLB, as `sfence.vma` did.
 
 ```
   virtual address 0x0000_4444_4444_0000
@@ -198,9 +197,9 @@ A kernel has one problem that xv6 hid from you. Page table entries hold physical
 ### Build
 
 1. Follow both posts.
-2. Write `dump_level4(phys_offset)`. It prints each present entry of the level 4 table with its index, the physical address of the level 3 table it points to and its flags. Explain each line in `NOTES.md`: which one covers the kernel's code, which the bootloader's map of physical memory, and which the stack.
+2. Write `dump_level4(phys_offset)`. It prints each present entry of the level 4 table with its index, the physical address of the table it points to and its flags. Explain each line in `NOTES.md`: which one covers the kernel's code, which the stack and the boot information, and which the bootloader's map of physical memory. One entry points back at the level 4 table itself. The post's "Recursive Page Tables" section explains what that entry allows.
 3. Write `map_stack(slot, mapper, frame_allocator) -> VirtAddr` in `memory.rs`. A slot is 64 KB of address space at `0x5555_0000_0000 + slot * 0x1_0000`. Leave the first page of the slot unmapped as a guard. Map the next four pages present and writable to fresh frames, and return the address just past the last one, which becomes the top of the stack. Step 7 uses it for task stacks.
-4. Test `map_stack(0, ...)`: write a `u64` just below the top and read it back. Then read from the slot's first page. The page fault handler from the first post should print a `CR2` equal to `0x5555_0000_0000`.
+4. Test `map_stack(0, ...)`: write a `u64` just below the top and read it back. Then read the `u64` at `0x5555_0000_0000`, in the guard page. The page fault handler from the first post should print a `CR2` equal to `0x5555_0000_0000`.
 
 ### Done when
 
@@ -246,7 +245,7 @@ The cooperative switch comes first. On x86-64 the callee-saved registers are `rb
 
 After the `ret`, `rsp` is `top - 8`, which leaves it 8 past a 16-byte boundary. A function expects exactly that right after a `call`.
 
-Preemption needs the full state. Point the timer's IDT entry at a handler you write in assembly. The CPU has already pushed the five-word frame from step 3. The handler pushes the 15 general registers other than `rsp`, passes `rsp` to a Rust function `schedule(rsp: u64) -> u64`, loads the returned value into `rsp`, pops the 15 registers and runs `iretq`. `schedule` stores the old task's `rsp`, sends the EOI, picks the next task and returns that task's saved `rsp`. The stack is aligned for the call without any extra work: the CPU aligned `rsp` before the frame, and 5 plus 15 words make 160 bytes. Because your target has no SSE, those registers plus the frame are a task's whole state. A task that has never run needs a fake frame:
+Preemption needs the full state. Point the timer's IDT entry at a handler you write in assembly. The CPU has already pushed the five-word frame from step 3. The handler pushes the 15 general registers other than `rsp`, passes `rsp` to a Rust function `schedule(rsp: u64) -> u64`, loads the returned value into `rsp`, pops the 15 registers and runs `iretq`. `schedule` is an `extern "C"` function, so the assembly passes `rsp` in `rdi` and gets the result in `rax`. It stores the old task's `rsp`, sends the EOI, picks the next task and returns that task's saved `rsp`. The stack is aligned for the call without any extra work: the CPU aligned `rsp` before the frame, and 5 plus 15 words make 160 bytes. Because your target has no SSE, those registers plus the frame are a task's whole state. A task that has never run needs a fake frame:
 
 ```
   stack top (16-byte aligned)
@@ -278,11 +277,11 @@ The scheduler's table of tasks is shared between task code and the timer handler
 1. Write `task.rs` with a fixed table of up to four tasks, each a saved `rsp`. Slot 0 is the boot context: whatever runs `kernel_main` after `init` becomes task 0 the first time it is switched away from. `spawn(entry)` takes a stack from `map_stack` with the next free slot and writes the initial frame.
 2. Cooperative version: write the naked `switch` and `yield_now()`, which picks the next task round robin and calls `switch`. Spawn task A and task B. Each prints its name and a counter to serial, then yields. Task 0 loops on `yield_now()`. Commit this version.
 3. Preemptive version: write the naked timer entry and `schedule`, change `spawn` to write the interrupt frame, and remove every call to `yield_now`. Task 0 runs `hlt_loop()`. Tasks A and B print and then busy-wait about 10 million iterations of `core::hint::spin_loop()` between prints.
-4. Change task A to `loop {}` after its first print. Then spawn a task C that recurses without end.
+4. Change task A to `loop {}` after its first print. Then spawn a task C that recurses without end, the way the post's `stack_overflow` test does.
 
 ### Done when
 
-The cooperative version prints A and B in strict alternation. The preemptive version prints runs of A and runs of B with no yields in the code, and B keeps printing after A enters `loop {}`. Task C ends in your double fault handler with its message on serial, not in a QEMU reset. In gdb, with `hbreak` on `schedule`, `x/20gx $rdi` shows the 15 saved registers followed by a RIP inside a task function, CS, RFLAGS with bit 9 set, RSP and SS. You can say which registers `switch` saves and which the timer entry saves, and why the two sets differ.
+The cooperative version prints A and B in strict alternation. In the preemptive version, the counters of A and B both keep growing with no yields in the code, and B keeps printing after A enters `loop {}`. Task C ends in your double fault handler with its message on serial, not in a QEMU reset. In gdb, stopped at `hbreak *blog_os::task::schedule`, `x/20gx $rdi` shows the 15 saved registers followed by a RIP inside a task function, CS, RFLAGS with bit 9 set, RSP and SS. You can say which registers `switch` saves and which the timer entry saves, and why the two sets differ.
 
 ## Where this leads
 
