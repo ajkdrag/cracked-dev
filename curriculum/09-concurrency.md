@@ -112,6 +112,7 @@ Each of her examples is a function of one or two lines next to its assembly. Rea
 - `atomic_store` with the default ordering also becomes `xchg`. Step 6 explains why.
 
 A spinning thread burns a core while it waits. If the thread that holds the lock is not running, because the scheduler gave its core to someone else, the waiter spins until that thread runs again. The `yield` lock in the Build gives up the core instead. It calls `sched_yield()`, which takes no arguments, returns 0, and moves the calling thread to the back of the scheduler's queue.
+
 ### Study
 
 - [OSTEP chapter 28: Locks](https://pages.cs.wisc.edu/~remzi/OSTEP/threads-locks.pdf) (read, 1 h 15 min): Sections 28.1 to 28.13. Test-and-set, compare-and-swap (figure 28.4), load-linked/store-conditional (figure 28.5) and fetch-and-add are each written as C pseudocode for one hardware operation. Figures 28.3, 28.6 and 28.7 build a lock from test-and-set, LL/SC and fetch-and-add, and figure 28.8 is the yield lock. Section 28.5 on disabling interrupts comes back in the xv6 step. Stop before 28.14, which step 4 assigns. Skip the homework, which uses an x86 simulator.
@@ -149,6 +150,7 @@ The lab is about contention. `kalloc` and `kfree` share one free list and one lo
 Work in the xv6 lab repository from chapter 08. Section 3.5 of the xv6 book, which the lab asks for, was part of the page-table reading in chapter 08.
 
 > **Practice:** Give every test of concurrent code a time limit, because a deadlock looks like a test that never ends. Call `alarm(10)` at the start of the test program. It asks the kernel to send the signal SIGALRM to the process in 10 seconds. A program with no handler for SIGALRM terminates, so a hung test ends with a nonzero exit status.
+
 ### Study
 
 - [xv6 book, chapter 7: Locking](https://pdos.csail.mit.edu/6.1810/2025/xv6/book-riscv-rev5.pdf#page=63) (read, 1 h 15 min): Sections 7.1 to 7.8, pages 63 to 73, with `kernel/spinlock.c` and `kernel/kalloc.c` open. Figure 7.3 lists every lock in xv6. Section 7.4 is the lock-ordering rule.
@@ -252,7 +254,7 @@ Each core's cache keeps copies of 64-byte lines, the line size you read from `co
 
 `_Alignas(64)` on a struct member starts it on a 64-byte boundary, so a struct with one counter and that alignment fills a line of its own. Bos notes that some processors need 128 bytes to stop the effect, and the Build checks yours.
 
-If a fraction s of the run cannot be split, T threads finish in at least s + (1 - s)/T of the single-thread time. That is **Amdahl's law**. Your haversine pipeline from chapter 07 reads and parses the JSON on one thread. Splitting only the distance sum leaves the parse untouched, so the end-to-end speedup has a ceiling you can compute from your profile.
+If a fraction s of the run cannot be split, T threads finish in at least s + (1 - s)/T of the single-thread time. That is **Amdahl's law**. Say 40% of a run is serial. Eight threads then need at least 0.4 + 0.6/8 = 0.475 of the time, a speedup of 2.1, and no number of threads gets past 1/0.4 = 2.5. Your haversine pipeline from chapter 07 reads and parses the JSON on one thread. Splitting only the distance sum leaves the parse untouched, so the end-to-end speedup has a ceiling you can compute from your profile.
 
 `nproc` counts logical CPUs, and Windows Task Manager's Performance tab shows how many cores and logical processors the laptop has. Many x86-64 cores run two threads at the same time, which then share that core's execution units, so `nproc` can be twice the number of cores. Many recent Intel laptop chips are also hybrid, with fast performance cores and slower efficiency cores, as chapter 07 said.
 
@@ -289,7 +291,14 @@ Every hand-off so far went through a lock or a join. To hand data from one threa
 
 Within one thread, the compiler and the CPU may reorder loads and stores whenever the thread itself cannot tell. The reordering other cores can see on x86-64 comes from the **store buffer**: a queue in each core where stores wait before they reach the cache. The core goes on with later instructions while a store waits, so a later load from a different address can read the cache before the earlier store has left the buffer. For another core, the load happened first.
 
-The **litmus test** for this, a tiny program whose possible results define what the hardware allows, has two threads that each store 1 to one variable and then load the other. Both loads can return 0:
+A **litmus test** is a tiny program whose possible results show what the hardware allows. The one for the store buffer has two threads that each store 1 to one variable and then load the other. `X` and `Y` start at 0:
+
+```
+  thread 1:   X = 1;   r1 = Y;
+  thread 2:   Y = 1;   r2 = X;
+```
+
+Try every order of those four lines on paper. Whichever store runs first, the other thread's load comes after it, so at least one of `r1` and `r2` ends as 1. On your CPU both can end as 0:
 
 ![Each core's store of 1 waits in its store buffer while its next load reads the other variable from memory, where it is still 0. Both loads return 0.](figures/09-store-buffer.svg)
 
@@ -354,6 +363,7 @@ His indexes have the opposite names: his consumer pops at `tail`. Keep this chap
 Each thread also keeps a private copy of the other thread's index and reloads it only when the ring looks full or empty, so most pushes and pops touch only the thread's own line. Put each index and that copy on a cache line of its own with `_Alignas(64)`, for the reason step 5 measured.
 
 > **Practice:** Use the default ordering or a lock. Write `acquire` or `release` only where you can name the guard, the payload and the pair of operations that synchronize, and write that argument in a comment next to the code.
+
 ### Study
 
 - [Jeff Preshing: The Synchronizes-With Relation](https://preshing.com/20130823/the-synchronizes-with-relation/) (read, 25 min): The whole post. It uses C++11 atomics. Read `g_guard.store(1, std::memory_order_release)` as `atomic_store_explicit(&g_guard, 1, memory_order_release)`. The guard and payload vocabulary in the post is the one this chapter uses for every argument you write.
@@ -408,6 +418,7 @@ Job *job_new_detached(JobFn *fn, void *arg);
 void job_run(Job *job);      // push on this worker's deque, or on the injection queue
 void jobs_stop(void);        // waits for all queued jobs, then joins the workers
 ```
+
 ### Study
 
 - [Stanford CS149 Fall 2025: Work Distribution and Scheduling (slides)](https://gfxcourses.stanford.edu/cs149/fall25content/media/perfopt1/05_progperf1.pdf#page=5) (read, 1 h): Slides 5 to 22 on static and dynamic assignment, task size, scheduling long tasks first and distributed queues. Then slides 26 to 49. Slides 26 to 32 introduce the `cilk_spawn` and `cilk_sync` notation, and 33 to 49 build the scheduler: a worker pool, per-thread deques, child-first or continuation-first execution, stealing from the top and choosing a victim.

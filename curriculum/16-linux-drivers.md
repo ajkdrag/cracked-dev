@@ -269,7 +269,7 @@ out_region:
         return err;
 ```
 
-> **Practice:** Unwind a failed init with `goto` labels, one label per step to undo, written in reverse order of the steps. Exit undoes the same steps in the same order.
+> **Practice:** Unwind a failed init with `goto` labels, one label per step to undo, written in reverse order of the steps. Exit undoes all the steps, also in reverse order.
 
 ### Study
 

@@ -212,7 +212,7 @@ The **arithmetic logic unit** (ALU) is the part of a CPU that computes. The Hack
 
 Two more outputs, the **flags**, describe the result. `zr` is 1 when the result is 0, and `ng` is 1 when it is negative.
 
-Every row of the ALU's table follows from one fact: flipping all bits of a number `a` gives `-a - 1`. The figure follows `x - y` through the stages:
+Every row of the ALU's table follows from one fact: flipping all bits of a number `a` gives `-a - 1`. Try it on 5: flipping `0000 0000 0000 0101` gives `1111 1111 1111 1010`, which is 0xFFFA, the pattern of -6. The figure follows `x - y` through the stages:
 
 ![The ALU computes x - y with zx=0 nx=1 zy=0 ny=0 f=1 no=1: x is flipped to -x-1, added to y to give y-x-1, and the result is flipped to x-y. The flags zr and ng come from the final output.](figures/03-alu.svg)
 
@@ -459,7 +459,7 @@ static const struct Code dest_table[] = { {"M", 1}, {"D", 2}, {"MD", 3} };
 
 The rest of the rows go after the first three. `unsigned` is short for `unsigned int`, a 32-bit type with no negative values. A field is a slice of the line with no terminator of its own. So compare it with a row using `strncmp(field, row.text, n) == 0 && row.text[n] == '\0'`, where `n` is the field's length. Entry 26.5 of the Beej `string.h` reference from chapter 02 says what `strncmp` returns.
 
-To build the word, shift each code into its place with `<<` and combine the codes with `|`. To print it, test `(word >> i) & 1` for `i` from 15 down to 0.
+To build the word, shift each code into its place with `<<` and combine the codes with `|`. `x << n` moves the bits of `x` left by `n` places, so `5 << 3` turns `101` into `101000`, which is 40. `|` is the bitwise Or, so `0x28 | 0x1` is `0x29`. To print it, test `(word >> i) & 1` for `i` from 15 down to 0.
 
 > **Practice:** Check your output against a reference with `diff`. Silence from `diff` is a stronger check than reading the output yourself.
 

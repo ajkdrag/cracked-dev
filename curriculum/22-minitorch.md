@@ -60,10 +60,10 @@ Module 0 itself is ordinary Python. Three of its pieces carry through the chapte
       ```
 
       `source` runs the activation script in your current shell, so `python` and `pip` now mean the ones inside `.venv`. Run `source ~/mt/.venv/bin/activate` again in every new terminal before you work.
-   2. Install PyTorch alone. Take the index URL from the pip command the pytorch.org selector gave you in chapter 21. It has the shape `https://download.pytorch.org/whl/cu134`, where the last part names the CUDA version:
+   2. Install PyTorch alone. Take the index URL from the pip command the pytorch.org selector gave you in chapter 21. It ends in a tag for the CUDA version, written `cuNNN` below. Put your own tag in its place:
 
       ```sh
-      pip install -c ~/mt/constraints.txt torch --index-url https://download.pytorch.org/whl/cu134
+      pip install -c ~/mt/constraints.txt torch --index-url https://download.pytorch.org/whl/cuNNN
       ```
 
    3. In `Module-0/requirements.extra.txt`, change the line `datasets==2.4.0` to `datasets`.
@@ -143,13 +143,13 @@ The scalar library builds one Python object and one graph node for every number.
 - the **shape**, the size of each dimension,
 - the **strides**, how many positions to move in storage for one step along each dimension.
 
-The storage position of an index is the sum of index times stride over all dimensions. In a **contiguous** tensor the elements sit in storage in row-major order with no gaps, and each stride is the product of all the sizes to its right. You computed `row * ncols + col` by hand in every 2D kernel of chapter 21, and this is the same sum for any number of dimensions.
+The storage position of an index is the sum of index times stride over all dimensions. A 2 by 3 tensor has strides (3, 1), so the element at index (1, 2) sits at position 1 * 3 + 2 * 1 = 5. In a **contiguous** tensor the elements sit in storage in row-major order with no gaps, and each stride is the product of all the sizes to its right. You computed `row * ncols + col` by hand in every 2D kernel of chapter 21, and this is the same sum for any number of dimensions.
 
 ![A 2 by 3 tensor and its transpose share one storage of six numbers. Only the shape and the strides differ, and both index formulas land on position 5 for the element f.](figures/22-strides.svg)
 
 `permute` reorders the shape and the strides and copies nothing. A transposed matrix is the same storage read with swapped strides, the trick you used to call column-major cuBLAS from row-major code in chapter 21. A **view** puts a new shape over the same storage. MiniTorch's `view` accepts only a tensor whose storage is in contiguous order, so after a `permute` you call `contiguous()`, which copies. PyTorch's `view` is less strict and also accepts a non-contiguous tensor when the dimensions it merges have compatible strides.
 
-Task 2.1 asks for two conversions. `index_to_position` is the stride sum above. `to_index` turns an **ordinal**, a number from 0 to size - 1, into an index in a shape, by repeated division and remainder from the last dimension backward. Counting ordinals from 0 to size - 1 through `to_index` visits every index exactly once, and every MiniTorch loop walks its output tensor this way.
+Task 2.1 asks for two conversions. `index_to_position` is the stride sum above. `to_index` turns an **ordinal**, a number from 0 to size - 1, into an index in a shape, by repeated division and remainder from the last dimension backward. For ordinal 5 in shape (2, 3), 5 divided by 3 leaves remainder 2 and quotient 1, so the index is (1, 2). Counting ordinals from 0 to size - 1 through `to_index` visits every index exactly once, and every MiniTorch loop walks its output tensor this way.
 
 **Broadcasting** lets one operation combine tensors of different shapes, as `x + b` does when it adds a bias of shape (3,) to every row of x. You use it in PyTorch without thinking about it. Task 2.2 writes the rules down as code.
 

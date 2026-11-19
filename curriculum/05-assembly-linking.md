@@ -139,11 +139,11 @@ All tests pass. Stepping through `sum_array` in gdb with `si`, you can say what 
 
 ## Stack frames, nested calls and recursion
 
-A leaf function needs no stack. A function that calls another one does, because the call destroys every caller-saved register and overwrites the return address. This step is the stack frame a non-leaf function sets up. Start with the two instructions that move the stack pointer on their own.
+A leaf function needs no stack. A function that calls another one does, because the call destroys every caller-saved register and overwrites the return address. This step builds the stack frame a non-leaf function sets up. Start with the two instructions that move the stack pointer on their own.
 
 ![Before a call the stack holds the caller's data, call pushes the return address and lowers rsp, and ret pops it and raises rsp back to where it started.](figures/05-call-return.svg)
 
-`call` pushes the return address onto the stack and jumps. `ret` pops it and jumps back. So a function starts with rsp 8 bytes off a multiple of 16, and the ABI wants rsp to be a multiple of 16 again at every `call` the function makes. Each `push` moves rsp by 8. Count your pushes and adjust with `sub` until rsp is a multiple of 16 before your own `call`.
+`call` pushes the return address onto the stack and jumps. `ret` pops it and jumps back. The ABI wants rsp to be a multiple of 16 at every `call`. The `call` then pushes 8 bytes, so every function starts with rsp 8 bytes off a multiple of 16. Each `push` moves rsp by another 8. Count your pushes and adjust with `sub` until rsp is a multiple of 16 again before your own `call`.
 
 A function that needs values to survive its own calls keeps them in callee-saved registers and pushes the caller's copies first. The epilogue pops them in reverse order. This function computes `sq(a) + sq(b) + sq(c)`. It pushes rbx and r12, then 8 more bytes so rsp is aligned before each `call`:
 
@@ -415,7 +415,7 @@ Write `src/arm64/calls.s` and `src/arm64/hello.s` with the same functions as ste
 - prologue moves the stack pointer by (bytes):
 ```
 
-Optional, on the Mac: build `calls.s` natively with clang. Apple's ABI gives every C name a leading underscore (`_sum3sq`), spells `adrp` and `add` operands as `sym@PAGE` and `sym@PAGEOFF`, reserves x18, and passes the variadic arguments of `printf` on the stack, so `print_long` stores the value at `[sp]` instead of x1. [Apple: Writing ARM64 code for Apple platforms](https://developer.apple.com/documentation/xcode/writing-arm64-code-for-apple-platforms) lists these differences.
+> **Optional:** On the Mac, build `calls.s` natively with clang. Apple's ABI gives every C name a leading underscore (`_sum3sq`), spells `adrp` and `add` operands as `sym@PAGE` and `sym@PAGEOFF`, reserves x18, and passes the variadic arguments of `printf` on the stack, so `print_long` stores the value at `[sp]` instead of x1. [Apple: Writing ARM64 code for Apple platforms](https://developer.apple.com/documentation/xcode/writing-arm64-code-for-apple-platforms) lists these differences.
 
 ### Done when
 
@@ -530,7 +530,7 @@ Unpack `bomb.tar` under your home directory. Keep `answers.txt` with one solved 
 
 ## How a buffer overflow becomes an exploit
 
-The bomb was a program you read. This step is a program you break, and why it breaks. You have seen that a copy with no length check runs off the end of a buffer, and chapter 01's ASan caught it. On the stack the bytes just above a local array are the saved registers and the return address.
+The bomb was a program you read. In this step you break a program and see why it breaks. You have seen that a copy with no length check runs off the end of a buffer, and chapter 01's ASan caught it. On the stack the bytes just above a local array are the saved registers and the return address.
 
 ![A write longer than the buffer runs upward past it, over the saved rbp and then over the return address, so ret jumps to the address the input left in the return-address slot.](figures/05-buffer-overflow.svg)
 
@@ -681,7 +681,21 @@ Use the split from step 10 (`arena.o`, `str.o`, `json.o`, `jsoncheck.o`).
 
 Every later chapter builds with `make` (xv6, Lua, Valkey, the Linux kernel), and the book has never had you write one. `build.sh` stays the build of this book. The point here is to read and write one small Makefile for the library you just split.
 
-A **Makefile** lists **targets**, each with its **prerequisites** and a recipe to build it, and `make` rebuilds a target only when a prerequisite is newer. A recipe is the commands under a rule, and each recipe line must start with a tab, not spaces. A **pattern rule** such as `%.o: %.c` says how to make any `.o` from its `.c`. In a recipe, `$@` is the target, `$<` is the first prerequisite and `$^` is all of them. The `-MMD` flag makes the compiler write each file's header dependencies into a `.d` file, so a changed header rebuilds exactly the files that include it. Here is the whole thing, six lines:
+A **Makefile** is a list of rules. Each rule names a **target**, the file to build, its **prerequisites**, the files it is built from, and a **recipe**, the commands that build it:
+
+```make
+app: jsoncheck.o json.o
+	cc -o app jsoncheck.o json.o
+```
+
+`make` rebuilds a target only when one of its prerequisites is newer than the target. So after you edit one `.c` file, only its `.o` and the program are rebuilt. Four more pieces make a Makefile short:
+
+- Each recipe line must start with a tab, not spaces.
+- A **pattern rule** such as `%.o: %.c` says how to make any `.o` from the `.c` of the same name.
+- In a recipe, `$@` is the target, `$<` is the first prerequisite and `$^` is all of them.
+- The `-MMD` flag makes the compiler write each file's header dependencies into a `.d` file, so a changed header rebuilds exactly the files that include it.
+
+Here is the whole Makefile for the library:
 
 ```make
 OBJS = jsoncheck.o json.o str.o arena.o

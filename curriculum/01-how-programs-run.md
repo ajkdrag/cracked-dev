@@ -16,7 +16,7 @@ The C programs in this chapter are short and given to you, with every new line e
 
 Everything a computer stores is a number: your source code, the program clang writes, every letter you print. The tools in this book show you those numbers in a compact form, and this step teaches you to read it.
 
-A **bit** is one binary digit, 0 or 1. A **byte** is eight bits. Eight bits have 256 different patterns, so one byte holds a whole number from 0 to 255. Each bit position is worth twice the one to its right, from 1 at the right end up to 128 at the left. You add up the positions that hold a 1.
+A **bit** is one binary digit, 0 or 1. A **byte** is eight bits. Eight bits have 256 different patterns, so one byte holds a whole number from 0 to 255. Each bit position is worth twice the one to its right, from 1 at the right end up to 128 at the left. You add up the positions that hold a 1. The byte `01101000` has a 1 in the positions worth 64, 32 and 8, so it holds 64 + 32 + 8 = 104.
 
 Long rows of bits are hard to read, so tools print bytes in **hexadecimal** (hex), which is base 16. Hex uses the digits 0 to 9 and then `a` to `f` for 10 to 15. One hex digit stands for exactly four bits, so every byte is exactly two hex digits. A `0x` in front marks a number as hex: `0x68` is 6 × 16 + 8 = 104.
 
@@ -593,7 +593,7 @@ A **debugger** runs your program under its control. You set a **breakpoint** on 
 
 A **watchpoint** stops the program every time a variable changes, which finds the line that wrote a bad value without stepping through everything before it. The debugger of this book is gdb.
 
-![A watchpoint on total stops the program at every change, and the values go 0, 72, 157, 221, 320, so the first score, 90, was never added.](figures/01-watch.svg)
+![A watchpoint on total stops the program at every change and shows the old and the new value, here 0, 72, 157, 221 and 320.](figures/01-watch.svg)
 
 The debug build already gives gdb what it needs. `-g3` records which instructions belong to which line and where each variable lives. `-O0` keeps every variable in memory, where gdb can read it. LeakSanitizer cannot run under a debugger, so start gdb with `ASAN_OPTIONS=detect_leaks=0` in front. `ASAN_OPTIONS` is an environment variable that the ASan code reads.
 

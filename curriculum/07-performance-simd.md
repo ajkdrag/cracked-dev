@@ -134,7 +134,9 @@ If `parse` calls `number`, the time of `number` counts inside `parse` too. So th
 
 ![parse calls number three times. The inclusive time of parse is its whole bar, and its exclusive time is the parse bar with the three number bars cut out.](figures/07-profile-blocks.svg)
 
-Recursion breaks the obvious inclusive sum, because an outer call already includes its inner calls, and your chapter 04 parser is recursive. Casey's C++ ends a block in a destructor, a function C++ runs when a variable goes out of scope, and C has none. clang's `cleanup` attribute calls a function with a pointer to a local variable when the variable goes out of scope, early returns included. `__COUNTER__` expands to 0, 1, 2 and so on, a new number at each use:
+Recursion breaks the obvious inclusive sum, and your chapter 04 parser is recursive. Take a function that works for 1 ms and then calls itself, five levels deep. The outermost call lasts 5 ms, and that is the function's inclusive time. Adding up every call's own span gives 5 + 4 + 3 + 2 + 1 = 15 ms, because each outer call already contains the inner ones. Casey's fix is the `old_inclusive` field below: a block saves the anchor's inclusive total when it starts and overwrites the total with that saved value plus its own span when it ends, so only the outermost call counts.
+
+Casey's C++ ends a block in a destructor, a function C++ runs when a variable goes out of scope, and C has none. clang's `cleanup` attribute does that job in C: it calls a function with a pointer to a local variable when the variable goes out of scope, early returns included. `__COUNTER__` expands to 0, 1, 2 and so on, a new number at each use:
 
 ```c
 typedef struct {
@@ -233,6 +235,8 @@ The tester reaches a stable minimum for all three tests, and the faults per run 
 ## Latency, throughput and dependency chains
 
 To go further, you need to know what the core does with the instructions in a loop. Two numbers describe an instruction. **Latency** is how many cycles pass before its result can feed another instruction. **Throughput** is how many of it the core can start per cycle. Casey explains them with a washer and a dryer, and then turns them into predictions for real loops.
+
+Take an integer multiply on a recent core: its latency is 3 cycles, and the core can start a new one every cycle. Three multiplies that each need the previous result take 3 + 3 + 3 = 9 cycles. Three multiplies of unrelated values start in cycles 1, 2 and 3 and are all done after cycle 5.
 
 When each instruction needs the result of the one before, they form a **dependency chain**, and the chain runs at the speed of latency. When instructions do not depend on each other, the core overlaps them, and the loop runs at the speed of throughput. `SingleScalar` from step 1 is one chain of adds. `DualScalar` keeps two sums and so has two chains that run side by side.
 
@@ -496,6 +500,7 @@ A comparison returns a **mask**: all bits set in each lane where it holds and al
 An array is rarely a multiple of the lane count. Process full registers while at least one full register of data remains, then finish the rest, the **tail**, with the scalar code. Never load past the end of the array, and keep the scalar version as the oracle.
 
 A single running sum in a `__m256d` is one dependency chain again, four lanes wide. Casey's "Dependency Chain Stalls" and "In-order Interleaving" show how a second accumulator hides the latency of the add, as `add_chains2` did in step 5.
+
 ### Study
 
 - [Computer Enhance: Three Steps from Scalar to SIMD](https://www.computerenhance.com/p/three-steps-from-scalar-to-simd) (watch, 1 h 50 min): This video, then "Branchless Absolute Value", "SIMD Predicates", "SIMD Masking" and "Horizontal Operations" from the same Part 5 list. "SIMD Mask Registers" is about AVX-512. Watch it only if `grep -o -m1 -w avx512f /proc/cpuinfo` prints a match. "Nested SIMD Predicates", "SIMD Shuffles" and "SIMD Unpacks", which sit between "SIMD Masking" and "Horizontal Operations", are optional.
@@ -521,7 +526,7 @@ The array add passes for every length from 0 to 33 with the guard bytes intact, 
 
 Chapter 02's word counter looked up words with a linear scan, and chapter 04 replaced the scan with Wellons' hash trie. Each lookup in the trie follows pointers from node to node. At a million keys most of those nodes are in neither L1 nor L2, and step 7 measured what each such hop costs.
 
-An **open-addressing** table keeps everything in flat arrays. The hash picks a slot, and if that slot holds another key, the lookup tries the next slots in a fixed order until it finds the key or an empty slot. Google's **Swiss table** adds a separate array of **control bytes**, one per slot, and checks a group of 16 of them with a few SSE2 instructions.
+An **open-addressing** table keeps everything in flat arrays. The hash picks a slot, and if that slot holds another key, the lookup tries the next slots in a fixed order until it finds the key or an empty slot. Google's **Swiss table** adds a separate array of **control bytes**, one per slot, and checks a group of 16 of them with a few SSE2 instructions. It splits the 64-bit hash in two. The top 57 bits, called H1, pick the group where the search starts. The low 7 bits, called H2, are a small fingerprint of the key that is stored in the slot's control byte.
 
 ![H1, the top 57 bits of the hash, picks the first group, and H2, the low 7 bits, is compared with all 16 control bytes of the group at once. The resulting mask has a bit for each match, and only those slots compare the full key. A miss moves on to the next group of the probe sequence.](figures/07-swiss-table.svg)
 

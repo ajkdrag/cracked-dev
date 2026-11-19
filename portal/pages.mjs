@@ -185,8 +185,11 @@ function layout(book, { title, activeChapterId, main }) {
 <body hx-boost="true">
   <div class="shell">
     <aside class="sidebar">
-      <a class="brand" href="/">cracked-dev</a>
-      <button class="search-button" type="button" data-open-search>Search<kbd>&#8984;K</kbd></button>
+      <div class="sidebar-bar">
+        <a class="brand" href="/">cracked-dev</a>
+        <button class="search-button" type="button" data-open-search>Search<kbd>&#8984;K</kbd></button>
+        <button class="menu-button" type="button" data-toggle-menu>Chapters</button>
+      </div>
       <nav class="chapter-list">
         ${groupByPart(chapters)
           .map(
@@ -202,7 +205,8 @@ function layout(book, { title, activeChapterId, main }) {
               <span class="chapter-number">${chapter.id}</span>
               <span class="chapter-title">${escapeHtml(chapter.title)}</span>
               <span class="progress-count">${progressCount(chapter)}</span>
-            </a>`,
+            </a>
+            ${chapter.id === activeChapterId ? sidebarSteps(chapter) : ""}`,
             )
             .join("")}`,
           )
@@ -222,6 +226,20 @@ function layout(book, { title, activeChapterId, main }) {
   </div>
 </body>
 </html>`;
+}
+
+// The steps of the open chapter. They show when the screen is too narrow for
+// the right rail.
+function sidebarSteps(chapter) {
+  return `
+    <div class="sidebar-steps">
+      ${chapter.steps
+        .map(
+          (step) =>
+            `<a href="#step-${step.number}">${step.number}. ${inlineMarkdown(step.title)}</a>`,
+        )
+        .join("")}
+    </div>`;
 }
 
 function groupByPart(chapters) {

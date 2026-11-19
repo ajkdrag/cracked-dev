@@ -101,7 +101,13 @@ The bits tests pass with no sanitizer report. For every prediction that was wron
 
 The parser of this chapter keeps JSON numbers as text, so this step is mostly for later chapters: chapters 07, 20 and 21 compute with floats all the time. It also explains why the parser keeps the text. Floats are the second way C keeps numbers as bits, and this step shows what `float` and `double` can hold exactly and what they round.
 
-A `float` is 32 bits in three **fields**: a sign bit, an 8-bit **exponent** and a 23-bit **fraction**. For a normal float the value is the fraction with a 1 in front of the **binary point**, the point between the whole bits and the fractional bits, like a decimal point, times 2 to the power of the exponent minus 127, negated if the sign bit is 1. That leading 1 is not stored, so it is called the **implied 1**. The 127 is called the **bias**. It lets the 8 exponent bits stand for powers from -126 to 127.
+A `float` is 32 bits in three **fields**: a sign bit, an 8-bit **exponent** and a 23-bit **fraction**. It works like scientific notation in base 2. Decimal writes 1250 as 1.25 times 10 to the 3rd. A float writes 0.15625 as binary 1.01 times 2 to the -3rd, where binary 1.01 is 1 plus a quarter, 1.25. The point in 1.01 is the **binary point**: the bits after it are worth a half, a quarter, an eighth and so on.
+
+The three fields store that form:
+
+- The sign bit is 1 for a negative number.
+- The fraction holds the bits after the binary point, here `01` followed by zeros. The 1 in front of the point is always there for a normal float, so it is not stored. It is called the **implied 1**.
+- The exponent holds the power of 2 plus 127, here -3 + 127 = 124. The 127 is called the **bias**. It lets the 8 exponent bits stand for powers from -126 to 127 without a sign bit of their own.
 
 ![The float 0.15625 is 0x3E200000: sign 0, exponent 124, fraction 01 followed by zeros. That is 1.25 times 2 to the -3.](figures/04-float-fields.svg)
 

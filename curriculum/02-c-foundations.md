@@ -227,7 +227,7 @@ Write `src/strings.c` and `tests/strings_test.c` in the test pattern, and run it
 2. `int str_copy(char *dst, size_t cap, const char *src)` returns 0 and copies `src` with its terminator if it fits in `cap` bytes, and returns -1 without writing anything otherwise. Test an empty source, an exact fit ("abc" into 4 bytes), one byte too small ("abc" into 3 bytes) and `cap` 0.
 3. `void str_reverse(char *s)` reverses in place. Test "", "a", "ab", "abc" and "abcd".
 4. `void str_lower(char *s)` lowercases in place. Test "MiXeD 42!".
-5. Move `swap_ints` from the previous step into this file and test it. Do not mark `swap_ints` or `str_len` `static`. At `-O1` clang copies a `static` function into its callers and deletes it, and step 8 reads the listings of both.
+5. Move `swap_ints` from the previous step into this file and test it. Do not mark `swap_ints` or `str_len` `static`. At `-O1` clang copies a `static` function into its callers and deletes it, and the last step reads the listings of both.
 6. In `main`, declare `int nums[4]` and `char text[4]`, print `&nums[0]`, `&nums[0] + 1`, `&text[0]` and `&text[0] + 1` with `%p`, and explain the difference in the addresses.
 
 ### Done when
@@ -397,15 +397,70 @@ The size passed to `realloc` can overflow too. `new_cap * sizeof *v->data` is a 
 
 All tests pass with balanced counters and no sanitizer report. Add a last test to `tests/vec_test.c` that saves a pointer to `data[1]`, pushes until the array grows, then reads through the saved pointer. ASan reports heap-use-after-free if the block moved. Delete that test once you have seen the report. You can say which pointers stay valid after a push that grows the array and which do not.
 
-## A word counter, then its assembly
+## A word counter
 
-This step puts the whole chapter into one program, then shows what the compiler made of three of your functions.
+This step puts the whole chapter into one program.
 
 The word counter reads text from standard input, splits it into words and counts each distinct word. A word is a run of letters as `isalpha` sees them, stored lowercase. Everything else separates words, so "don't" counts as "don" and "t". The table is a growable array of entries, and each entry owns a heap copy of its word:
 
 ![The word table holds a heap array of four entries, three in use. Each entry points at its own heap copy of a word and keeps a count.](figures/02-word-table.svg)
 
-The second half of the step reads assembly, the machine instructions written as text, one per line. Chapter 01 showed clang's four stages, and `-S` stops it after the second, with the assembly in a `.s` file.
+### Study
+
+- [Beej's C Library Reference: ctype.h](https://beej.us/guide/bgclr/html/split/ctype.html) (reference, as needed): The chapter introduction on why these functions need an `unsigned char` value, then the `isalpha()` and `tolower()` entries.
+
+### Build
+
+Write `src/wordcount.c`:
+
+1. `src/counted.h` is the file from steps 6 and 7. If you wrote the wrappers inside `list.c` and `vec.c`, move them into `src/counted.h` now, with `counted_realloc`, and include it from all three programs.
+2. Declare `struct WordCount { char *word; size_t count; }` and `struct WordTable { struct WordCount *items; size_t len; size_t cap; }`.
+3. `void table_init(struct WordTable *t)` sets everything to zero and allocates nothing.
+4. `char *word_copy(const char *start, size_t len)` returns a new block from `counted_malloc` that holds the `len` bytes at `start`, lowercased, with a terminator, or `NULL` if allocation fails.
+5. `bool table_add_word(struct WordTable *t, const char *start, size_t len)` adds the `len` letters at `start`. It returns false for a `NULL` table, `NULL` `start` or `len` 0. Capacity goes 0, 4, 8. To look a word up, scan the entries and compare the stored word with the slice byte by byte, lowercasing the slice as you go, and check that the stored word ends exactly at `len`. A word already in the table only adds 1 to its count and allocates nothing. A new word gets its copy from `word_copy`. If growing the array fails after the copy succeeded, free the copy so nothing leaks.
+6. `bool table_add_text(struct WordTable *t, const char *text)` splits `text` into words and adds each one.
+7. `void table_free(struct WordTable *t)` frees every word and the array, zeroes the struct, and is safe to call twice or with `NULL`.
+8. `main` reads all of standard input with the growing buffer of Beej's `readline`: `fgetc(stdin)` returns the next byte as an `int`, or `EOF` when the input is over. It appends each byte to a buffer that doubles when full and adds the terminator at `EOF`. Then it calls `table_add_text`, prints one `count word` line per entry in order of first appearance, frees everything and returns 0. On allocation failure it prints a message to `stderr` and returns 1.
+
+Write `tests/wordcount_test.c` and run it with `sh tests/run_test.sh wordcount`. Test:
+
+- "The", then "THE": one entry "the" with count 2. The second add allocates nothing.
+- "th", "the" and "then" are three entries.
+- Adding the first 5 bytes of "hello world" stores "hello".
+- `The cat. the dog; THE end 42 don't` gives the 3, cat 1, dog 1, end 1, don 1, t 1, in that order.
+- "", "123 !! --", text that ends right after a word, and text that starts with spaces, tabs and newlines.
+- 50000 copies of "the " give one entry with count 50000 and exactly 2 allocation calls. Build the 200 KB input string with plain `malloc` so it does not show up in the counts.
+- Allocation fails on the word copy, on the first array growth (the copy must be freed), on a later growth (old entries intact) and halfway through `table_add_text` (the words before the failure stay counted).
+- Counters balance after every test.
+
+Then compare your program with a second word count built from standard shell tools, on a long text. You use these tools only for this check, so copy the commands after you have read what each part does:
+
+- `ls --help > ls.txt` saves the help text of `ls` to a file, which gives you a few hundred words to count.
+- `tr -cs 'A-Za-z' '\n'` replaces every run of characters that are not letters with one newline, so each word lands on a line of its own. `LC_ALL=C` makes `tr` treat each byte as one plain character.
+- `tr 'A-Z' 'a-z'` lowercases, and `grep -v '^$'` drops empty lines.
+- `sort | uniq -c` puts equal words next to each other and counts each run. `awk '{print $1, $2}'` reprints the count and the word with one space between them.
+- `diff` prints the lines where the two files differ, and nothing when they match.
+
+```sh
+ls --help > ls.txt
+./out/Linux-debug/wordcount < ls.txt | sort > mine.txt
+LC_ALL=C tr -cs 'A-Za-z' '\n' < ls.txt | LC_ALL=C tr 'A-Z' 'a-z' \
+  | grep -v '^$' | sort | uniq -c | awk '{print $1, $2}' | sort > shell.txt
+diff mine.txt shell.txt
+rm mine.txt shell.txt
+```
+
+Keep `ls.txt`, because chapter 04 counts it again, and add the line `ls.txt` to `.gitignore` so git leaves it alone.
+
+### Done when
+
+All word counter tests pass with balanced counters and no sanitizer report, and `diff mine.txt shell.txt` prints nothing. For every `counted_malloc` and `counted_realloc` in `wordcount.c` you can name the function that frees the block.
+
+## Your functions as x86-64 assembly
+
+The word counter runs, and the sanitizers find nothing wrong with it. This step shows what the compiler made of three of your functions: `swap_ints`, `str_len` and `word_copy`.
+
+Assembly is the machine instructions written as text, one per line. Chapter 01 showed clang's four stages, and `-S` stops it after the second, with the assembly in a `.s` file.
 
 Here is `swap_ints` from step 3, compiled with `-O1`, a level of optimization that removes obvious waste and keeps the code readable. Chapter 05 teaches you to write assembly yourself.
 
@@ -451,52 +506,10 @@ Dive Into Systems prints its listings with `objdump -d`, as you did in chapter 0
 ### Study
 
 - [Dive Into Systems: 64-bit x86 Assembly](https://diveintosystems.org/book/C7-x86_64/index.html) (read, 2.5 h): The introduction, 7.1, 7.2, the opening table of 7.3 and 7.3.3 on `lea`, then 7.4 and 7.5. Open each section from the contents list on the left, because the pages have no "Next" link. Ignore Intel syntax and NASM, since this book reads AT&T syntax. Stop before 7.6, where chapter 05 continues.
-- [Beej's C Library Reference: ctype.h](https://beej.us/guide/bgclr/html/split/ctype.html) (reference, as needed): The chapter introduction on why these functions need an `unsigned char` value, then the `isalpha()` and `tolower()` entries.
 
 ### Build
 
-Part 1, the word counter, in `src/wordcount.c`:
-
-1. `src/counted.h` is the file from steps 6 and 7. If you wrote the wrappers inside `list.c` and `vec.c`, move them into `src/counted.h` now, with `counted_realloc`, and include it from all three programs.
-2. Declare `struct WordCount { char *word; size_t count; }` and `struct WordTable { struct WordCount *items; size_t len; size_t cap; }`.
-3. `void table_init(struct WordTable *t)` sets everything to zero and allocates nothing.
-4. `char *word_copy(const char *start, size_t len)` returns a new block from `counted_malloc` that holds the `len` bytes at `start`, lowercased, with a terminator, or `NULL` if allocation fails.
-5. `bool table_add_word(struct WordTable *t, const char *start, size_t len)` adds the `len` letters at `start`. It returns false for a `NULL` table, `NULL` `start` or `len` 0. Capacity goes 0, 4, 8. To look a word up, scan the entries and compare the stored word with the slice byte by byte, lowercasing the slice as you go, and check that the stored word ends exactly at `len`. A word already in the table only adds 1 to its count and allocates nothing. A new word gets its copy from `word_copy`. If growing the array fails after the copy succeeded, free the copy so nothing leaks.
-6. `bool table_add_text(struct WordTable *t, const char *text)` splits `text` into words and adds each one.
-7. `void table_free(struct WordTable *t)` frees every word and the array, zeroes the struct, and is safe to call twice or with `NULL`.
-8. `main` reads all of standard input with the growing buffer of Beej's `readline`: `fgetc(stdin)` returns the next byte as an `int`, or `EOF` when the input is over. It appends each byte to a buffer that doubles when full and adds the terminator at `EOF`. Then it calls `table_add_text`, prints one `count word` line per entry in order of first appearance, frees everything and returns 0. On allocation failure it prints a message to `stderr` and returns 1.
-
-Write `tests/wordcount_test.c` and run it with `sh tests/run_test.sh wordcount`. Test:
-
-- "The", then "THE": one entry "the" with count 2. The second add allocates nothing.
-- "th", "the" and "then" are three entries.
-- Adding the first 5 bytes of "hello world" stores "hello".
-- `The cat. the dog; THE end 42 don't` gives the 3, cat 1, dog 1, end 1, don 1, t 1, in that order.
-- "", "123 !! --", text that ends right after a word, and text that starts with spaces, tabs and newlines.
-- 50000 copies of "the " give one entry with count 50000 and exactly 2 allocation calls. Build the 200 KB input string with plain `malloc` so it does not show up in the counts.
-- Allocation fails on the word copy, on the first array growth (the copy must be freed), on a later growth (old entries intact) and halfway through `table_add_text` (the words before the failure stay counted).
-- Counters balance after every test.
-
-Then compare your program with a second word count built from standard shell tools, on a long text. You use these tools only for this check, so copy the commands after you have read what each part does:
-
-- `ls --help > ls.txt` saves the help text of `ls` to a file, which gives you a few hundred words to count.
-- `tr -cs 'A-Za-z' '\n'` replaces every run of characters that are not letters with one newline, so each word lands on a line of its own. `LC_ALL=C` makes `tr` treat each byte as one plain character.
-- `tr 'A-Z' 'a-z'` lowercases, and `grep -v '^$'` drops empty lines.
-- `sort | uniq -c` puts equal words next to each other and counts each run. `awk '{print $1, $2}'` reprints the count and the word with one space between them.
-- `diff` prints the lines where the two files differ, and nothing when they match.
-
-```sh
-ls --help > ls.txt
-./out/Linux-debug/wordcount < ls.txt | sort > mine.txt
-LC_ALL=C tr -cs 'A-Za-z' '\n' < ls.txt | LC_ALL=C tr 'A-Z' 'a-z' \
-  | grep -v '^$' | sort | uniq -c | awk '{print $1, $2}' | sort > shell.txt
-diff mine.txt shell.txt
-rm mine.txt shell.txt
-```
-
-Keep `ls.txt`, because chapter 04 counts it again, and add the line `ls.txt` to `.gitignore` so git leaves it alone.
-
-Part 2, the assembly, for `swap_ints`, `str_len` and `word_copy`. None of the three may be `static`, because at `-O1` clang copies a `static` function into its callers and deletes it, so there is no listing to read.
+None of the three functions may be `static`, because at `-O1` clang copies a `static` function into its callers and deletes it, so there is no listing to read.
 
 1. For each one, print its assembly at `-O0` and at `-O1`, for example `clang -S -O1 -o - src/strings.c`. `-o -` writes the output to the terminal instead of a file.
 2. For `swap_ints` and `str_len`, paste the `-O1` version into a comment block above the C function and write next to every instruction the C it came from. Lines that start with a dot and do not end in a colon, such as `.cfi_def_cfa_offset 16`, `.type`, `.size`, `.globl` and `.p2align`, are **directives**: notes for the assembler and the debugger that produce no instructions. Leave them out of your copy. Keep labels such as `.LBB1_1:`, because the jumps name them as their targets.
@@ -530,7 +543,7 @@ x/i $pc              print the instruction about to run
 
 ### Done when
 
-All word counter tests pass with balanced counters and no sanitizer report, and `diff mine.txt shell.txt` prints nothing. For `swap_ints` and `str_len` you have an annotated `-O1` listing, and you can point at the register each argument arrives in, the register the result leaves in, and every load, store and jump. In `word_copy` you can point at each item of Part 2, item 4. You can say what changed between `-O0` and `-O1` for `swap_ints`. In gdb you saw `rdi` and `rsi` hold the addresses of the caller's two ints, `info symbol` named a spot inside `main` as the return address on the stack, and `stepi` past `ret` landed you back in `main` at the instruction after the `call`.
+For `swap_ints` and `str_len` you have an annotated `-O1` listing, and you can point at the register each argument arrives in, the register the result leaves in, and every load, store and jump. In `word_copy` you can point at each thing item 4 of the first list names. You can say what changed between `-O0` and `-O1` for `swap_ints`. In gdb you saw `rdi` and `rsi` hold the addresses of the caller's two ints, `info symbol` named a spot inside `main` as the return address on the stack, and `stepi` past `ret` landed you back in `main` at the instruction after the `call`.
 
 ## Where this leads
 
