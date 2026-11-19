@@ -1,0 +1,42 @@
+<svg viewBox="0 0 720 460" role="img" aria-label="To compute one tile of C, a block walks along K. At each step its threads load one tile of A and one tile of B into shared memory, wait at a barrier, and every thread adds the tiles' share of its dot product. Each loaded value is used by a whole row or column of threads.">
+  <defs>
+    <marker id="21-tiled-matmul-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="40" y="220" width="160" height="160" rx="2"/>
+  <rect class="fig-box" x="240" y="20" width="160" height="160" rx="2"/>
+  <rect class="fig-box" x="240" y="220" width="160" height="160" rx="2"/>
+  <rect class="fig-box" x="40" y="300" width="160" height="40" rx="2" stroke-width="1.5"/>
+  <rect class="fig-box" x="280" y="20" width="40" height="160" rx="2" stroke-width="1.5"/>
+  <line class="fig-line" x1="80" y1="300" x2="80" y2="340"/>
+  <line class="fig-line" x1="280" y1="60" x2="320" y2="60"/>
+  <line class="fig-line" x1="120" y1="300" x2="120" y2="340"/>
+  <line class="fig-line" x1="280" y1="100" x2="320" y2="100"/>
+  <line class="fig-line" x1="160" y1="300" x2="160" y2="340"/>
+  <line class="fig-line" x1="280" y1="140" x2="320" y2="140"/>
+  <rect class="fig-accent" x="120" y="300" width="40" height="40" rx="2"/>
+  <rect class="fig-accent" x="280" y="100" width="40" height="40" rx="2"/>
+  <rect class="fig-box" x="240" y="300" width="160" height="40" rx="2" stroke-dasharray="5 4"/>
+  <rect class="fig-box" x="280" y="220" width="40" height="160" rx="2" stroke-dasharray="5 4"/>
+  <line class="fig-line" x1="200" y1="320.0" x2="239" y2="320.0" stroke-dasharray="5 4"/>
+  <line class="fig-line" x1="300.0" y1="180" x2="300.0" y2="219" stroke-dasharray="5 4"/>
+  <rect class="fig-accent" x="280" y="300" width="40" height="40" rx="2"/>
+  <text x="120" y="210" text-anchor="middle" font-size="13" font-weight="600">A (M x K)</text>
+  <text x="228" y="104" text-anchor="end" font-size="13" font-weight="600">B (K x N)</text>
+  <text x="368.0" y="210" text-anchor="middle" font-size="13" font-weight="600">C (M x N)</text>
+  <text class="fig-muted" x="320" y="400" text-anchor="middle" font-size="12">this block's tile: its rows</text>
+  <text class="fig-muted" x="320" y="416" text-anchor="middle" font-size="12">of A, its columns of B</text>
+  <text class="fig-muted" x="40" y="400" font-size="12">k0 moves right</text>
+  <text class="fig-muted" x="410" y="160.0" font-size="12">k0 moves down</text>
+  <rect class="fig-box" x="480" y="220" width="220" height="160" rx="6" stroke-dasharray="5 4"/>
+  <text x="496" y="244" font-size="13" font-weight="600">shared memory</text>
+  <rect class="fig-accent" x="500" y="260" width="70" height="46" rx="4"/>
+  <text class="fig-mono" x="535" y="288" text-anchor="middle" font-size="13">As</text>
+  <rect class="fig-accent" x="610" y="260" width="70" height="46" rx="4"/>
+  <text class="fig-mono" x="645" y="288" text-anchor="middle" font-size="13">Bs</text>
+  <text class="fig-muted" x="590" y="334" text-anchor="middle" font-size="12">load, __syncthreads(),</text>
+  <text class="fig-muted" x="590" y="350" text-anchor="middle" font-size="12">multiply, __syncthreads()</text>
+  <path class="fig-accent-line" d="M 140.0 340 V 438 H 460 V 283 H 499" fill="none" marker-end="url(#21-tiled-matmul-arrow)"/>
+  <path class="fig-accent-line" d="M 320 120.0 H 645 V 259" fill="none" marker-end="url(#21-tiled-matmul-arrow)"/>
+</svg>

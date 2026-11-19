@@ -1,0 +1,43 @@
+<svg viewBox="0 0 720 236" role="img" aria-label="The MNIST network of Task 4.5 with the shape after each layer, for a batch of 16 images. Log-softmax at the end is the operation your own kernel replaces later.">
+  <defs>
+    <marker id="22-mnist-net-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="30" width="124" height="56" rx="6"/>
+  <text x="82.0" y="53.0" text-anchor="middle" font-size="13" font-weight="600">input</text>
+  <text class="fig-mono" x="82.0" y="72.0" text-anchor="middle" font-size="12">(16, 1, 28, 28)</text>
+  <rect class="fig-box" x="159" y="30" width="124" height="56" rx="6"/>
+  <text x="221.0" y="53.0" text-anchor="middle" font-size="13" font-weight="600">conv 3x3, relu</text>
+  <text class="fig-mono" x="221.0" y="72.0" text-anchor="middle" font-size="12">(16, 4, 28, 28)</text>
+  <line class="fig-line" x1="144" y1="58" x2="157" y2="58" marker-end="url(#22-mnist-net-arrow)"/>
+  <rect class="fig-box" x="298" y="30" width="124" height="56" rx="6"/>
+  <text x="360.0" y="53.0" text-anchor="middle" font-size="13" font-weight="600">conv 3x3, relu</text>
+  <text class="fig-mono" x="360.0" y="72.0" text-anchor="middle" font-size="12">(16, 8, 28, 28)</text>
+  <line class="fig-line" x1="283" y1="58" x2="296" y2="58" marker-end="url(#22-mnist-net-arrow)"/>
+  <rect class="fig-box" x="437" y="30" width="124" height="56" rx="6"/>
+  <text x="499.0" y="53.0" text-anchor="middle" font-size="13" font-weight="600">maxpool 4x4</text>
+  <text class="fig-mono" x="499.0" y="72.0" text-anchor="middle" font-size="12">(16, 8, 7, 7)</text>
+  <line class="fig-line" x1="422" y1="58" x2="435" y2="58" marker-end="url(#22-mnist-net-arrow)"/>
+  <rect class="fig-box" x="576" y="30" width="124" height="56" rx="6"/>
+  <text x="638.0" y="53.0" text-anchor="middle" font-size="13" font-weight="600">view</text>
+  <text class="fig-mono" x="638.0" y="72.0" text-anchor="middle" font-size="12">(16, 392)</text>
+  <line class="fig-line" x1="561" y1="58" x2="574" y2="58" marker-end="url(#22-mnist-net-arrow)"/>
+  <rect class="fig-box" x="20" y="160" width="124" height="56" rx="6"/>
+  <text x="82.0" y="183.0" text-anchor="middle" font-size="13" font-weight="600">linear, relu</text>
+  <text class="fig-mono" x="82.0" y="202.0" text-anchor="middle" font-size="12">(16, 64)</text>
+  <rect class="fig-box" x="159" y="160" width="124" height="56" rx="6"/>
+  <text x="221.0" y="183.0" text-anchor="middle" font-size="13" font-weight="600">dropout 0.25</text>
+  <text class="fig-mono" x="221.0" y="202.0" text-anchor="middle" font-size="12">(16, 64)</text>
+  <line class="fig-line" x1="144" y1="188" x2="157" y2="188" marker-end="url(#22-mnist-net-arrow)"/>
+  <rect class="fig-box" x="298" y="160" width="124" height="56" rx="6"/>
+  <text x="360.0" y="183.0" text-anchor="middle" font-size="13" font-weight="600">linear</text>
+  <text class="fig-mono" x="360.0" y="202.0" text-anchor="middle" font-size="12">(16, 10)</text>
+  <line class="fig-line" x1="283" y1="188" x2="296" y2="188" marker-end="url(#22-mnist-net-arrow)"/>
+  <rect class="fig-accent" x="437" y="160" width="124" height="56" rx="6"/>
+  <text x="499.0" y="183.0" text-anchor="middle" font-size="13" font-weight="600">log-softmax</text>
+  <text class="fig-mono" x="499.0" y="202.0" text-anchor="middle" font-size="12">(16, 10)</text>
+  <line class="fig-line" x1="422" y1="188" x2="435" y2="188" marker-end="url(#22-mnist-net-arrow)"/>
+  <path class="fig-line" d="M638.0 86 L638.0 122 L82.0 122 L82.0 158" fill="none" marker-end="url(#22-mnist-net-arrow)"/>
+  <text class="fig-muted" x="360" y="116" text-anchor="middle" font-size="12">flatten channels, height and width</text>
+</svg>

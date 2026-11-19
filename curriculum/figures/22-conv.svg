@@ -1,0 +1,60 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="A 1D convolution with a kernel of width 3. Output t is the dot product of the weights with the inputs at t, t + 1 and t + 2. Positions past the right edge count as 0, so the output is as wide as the input.">
+  <defs>
+    <marker id="22-conv-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="58" y="72" text-anchor="end" font-size="13" font-weight="600">input</text>
+  <rect class="fig-box" x="70" y="50" width="58" height="34" rx="0"/>
+  <text class="fig-mono" x="99.0" y="72" text-anchor="middle" font-size="13">x0</text>
+  <rect class="fig-box" x="128" y="50" width="58" height="34" rx="0"/>
+  <text class="fig-mono" x="157.0" y="72" text-anchor="middle" font-size="13">x1</text>
+  <rect class="fig-box" x="186" y="50" width="58" height="34" rx="0"/>
+  <text class="fig-mono" x="215.0" y="72" text-anchor="middle" font-size="13">x2</text>
+  <rect class="fig-accent" x="244" y="50" width="58" height="34" rx="0"/>
+  <text class="fig-mono" x="273.0" y="72" text-anchor="middle" font-size="13">x3</text>
+  <rect class="fig-accent" x="302" y="50" width="58" height="34" rx="0"/>
+  <text class="fig-mono" x="331.0" y="72" text-anchor="middle" font-size="13">x4</text>
+  <rect class="fig-accent" x="360" y="50" width="58" height="34" rx="0"/>
+  <text class="fig-mono" x="389.0" y="72" text-anchor="middle" font-size="13">x5</text>
+  <rect class="fig-box" x="418" y="50" width="58" height="34" rx="0"/>
+  <text class="fig-mono" x="447.0" y="72" text-anchor="middle" font-size="13">x6</text>
+  <rect class="fig-box" x="476" y="50" width="58" height="34" rx="0"/>
+  <text class="fig-mono" x="505.0" y="72" text-anchor="middle" font-size="13">x7</text>
+  <rect class="fig-box" x="534" y="50" width="58" height="34" rx="0" stroke-dasharray="4 3"/>
+  <text class="fig-muted" x="563.0" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="592" y="50" width="58" height="34" rx="0" stroke-dasharray="4 3"/>
+  <text class="fig-muted" x="621.0" y="72" text-anchor="middle" font-size="13">0</text>
+  <text class="fig-muted" x="592" y="104" text-anchor="middle" font-size="12">past the edge: 0</text>
+  <text x="58" y="152" text-anchor="end" font-size="13" font-weight="600">weight</text>
+  <rect class="fig-accent" x="244" y="130" width="58" height="34" rx="0"/>
+  <text class="fig-mono" x="273.0" y="152" text-anchor="middle" font-size="13">w0</text>
+  <line class="fig-line" x1="273.0" y1="86" x2="273.0" y2="128"/>
+  <rect class="fig-accent" x="302" y="130" width="58" height="34" rx="0"/>
+  <text class="fig-mono" x="331.0" y="152" text-anchor="middle" font-size="13">w1</text>
+  <line class="fig-line" x1="331.0" y1="86" x2="331.0" y2="128"/>
+  <rect class="fig-accent" x="360" y="130" width="58" height="34" rx="0"/>
+  <text class="fig-mono" x="389.0" y="152" text-anchor="middle" font-size="13">w2</text>
+  <line class="fig-line" x1="389.0" y1="86" x2="389.0" y2="128"/>
+  <text class="fig-muted" x="428" y="152" font-size="12">slides one step per output</text>
+  <text x="58" y="232" text-anchor="end" font-size="13" font-weight="600">output</text>
+  <rect class="fig-box" x="70" y="210" width="58" height="34" rx="0"/>
+  <text class="fig-mono" x="99.0" y="232" text-anchor="middle" font-size="13">o0</text>
+  <rect class="fig-box" x="128" y="210" width="58" height="34" rx="0"/>
+  <text class="fig-mono" x="157.0" y="232" text-anchor="middle" font-size="13">o1</text>
+  <rect class="fig-box" x="186" y="210" width="58" height="34" rx="0"/>
+  <text class="fig-mono" x="215.0" y="232" text-anchor="middle" font-size="13">o2</text>
+  <rect class="fig-accent" x="244" y="210" width="58" height="34" rx="0"/>
+  <text class="fig-mono" x="273.0" y="232" text-anchor="middle" font-size="13">o3</text>
+  <rect class="fig-box" x="302" y="210" width="58" height="34" rx="0"/>
+  <text class="fig-mono" x="331.0" y="232" text-anchor="middle" font-size="13">o4</text>
+  <rect class="fig-box" x="360" y="210" width="58" height="34" rx="0"/>
+  <text class="fig-mono" x="389.0" y="232" text-anchor="middle" font-size="13">o5</text>
+  <rect class="fig-box" x="418" y="210" width="58" height="34" rx="0"/>
+  <text class="fig-mono" x="447.0" y="232" text-anchor="middle" font-size="13">o6</text>
+  <rect class="fig-box" x="476" y="210" width="58" height="34" rx="0"/>
+  <text class="fig-mono" x="505.0" y="232" text-anchor="middle" font-size="13">o7</text>
+  <line class="fig-accent-line" x1="302" y1="166" x2="273.0" y2="208" marker-end="url(#22-conv-arrow)"/>
+  <text class="fig-mono" x="316" y="192" font-size="12">o3 = x3*w0 + x4*w1 + x5*w2</text>
+  <text class="fig-mono" x="360" y="278" text-anchor="middle" font-size="12">in[b, ic, t + k] sits at b*s0 + ic*s1 + (t + k)*s2, and counts only when t + k &lt; width</text>
+</svg>

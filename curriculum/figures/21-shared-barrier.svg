@@ -1,0 +1,75 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="Each of the block's eight threads loads one element from global memory into shared memory. __syncthreads() waits until all eight stores are done. Only after it does thread 3 read s[4], which thread 4 wrote.">
+  <defs>
+    <marker id="21-shared-barrier-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="20" y="52" font-size="12">global memory</text>
+  <text class="fig-muted" x="20" y="148" font-size="12">shared memory</text>
+  <text class="fig-muted" x="20" y="164" font-size="12">of the block</text>
+  <text class="fig-muted" x="20" y="282" font-size="12">threads</text>
+  <rect class="fig-box" x="134" y="32" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="157.0" y="52" text-anchor="middle" font-size="12">x[0]</text>
+  <line class="fig-line" x1="157.0" y1="62" x2="157.0" y2="129" marker-end="url(#21-shared-barrier-arrow)"/>
+  <rect class="fig-box" x="134" y="130" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="157.0" y="150" text-anchor="middle" font-size="12">s[0]</text>
+  <rect class="fig-box" x="134" y="262" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="157.0" y="282" text-anchor="middle" font-size="12">t0</text>
+  <rect class="fig-box" x="188" y="32" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="211.0" y="52" text-anchor="middle" font-size="12">x[1]</text>
+  <line class="fig-line" x1="211.0" y1="62" x2="211.0" y2="129" marker-end="url(#21-shared-barrier-arrow)"/>
+  <rect class="fig-box" x="188" y="130" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="211.0" y="150" text-anchor="middle" font-size="12">s[1]</text>
+  <rect class="fig-box" x="188" y="262" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="211.0" y="282" text-anchor="middle" font-size="12">t1</text>
+  <rect class="fig-box" x="242" y="32" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="265.0" y="52" text-anchor="middle" font-size="12">x[2]</text>
+  <line class="fig-line" x1="265.0" y1="62" x2="265.0" y2="129" marker-end="url(#21-shared-barrier-arrow)"/>
+  <rect class="fig-box" x="242" y="130" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="265.0" y="150" text-anchor="middle" font-size="12">s[2]</text>
+  <rect class="fig-box" x="242" y="262" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="265.0" y="282" text-anchor="middle" font-size="12">t2</text>
+  <rect class="fig-box" x="296" y="32" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="319.0" y="52" text-anchor="middle" font-size="12">x[3]</text>
+  <line class="fig-line" x1="319.0" y1="62" x2="319.0" y2="129" marker-end="url(#21-shared-barrier-arrow)"/>
+  <rect class="fig-box" x="296" y="130" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="319.0" y="150" text-anchor="middle" font-size="12">s[3]</text>
+  <rect class="fig-accent" x="296" y="262" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="319.0" y="282" text-anchor="middle" font-size="12">t3</text>
+  <rect class="fig-box" x="350" y="32" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="373.0" y="52" text-anchor="middle" font-size="12">x[4]</text>
+  <line class="fig-line" x1="373.0" y1="62" x2="373.0" y2="129" marker-end="url(#21-shared-barrier-arrow)"/>
+  <rect class="fig-accent" x="350" y="130" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="373.0" y="150" text-anchor="middle" font-size="12">s[4]</text>
+  <rect class="fig-box" x="350" y="262" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="373.0" y="282" text-anchor="middle" font-size="12">t4</text>
+  <rect class="fig-box" x="404" y="32" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="427.0" y="52" text-anchor="middle" font-size="12">x[5]</text>
+  <line class="fig-line" x1="427.0" y1="62" x2="427.0" y2="129" marker-end="url(#21-shared-barrier-arrow)"/>
+  <rect class="fig-box" x="404" y="130" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="427.0" y="150" text-anchor="middle" font-size="12">s[5]</text>
+  <rect class="fig-box" x="404" y="262" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="427.0" y="282" text-anchor="middle" font-size="12">t5</text>
+  <rect class="fig-box" x="458" y="32" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="481.0" y="52" text-anchor="middle" font-size="12">x[6]</text>
+  <line class="fig-line" x1="481.0" y1="62" x2="481.0" y2="129" marker-end="url(#21-shared-barrier-arrow)"/>
+  <rect class="fig-box" x="458" y="130" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="481.0" y="150" text-anchor="middle" font-size="12">s[6]</text>
+  <rect class="fig-box" x="458" y="262" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="481.0" y="282" text-anchor="middle" font-size="12">t6</text>
+  <rect class="fig-box" x="512" y="32" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="535.0" y="52" text-anchor="middle" font-size="12">x[7]</text>
+  <line class="fig-line" x1="535.0" y1="62" x2="535.0" y2="129" marker-end="url(#21-shared-barrier-arrow)"/>
+  <rect class="fig-box" x="512" y="130" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="535.0" y="150" text-anchor="middle" font-size="12">s[7]</text>
+  <rect class="fig-box" x="512" y="262" width="46" height="30" rx="4"/>
+  <text class="fig-mono" x="535.0" y="282" text-anchor="middle" font-size="12">t7</text>
+  <text class="fig-muted" x="572" y="100" font-size="12">1. each thread</text>
+  <text class="fig-muted" x="572" y="116" font-size="12">stores one value</text>
+  <line class="fig-accent-line" x1="130" y1="202" x2="562" y2="202" stroke-dasharray="5 4" stroke-width="1.5"/>
+  <text class="fig-accent-text" x="572" y="200" font-size="12">__syncthreads():</text>
+  <text class="fig-accent-text" x="572" y="216" font-size="12">waits for all stores</text>
+  <path class="fig-accent-line" d="M 373.0 160 C 373.0 230, 319.0 210, 319.0 261" fill="none" marker-end="url(#21-shared-barrier-arrow)"/>
+  <text class="fig-muted" x="572" y="256" font-size="12">2. then thread 3</text>
+  <text class="fig-muted" x="572" y="272" font-size="12">reads s[4]</text>
+</svg>
