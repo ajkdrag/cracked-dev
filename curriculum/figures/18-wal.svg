@@ -1,0 +1,46 @@
+<svg viewBox="0 0 720 290" role="img" aria-label="Commit appends one frame per changed page to the WAL, the last one marked commit, and syncs the WAL. Recovery scans the WAL, keeps the frames up to the last commit mark, ignores the frames after it and builds the map from page number to newest frame. A checkpoint copies the newest frame of each page into data.db">
+  <defs>
+    <marker id="18-wal-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="20" y="30" font-size="12">WAL file: commit appends frames, syncs the WAL, then acknowledges</text>
+  <rect class="fig-box" x="20" y="44" width="70" height="52" rx="6"/>
+  <text x="55.0" y="74.2" text-anchor="middle" font-size="12" font-weight="600">header</text>
+  <rect class="fig-box" x="90" y="44" width="70" height="52" rx="6"/>
+  <text class="fig-mono" x="125.0" y="67.0" text-anchor="middle" font-size="13">p3</text>
+  <text class="fig-muted" x="125.0" y="84.0" text-anchor="middle" font-size="12">frame 1</text>
+  <rect class="fig-accent" x="160" y="44" width="70" height="52" rx="6"/>
+  <text class="fig-mono" x="195.0" y="67.0" text-anchor="middle" font-size="13">p7</text>
+  <text class="fig-muted" x="195.0" y="84.0" text-anchor="middle" font-size="12">commit</text>
+  <rect class="fig-box" x="230" y="44" width="70" height="52" rx="6"/>
+  <text class="fig-mono" x="265.0" y="67.0" text-anchor="middle" font-size="13">p9</text>
+  <text class="fig-muted" x="265.0" y="84.0" text-anchor="middle" font-size="12">frame 3</text>
+  <rect class="fig-box" x="300" y="44" width="70" height="52" rx="6"/>
+  <text class="fig-mono" x="335.0" y="67.0" text-anchor="middle" font-size="13">p3</text>
+  <text class="fig-muted" x="335.0" y="84.0" text-anchor="middle" font-size="12">frame 4</text>
+  <rect class="fig-accent" x="370" y="44" width="70" height="52" rx="6"/>
+  <text class="fig-mono" x="405.0" y="67.0" text-anchor="middle" font-size="13">p2</text>
+  <text class="fig-muted" x="405.0" y="84.0" text-anchor="middle" font-size="12">commit</text>
+  <rect class="fig-box" x="440" y="44" width="70" height="52" rx="6" stroke-dasharray="4 4" fill-opacity="0"/>
+  <text class="fig-muted" x="475" y="74" text-anchor="middle" font-size="13">p5</text>
+  <rect class="fig-box" x="510" y="44" width="70" height="52" rx="6" stroke-dasharray="4 4" fill-opacity="0"/>
+  <text class="fig-muted" x="545" y="74" text-anchor="middle" font-size="13">p8</text>
+  <line class="fig-line" x1="90" y1="110" x2="440" y2="110"/>
+  <line class="fig-line" x1="90" y1="104" x2="90" y2="116"/>
+  <line class="fig-line" x1="440" y1="104" x2="440" y2="116"/>
+  <text x="265" y="128" text-anchor="middle" font-size="12">recovery keeps every frame up to the last commit</text>
+  <text class="fig-muted" x="510" y="128" text-anchor="middle" font-size="12">no commit: ignored</text>
+  <rect class="fig-box" x="20" y="160" width="230" height="110" rx="6"/>
+  <text x="135" y="182" text-anchor="middle" font-size="13" font-weight="600">WAL map</text>
+  <text class="fig-mono" x="135" y="203" text-anchor="middle" font-size="12">page 3 → frame 4</text>
+  <text class="fig-mono" x="135" y="221" text-anchor="middle" font-size="12">page 7 → frame 2</text>
+  <text class="fig-mono" x="135" y="239" text-anchor="middle" font-size="12">page 9 → frame 3</text>
+  <text class="fig-mono" x="135" y="257" text-anchor="middle" font-size="12">page 2 → frame 5</text>
+  <rect class="fig-accent" x="470" y="180" width="230" height="70" rx="6"/>
+  <text x="585.0" y="212.0" text-anchor="middle" font-size="13" font-weight="600">data.db</text>
+  <text class="fig-muted" x="585.0" y="229.0" text-anchor="middle" font-size="12">written only by a checkpoint</text>
+  <line class="fig-line" x1="250" y1="215" x2="468" y2="215" marker-end="url(#18-wal-arrow)"/>
+  <text class="fig-muted" x="359" y="190" text-anchor="middle" font-size="12">checkpoint copies the</text>
+  <text class="fig-muted" x="359" y="206" text-anchor="middle" font-size="12">newest frame of each page</text>
+</svg>

@@ -1,0 +1,26 @@
+<svg viewBox="0 0 720 230" role="img" aria-label="A lookup of key 55 in a two-level B+ tree: the root holds separators 40 and 80, 55 lies between them, so the lookup follows the middle child to the leaf that holds 40, 50, 55 and 60. The leaves are linked left to right">
+  <defs>
+    <marker id="18-btree-lookup-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="280" y="40" width="160" height="44" rx="6"/>
+  <text class="fig-mono" x="360" y="67" text-anchor="middle" font-size="14">40   |   80</text>
+  <text class="fig-muted" x="360" y="30" text-anchor="middle" font-size="12">root page</text>
+  <text class="fig-accent-text" x="456" y="58" font-size="12">find 55:</text>
+  <text class="fig-accent-text" x="456" y="75" font-size="12">40 ≤ 55 &lt; 80, middle child</text>
+  <line class="fig-line" x1="295" y1="84" x2="140" y2="148" marker-end="url(#18-btree-lookup-arrow)"/>
+  <line class="fig-accent-line" x1="360" y1="84" x2="360" y2="148" marker-end="url(#18-btree-lookup-arrow)"/>
+  <line class="fig-line" x1="425" y1="84" x2="585" y2="148" marker-end="url(#18-btree-lookup-arrow)"/>
+  <rect class="fig-box" x="50" y="150" width="180" height="44" rx="6"/>
+  <text class="fig-mono" x="140.0" y="176.55" text-anchor="middle" font-size="13">10  20  30</text>
+  <rect class="fig-accent" x="270" y="150" width="180" height="44" rx="6"/>
+  <text class="fig-mono" x="360.0" y="176.55" text-anchor="middle" font-size="13">40  50  55  60</text>
+  <rect class="fig-box" x="490" y="150" width="180" height="44" rx="6"/>
+  <text class="fig-mono" x="580.0" y="176.55" text-anchor="middle" font-size="13">80  90</text>
+  <line class="fig-line" x1="230" y1="172" x2="268" y2="172" marker-end="url(#18-btree-lookup-arrow)"/>
+  <line class="fig-line" x1="450" y1="172" x2="488" y2="172" marker-end="url(#18-btree-lookup-arrow)"/>
+  <text class="fig-muted" x="140" y="214" text-anchor="middle" font-size="12">leaf</text>
+  <text class="fig-accent-text" x="360" y="214" text-anchor="middle" font-size="12">leaf: 55 found here</text>
+  <text class="fig-muted" x="580" y="214" text-anchor="middle" font-size="12">leaf</text>
+</svg>

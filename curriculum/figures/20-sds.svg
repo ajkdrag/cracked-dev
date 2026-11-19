@@ -1,0 +1,33 @@
+<svg viewBox="0 0 720 200" role="img" aria-label="An sds string: a small header with the length, the allocated size and a flags byte sits right before the characters. The sds pointer points at the first character, so it also works as a char * for C functions, and s[-1] is the flags byte.">
+  <defs>
+    <marker id="20-sds-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="40" y="70" width="70" height="44" rx="0"/>
+  <text class="fig-mono" x="75.0" y="97" text-anchor="middle" font-size="13">len</text>
+  <rect class="fig-box" x="110" y="70" width="70" height="44" rx="0"/>
+  <text class="fig-mono" x="145.0" y="97" text-anchor="middle" font-size="13">alloc</text>
+  <rect class="fig-accent" x="180" y="70" width="70" height="44" rx="0"/>
+  <text class="fig-mono" x="215.0" y="97" text-anchor="middle" font-size="13">flags</text>
+  <text class="fig-muted" x="145" y="58" text-anchor="middle" font-size="12">sdshdr8: 3 bytes</text>
+  <rect class="fig-box" x="250" y="70" width="40" height="44" rx="0"/>
+  <text class="fig-mono" x="270.0" y="97" text-anchor="middle" font-size="13">h</text>
+  <rect class="fig-box" x="290" y="70" width="40" height="44" rx="0"/>
+  <text class="fig-mono" x="310.0" y="97" text-anchor="middle" font-size="13">e</text>
+  <rect class="fig-box" x="330" y="70" width="40" height="44" rx="0"/>
+  <text class="fig-mono" x="350.0" y="97" text-anchor="middle" font-size="13">l</text>
+  <rect class="fig-box" x="370" y="70" width="40" height="44" rx="0"/>
+  <text class="fig-mono" x="390.0" y="97" text-anchor="middle" font-size="13">l</text>
+  <rect class="fig-box" x="410" y="70" width="40" height="44" rx="0"/>
+  <text class="fig-mono" x="430.0" y="97" text-anchor="middle" font-size="13">o</text>
+  <rect class="fig-box" x="450" y="70" width="40" height="44" rx="0"/>
+  <text class="fig-mono" x="470.0" y="97" text-anchor="middle" font-size="13">\0</text>
+  <rect class="fig-box" x="490" y="70" width="150" height="44" rx="0" stroke-dasharray="4 3"/>
+  <text class="fig-muted" x="565" y="97" text-anchor="middle" font-size="12">spare</text>
+  <text class="fig-muted" x="370" y="58" text-anchor="middle" font-size="12">len = 5, alloc = 5 + spare</text>
+  <text class="fig-mono" x="270" y="178" text-anchor="middle" font-size="13" font-weight="600">sds s</text>
+  <line class="fig-accent-line" x1="270" y1="160" x2="270" y2="118" marker-end="url(#20-sds-arrow)"/>
+  <text class="fig-mono" x="215" y="178" text-anchor="middle" font-size="13">s[-1]</text>
+  <line class="fig-line" x1="215" y1="160" x2="215" y2="118" marker-end="url(#20-sds-arrow)"/>
+</svg>

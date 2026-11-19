@@ -1,0 +1,52 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="One bucket of Valkey&#x27;s hash table fills one 64-byte cache line: a byte of flag bits, one byte of hash for each of the seven entries, and seven entry pointers. A lookup compares the top byte of the key&#x27;s hash with all seven stored bytes at once and follows a pointer to compare the full key only where they match.">
+  <defs>
+    <marker id="20-bucket-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="40" y="24" width="220" height="50" rx="6"/>
+  <text class="fig-mono" x="150" y="46" text-anchor="middle" font-size="12">hash(key): 64 bits</text>
+  <text class="fig-muted" x="150" y="64" text-anchor="middle" font-size="12">low bits pick the bucket</text>
+  <rect class="fig-box" x="40" y="140" width="64" height="46" rx="0"/>
+  <text class="fig-mono" x="72" y="160" text-anchor="middle" font-size="11">chained</text>
+  <text class="fig-mono" x="72" y="176" text-anchor="middle" font-size="11">presence</text>
+  <rect class="fig-accent" x="104" y="140" width="34" height="46" rx="0"/>
+  <text class="fig-mono" x="121" y="168" text-anchor="middle" font-size="12">h</text>
+  <rect class="fig-box" x="138" y="140" width="34" height="46" rx="0"/>
+  <text class="fig-mono" x="155" y="168" text-anchor="middle" font-size="12">h</text>
+  <rect class="fig-box" x="172" y="140" width="34" height="46" rx="0"/>
+  <text class="fig-mono" x="189" y="168" text-anchor="middle" font-size="12">h</text>
+  <rect class="fig-box" x="206" y="140" width="34" height="46" rx="0"/>
+  <text class="fig-mono" x="223" y="168" text-anchor="middle" font-size="12">h</text>
+  <rect class="fig-box" x="240" y="140" width="34" height="46" rx="0"/>
+  <text class="fig-mono" x="257" y="168" text-anchor="middle" font-size="12">h</text>
+  <rect class="fig-box" x="274" y="140" width="34" height="46" rx="0"/>
+  <text class="fig-mono" x="291" y="168" text-anchor="middle" font-size="12">h</text>
+  <rect class="fig-box" x="308" y="140" width="34" height="46" rx="0"/>
+  <text class="fig-mono" x="325" y="168" text-anchor="middle" font-size="12">h</text>
+  <rect class="fig-accent" x="342" y="140" width="48" height="46" rx="0"/>
+  <text class="fig-mono" x="366" y="168" text-anchor="middle" font-size="12">ptr</text>
+  <rect class="fig-box" x="390" y="140" width="48" height="46" rx="0"/>
+  <text class="fig-mono" x="414" y="168" text-anchor="middle" font-size="12">ptr</text>
+  <rect class="fig-box" x="438" y="140" width="48" height="46" rx="0"/>
+  <text class="fig-mono" x="462" y="168" text-anchor="middle" font-size="12">ptr</text>
+  <rect class="fig-box" x="486" y="140" width="48" height="46" rx="0"/>
+  <text class="fig-mono" x="510" y="168" text-anchor="middle" font-size="12">ptr</text>
+  <rect class="fig-box" x="534" y="140" width="48" height="46" rx="0"/>
+  <text class="fig-mono" x="558" y="168" text-anchor="middle" font-size="12">ptr</text>
+  <rect class="fig-box" x="582" y="140" width="48" height="46" rx="0"/>
+  <text class="fig-mono" x="606" y="168" text-anchor="middle" font-size="12">ptr</text>
+  <rect class="fig-box" x="630" y="140" width="48" height="46" rx="0"/>
+  <text class="fig-mono" x="654" y="168" text-anchor="middle" font-size="12">ptr</text>
+  <text class="fig-muted" x="680" y="128" text-anchor="end" font-size="12">one bucket: 64 bytes, one cache line</text>
+  <text class="fig-muted" x="72" y="208" text-anchor="middle" font-size="12">1 byte</text>
+  <text class="fig-muted" x="223" y="208" text-anchor="middle" font-size="12">7 x 1-byte hash</text>
+  <text class="fig-muted" x="510" y="208" text-anchor="middle" font-size="12">7 x 8-byte entry pointer</text>
+  <path class="fig-accent-line" d="M260 49 L223 49 L223 138" fill="none" marker-end="url(#20-bucket-arrow)"/>
+  <text class="fig-accent-text" x="233" y="100" font-size="12">top byte: one SSE2 compare against all 7</text>
+  <path class="fig-accent-line" d="M121 186 L121 230 L366 230 L366 188" fill="none"/>
+  <line class="fig-line" x1="366" y1="230" x2="366" y2="272" marker-end="url(#20-bucket-arrow)"/>
+  <text class="fig-accent-text" x="376" y="250" font-size="12">match: follow it</text>
+  <rect class="fig-box" x="276" y="274" width="180" height="40" rx="6"/>
+  <text x="366" y="299" text-anchor="middle" font-size="12">compare the full key</text>
+</svg>

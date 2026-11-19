@@ -1,0 +1,26 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="Every server starts as a follower. A follower that hears no leader times out and becomes a candidate. A candidate with votes from a majority becomes leader. Any server that sees a higher term goes back to follower.">
+  <defs>
+    <marker id="19-roles-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="40" y="110" width="130" height="50" rx="6"/>
+  <text x="105" y="140" text-anchor="middle" font-size="14" font-weight="600">follower</text>
+  <rect class="fig-box" x="295" y="110" width="130" height="50" rx="6"/>
+  <text x="360" y="140" text-anchor="middle" font-size="14" font-weight="600">candidate</text>
+  <rect class="fig-accent" x="550" y="110" width="130" height="50" rx="6"/>
+  <text x="615" y="140" text-anchor="middle" font-size="14" font-weight="600">leader</text>
+  <line class="fig-line" x1="170" y1="124" x2="293" y2="124" marker-end="url(#19-roles-arrow)"/>
+  <text class="fig-muted" x="232" y="114" text-anchor="middle" font-size="12">times out</text>
+  <line class="fig-line" x1="425" y1="124" x2="548" y2="124" marker-end="url(#19-roles-arrow)"/>
+  <text class="fig-muted" x="487" y="114" text-anchor="middle" font-size="12">wins a majority</text>
+  <line class="fig-line" x1="295" y1="148" x2="172" y2="148" marker-end="url(#19-roles-arrow)"/>
+  <text class="fig-muted" x="232" y="170" text-anchor="middle" font-size="12">sees a leader</text>
+  <text class="fig-muted" x="232" y="185" text-anchor="middle" font-size="12">or a higher term</text>
+  <path class="fig-line" d="M340 110 L340 72 L380 72 L380 108" marker-end="url(#19-roles-arrow)"/>
+  <text class="fig-muted" x="360" y="60" text-anchor="middle" font-size="12">split vote: times out again</text>
+  <path class="fig-line" d="M615 160 L615 222 L105 222 L105 162" marker-end="url(#19-roles-arrow)"/>
+  <text class="fig-muted" x="480" y="214" text-anchor="middle" font-size="12">sees a higher term</text>
+  <text class="fig-muted" x="105" y="72" text-anchor="middle" font-size="12">starts here</text>
+  <line class="fig-line" x1="105" y1="80" x2="105" y2="108" marker-end="url(#19-roles-arrow)"/>
+</svg>

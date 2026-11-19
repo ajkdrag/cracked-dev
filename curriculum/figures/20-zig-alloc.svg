@@ -1,0 +1,36 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="Who chooses the allocator. In C, kd_init takes an Arena *, so its signature fixes the kind of allocator. In Zig, init takes an Allocator, so a test passes the leak-checking allocator, a test sweep passes a failing one, and TigerBeetle passes one that refuses to allocate after startup.">
+  <defs>
+    <marker id="20-zig-alloc-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="30" y="30" font-size="14" font-weight="600">C</text>
+  <rect class="fig-box" x="20" y="46" width="180" height="56" rx="6"/>
+  <text class="fig-mono" x="110" y="79" text-anchor="middle" font-size="12">kd_init(Arena *a, cap)</text>
+  <line class="fig-line" x1="200" y1="74" x2="298" y2="74" marker-end="url(#20-zig-alloc-arrow)"/>
+  <text class="fig-muted" x="249" y="66" text-anchor="middle" font-size="12">calls</text>
+  <rect class="fig-box" x="300" y="46" width="180" height="56" rx="6"/>
+  <text class="fig-mono" x="390" y="70" text-anchor="middle" font-size="12">alloc(a, ...)</text>
+  <text class="fig-muted" x="390" y="89" text-anchor="middle" font-size="12">always your arena</text>
+  <text x="30" y="140" font-size="14" font-weight="600">Zig</text>
+  <rect class="fig-box" x="20" y="156" width="200" height="40" rx="6"/>
+  <text class="fig-mono" x="120" y="173" text-anchor="middle" font-size="12">std.testing.allocator</text>
+  <text class="fig-muted" x="120" y="189" text-anchor="middle" font-size="12">reports leaks</text>
+  <line class="fig-line" x1="220" y1="176" x2="388" y2="204" marker-end="url(#20-zig-alloc-arrow)"/>
+  <rect class="fig-box" x="20" y="202" width="200" height="40" rx="6"/>
+  <text class="fig-mono" x="120" y="219" text-anchor="middle" font-size="12">FailingAllocator</text>
+  <text class="fig-muted" x="120" y="235" text-anchor="middle" font-size="12">fails the nth call</text>
+  <line class="fig-line" x1="220" y1="222" x2="388" y2="214" marker-end="url(#20-zig-alloc-arrow)"/>
+  <rect class="fig-box" x="20" y="248" width="200" height="40" rx="6"/>
+  <text class="fig-mono" x="120" y="265" text-anchor="middle" font-size="12">StaticAllocator</text>
+  <text class="fig-muted" x="120" y="281" text-anchor="middle" font-size="12">refuses after startup</text>
+  <line class="fig-line" x1="220" y1="268" x2="388" y2="224" marker-end="url(#20-zig-alloc-arrow)"/>
+  <rect class="fig-accent" x="390" y="184" width="160" height="60" rx="6"/>
+  <text class="fig-mono" x="470" y="210" text-anchor="middle" font-size="12">init(allocator,</text>
+  <text class="fig-mono" x="470" y="228" text-anchor="middle" font-size="12">capacity)</text>
+  <text class="fig-muted" x="318" y="176" text-anchor="middle" font-size="12">passes</text>
+  <line class="fig-line" x1="550" y1="214" x2="598" y2="214" marker-end="url(#20-zig-alloc-arrow)"/>
+  <rect class="fig-box" x="600" y="184" width="100" height="60" rx="6"/>
+  <text class="fig-mono" x="650" y="210" text-anchor="middle" font-size="12">allocator</text>
+  <text class="fig-mono" x="650" y="228" text-anchor="middle" font-size="12">.alloc</text>
+</svg>

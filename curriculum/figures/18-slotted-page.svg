@@ -1,0 +1,33 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="A 4096-byte slotted page: the page header, then the slot array growing toward higher offsets, then free space, then the records growing down from the end of the page. Each slot holds the offset and length of one record">
+  <defs>
+    <marker id="18-slotted-page-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="95" width="80" height="50" rx="6"/>
+  <text x="60.0" y="124.55" text-anchor="middle" font-size="13" font-weight="600">header</text>
+  <rect class="fig-accent" x="100" y="95" width="50" height="50" rx="6"/>
+  <text class="fig-mono" x="125.0" y="124.2" text-anchor="middle" font-size="12">slot 0</text>
+  <rect class="fig-accent" x="150" y="95" width="50" height="50" rx="6"/>
+  <text class="fig-mono" x="175.0" y="124.2" text-anchor="middle" font-size="12">slot 1</text>
+  <rect class="fig-accent" x="200" y="95" width="50" height="50" rx="6"/>
+  <text class="fig-mono" x="225.0" y="124.2" text-anchor="middle" font-size="12">slot 2</text>
+  <rect class="fig-box" x="250" y="95" width="200" height="50" rx="6" stroke-dasharray="4 4" fill-opacity="0"/>
+  <text class="fig-muted" x="350" y="125" text-anchor="middle" font-size="12">free space</text>
+  <rect class="fig-box" x="620" y="95" width="80" height="50" rx="6"/>
+  <text x="660.0" y="124.2" text-anchor="middle" font-size="12" font-weight="600">record 0</text>
+  <rect class="fig-box" x="530" y="95" width="90" height="50" rx="6"/>
+  <text x="575.0" y="124.2" text-anchor="middle" font-size="12" font-weight="600">record 1</text>
+  <rect class="fig-box" x="450" y="95" width="80" height="50" rx="6"/>
+  <text x="490.0" y="124.2" text-anchor="middle" font-size="12" font-weight="600">record 2</text>
+  <path class="fig-line" d="M125 95 C 125 38, 660 38, 660 93" fill="none" marker-end="url(#18-slotted-page-arrow)"/>
+  <path class="fig-line" d="M175 95 C 175 52, 575 52, 575 93" fill="none" marker-end="url(#18-slotted-page-arrow)"/>
+  <path class="fig-line" d="M225 95 C 225 66, 490 66, 490 93" fill="none" marker-end="url(#18-slotted-page-arrow)"/>
+  <text class="fig-mono" x="20" y="165" font-size="12">0</text>
+  <text class="fig-mono" x="700" y="165" text-anchor="end" font-size="12">4096</text>
+  <line class="fig-line" x1="105" y1="185" x2="240" y2="185" marker-end="url(#18-slotted-page-arrow)"/>
+  <text class="fig-muted" x="172" y="203" text-anchor="middle" font-size="12">slots grow up</text>
+  <line class="fig-line" x1="695" y1="185" x2="460" y2="185" marker-end="url(#18-slotted-page-arrow)"/>
+  <text class="fig-muted" x="577" y="203" text-anchor="middle" font-size="12">records grow down</text>
+  <text class="fig-muted" x="360" y="232" text-anchor="middle" font-size="12">each slot: 2-byte offset and 2-byte length of one record</text>
+</svg>

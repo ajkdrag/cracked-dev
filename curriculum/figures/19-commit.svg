@@ -1,0 +1,54 @@
+<svg viewBox="0 0 720 290" role="img" aria-label="The leader S1 knows how far each log matches its own. Entries 1 to 5 are on three of five servers, a majority, so the commit index is 5. Sorting the match indexes and taking the third highest gives the same number.">
+  <defs>
+    <marker id="19-commit-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="171" y="40" text-anchor="middle" font-size="12">1</text>
+  <text class="fig-muted" x="221" y="40" text-anchor="middle" font-size="12">2</text>
+  <text class="fig-muted" x="271" y="40" text-anchor="middle" font-size="12">3</text>
+  <text class="fig-muted" x="321" y="40" text-anchor="middle" font-size="12">4</text>
+  <text class="fig-muted" x="371" y="40" text-anchor="middle" font-size="12">5</text>
+  <text class="fig-muted" x="421" y="40" text-anchor="middle" font-size="12">6</text>
+  <text class="fig-muted" x="471" y="40" text-anchor="middle" font-size="12">7</text>
+  <text x="40" y="73" font-size="13" font-weight="600">S1, leader</text>
+  <rect class="fig-accent" x="150" y="52" width="42" height="30" rx="3"/>
+  <rect class="fig-accent" x="200" y="52" width="42" height="30" rx="3"/>
+  <rect class="fig-accent" x="250" y="52" width="42" height="30" rx="3"/>
+  <rect class="fig-accent" x="300" y="52" width="42" height="30" rx="3"/>
+  <rect class="fig-accent" x="350" y="52" width="42" height="30" rx="3"/>
+  <rect class="fig-box" x="400" y="52" width="42" height="30" rx="3"/>
+  <rect class="fig-box" x="450" y="52" width="42" height="30" rx="3"/>
+  <text class="fig-mono" x="520" y="73" font-size="12">match 7</text>
+  <text x="40" y="113" font-size="13">S2</text>
+  <rect class="fig-accent" x="150" y="92" width="42" height="30" rx="3"/>
+  <rect class="fig-accent" x="200" y="92" width="42" height="30" rx="3"/>
+  <rect class="fig-accent" x="250" y="92" width="42" height="30" rx="3"/>
+  <rect class="fig-accent" x="300" y="92" width="42" height="30" rx="3"/>
+  <rect class="fig-accent" x="350" y="92" width="42" height="30" rx="3"/>
+  <rect class="fig-box" x="400" y="92" width="42" height="30" rx="3"/>
+  <rect class="fig-box" x="450" y="92" width="42" height="30" rx="3"/>
+  <text class="fig-mono" x="520" y="113" font-size="12">match 7</text>
+  <text x="40" y="153" font-size="13">S3</text>
+  <rect class="fig-accent" x="150" y="132" width="42" height="30" rx="3"/>
+  <rect class="fig-accent" x="200" y="132" width="42" height="30" rx="3"/>
+  <rect class="fig-accent" x="250" y="132" width="42" height="30" rx="3"/>
+  <rect class="fig-accent" x="300" y="132" width="42" height="30" rx="3"/>
+  <rect class="fig-accent" x="350" y="132" width="42" height="30" rx="3"/>
+  <text class="fig-mono" x="520" y="153" font-size="12">match 5</text>
+  <text x="40" y="193" font-size="13">S4</text>
+  <rect class="fig-box" x="150" y="172" width="42" height="30" rx="3"/>
+  <rect class="fig-box" x="200" y="172" width="42" height="30" rx="3"/>
+  <rect class="fig-box" x="250" y="172" width="42" height="30" rx="3"/>
+  <rect class="fig-box" x="300" y="172" width="42" height="30" rx="3"/>
+  <text class="fig-mono" x="520" y="193" font-size="12">match 4</text>
+  <text x="40" y="233" font-size="13">S5</text>
+  <rect class="fig-box" x="150" y="212" width="42" height="30" rx="3"/>
+  <rect class="fig-box" x="200" y="212" width="42" height="30" rx="3"/>
+  <text class="fig-mono" x="520" y="233" font-size="12">match 2</text>
+  <line class="fig-line" x1="500" y1="44" x2="500" y2="252" stroke-dasharray="5 4"/>
+  <text class="fig-accent-text" x="500" y="272" text-anchor="middle" font-size="12">commit index 5: on 3 of 5</text>
+  <text class="fig-muted" x="612" y="120" font-size="12">sorted:</text>
+  <text class="fig-mono" x="612" y="138" font-size="12">7 7 5 4 2</text>
+  <text class="fig-muted" x="612" y="156" font-size="12">third is 5</text>
+</svg>

@@ -1,0 +1,43 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="Where the fsync of the append-only file runs. Under always, the main thread writes and syncs the file in beforeSleep and only then sends the replies. Under everysec, the main thread writes, sends the replies at once, and hands the fdatasync to the bio_aof thread at most once a second.">
+  <defs>
+    <marker id="20-aof-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="30" y="30" font-size="14" font-weight="600">appendfsync always</text>
+  <text class="fig-muted" x="30" y="72" font-size="12">main</text>
+  <rect class="fig-box" x="110" y="46" width="96" height="40" rx="6"/>
+  <text class="fig-mono" x="158.0" y="71" text-anchor="middle" font-size="12">commands</text>
+  <rect class="fig-box" x="236" y="46" width="96" height="40" rx="6"/>
+  <text class="fig-mono" x="284.0" y="71" text-anchor="middle" font-size="12">write()</text>
+  <rect class="fig-accent" x="362" y="46" width="96" height="40" rx="6"/>
+  <text class="fig-mono" x="410.0" y="71" text-anchor="middle" font-size="12">fdatasync</text>
+  <rect class="fig-box" x="488" y="46" width="96" height="40" rx="6"/>
+  <text class="fig-mono" x="536.0" y="71" text-anchor="middle" font-size="12">replies</text>
+  <rect class="fig-box" x="614" y="46" width="96" height="40" rx="6"/>
+  <text class="fig-mono" x="662.0" y="71" text-anchor="middle" font-size="12">epoll_wait</text>
+  <line class="fig-line" x1="206" y1="66" x2="234" y2="66" marker-end="url(#20-aof-arrow)"/>
+  <line class="fig-line" x1="332" y1="66" x2="360" y2="66" marker-end="url(#20-aof-arrow)"/>
+  <line class="fig-line" x1="458" y1="66" x2="486" y2="66" marker-end="url(#20-aof-arrow)"/>
+  <line class="fig-line" x1="584" y1="66" x2="612" y2="66" marker-end="url(#20-aof-arrow)"/>
+  <text class="fig-muted" x="410.0" y="104" text-anchor="middle" font-size="12">beforeSleep</text>
+  <text x="30" y="150" font-size="14" font-weight="600">appendfsync everysec</text>
+  <text class="fig-muted" x="30" y="192" font-size="12">main</text>
+  <rect class="fig-box" x="110" y="166" width="96" height="40" rx="6"/>
+  <text class="fig-mono" x="158.0" y="191" text-anchor="middle" font-size="12">commands</text>
+  <rect class="fig-box" x="236" y="166" width="96" height="40" rx="6"/>
+  <text class="fig-mono" x="284.0" y="191" text-anchor="middle" font-size="12">write()</text>
+  <rect class="fig-box" x="362" y="166" width="96" height="40" rx="6"/>
+  <text class="fig-mono" x="410.0" y="191" text-anchor="middle" font-size="12">replies</text>
+  <rect class="fig-box" x="488" y="166" width="96" height="40" rx="6"/>
+  <text class="fig-mono" x="536.0" y="191" text-anchor="middle" font-size="12">epoll_wait</text>
+  <line class="fig-line" x1="206" y1="186" x2="234" y2="186" marker-end="url(#20-aof-arrow)"/>
+  <line class="fig-line" x1="332" y1="186" x2="360" y2="186" marker-end="url(#20-aof-arrow)"/>
+  <line class="fig-line" x1="458" y1="186" x2="486" y2="186" marker-end="url(#20-aof-arrow)"/>
+  <text class="fig-muted" x="30" y="286" font-size="12">bio_aof</text>
+  <rect class="fig-accent" x="362" y="260" width="96" height="40" rx="6"/>
+  <text class="fig-mono" x="410.0" y="285" text-anchor="middle" font-size="12">fdatasync</text>
+  <path class="fig-line" d="M284 206 L284 280 L360 280" fill="none" marker-end="url(#20-aof-arrow)"/>
+  <text class="fig-muted" x="476" y="277" font-size="12">a job queued at most</text>
+  <text class="fig-muted" x="476" y="293" font-size="12">once a second</text>
+</svg>

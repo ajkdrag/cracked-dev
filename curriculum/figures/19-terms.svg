@@ -1,0 +1,37 @@
+<svg viewBox="0 0 720 240" role="img" aria-label="Time is divided into terms. Each term starts with an election. Term 3 ended with a split vote and no leader, so term 4 started with a new election.">
+  <defs>
+    <marker id="19-terms-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="140.0" y="50" text-anchor="middle" font-size="13" font-weight="600">term 1</text>
+  <rect class="fig-accent" x="42" y="66" width="64" height="40" rx="6"/>
+  <text x="74" y="91" text-anchor="middle" font-size="12">election</text>
+  <rect class="fig-box" x="110" y="66" width="128" height="40" rx="6"/>
+  <text x="174.0" y="91" text-anchor="middle" font-size="12">normal work</text>
+  <text class="fig-muted" x="140.0" y="128" text-anchor="middle" font-size="12">S1 leads</text>
+  <text x="330.0" y="50" text-anchor="middle" font-size="13" font-weight="600">term 2</text>
+  <rect class="fig-accent" x="242" y="66" width="64" height="40" rx="6"/>
+  <text x="274" y="91" text-anchor="middle" font-size="12">election</text>
+  <rect class="fig-box" x="310" y="66" width="108" height="40" rx="6"/>
+  <text x="364.0" y="91" text-anchor="middle" font-size="12">normal work</text>
+  <text class="fig-muted" x="330.0" y="128" text-anchor="middle" font-size="12">S2 leads</text>
+  <text x="460.0" y="50" text-anchor="middle" font-size="13" font-weight="600">term 3</text>
+  <rect class="fig-accent" x="422" y="66" width="76" height="40" rx="6"/>
+  <text x="460.0" y="91" text-anchor="middle" font-size="12">election</text>
+  <text class="fig-muted" x="460.0" y="128" text-anchor="middle" font-size="12">no leader</text>
+  <text x="590.0" y="50" text-anchor="middle" font-size="13" font-weight="600">term 4</text>
+  <rect class="fig-accent" x="502" y="66" width="64" height="40" rx="6"/>
+  <text x="534" y="91" text-anchor="middle" font-size="12">election</text>
+  <rect class="fig-box" x="570" y="66" width="108" height="40" rx="6"/>
+  <text x="624.0" y="91" text-anchor="middle" font-size="12">normal work</text>
+  <text class="fig-muted" x="590.0" y="128" text-anchor="middle" font-size="12">S3 leads</text>
+  <line class="fig-line" x1="240" y1="140" x2="240" y2="160"/>
+  <text class="fig-muted" x="240" y="176" text-anchor="middle" font-size="12">S2 hears nothing:</text>
+  <text class="fig-muted" x="240" y="191" text-anchor="middle" font-size="12">S1 crashed</text>
+  <line class="fig-line" x1="500" y1="140" x2="500" y2="160"/>
+  <text class="fig-muted" x="500" y="176" text-anchor="middle" font-size="12">votes split,</text>
+  <text class="fig-muted" x="500" y="191" text-anchor="middle" font-size="12">timeout again</text>
+  <line class="fig-line" x1="40" y1="206" x2="678" y2="206" marker-end="url(#19-terms-arrow)"/>
+  <text class="fig-muted" x="680" y="226" text-anchor="end" font-size="12">time</text>
+</svg>

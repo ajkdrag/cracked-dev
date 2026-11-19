@@ -1,0 +1,63 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="The buffer pool: a table maps page numbers to frames, each frame has a pin count and a dirty bit, and the clock hand sweeps the frames. It skips pinned frames, gives a frame with its reference bit set a second chance, and evicts the first unpinned frame without one, writing it back first if it is dirty">
+  <defs>
+    <marker id="18-buffer-pool-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="75" width="152" height="105" rx="6"/>
+  <text x="96" y="97" text-anchor="middle" font-size="13" font-weight="600">page table</text>
+  <text class="fig-mono" x="96" y="118" text-anchor="middle" font-size="12">page 7 → frame 0</text>
+  <text class="fig-mono" x="96" y="135" text-anchor="middle" font-size="12">page 3 → frame 1</text>
+  <text class="fig-mono" x="96" y="152" text-anchor="middle" font-size="12">page 12 → frame 2</text>
+  <text class="fig-mono" x="96" y="169" text-anchor="middle" font-size="12">page 5 → frame 3</text>
+  <line class="fig-line" x1="172" y1="127" x2="188" y2="127" marker-end="url(#18-buffer-pool-arrow)"/>
+  <rect class="fig-box" x="190" y="75" width="78" height="105" rx="6"/>
+  <text x="229.0" y="96" text-anchor="middle" font-size="13" font-weight="600">frame 0</text>
+  <text class="fig-mono" x="229.0" y="116" text-anchor="middle" font-size="12">page 7</text>
+  <text class="fig-mono" x="229.0" y="134" text-anchor="middle" font-size="12">pin 1</text>
+  <text class="fig-mono" x="229.0" y="152" text-anchor="middle" font-size="12">ref 1</text>
+  <text class="fig-muted" x="229.0" y="170" text-anchor="middle" font-size="12">clean</text>
+  <text class="fig-muted" x="229.0" y="198" text-anchor="middle" font-size="12">pinned: skip</text>
+  <rect class="fig-box" x="276" y="75" width="78" height="105" rx="6"/>
+  <text x="315.0" y="96" text-anchor="middle" font-size="13" font-weight="600">frame 1</text>
+  <text class="fig-mono" x="315.0" y="116" text-anchor="middle" font-size="12">page 3</text>
+  <text class="fig-mono" x="315.0" y="134" text-anchor="middle" font-size="12">pin 0</text>
+  <text class="fig-mono" x="315.0" y="152" text-anchor="middle" font-size="12">ref 1</text>
+  <text class="fig-muted" x="315.0" y="170" text-anchor="middle" font-size="12">dirty</text>
+  <text class="fig-muted" x="315.0" y="198" text-anchor="middle" font-size="12">ref 1: clear it</text>
+  <rect class="fig-accent" x="362" y="75" width="78" height="105" rx="6"/>
+  <text x="401.0" y="96" text-anchor="middle" font-size="13" font-weight="600">frame 2</text>
+  <text class="fig-mono" x="401.0" y="116" text-anchor="middle" font-size="12">page 12</text>
+  <text class="fig-mono" x="401.0" y="134" text-anchor="middle" font-size="12">pin 0</text>
+  <text class="fig-mono" x="401.0" y="152" text-anchor="middle" font-size="12">ref 0</text>
+  <text class="fig-muted" x="401.0" y="170" text-anchor="middle" font-size="12">dirty</text>
+  <text class="fig-accent-text" x="401.0" y="198" text-anchor="middle" font-size="12">evict</text>
+  <rect class="fig-box" x="448" y="75" width="78" height="105" rx="6"/>
+  <text x="487.0" y="96" text-anchor="middle" font-size="13" font-weight="600">frame 3</text>
+  <text class="fig-mono" x="487.0" y="116" text-anchor="middle" font-size="12">page 5</text>
+  <text class="fig-mono" x="487.0" y="134" text-anchor="middle" font-size="12">pin 2</text>
+  <text class="fig-mono" x="487.0" y="152" text-anchor="middle" font-size="12">ref 1</text>
+  <text class="fig-muted" x="487.0" y="170" text-anchor="middle" font-size="12">clean</text>
+  <rect class="fig-box" x="534" y="75" width="78" height="105" rx="6"/>
+  <text x="573.0" y="96" text-anchor="middle" font-size="13" font-weight="600">frame 4</text>
+  <text class="fig-mono" x="573.0" y="116" text-anchor="middle" font-size="12">page 9</text>
+  <text class="fig-mono" x="573.0" y="134" text-anchor="middle" font-size="12">pin 0</text>
+  <text class="fig-mono" x="573.0" y="152" text-anchor="middle" font-size="12">ref 1</text>
+  <text class="fig-muted" x="573.0" y="170" text-anchor="middle" font-size="12">clean</text>
+  <rect class="fig-box" x="620" y="75" width="78" height="105" rx="6"/>
+  <text x="659.0" y="96" text-anchor="middle" font-size="13" font-weight="600">frame 5</text>
+  <text class="fig-mono" x="659.0" y="116" text-anchor="middle" font-size="12">page 2</text>
+  <text class="fig-mono" x="659.0" y="134" text-anchor="middle" font-size="12">pin 0</text>
+  <text class="fig-mono" x="659.0" y="152" text-anchor="middle" font-size="12">ref 0</text>
+  <text class="fig-muted" x="659.0" y="170" text-anchor="middle" font-size="12">clean</text>
+  <line class="fig-accent-line" x1="401.0" y1="36" x2="401.0" y2="72" marker-end="url(#18-buffer-pool-arrow)"/>
+  <text class="fig-accent-text" x="401.0" y="28" text-anchor="middle" font-size="12">clock hand</text>
+  <path class="fig-line" d="M229.0 50 L381.0 50" fill="none" stroke-dasharray="4 4" marker-end="url(#18-buffer-pool-arrow)"/>
+  <text class="fig-muted" x="289.0" y="44" text-anchor="middle" font-size="12">sweeps</text>
+  <rect class="fig-box" x="190" y="240" width="510" height="40" rx="6"/>
+  <text class="fig-mono" x="445" y="265" text-anchor="middle" font-size="13">data.db</text>
+  <line class="fig-line" x1="389.0" y1="206" x2="389.0" y2="238" marker-end="url(#18-buffer-pool-arrow)"/>
+  <text class="fig-muted" x="383.0" y="226" text-anchor="end" font-size="12">write back</text>
+  <line class="fig-line" x1="413.0" y1="238" x2="413.0" y2="206" marker-end="url(#18-buffer-pool-arrow)"/>
+  <text class="fig-muted" x="419.0" y="226" font-size="12">read new page</text>
+</svg>
