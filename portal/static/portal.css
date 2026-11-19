@@ -530,6 +530,7 @@ kbd {
 }
 
 #search-input {
+  flex: none;
   height: 3.25rem;
   padding: 0 1.25rem;
   border: 0;
@@ -595,6 +596,26 @@ kbd {
   white-space: nowrap;
 }
 
+.sidebar-bar {
+  display: contents;
+}
+
+.menu-button,
+.sidebar-steps {
+  display: none;
+}
+
+.sidebar-steps {
+  margin: 0.15rem 0 0.5rem 1.6rem;
+  border-left: 1px solid var(--line);
+}
+
+.chapter-list .sidebar-steps a {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+/* No room for the right rail: the steps move into the sidebar. */
 @media (max-width: 1200px) {
   .page {
     grid-template-columns: minmax(0, var(--text-column));
@@ -602,29 +623,124 @@ kbd {
   .rail {
     display: none;
   }
+  .sidebar-steps {
+    display: block;
+  }
 }
 
-@media (max-width: 800px) {
+/* Tablets in portrait and phones: the sidebar becomes a top bar, and the
+   chapter list drops down from it. */
+@media (max-width: 1000px) {
+  html {
+    scroll-padding-top: 4.5rem;
+  }
   .shell {
     grid-template-columns: minmax(0, 1fr);
   }
   .sidebar {
-    position: static;
+    z-index: 30;
     height: auto;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    padding: 0.75rem 1.25rem;
+    max-height: 100dvh;
+    padding: 0;
     border-right: 0;
     border-bottom: 1px solid var(--line);
+    background: var(--bulma-scheme-main);
+  }
+  .sidebar-bar {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.6rem 1.25rem;
   }
   .brand {
     margin: 0;
+    white-space: nowrap;
+  }
+  .search-button {
+    flex: 1;
+    min-width: 0;
+  }
+  .menu-button {
+    display: block;
+    padding: 0.45rem 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bulma-scheme-main);
+    font: 600 0.9rem var(--sans);
+    color: var(--strong);
+    cursor: pointer;
+  }
+  .sidebar.is-menu-open .menu-button {
+    background: var(--bulma-link-soft);
+    color: var(--bulma-link-bold);
   }
   .chapter-list {
     display: none;
+    padding: 0 0.75rem 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+  .sidebar.is-menu-open .chapter-list {
+    display: block;
+  }
+  .chapter-list a {
+    padding: 0.55rem 0.75rem;
   }
   .page {
-    padding: 2rem 1.25rem 4rem;
+    padding: 2rem 1.5rem 4rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding: 1.5rem 1rem 3rem;
+  }
+  .page-content h1 {
+    font-size: 1.8rem;
+  }
+  .lead {
+    font-size: 1.05rem;
+  }
+  .page-content h2 {
+    margin-top: 2.75rem;
+  }
+  .page-content pre {
+    margin-inline: -1rem;
+    padding: 0.85rem 1rem;
+    border-inline: 0;
+    border-radius: 0;
+    font-size: 0.8rem;
+  }
+  .prose table {
+    display: block;
+    overflow-x: auto;
+  }
+  /* A figure is drawn 720 units wide. Below this width its labels get too
+     small to read, so it scrolls sideways. */
+  .figure {
+    overflow-x: auto;
+  }
+  .figure svg {
+    min-width: 560px;
+  }
+  .pager {
+    grid-template-columns: 1fr;
+  }
+  .pager-next {
+    text-align: left;
+  }
+  .search-modal {
+    padding-top: 0.75rem;
+  }
+  .search-modal .modal-content {
+    width: calc(100vw - 1.5rem);
+    max-height: 80dvh;
+  }
+}
+
+/* No keyboard on a touch screen, so no shortcut hints. */
+@media (hover: none) {
+  kbd,
+  .search-keys {
+    display: none;
   }
 }

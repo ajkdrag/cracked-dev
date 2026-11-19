@@ -100,6 +100,14 @@ document.addEventListener("click", (event) => {
   // A hit inside the open chapter only changes the hash, so nothing swaps
   // the dialog away.
   if (event.target.closest("[data-search-hit]")) closeSearch();
+
+  // The chapter list is a drop-down under the top bar on narrow screens. A
+  // step link only changes the hash, so nothing swaps the open list away.
+  const sidebar = document.querySelector(".sidebar");
+  if (event.target.closest("[data-toggle-menu]"))
+    sidebar.classList.toggle("is-menu-open");
+  if (event.target.closest(".chapter-list a"))
+    sidebar.classList.remove("is-menu-open");
 });
 
 document.addEventListener("input", (event) => {
