@@ -728,7 +728,7 @@ The new lines, in order:
 
 PyTorch ships as **wheels**, ready-built package files that pip installs without compiling anything. Its Linux wheels run in Ubuntu under WSL2 and use the `libcuda.so` from `/usr/lib/wsl/lib`. Ubuntu 24.04 refuses `pip install` outside a **virtual environment**, as chapter 07 found. A virtual environment is a directory with its own Python interpreter and its own installed packages, made with `python3 -m venv`, the tool chapter 22 also uses.
 
-The pip command comes from the selector on pytorch.org, because its index URL names a CUDA version, such as `https://download.pytorch.org/whl/cu134`, and that number changes with each release. `torch.utils.cpp_extension` stops with an error when the CUDA major version of PyTorch differs from your `nvcc`, and only warns when the minor version differs.
+The pip command comes from the selector on pytorch.org, because its index URL ends in a tag for the CUDA version the wheel was built for, and that tag changes with each release. `torch.utils.cpp_extension` stops with an error when the CUDA major version of PyTorch differs from your `nvcc`, and only warns when the minor version differs.
 
 Time your kernel and `torch.softmax` with `torch.cuda.Event(enable_timing=True)`, which wraps the CUDA events from step 5. `torch.compile` is PyTorch's compiler: it turns a Python function into fused GPU kernels, which it writes in Triton. Timing it next to yours shows what a compiler gets on this kernel, and step 18 looks inside.
 
