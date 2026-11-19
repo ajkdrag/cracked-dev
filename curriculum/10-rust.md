@@ -332,7 +332,15 @@ All in `hasm`:
 
 The assembler now borrows its lines, but `assemble` still walks them with a loop that trims and skips by hand. Rust's iterators turn that loop into a type of its own. This step teaches iterators and closures, then works through the linked-list book, where ownership, `Box` and lifetimes meet in one data structure.
 
-A **closure** is a function without a name that can use variables from the code around it, written `|x| x + offset`. An **iterator** is any type with a `next` method that returns `Some(item)` until it returns `None`, which is the `Iterator` trait. Methods such as `map`, `filter` and `position` take closures, and the threads step passes closures to threads. A struct that hands out borrowed items, such as lines of the source text, carries the lifetime of the text it walks.
+A **closure** is a function without a name that can use variables from the code around it, written `|x| x + offset`. An **iterator** is any type with a `next` method that returns `Some(item)` until it returns `None`, which is the `Iterator` trait. Methods such as `map`, `filter` and `position` take closures, and the threads step passes closures to threads:
+
+```rust
+let offset = 16;
+let addrs: Vec<u16> = (0..3).map(|i| i + offset).collect();   // [16, 17, 18]
+let first_big = addrs.iter().position(|&a| a > 16);           // Some(1)
+```
+
+The closure `|i| i + offset` uses `offset` from the code around it. `map` calls it on each item of the range, and `collect` gathers the results into a `Vec`. Nothing runs until `collect` asks for the items: an iterator does its work one `next` call at a time. A struct that hands out borrowed items, such as lines of the source text, carries the lifetime of the text it walks.
 
 The linked-list book exists because a linked list is easy in C and hard in safe Rust. Each node owns the next one through a `Box`. The borrow checker forbids moving a value out of a node while the list still points to it, so the book teaches `Option::take`, `mem::replace`, `Drop` and iterators with lifetimes by running into each error and fixing it. `take` moves the value out of an `Option` and leaves `None` in its place.
 
