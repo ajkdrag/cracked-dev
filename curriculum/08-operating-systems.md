@@ -662,6 +662,7 @@ Three details of the interface, because chapters 09 and 10 rely on them:
 - `loop_wait` calls `epoll_wait` again when it fails with `EINTR`, which happens when a signal arrives during the wait. It returns -1 only for other errors.
 
 Keep per-client state in a fixed array of structs with a free list of slots, sized by the connection limit. The server then allocates nothing per connection, which is chapter 07's data layout applied to a server.
+
 ### Study
 
 - [Beej's Guide to Network Programming: System Calls or Bust](https://beej.us/guide/bgnet/html/split/system-calls-or-bust.html) (read, 2 h 30 min): Sections 5.1 to 5.7 and 5.9 on this page. Then follow Next to chapter 6 for 6.1 and 6.2, the stream server and client, and to chapter 7 for 7.1, 7.2 and 7.4: blocking, `poll` and partial sends. Skip 5.8 and 6.3 on datagrams and the rest of chapter 7.

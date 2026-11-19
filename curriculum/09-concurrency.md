@@ -112,6 +112,7 @@ Each of her examples is a function of one or two lines next to its assembly. Rea
 - `atomic_store` with the default ordering also becomes `xchg`. Step 6 explains why.
 
 A spinning thread burns a core while it waits. If the thread that holds the lock is not running, because the scheduler gave its core to someone else, the waiter spins until that thread runs again. The `yield` lock in the Build gives up the core instead. It calls `sched_yield()`, which takes no arguments, returns 0, and moves the calling thread to the back of the scheduler's queue.
+
 ### Study
 
 - [OSTEP chapter 28: Locks](https://pages.cs.wisc.edu/~remzi/OSTEP/threads-locks.pdf) (read, 1 h 15 min): Sections 28.1 to 28.13. Test-and-set, compare-and-swap (figure 28.4), load-linked/store-conditional (figure 28.5) and fetch-and-add are each written as C pseudocode for one hardware operation. Figures 28.3, 28.6 and 28.7 build a lock from test-and-set, LL/SC and fetch-and-add, and figure 28.8 is the yield lock. Section 28.5 on disabling interrupts comes back in the xv6 step. Stop before 28.14, which step 4 assigns. Skip the homework, which uses an x86 simulator.
@@ -149,6 +150,7 @@ The lab is about contention. `kalloc` and `kfree` share one free list and one lo
 Work in the xv6 lab repository from chapter 08. Section 3.5 of the xv6 book, which the lab asks for, was part of the page-table reading in chapter 08.
 
 > **Practice:** Give every test of concurrent code a time limit, because a deadlock looks like a test that never ends. Call `alarm(10)` at the start of the test program. It asks the kernel to send the signal SIGALRM to the process in 10 seconds. A program with no handler for SIGALRM terminates, so a hung test ends with a nonzero exit status.
+
 ### Study
 
 - [xv6 book, chapter 7: Locking](https://pdos.csail.mit.edu/6.1810/2025/xv6/book-riscv-rev5.pdf#page=63) (read, 1 h 15 min): Sections 7.1 to 7.8, pages 63 to 73, with `kernel/spinlock.c` and `kernel/kalloc.c` open. Figure 7.3 lists every lock in xv6. Section 7.4 is the lock-ordering rule.
@@ -354,6 +356,7 @@ His indexes have the opposite names: his consumer pops at `tail`. Keep this chap
 Each thread also keeps a private copy of the other thread's index and reloads it only when the ring looks full or empty, so most pushes and pops touch only the thread's own line. Put each index and that copy on a cache line of its own with `_Alignas(64)`, for the reason step 5 measured.
 
 > **Practice:** Use the default ordering or a lock. Write `acquire` or `release` only where you can name the guard, the payload and the pair of operations that synchronize, and write that argument in a comment next to the code.
+
 ### Study
 
 - [Jeff Preshing: The Synchronizes-With Relation](https://preshing.com/20130823/the-synchronizes-with-relation/) (read, 25 min): The whole post. It uses C++11 atomics. Read `g_guard.store(1, std::memory_order_release)` as `atomic_store_explicit(&g_guard, 1, memory_order_release)`. The guard and payload vocabulary in the post is the one this chapter uses for every argument you write.
@@ -408,6 +411,7 @@ Job *job_new_detached(JobFn *fn, void *arg);
 void job_run(Job *job);      // push on this worker's deque, or on the injection queue
 void jobs_stop(void);        // waits for all queued jobs, then joins the workers
 ```
+
 ### Study
 
 - [Stanford CS149 Fall 2025: Work Distribution and Scheduling (slides)](https://gfxcourses.stanford.edu/cs149/fall25content/media/perfopt1/05_progperf1.pdf#page=5) (read, 1 h): Slides 5 to 22 on static and dynamic assignment, task size, scheduling long tasks first and distributed queues. Then slides 26 to 49. Slides 26 to 32 introduce the `cilk_spawn` and `cilk_sync` notation, and 33 to 49 build the scheduler: a worker pool, per-thread deques, child-first or continuation-first execution, stealing from the top and choosing a victim.
