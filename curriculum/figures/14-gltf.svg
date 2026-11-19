@@ -1,0 +1,36 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="A glTF node holds a mesh, the mesh holds primitives, a primitive names one accessor per attribute, and an accessor reads typed elements from a buffer view, which is a byte range of one buffer.">
+  <defs>
+    <marker id="14-gltf-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="40" width="180" height="64" rx="6"/>
+  <text x="110.0" y="68.0" text-anchor="middle" font-size="13" font-weight="600">node</text>
+  <text class="fig-muted" x="110.0" y="86.0" text-anchor="middle" font-size="12">transform, mesh 0</text>
+  <rect class="fig-box" x="270" y="40" width="180" height="64" rx="6"/>
+  <text x="360.0" y="68.0" text-anchor="middle" font-size="13" font-weight="600">mesh</text>
+  <text class="fig-muted" x="360.0" y="86.0" text-anchor="middle" font-size="12">list of primitives</text>
+  <rect class="fig-box" x="520" y="40" width="180" height="64" rx="6"/>
+  <text x="610.0" y="68.0" text-anchor="middle" font-size="13" font-weight="600">primitive</text>
+  <text class="fig-muted" x="610.0" y="86.0" text-anchor="middle" font-size="12">POSITION, NORMAL, indices</text>
+  <line class="fig-line" x1="200" y1="72" x2="268" y2="72" marker-end="url(#14-gltf-arrow)"/>
+  <text class="fig-muted" x="235" y="64" text-anchor="middle" font-size="12">holds</text>
+  <line class="fig-line" x1="450" y1="72" x2="518" y2="72" marker-end="url(#14-gltf-arrow)"/>
+  <text class="fig-muted" x="485" y="64" text-anchor="middle" font-size="12">holds</text>
+  <rect class="fig-accent" x="520" y="160" width="180" height="64" rx="6"/>
+  <text x="610.0" y="188.0" text-anchor="middle" font-size="13" font-weight="600">accessor</text>
+  <text class="fig-muted" x="610.0" y="206.0" text-anchor="middle" font-size="12">count, VEC3, float</text>
+  <line class="fig-line" x1="610" y1="104" x2="610" y2="158" marker-end="url(#14-gltf-arrow)"/>
+  <text class="fig-muted" x="618" y="136" font-size="12">names</text>
+  <rect class="fig-box" x="270" y="160" width="180" height="64" rx="6"/>
+  <text x="360.0" y="188.0" text-anchor="middle" font-size="13" font-weight="600">buffer view</text>
+  <text class="fig-muted" x="360.0" y="206.0" text-anchor="middle" font-size="12">byte offset, length</text>
+  <line class="fig-line" x1="520" y1="192" x2="452" y2="192" marker-end="url(#14-gltf-arrow)"/>
+  <text class="fig-muted" x="485" y="184" text-anchor="middle" font-size="12">reads</text>
+  <rect class="fig-box" x="20" y="160" width="180" height="64" rx="6"/>
+  <text x="110.0" y="188.0" text-anchor="middle" font-size="13" font-weight="600">buffer</text>
+  <text class="fig-muted" x="110.0" y="206.0" text-anchor="middle" font-size="12">the .bin bytes</text>
+  <line class="fig-line" x1="270" y1="192" x2="202" y2="192" marker-end="url(#14-gltf-arrow)"/>
+  <text class="fig-muted" x="235" y="184" text-anchor="middle" font-size="12">range of</text>
+  <text class="fig-muted" x="360" y="140" text-anchor="middle" font-size="12">one accessor per attribute and one for the indices</text>
+</svg>

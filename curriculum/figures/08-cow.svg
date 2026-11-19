@@ -1,0 +1,37 @@
+<svg viewBox="0 0 720 240" role="img" aria-label="After fork, the parent&#x27;s and child&#x27;s PTEs both point at physical page P, read-only and marked COW, with P&#x27;s reference count at 2. After the child writes, the fault handler copied P into P&#x27;, the child&#x27;s PTE points at P&#x27; with W set, and both reference counts are 1">
+  <defs>
+    <marker id="08-cow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="30" font-size="13" font-weight="600">after fork</text>
+  <text x="390" y="30" font-size="13" font-weight="600">after the child writes the page</text>
+  <line class="fig-line" x1="360" y1="20" x2="360" y2="225"/>
+  <rect class="fig-box" x="20" y="60" width="140" height="48" rx="6"/>
+  <text x="90.0" y="81.0" text-anchor="middle" font-size="13" font-weight="600">parent PTE</text>
+  <text class="fig-muted" x="90.0" y="98.0" text-anchor="middle" font-size="12">R, COW</text>
+  <rect class="fig-box" x="20" y="150" width="140" height="48" rx="6"/>
+  <text x="90.0" y="171.0" text-anchor="middle" font-size="13" font-weight="600">child PTE</text>
+  <text class="fig-muted" x="90.0" y="188.0" text-anchor="middle" font-size="12">R, COW</text>
+  <rect class="fig-accent" x="230" y="100" width="100" height="56" rx="6"/>
+  <text x="280.0" y="125.0" text-anchor="middle" font-size="13" font-weight="600">page P</text>
+  <text class="fig-muted" x="280.0" y="142.0" text-anchor="middle" font-size="12">refcount 2</text>
+  <line class="fig-line" x1="160" y1="84" x2="228" y2="118" marker-end="url(#08-cow-arrow)"/>
+  <line class="fig-line" x1="160" y1="174" x2="228" y2="140" marker-end="url(#08-cow-arrow)"/>
+  <rect class="fig-box" x="390" y="60" width="140" height="48" rx="6"/>
+  <text x="460.0" y="81.0" text-anchor="middle" font-size="13" font-weight="600">parent PTE</text>
+  <text class="fig-muted" x="460.0" y="98.0" text-anchor="middle" font-size="12">R, COW</text>
+  <rect class="fig-box" x="390" y="150" width="140" height="48" rx="6"/>
+  <text x="460.0" y="171.0" text-anchor="middle" font-size="13" font-weight="600">child PTE</text>
+  <text class="fig-muted" x="460.0" y="188.0" text-anchor="middle" font-size="12">R, W</text>
+  <rect class="fig-box" x="600" y="56" width="100" height="56" rx="6"/>
+  <text x="650.0" y="81.0" text-anchor="middle" font-size="13" font-weight="600">page P</text>
+  <text class="fig-muted" x="650.0" y="98.0" text-anchor="middle" font-size="12">refcount 1</text>
+  <rect class="fig-accent" x="600" y="146" width="100" height="56" rx="6"/>
+  <text x="650.0" y="171.0" text-anchor="middle" font-size="13" font-weight="600">page P'</text>
+  <text class="fig-muted" x="650.0" y="188.0" text-anchor="middle" font-size="12">refcount 1</text>
+  <line class="fig-line" x1="530" y1="84" x2="598" y2="84" marker-end="url(#08-cow-arrow)"/>
+  <line class="fig-line" x1="530" y1="174" x2="598" y2="174" marker-end="url(#08-cow-arrow)"/>
+  <text class="fig-muted" x="565" y="135" text-anchor="middle" font-size="12">copy</text>
+  <line class="fig-line" x1="650" y1="112" x2="650" y2="144" marker-end="url(#08-cow-arrow)"/>
+</svg>

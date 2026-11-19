@@ -1,0 +1,53 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="The Server owns the listener, the epoll instance and a vector of client slots. Each Client owns its TcpStream. An event's token is a slot index, and setting a slot to None drops the Client, which closes its descriptor.">
+  <defs>
+    <marker id="10-event-loop-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <rect class="fig-box" x="20" y="24" width="460" height="256" rx="6"/>
+  <text x="40" y="46" font-size="13" font-weight="600" class="fig-mono">Server</text>
+
+  <text x="40" y="81" font-size="12" class="fig-mono">listener</text>
+  <rect class="fig-box" x="130" y="60" width="200" height="32" rx="6"/>
+  <text x="230" y="81" text-anchor="middle" font-size="12" class="fig-mono">TcpListener, fd 3</text>
+
+  <text x="40" y="125" font-size="12" class="fig-mono">poller</text>
+  <rect class="fig-accent" x="130" y="104" width="200" height="32" rx="6"/>
+  <text x="230" y="125" text-anchor="middle" font-size="12" class="fig-mono">Epoll: OwnedFd, fd 4</text>
+
+  <text x="40" y="177" font-size="12" class="fig-mono">clients</text>
+  <rect class="fig-box" x="130" y="156" width="80" height="32" rx="6"/>
+  <rect class="fig-box" x="210" y="156" width="80" height="32" rx="6" stroke-dasharray="4 3"/>
+  <rect class="fig-accent" x="290" y="156" width="80" height="32" rx="6"/>
+  <rect class="fig-box" x="370" y="156" width="80" height="32" rx="6" stroke-dasharray="4 3"/>
+  <text x="170" y="177" text-anchor="middle" font-size="12" class="fig-mono">0 Client</text>
+  <text x="250" y="177" text-anchor="middle" font-size="12" class="fig-mono fig-muted">1 None</text>
+  <text x="330" y="177" text-anchor="middle" font-size="12" class="fig-mono">2 Client</text>
+  <text x="410" y="177" text-anchor="middle" font-size="12" class="fig-mono fig-muted">3 None</text>
+
+  <line class="fig-line" x1="170" y1="188" x2="170" y2="214" marker-end="url(#10-event-loop-arrow)"/>
+  <line class="fig-line" x1="330" y1="188" x2="330" y2="214" marker-end="url(#10-event-loop-arrow)"/>
+  <rect class="fig-box" x="130" y="216" width="80" height="44" rx="6"/>
+  <text x="170" y="234" text-anchor="middle" font-size="12" class="fig-mono">TcpStream</text>
+  <text x="170" y="251" text-anchor="middle" font-size="12" class="fig-mono">fd 5</text>
+  <rect class="fig-box" x="290" y="216" width="80" height="44" rx="6"/>
+  <text x="330" y="234" text-anchor="middle" font-size="12" class="fig-mono">TcpStream</text>
+  <text x="330" y="251" text-anchor="middle" font-size="12" class="fig-mono">fd 7</text>
+  <text x="178" y="206" font-size="12" class="fig-muted">owns</text>
+  <text x="338" y="206" font-size="12" class="fig-muted">owns</text>
+
+  <!-- event -->
+  <rect class="fig-box" x="510" y="104" width="190" height="32" rx="6"/>
+  <text x="605" y="125" text-anchor="middle" font-size="12" class="fig-mono">Event { token: 2 }</text>
+  <line class="fig-line" x1="330" y1="120" x2="507" y2="120" marker-end="url(#10-event-loop-arrow)"/>
+  <text x="420" y="113" text-anchor="middle" font-size="12" class="fig-muted">wait</text>
+  <path class="fig-accent-line" d="M605 136 L605 146 L345 146 L345 153" fill="none" marker-end="url(#10-event-loop-arrow)"/>
+  <text x="698" y="164" text-anchor="end" font-size="12" class="fig-muted">token is the slot index</text>
+
+  <!-- close -->
+  <rect class="fig-box" x="510" y="212" width="190" height="52" rx="6"/>
+  <text x="605" y="234" text-anchor="middle" font-size="12" class="fig-mono">clients[2] = None</text>
+  <text x="605" y="253" text-anchor="middle" font-size="12" class="fig-muted">drop runs close(7)</text>
+  <line class="fig-line" x1="510" y1="238" x2="373" y2="238" marker-end="url(#10-event-loop-arrow)"/>
+</svg>

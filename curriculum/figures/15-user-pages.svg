@@ -1,0 +1,55 @@
+<svg viewBox="0 0 720 280" role="img" aria-label="The user code page at 0x1000_0000_0000 and the user stack page at 0x1000_0001_f000 share one path of tables under level 4 entry 32. Every entry on that path has the U bit, so code in ring 3 may use the two pages. The kernel's entries, such as the heap's at level 4 index 136, lack it.">
+  <defs>
+    <marker id="15-user-pages-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="20" y="28" text-anchor="start" font-size="12">the walk for both user pages, P = present, W = writable, U = user</text>
+
+  <rect class="fig-box" x="20" y="64" width="60" height="40" rx="6"/>
+  <text class="fig-mono" x="50" y="88" text-anchor="middle" font-size="13">CR3</text>
+  <line class="fig-line" x1="80" y1="84" x2="103" y2="84" marker-end="url(#15-user-pages-arrow)"/>
+
+  <rect class="fig-box" x="105" y="44" width="110" height="64" rx="6"/>
+  <text x="160" y="62" text-anchor="middle" font-size="13" font-weight="600">L4 table</text>
+  <rect class="fig-accent" x="115" y="72" width="90" height="24" rx="6"/>
+  <text class="fig-mono" x="160" y="88" text-anchor="middle" font-size="12">[32] P W U</text>
+  <line class="fig-line" x1="215" y1="84" x2="238" y2="84" marker-end="url(#15-user-pages-arrow)"/>
+
+  <rect class="fig-box" x="240" y="44" width="110" height="64" rx="6"/>
+  <text x="295" y="62" text-anchor="middle" font-size="13" font-weight="600">L3 table</text>
+  <rect class="fig-accent" x="250" y="72" width="90" height="24" rx="6"/>
+  <text class="fig-mono" x="295" y="88" text-anchor="middle" font-size="12">[0] P W U</text>
+  <line class="fig-line" x1="350" y1="84" x2="373" y2="84" marker-end="url(#15-user-pages-arrow)"/>
+
+  <rect class="fig-box" x="375" y="44" width="110" height="64" rx="6"/>
+  <text x="430" y="62" text-anchor="middle" font-size="13" font-weight="600">L2 table</text>
+  <rect class="fig-accent" x="385" y="72" width="90" height="24" rx="6"/>
+  <text class="fig-mono" x="430" y="88" text-anchor="middle" font-size="12">[0] P W U</text>
+  <line class="fig-line" x1="485" y1="84" x2="508" y2="84" marker-end="url(#15-user-pages-arrow)"/>
+
+  <rect class="fig-box" x="510" y="44" width="190" height="64" rx="6"/>
+  <text x="605" y="62" text-anchor="middle" font-size="13" font-weight="600">L1 table</text>
+  <rect class="fig-accent" x="518" y="72" width="84" height="24" rx="6"/>
+  <text class="fig-mono" x="560" y="88" text-anchor="middle" font-size="12">[0] P U</text>
+  <rect class="fig-accent" x="608" y="72" width="84" height="24" rx="6"/>
+  <text class="fig-mono" x="650" y="88" text-anchor="middle" font-size="12">[31] P W U</text>
+
+  <line class="fig-line" x1="560" y1="96" x2="465" y2="178" marker-end="url(#15-user-pages-arrow)"/>
+  <line class="fig-line" x1="650" y1="96" x2="643" y2="178" marker-end="url(#15-user-pages-arrow)"/>
+
+  <rect class="fig-accent" x="380" y="180" width="140" height="48" rx="6"/>
+  <text x="450" y="200" text-anchor="middle" font-size="13" font-weight="600">code frame</text>
+  <text class="fig-muted" x="450" y="218" text-anchor="middle" font-size="12">the program's bytes</text>
+  <text class="fig-mono" x="450" y="248" text-anchor="middle" font-size="12">0x1000_0000_0000</text>
+
+  <rect class="fig-accent" x="582" y="180" width="118" height="48" rx="6"/>
+  <text x="641" y="200" text-anchor="middle" font-size="13" font-weight="600">stack frame</text>
+  <text class="fig-muted" x="641" y="218" text-anchor="middle" font-size="12">grows down</text>
+  <text class="fig-mono" x="641" y="248" text-anchor="middle" font-size="12">0x1000_0001_f000</text>
+
+  <text class="fig-muted" x="20" y="168" text-anchor="start" font-size="12">a kernel region, for comparison</text>
+  <rect class="fig-box" x="20" y="180" width="300" height="48" rx="6"/>
+  <text x="170" y="200" text-anchor="middle" font-size="13" font-weight="600">kernel heap, L4 [136] P W</text>
+  <text class="fig-muted" x="170" y="218" text-anchor="middle" font-size="12">no U bit: a ring 3 access faults</text>
+</svg>

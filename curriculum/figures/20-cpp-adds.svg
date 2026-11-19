@@ -1,0 +1,48 @@
+<svg viewBox="0 0 720 400" role="img" aria-label="The same struct in C and in C++. In C the object is its two floats, 8 bytes, and nothing else. In C++ with a virtual function the compiler adds a hidden vtable pointer to the object, a vtable in read-only data, a constructor that stores that pointer, and a destructor call at the end of the scope.">
+  <defs>
+    <marker id="20-cpp-adds-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="30" y="30" font-size="14" font-weight="600">C</text>
+  <text x="380" y="30" font-size="14" font-weight="600">C++</text>
+  <rect class="fig-box" x="20" y="42" width="320" height="150" rx="6"/>
+  <text class="fig-mono" x="34" y="66" font-size="12">struct Rect { float w, h; };</text>
+  <text class="fig-mono" x="34" y="104" font-size="12">float rect_area(const Rect *r)</text>
+  <text class="fig-mono" x="34" y="123" font-size="12">{ return r-&gt;w * r-&gt;h; }</text>
+  <rect class="fig-box" x="380" y="42" width="320" height="150" rx="6"/>
+  <text class="fig-mono" x="394" y="62" font-size="12">struct Shape {</text>
+  <text class="fig-mono" x="394" y="79" font-size="12" xml:space="preserve">  virtual float area() const = 0;</text>
+  <text class="fig-mono" x="394" y="96" font-size="12">};</text>
+  <text class="fig-mono" x="394" y="113" font-size="12">struct Rect : Shape {</text>
+  <text class="fig-mono" x="394" y="130" font-size="12" xml:space="preserve">  Rect(float w, float h);</text>
+  <text class="fig-mono" x="394" y="147" font-size="12" xml:space="preserve">  ~Rect();</text>
+  <text class="fig-mono" x="394" y="164" font-size="12" xml:space="preserve">  float area() const override;</text>
+  <text class="fig-mono" x="394" y="181" font-size="12" xml:space="preserve">  float w, h; };</text>
+  <text class="fig-muted" x="30" y="222" font-size="12">object in memory: 8 bytes</text>
+  <rect class="fig-box" x="30" y="232" width="60" height="40" rx="0"/>
+  <text class="fig-mono" x="60" y="257" text-anchor="middle" font-size="13">w</text>
+  <rect class="fig-box" x="90" y="232" width="60" height="40" rx="0"/>
+  <text class="fig-mono" x="120" y="257" text-anchor="middle" font-size="13">h</text>
+  <text class="fig-muted" x="30" y="300" font-size="12">C: no hidden fields, no hidden calls</text>
+  <text class="fig-muted" x="390" y="222" font-size="12">object in memory: 16 bytes</text>
+  <rect class="fig-accent" x="390" y="232" width="120" height="40" rx="0"/>
+  <text class="fig-mono" x="450" y="257" text-anchor="middle" font-size="13">vptr</text>
+  <rect class="fig-box" x="510" y="232" width="60" height="40" rx="0"/>
+  <text class="fig-mono" x="540" y="257" text-anchor="middle" font-size="13">w</text>
+  <rect class="fig-box" x="570" y="232" width="60" height="40" rx="0"/>
+  <text class="fig-mono" x="600" y="257" text-anchor="middle" font-size="13">h</text>
+  <text class="fig-muted" x="390" y="308" font-size="12">vtable for Rect, read-only data</text>
+  <rect class="fig-box" x="390" y="318" width="60" height="40" rx="0"/>
+  <text class="fig-mono" x="420.0" y="343" text-anchor="middle" font-size="12">0</text>
+  <rect class="fig-box" x="450" y="318" width="60" height="40" rx="0"/>
+  <text class="fig-mono" x="480.0" y="343" text-anchor="middle" font-size="12">0</text>
+  <rect class="fig-accent" x="510" y="318" width="120" height="40" rx="0"/>
+  <text class="fig-mono" x="570.0" y="343" text-anchor="middle" font-size="12">&amp;Rect::area</text>
+  <text class="fig-muted" x="420" y="376" text-anchor="middle" font-size="12">offset</text>
+  <text class="fig-muted" x="480" y="376" text-anchor="middle" font-size="12">typeinfo</text>
+  <path class="fig-accent-line" d="M450 272 L450 290 L570 290 L570 316" fill="none" marker-end="url(#20-cpp-adds-arrow)"/>
+  <text class="fig-accent-text" x="30" y="338" font-size="12">code the compiler adds in C++:</text>
+  <text class="fig-accent-text" x="30" y="358" font-size="12">Rect::Rect() stores the vptr</text>
+  <text class="fig-accent-text" x="30" y="378" font-size="12">a call to ~Rect() at each scope exit</text>
+</svg>

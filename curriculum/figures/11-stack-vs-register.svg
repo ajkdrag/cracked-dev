@@ -1,0 +1,52 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="The same statement, x = a * b + c with four locals. clox runs five instructions that move values through the stack. Lua runs two instructions that name registers directly, and skips the MMBIN after each because the operands are numbers.">
+  <defs>
+    <marker id="11-stack-vs-register-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="360" y="26" text-anchor="middle" font-size="13" font-weight="600">local x = a * b + c, where a, b, c and x are locals</text>
+  <text x="20" y="58" text-anchor="start" font-size="13" font-weight="600">clox: stack machine</text>
+  <text x="380" y="58" text-anchor="start" font-size="13" font-weight="600">Lua 5.5: register machine</text>
+  <text class="fig-mono" x="20" y="95" text-anchor="start" font-size="12">GET_LOCAL 1</text>
+  <rect class="fig-accent" x="150" y="76" width="56" height="28" rx="6"/>
+  <text class="fig-mono" x="178" y="95" text-anchor="middle" font-size="12">a</text>
+  <text class="fig-mono" x="20" y="135" text-anchor="start" font-size="12">GET_LOCAL 2</text>
+  <rect class="fig-box" x="150" y="116" width="56" height="28" rx="6"/>
+  <text class="fig-mono" x="178" y="135" text-anchor="middle" font-size="12">a</text>
+  <rect class="fig-accent" x="210" y="116" width="56" height="28" rx="6"/>
+  <text class="fig-mono" x="238" y="135" text-anchor="middle" font-size="12">b</text>
+  <text class="fig-mono" x="20" y="175" text-anchor="start" font-size="12">MULTIPLY</text>
+  <rect class="fig-accent" x="150" y="156" width="56" height="28" rx="6"/>
+  <text class="fig-mono" x="178" y="175" text-anchor="middle" font-size="12">a*b</text>
+  <text class="fig-mono" x="20" y="215" text-anchor="start" font-size="12">GET_LOCAL 3</text>
+  <rect class="fig-box" x="150" y="196" width="56" height="28" rx="6"/>
+  <text class="fig-mono" x="178" y="215" text-anchor="middle" font-size="12">a*b</text>
+  <rect class="fig-accent" x="210" y="196" width="56" height="28" rx="6"/>
+  <text class="fig-mono" x="238" y="215" text-anchor="middle" font-size="12">c</text>
+  <text class="fig-mono" x="20" y="255" text-anchor="start" font-size="12">ADD</text>
+  <rect class="fig-accent" x="150" y="236" width="56" height="28" rx="6"/>
+  <text class="fig-mono" x="178" y="255" text-anchor="middle" font-size="12">x</text>
+  <text class="fig-accent-text" x="20" y="296" text-anchor="start" font-size="12">5 instructions dispatched</text>
+  <line class="fig-line" x1="360" y1="50" x2="360" y2="300"/>
+  <rect class="fig-box" x="380" y="76" width="70" height="32" rx="6"/>
+  <text class="fig-mono" x="415" y="97" text-anchor="middle" font-size="12">a</text>
+  <text class="fig-mono fig-muted" x="415" y="124" text-anchor="middle" font-size="11">R[0]</text>
+  <rect class="fig-box" x="456" y="76" width="70" height="32" rx="6"/>
+  <text class="fig-mono" x="491" y="97" text-anchor="middle" font-size="12">b</text>
+  <text class="fig-mono fig-muted" x="491" y="124" text-anchor="middle" font-size="11">R[1]</text>
+  <rect class="fig-box" x="532" y="76" width="70" height="32" rx="6"/>
+  <text class="fig-mono" x="567" y="97" text-anchor="middle" font-size="12">c</text>
+  <text class="fig-mono fig-muted" x="567" y="124" text-anchor="middle" font-size="11">R[2]</text>
+  <rect class="fig-accent" x="608" y="76" width="70" height="32" rx="6"/>
+  <text class="fig-mono" x="643" y="97" text-anchor="middle" font-size="12">x</text>
+  <text class="fig-mono fig-muted" x="643" y="124" text-anchor="middle" font-size="11">R[3]</text>
+  <text class="fig-mono" x="380" y="160" text-anchor="start" font-size="12">MUL 3 0 1</text>
+  <text class="fig-mono fig-muted" x="500" y="160" text-anchor="start" font-size="12">R[3] = R[0] * R[1]</text>
+  <text class="fig-mono fig-muted" x="380" y="190" text-anchor="start" font-size="12">MMBIN 0 1 8</text>
+  <text class="fig-muted" x="500" y="190" text-anchor="start" font-size="12">skipped: both numbers</text>
+  <text class="fig-mono" x="380" y="220" text-anchor="start" font-size="12">ADD 3 3 2</text>
+  <text class="fig-mono fig-muted" x="500" y="220" text-anchor="start" font-size="12">R[3] = R[3] + R[2]</text>
+  <text class="fig-mono fig-muted" x="380" y="250" text-anchor="start" font-size="12">MMBIN 3 2 6</text>
+  <text class="fig-muted" x="500" y="250" text-anchor="start" font-size="12">skipped: both numbers</text>
+  <text class="fig-accent-text" x="380" y="296" text-anchor="start" font-size="12">2 instructions dispatched</text>
+</svg>

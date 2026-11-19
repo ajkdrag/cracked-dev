@@ -1,0 +1,38 @@
+<svg viewBox="0 0 720 236" role="img" aria-label="One source tree builds twice: clang with the Windows target makes an exe that runs on Windows and draws on the NVIDIA GPU, and clang for Linux makes a program with the sanitizers that draws through lavapipe on the CPU into a WSLg window.">
+  <defs>
+    <marker id="14-two-builds-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="88" width="130" height="60" rx="6"/>
+  <text x="85.0" y="114.0" text-anchor="middle" font-size="13" font-weight="600">one source tree</text>
+  <text class="fig-muted" x="85.0" y="132.0" text-anchor="middle" font-size="12">src/ and shaders/</text>
+  <rect class="fig-box" x="190" y="30" width="170" height="60" rx="6"/>
+  <text x="275.0" y="56.0" text-anchor="middle" font-size="13" font-weight="600">clang</text>
+  <text class="fig-muted" x="275.0" y="74.0" text-anchor="middle" font-size="12">Windows target</text>
+  <rect class="fig-box" x="190" y="146" width="170" height="60" rx="6"/>
+  <text x="275.0" y="172.0" text-anchor="middle" font-size="13" font-weight="600">clang</text>
+  <text class="fig-muted" x="275.0" y="190.0" text-anchor="middle" font-size="12">Linux, sanitizers</text>
+  <rect class="fig-box" x="400" y="30" width="130" height="60" rx="6"/>
+  <text x="465.0" y="56.0" text-anchor="middle" font-size="13" font-weight="600">platform_sdl.exe</text>
+  <text class="fig-muted" x="465.0" y="74.0" text-anchor="middle" font-size="12">next to SDL3.dll</text>
+  <rect class="fig-box" x="400" y="146" width="130" height="60" rx="6"/>
+  <text x="465.0" y="172.0" text-anchor="middle" font-size="13" font-weight="600">platform_sdl</text>
+  <text class="fig-muted" x="465.0" y="190.0" text-anchor="middle" font-size="12">Linux program</text>
+  <rect class="fig-accent" x="570" y="30" width="130" height="60" rx="6"/>
+  <text x="635.0" y="56.0" text-anchor="middle" font-size="13" font-weight="600">Windows</text>
+  <text class="fig-muted" x="635.0" y="74.0" text-anchor="middle" font-size="12">Vulkan, NVIDIA GPU</text>
+  <rect class="fig-box" x="570" y="146" width="130" height="60" rx="6"/>
+  <text x="635.0" y="172.0" text-anchor="middle" font-size="13" font-weight="600">WSLg window</text>
+  <text class="fig-muted" x="635.0" y="190.0" text-anchor="middle" font-size="12">lavapipe, on the CPU</text>
+  <line class="fig-line" x1="150" y1="108" x2="188" y2="70" marker-end="url(#14-two-builds-arrow)"/>
+  <line class="fig-line" x1="150" y1="128" x2="188" y2="166" marker-end="url(#14-two-builds-arrow)"/>
+  <line class="fig-line" x1="360" y1="60" x2="398" y2="60" marker-end="url(#14-two-builds-arrow)"/>
+  <line class="fig-line" x1="360" y1="176" x2="398" y2="176" marker-end="url(#14-two-builds-arrow)"/>
+  <line class="fig-line" x1="530" y1="60" x2="568" y2="60" marker-end="url(#14-two-builds-arrow)"/>
+  <line class="fig-line" x1="530" y1="176" x2="568" y2="176" marker-end="url(#14-two-builds-arrow)"/>
+  <text class="fig-muted" x="549" y="50" text-anchor="middle" font-size="12">runs</text>
+  <text class="fig-muted" x="549" y="166" text-anchor="middle" font-size="12">runs</text>
+  <text class="fig-muted" x="379" y="50" text-anchor="middle" font-size="12">writes</text>
+  <text class="fig-muted" x="379" y="166" text-anchor="middle" font-size="12">writes</text>
+</svg>

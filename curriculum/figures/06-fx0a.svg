@@ -1,0 +1,29 @@
+<svg viewBox="0 0 720 210" role="img" aria-label="FX0A waits in two states. While no key is held it waits for a press and remembers the key. Then it waits for that key to be released, puts its number in VX and lets the program run on. The timers keep counting in both waiting states.">
+  <defs>
+    <marker id="06-fx0a-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="50" width="170" height="90" rx="6"/>
+  <text x="105" y="78" text-anchor="middle" font-size="14" font-weight="600">wait for a press</text>
+  <text class="fig-mono" x="105" y="102" text-anchor="middle" font-size="13">wait_reg = X</text>
+  <text class="fig-mono" x="105" y="122" text-anchor="middle" font-size="13">wait_key = -1</text>
+  <text class="fig-muted" x="105" y="164" text-anchor="middle" font-size="12">PC stays, timers count</text>
+  <rect class="fig-box" x="275" y="50" width="170" height="90" rx="6"/>
+  <text x="360" y="78" text-anchor="middle" font-size="14" font-weight="600">wait for release</text>
+  <text class="fig-mono" x="360" y="102" text-anchor="middle" font-size="13">wait_reg = X</text>
+  <text class="fig-mono" x="360" y="122" text-anchor="middle" font-size="13">wait_key = k</text>
+  <text class="fig-muted" x="360" y="164" text-anchor="middle" font-size="12">PC stays, timers count</text>
+  <rect class="fig-accent" x="530" y="50" width="170" height="90" rx="6"/>
+  <text x="615" y="78" text-anchor="middle" font-size="14" font-weight="600">done</text>
+  <text class="fig-mono" x="615" y="102" text-anchor="middle" font-size="13">VX = k</text>
+  <text class="fig-mono" x="615" y="122" text-anchor="middle" font-size="13">wait_reg = -1</text>
+  <text class="fig-muted" x="615" y="164" text-anchor="middle" font-size="12">next instruction runs</text>
+  <text class="fig-muted" x="105" y="34" text-anchor="middle" font-size="12">FX0A fetched</text>
+  <line class="fig-line" x1="192" y1="95" x2="272" y2="95" marker-end="url(#06-fx0a-arrow)"/>
+  <text class="fig-muted" x="232" y="86" text-anchor="middle" font-size="12">key k</text>
+  <text class="fig-muted" x="232" y="114" text-anchor="middle" font-size="12">goes down</text>
+  <line class="fig-line" x1="447" y1="95" x2="527" y2="95" marker-end="url(#06-fx0a-arrow)"/>
+  <text class="fig-muted" x="487" y="86" text-anchor="middle" font-size="12">key k</text>
+  <text class="fig-muted" x="487" y="114" text-anchor="middle" font-size="12">goes up</text>
+</svg>

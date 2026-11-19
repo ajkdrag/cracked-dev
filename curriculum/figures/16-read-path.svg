@@ -1,0 +1,41 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="read(3, buf, 100) enters the kernel with a system call. The kernel looks up descriptor 3 to find the struct file that open made, its f_op points at your file_operations, and the kernel calls your kp_read, which copies bytes into the process's buffer with copy_to_user.">
+  <defs>
+    <marker id="16-read-path-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="20" y="30" font-size="12">user space</text>
+  <rect class="fig-box" x="20" y="40" width="200" height="52" rx="6"/>
+  <text x="120" y="62" text-anchor="middle" font-size="13" font-weight="600">kpipetest</text>
+  <text class="fig-mono" x="120" y="81" text-anchor="middle" font-size="12">read(3, buf, 100)</text>
+  <rect class="fig-box" x="560" y="40" width="140" height="52" rx="6"/>
+  <text class="fig-mono" x="630" y="62" text-anchor="middle" font-size="13">buf</text>
+  <text class="fig-muted" x="630" y="81" text-anchor="middle" font-size="12">the process's memory</text>
+
+  <line class="fig-line" x1="20" y1="118" x2="700" y2="118" stroke-dasharray="6 4"/>
+  <text class="fig-muted" x="20" y="140" font-size="12">kernel</text>
+
+  <rect class="fig-box" x="20" y="160" width="120" height="60" rx="6"/>
+  <text x="80" y="185" text-anchor="middle" font-size="13" font-weight="600">fd table</text>
+  <text class="fig-muted" x="80" y="204" text-anchor="middle" font-size="12">entry 3</text>
+  <rect class="fig-box" x="200" y="160" width="130" height="60" rx="6"/>
+  <text class="fig-mono" x="265" y="185" text-anchor="middle" font-size="13">struct file</text>
+  <text class="fig-muted" x="265" y="204" text-anchor="middle" font-size="12">made by open()</text>
+  <rect class="fig-box" x="390" y="160" width="140" height="60" rx="6"/>
+  <text x="460" y="185" text-anchor="middle" font-size="13" font-weight="600">file_operations</text>
+  <text class="fig-mono" x="460" y="204" text-anchor="middle" font-size="12">.read = kp_read</text>
+  <rect class="fig-accent" x="580" y="160" width="120" height="60" rx="6"/>
+  <text class="fig-mono" x="640" y="185" text-anchor="middle" font-size="13">kp_read()</text>
+  <text class="fig-muted" x="640" y="204" text-anchor="middle" font-size="12">your driver</text>
+
+  <line class="fig-line" x1="80" y1="92" x2="80" y2="158" marker-end="url(#16-read-path-arrow)"/>
+  <text class="fig-muted" x="90" y="112" font-size="12">syscall</text>
+  <line class="fig-line" x1="140" y1="190" x2="198" y2="190" marker-end="url(#16-read-path-arrow)"/>
+  <text class="fig-muted" x="170" y="182" text-anchor="middle" font-size="12">looks up</text>
+  <line class="fig-line" x1="330" y1="190" x2="388" y2="190" marker-end="url(#16-read-path-arrow)"/>
+  <text class="fig-muted" x="359" y="182" text-anchor="middle" font-size="12">f_op</text>
+  <line class="fig-line" x1="530" y1="190" x2="578" y2="190" marker-end="url(#16-read-path-arrow)"/>
+  <text class="fig-muted" x="554" y="182" text-anchor="middle" font-size="12">calls</text>
+  <line class="fig-accent-line" x1="640" y1="160" x2="640" y2="94" marker-end="url(#16-read-path-arrow)"/>
+  <text class="fig-accent-text" x="630" y="112" text-anchor="end" font-size="12">copy_to_user</text>
+</svg>

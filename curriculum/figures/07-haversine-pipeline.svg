@@ -1,0 +1,53 @@
+<svg viewBox="0 0 720 290" role="img" aria-label="gen writes a JSON file of point pairs and a binary file of answers. hav reads the JSON file, parses it, copies the pairs into an array, sums the distances and checks the average against the answer file">
+  <defs>
+    <marker id="07-haversine-pipeline-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <rect class="fig-box" x="270" y="20" width="180" height="52" rx="6"/>
+  <text x="360" y="42" text-anchor="middle" font-size="14" font-weight="600">gen</text>
+  <text class="fig-mono" x="360" y="61" text-anchor="middle" font-size="12">uniform 1234 1000000</text>
+
+  <path class="fig-line" d="M270 46 L140 46 L140 98" fill="none" marker-end="url(#07-haversine-pipeline-arrow)"/>
+  <text class="fig-muted" x="205" y="38" text-anchor="middle" font-size="12">writes</text>
+  <path class="fig-line" d="M450 46 L580 46 L580 98" fill="none" marker-end="url(#07-haversine-pipeline-arrow)"/>
+  <text class="fig-muted" x="515" y="38" text-anchor="middle" font-size="12">writes</text>
+
+  <rect class="fig-box" x="20" y="100" width="240" height="50" rx="6"/>
+  <text class="fig-mono" x="140" y="121" text-anchor="middle" font-size="12">data_1000000_flex.json</text>
+  <text class="fig-muted" x="140" y="140" text-anchor="middle" font-size="12">point pairs as text</text>
+
+  <rect class="fig-box" x="460" y="100" width="240" height="50" rx="6"/>
+  <text class="fig-mono" x="580" y="121" text-anchor="middle" font-size="11">data_1000000_haveranswer.f64</text>
+  <text class="fig-muted" x="580" y="140" text-anchor="middle" font-size="12">one double per pair</text>
+
+  <rect class="fig-accent" x="20" y="176" width="680" height="94" rx="6"/>
+  <text x="360" y="196" text-anchor="middle" font-size="14" font-weight="600">hav</text>
+
+  <line class="fig-line" x1="88" y1="150" x2="88" y2="208" marker-end="url(#07-haversine-pipeline-arrow)"/>
+  <text class="fig-muted" x="96" y="168" font-size="12">reads</text>
+  <line class="fig-line" x1="632" y1="150" x2="632" y2="208" marker-end="url(#07-haversine-pipeline-arrow)"/>
+  <text class="fig-muted" x="640" y="168" font-size="12">reads</text>
+
+  <rect class="fig-box" x="34" y="210" width="108" height="46" rx="6"/>
+  <text x="88" y="230" text-anchor="middle" font-size="13">read file</text>
+  <text class="fig-muted" x="88" y="247" text-anchor="middle" font-size="11">bytes in memory</text>
+  <rect class="fig-box" x="170" y="210" width="108" height="46" rx="6"/>
+  <text x="224" y="230" text-anchor="middle" font-size="13">parse JSON</text>
+  <text class="fig-muted" x="224" y="247" text-anchor="middle" font-size="11">a tree of values</text>
+  <rect class="fig-box" x="306" y="210" width="108" height="46" rx="6"/>
+  <text x="360" y="230" text-anchor="middle" font-size="13">copy pairs</text>
+  <text class="fig-muted" x="360" y="247" text-anchor="middle" font-size="11">x0 y0 x1 y1</text>
+  <rect class="fig-box" x="442" y="210" width="108" height="46" rx="6"/>
+  <text x="496" y="230" text-anchor="middle" font-size="13">sum</text>
+  <text class="fig-muted" x="496" y="247" text-anchor="middle" font-size="11">distances</text>
+  <rect class="fig-box" x="578" y="210" width="108" height="46" rx="6"/>
+  <text x="632" y="230" text-anchor="middle" font-size="13">check</text>
+  <text class="fig-muted" x="632" y="247" text-anchor="middle" font-size="11">the average</text>
+
+  <line class="fig-line" x1="142" y1="233" x2="168" y2="233" marker-end="url(#07-haversine-pipeline-arrow)"/>
+  <line class="fig-line" x1="278" y1="233" x2="304" y2="233" marker-end="url(#07-haversine-pipeline-arrow)"/>
+  <line class="fig-line" x1="414" y1="233" x2="440" y2="233" marker-end="url(#07-haversine-pipeline-arrow)"/>
+  <line class="fig-line" x1="550" y1="233" x2="576" y2="233" marker-end="url(#07-haversine-pipeline-arrow)"/>
+</svg>

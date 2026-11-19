@@ -1,0 +1,25 @@
+<svg viewBox="0 0 720 200" role="img" aria-label="One pass of the front end: read the events, run 15 instructions, copy the pixels into the texture and show the picture, which waits for vsync, then start the next pass.">
+  <defs>
+    <marker id="06-hostloop-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="40" width="140" height="60" rx="6"/>
+  <text x="90" y="65" text-anchor="middle" font-size="14" font-weight="600">read events</text>
+  <text class="fig-mono" x="90" y="86" text-anchor="middle" font-size="12">SDL_PollEvent</text>
+  <rect class="fig-box" x="200" y="40" width="140" height="60" rx="6"/>
+  <text x="270" y="65" text-anchor="middle" font-size="14" font-weight="600">run instructions</text>
+  <text class="fig-mono" x="270" y="86" text-anchor="middle" font-size="12">15 x chip8_step</text>
+  <rect class="fig-box" x="380" y="40" width="140" height="60" rx="6"/>
+  <text x="450" y="65" text-anchor="middle" font-size="14" font-weight="600">copy pixels</text>
+  <text class="fig-mono" x="450" y="86" text-anchor="middle" font-size="12">SDL_UpdateTexture</text>
+  <rect class="fig-accent" x="560" y="40" width="140" height="60" rx="6"/>
+  <text x="630" y="65" text-anchor="middle" font-size="14" font-weight="600">show picture</text>
+  <text class="fig-mono" x="630" y="86" text-anchor="middle" font-size="12">SDL_RenderPresent</text>
+  <line class="fig-line" x1="160" y1="70" x2="198" y2="70" marker-end="url(#06-hostloop-arrow)"/>
+  <line class="fig-line" x1="340" y1="70" x2="378" y2="70" marker-end="url(#06-hostloop-arrow)"/>
+  <line class="fig-line" x1="520" y1="70" x2="558" y2="70" marker-end="url(#06-hostloop-arrow)"/>
+  <text class="fig-muted" x="610" y="122" text-anchor="middle" font-size="12">waits for vsync</text>
+  <path class="fig-line" d="M680 100 L680 150 L60 150 L60 102" fill="none" marker-end="url(#06-hostloop-arrow)"/>
+  <text class="fig-muted" x="370" y="172" text-anchor="middle" font-size="12">next pass, until the window is closed</text>
+</svg>

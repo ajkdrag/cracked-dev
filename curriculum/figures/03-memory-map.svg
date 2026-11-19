@@ -1,0 +1,30 @@
+<svg viewBox="0 0 720 290" role="img" aria-label="Hack's data memory from address 0 down: RAM16K, then the screen from 16384, then the keyboard at 24576, and the top two bits of the 15-bit address pick the part">
+  <defs>
+    <marker id="03-memory-map-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="130" y="34" text-anchor="end" font-size="12">first address</text>
+  <text class="fig-muted" x="260" y="34" text-anchor="middle" font-size="12">part</text>
+  <text class="fig-muted" x="400" y="34" font-size="12">address bits 14 to 0</text>
+  <rect class="fig-box" x="170" y="46" width="180" height="104"/>
+  <text x="260" y="96.0" text-anchor="middle" font-size="14" font-weight="600">RAM16K</text>
+  <text class="fig-muted" x="260" y="113.0" text-anchor="middle" font-size="12">16384 words</text>
+  <text class="fig-mono" x="130" y="61" text-anchor="end" font-size="13">0</text>
+  <line class="fig-line" x1="136" y1="46" x2="168" y2="46"/>
+  <text class="fig-mono" x="400" y="103.0" font-size="13">0xx xxxx xxxx xxxx</text>
+  <rect class="fig-accent" x="170" y="150" width="180" height="64"/>
+  <text x="260" y="180.0" text-anchor="middle" font-size="14" font-weight="600">Screen</text>
+  <text class="fig-muted" x="260" y="197.0" text-anchor="middle" font-size="12">8192 words</text>
+  <text class="fig-mono" x="130" y="165" text-anchor="end" font-size="13">16384</text>
+  <line class="fig-line" x1="136" y1="150" x2="168" y2="150"/>
+  <text class="fig-mono" x="400" y="187.0" font-size="13">10x xxxx xxxx xxxx</text>
+  <rect class="fig-accent" x="170" y="214" width="180" height="36"/>
+  <text x="260" y="237.0" text-anchor="middle" font-size="14" font-weight="600">Keyboard</text>
+  <text class="fig-mono" x="130" y="229" text-anchor="end" font-size="13">24576</text>
+  <line class="fig-line" x1="136" y1="214" x2="168" y2="214"/>
+  <text class="fig-mono" x="400" y="237.0" font-size="13">110 0000 0000 0000</text>
+  <text class="fig-muted" x="400" y="120" font-size="12">bit 14 is 0</text>
+  <text class="fig-muted" x="400" y="204" font-size="12">bits 14, 13 are 1 0</text>
+  <text class="fig-accent-text" x="260" y="274" text-anchor="middle" font-size="12">the top two address bits pick the part</text>
+</svg>

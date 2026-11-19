@@ -1,0 +1,31 @@
+<svg viewBox="0 0 720 212" role="img" aria-label="What the program sees and what is on disk after each call of a merge. The new bytes reach the disk at the fsync of data.tmp, but the name data points at the new file on disk only after the directory is synced. A crash after any call leaves either the old file or the new one under the name data.">
+  <text class="fig-mono" x="198.0" y="34" text-anchor="middle" font-size="12">1. write data.tmp</text>
+  <text class="fig-mono" x="342.0" y="34" text-anchor="middle" font-size="12">2. fsync data.tmp</text>
+  <text class="fig-mono" x="486.0" y="34" text-anchor="middle" font-size="12">3. rename</text>
+  <text class="fig-mono" x="630.0" y="34" text-anchor="middle" font-size="12">4. fsync dir</text>
+  <text x="20" y="79.0" font-size="13" font-weight="600">program sees</text>
+  <text class="fig-muted" x="20" y="95.0" font-size="12">page cache</text>
+  <rect class="fig-box" x="130" y="50" width="136" height="62" rx="6"/>
+  <text class="fig-mono" x="198.0" y="76" text-anchor="middle" font-size="12">data → old</text>
+  <text class="fig-mono" x="198.0" y="94" text-anchor="middle" font-size="12">data.tmp → new</text>
+  <rect class="fig-box" x="274" y="50" width="136" height="62" rx="6"/>
+  <text class="fig-mono" x="342.0" y="76" text-anchor="middle" font-size="12">data → old</text>
+  <text class="fig-mono" x="342.0" y="94" text-anchor="middle" font-size="12">data.tmp → new</text>
+  <rect class="fig-box" x="418" y="50" width="136" height="62" rx="6"/>
+  <text class="fig-mono" x="486.0" y="85.0" text-anchor="middle" font-size="12">data → new</text>
+  <rect class="fig-box" x="562" y="50" width="136" height="62" rx="6"/>
+  <text class="fig-mono" x="630.0" y="85.0" text-anchor="middle" font-size="12">data → new</text>
+  <text x="20" y="159.0" font-size="13" font-weight="600">on disk</text>
+  <text class="fig-muted" x="20" y="175.0" font-size="12">after a power cut</text>
+  <rect class="fig-box" x="130" y="130" width="136" height="62" rx="6"/>
+  <text class="fig-mono" x="198.0" y="156" text-anchor="middle" font-size="12">data → old</text>
+  <text class="fig-muted" x="198.0" y="174" text-anchor="middle" font-size="12">new bytes not stored</text>
+  <rect class="fig-box" x="274" y="130" width="136" height="62" rx="6"/>
+  <text class="fig-mono" x="342.0" y="156" text-anchor="middle" font-size="12">data → old</text>
+  <text class="fig-muted" x="342.0" y="174" text-anchor="middle" font-size="12">new bytes, no name</text>
+  <rect class="fig-box" x="418" y="130" width="136" height="62" rx="6"/>
+  <text class="fig-mono" x="486.0" y="156" text-anchor="middle" font-size="12">data → old</text>
+  <text class="fig-muted" x="486.0" y="174" text-anchor="middle" font-size="12">new bytes, no name</text>
+  <rect class="fig-accent" x="562" y="130" width="136" height="62" rx="6"/>
+  <text class="fig-mono" x="630.0" y="165.0" text-anchor="middle" font-size="12">data → new</text>
+</svg>

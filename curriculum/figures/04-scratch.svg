@@ -1,0 +1,27 @@
+<svg viewBox="0 0 720 290" role="img" aria-label="perm_user receives the caller&#x27;s arena by pointer and moves the caller&#x27;s beg. scratch_user receives a copy and moves only the copy, so the caller&#x27;s beg stays where it was.">
+  <defs>
+    <marker id="04-scratch-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-mono" x="20" y="30" font-size="13" font-weight="600">perm_user(&amp;a): the arena by pointer</text>
+  <rect class="fig-box" x="40" y="46" width="180" height="36"/>
+  <text class="fig-muted" x="130" y="69" text-anchor="middle" font-size="12">used before</text>
+  <rect class="fig-accent" x="220" y="46" width="180" height="36"/>
+  <text x="310" y="69" text-anchor="middle" font-size="12">1000 bytes</text>
+  <rect class="fig-box" x="400" y="46" width="280" height="36"/>
+  <text class="fig-muted" x="540" y="69" text-anchor="middle" font-size="12">free</text>
+  <line class="fig-accent-line" x1="400" y1="120" x2="400" y2="86" marker-end="url(#04-scratch-arrow)"/>
+  <text x="400" y="136" text-anchor="middle" font-size="12">caller's beg after the call</text>
+  <text class="fig-mono" x="20" y="160" font-size="13" font-weight="600">scratch_user(a): a copy of the arena</text>
+  <rect class="fig-box" x="40" y="176" width="180" height="36"/>
+  <text class="fig-muted" x="130" y="199" text-anchor="middle" font-size="12">used before</text>
+  <rect class="fig-accent" x="220" y="176" width="180" height="36" stroke-dasharray="4 3"/>
+  <text x="310" y="199" text-anchor="middle" font-size="12">1000 bytes, free again</text>
+  <rect class="fig-box" x="400" y="176" width="280" height="36"/>
+  <text class="fig-muted" x="540" y="199" text-anchor="middle" font-size="12">free</text>
+  <line class="fig-accent-line" x1="220" y1="250" x2="220" y2="216" marker-end="url(#04-scratch-arrow)"/>
+  <text x="220" y="266" text-anchor="middle" font-size="12">caller's beg after the call</text>
+  <line class="fig-line" x1="400" y1="250" x2="400" y2="216" marker-end="url(#04-scratch-arrow)" stroke-dasharray="4 3"/>
+  <text class="fig-muted" x="400" y="266" text-anchor="start" font-size="12">the copy's beg, gone on return</text>
+</svg>

@@ -1,0 +1,80 @@
+<svg viewBox="0 0 720 400" role="img" aria-label="RAM8 with address 5: the in bus reaches all eight registers, the DMux8Way sends load only to register 5, and the Mux8Way16 passes register 5's output to out">
+  <defs>
+    <marker id="03-ram8-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-mono" x="20" y="198" font-size="13">load</text>
+  <line class="fig-accent-line" x1="56" y1="193" x2="108" y2="193" marker-end="url(#03-ram8-arrow)"/>
+  <rect class="fig-box" x="110" y="60" width="80" height="266" rx="6"/>
+  <text x="150" y="187" text-anchor="middle" font-size="13" font-weight="600">DMux</text>
+  <text x="150" y="205" text-anchor="middle" font-size="13" font-weight="600">8Way</text>
+  <rect class="fig-box" x="520" y="60" width="90" height="266" rx="6"/>
+  <text x="565" y="187" text-anchor="middle" font-size="13" font-weight="600">Mux8</text>
+  <text x="565" y="205" text-anchor="middle" font-size="13" font-weight="600">Way16</text>
+  <rect class="fig-box" x="290" y="60" width="140" height="28" rx="6"/>
+  <text x="366" y="79" text-anchor="middle" font-size="13">Register 0</text>
+  <line class="fig-line" x1="190" y1="68" x2="288" y2="68" marker-end="url(#03-ram8-arrow)"/>
+  <text class="fig-muted" x="226" y="64" text-anchor="middle" font-size="11">0</text>
+  <line class="fig-line" x1="268" y1="80" x2="288" y2="80" marker-end="url(#03-ram8-arrow)"/>
+  <circle class="fig-accent-fill" cx="268" cy="80" r="2.5"/>
+  <line class="fig-line" x1="430" y1="74" x2="518" y2="74" marker-end="url(#03-ram8-arrow)"/>
+  <rect class="fig-box" x="290" y="94" width="140" height="28" rx="6"/>
+  <text x="366" y="113" text-anchor="middle" font-size="13">Register 1</text>
+  <line class="fig-line" x1="190" y1="102" x2="288" y2="102" marker-end="url(#03-ram8-arrow)"/>
+  <text class="fig-muted" x="226" y="98" text-anchor="middle" font-size="11">0</text>
+  <line class="fig-line" x1="268" y1="114" x2="288" y2="114" marker-end="url(#03-ram8-arrow)"/>
+  <circle class="fig-accent-fill" cx="268" cy="114" r="2.5"/>
+  <line class="fig-line" x1="430" y1="108" x2="518" y2="108" marker-end="url(#03-ram8-arrow)"/>
+  <rect class="fig-box" x="290" y="128" width="140" height="28" rx="6"/>
+  <text x="366" y="147" text-anchor="middle" font-size="13">Register 2</text>
+  <line class="fig-line" x1="190" y1="136" x2="288" y2="136" marker-end="url(#03-ram8-arrow)"/>
+  <text class="fig-muted" x="226" y="132" text-anchor="middle" font-size="11">0</text>
+  <line class="fig-line" x1="268" y1="148" x2="288" y2="148" marker-end="url(#03-ram8-arrow)"/>
+  <circle class="fig-accent-fill" cx="268" cy="148" r="2.5"/>
+  <line class="fig-line" x1="430" y1="142" x2="518" y2="142" marker-end="url(#03-ram8-arrow)"/>
+  <rect class="fig-box" x="290" y="162" width="140" height="28" rx="6"/>
+  <text x="366" y="181" text-anchor="middle" font-size="13">Register 3</text>
+  <line class="fig-line" x1="190" y1="170" x2="288" y2="170" marker-end="url(#03-ram8-arrow)"/>
+  <text class="fig-muted" x="226" y="166" text-anchor="middle" font-size="11">0</text>
+  <line class="fig-line" x1="268" y1="182" x2="288" y2="182" marker-end="url(#03-ram8-arrow)"/>
+  <circle class="fig-accent-fill" cx="268" cy="182" r="2.5"/>
+  <line class="fig-line" x1="430" y1="176" x2="518" y2="176" marker-end="url(#03-ram8-arrow)"/>
+  <rect class="fig-box" x="290" y="196" width="140" height="28" rx="6"/>
+  <text x="366" y="215" text-anchor="middle" font-size="13">Register 4</text>
+  <line class="fig-line" x1="190" y1="204" x2="288" y2="204" marker-end="url(#03-ram8-arrow)"/>
+  <text class="fig-muted" x="226" y="200" text-anchor="middle" font-size="11">0</text>
+  <line class="fig-line" x1="268" y1="216" x2="288" y2="216" marker-end="url(#03-ram8-arrow)"/>
+  <circle class="fig-accent-fill" cx="268" cy="216" r="2.5"/>
+  <line class="fig-line" x1="430" y1="210" x2="518" y2="210" marker-end="url(#03-ram8-arrow)"/>
+  <rect class="fig-accent" x="290" y="230" width="140" height="28" rx="6"/>
+  <text x="366" y="249" text-anchor="middle" font-size="13">Register 5</text>
+  <line class="fig-accent-line" x1="190" y1="238" x2="288" y2="238" marker-end="url(#03-ram8-arrow)"/>
+  <text class="fig-accent-text" x="226" y="234" text-anchor="middle" font-size="11">load</text>
+  <line class="fig-line" x1="268" y1="250" x2="288" y2="250" marker-end="url(#03-ram8-arrow)"/>
+  <circle class="fig-accent-fill" cx="268" cy="250" r="2.5"/>
+  <line class="fig-accent-line" x1="430" y1="244" x2="518" y2="244" marker-end="url(#03-ram8-arrow)"/>
+  <rect class="fig-box" x="290" y="264" width="140" height="28" rx="6"/>
+  <text x="366" y="283" text-anchor="middle" font-size="13">Register 6</text>
+  <line class="fig-line" x1="190" y1="272" x2="288" y2="272" marker-end="url(#03-ram8-arrow)"/>
+  <text class="fig-muted" x="226" y="268" text-anchor="middle" font-size="11">0</text>
+  <line class="fig-line" x1="268" y1="284" x2="288" y2="284" marker-end="url(#03-ram8-arrow)"/>
+  <circle class="fig-accent-fill" cx="268" cy="284" r="2.5"/>
+  <line class="fig-line" x1="430" y1="278" x2="518" y2="278" marker-end="url(#03-ram8-arrow)"/>
+  <rect class="fig-box" x="290" y="298" width="140" height="28" rx="6"/>
+  <text x="366" y="317" text-anchor="middle" font-size="13">Register 7</text>
+  <line class="fig-line" x1="190" y1="306" x2="288" y2="306" marker-end="url(#03-ram8-arrow)"/>
+  <text class="fig-muted" x="226" y="302" text-anchor="middle" font-size="11">0</text>
+  <line class="fig-line" x1="268" y1="318" x2="288" y2="318" marker-end="url(#03-ram8-arrow)"/>
+  <circle class="fig-accent-fill" cx="268" cy="318" r="2.5"/>
+  <line class="fig-line" x1="430" y1="312" x2="518" y2="312" marker-end="url(#03-ram8-arrow)"/>
+  <text class="fig-mono" x="268" y="36" text-anchor="middle" font-size="13">in</text>
+  <text class="fig-muted" x="284" y="36" font-size="12">one bus, wired to all eight registers</text>
+  <line class="fig-line" x1="268" y1="42" x2="268" y2="318"/>
+  <line class="fig-accent-line" x1="610" y1="193" x2="660" y2="193" marker-end="url(#03-ram8-arrow)"/>
+  <text class="fig-mono" x="666" y="197" font-size="13">out</text>
+  <path class="fig-line" d="M150 348 L150 328" marker-end="url(#03-ram8-arrow)"/>
+  <path class="fig-line" d="M565 348 L565 328" marker-end="url(#03-ram8-arrow)"/>
+  <line class="fig-line" x1="150" y1="348" x2="565" y2="348"/>
+  <text class="fig-mono" x="358" y="370" text-anchor="middle" font-size="13">address = 5 goes to both as sel</text>
+</svg>

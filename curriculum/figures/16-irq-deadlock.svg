@@ -1,0 +1,49 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="Top row: on CPU 0, write takes the spinlock with plain spin_lock, the MSI interrupts it, and edu_irq spins on the same lock forever. Bottom row: write takes the lock with spin_lock_irq, the MSI waits until spin_unlock_irq turns interrupts back on, and edu_irq then takes the free lock.">
+  <defs>
+    <marker id="16-irq-deadlock-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="20" y="32" font-size="12">CPU 0, write() uses spin_lock: deadlock</text>
+  <rect class="fig-box" x="20" y="44" width="134" height="56" rx="6"/>
+  <text class="fig-mono" x="87" y="67" text-anchor="middle" font-size="13">spin_lock()</text>
+  <text class="fig-muted" x="87" y="86" text-anchor="middle" font-size="12">write() holds lock</text>
+  <rect class="fig-box" x="196" y="44" width="134" height="56" rx="6"/>
+  <text class="fig-mono" x="263" y="67" text-anchor="middle" font-size="13">edu_irq()</text>
+  <text class="fig-muted" x="263" y="86" text-anchor="middle" font-size="12">interrupts write()</text>
+  <rect class="fig-accent" x="372" y="44" width="134" height="56" rx="6"/>
+  <text class="fig-mono" x="439" y="67" text-anchor="middle" font-size="13">spin_lock()</text>
+  <text class="fig-muted" x="439" y="86" text-anchor="middle" font-size="12">lock taken: spins</text>
+  <rect class="fig-accent" x="548" y="44" width="152" height="56" rx="6"/>
+  <text x="624" y="67" text-anchor="middle" font-size="13" font-weight="600">stuck</text>
+  <text class="fig-muted" x="624" y="86" text-anchor="middle" font-size="12">write() never resumes</text>
+  <line class="fig-line" x1="154" y1="72" x2="194" y2="72" marker-end="url(#16-irq-deadlock-arrow)"/>
+  <text class="fig-muted" x="175" y="64" text-anchor="middle" font-size="12">MSI</text>
+  <line class="fig-line" x1="330" y1="72" x2="370" y2="72" marker-end="url(#16-irq-deadlock-arrow)"/>
+  <text class="fig-muted" x="351" y="64" text-anchor="middle" font-size="12">calls</text>
+  <line class="fig-accent-line" x1="506" y1="72" x2="546" y2="72" marker-end="url(#16-irq-deadlock-arrow)"/>
+  <text class="fig-accent-text" x="527" y="64" text-anchor="middle" font-size="12">loops</text>
+
+  <text class="fig-muted" x="20" y="150" font-size="12">CPU 0, write() uses spin_lock_irq: no deadlock</text>
+  <rect class="fig-box" x="20" y="162" width="134" height="56" rx="6"/>
+  <text class="fig-mono" x="87" y="185" text-anchor="middle" font-size="13">spin_lock_irq()</text>
+  <text class="fig-muted" x="87" y="204" text-anchor="middle" font-size="12">lock held, IRQs off</text>
+  <rect class="fig-box" x="196" y="162" width="134" height="56" rx="6"/>
+  <text x="263" y="185" text-anchor="middle" font-size="13" font-weight="600">MSI pending</text>
+  <text class="fig-muted" x="263" y="204" text-anchor="middle" font-size="12">CPU 0 holds it back</text>
+  <rect class="fig-box" x="372" y="162" width="134" height="56" rx="6"/>
+  <text class="fig-mono" x="439" y="185" text-anchor="middle" font-size="12">spin_unlock_irq()</text>
+  <text class="fig-muted" x="439" y="204" text-anchor="middle" font-size="12">lock free, IRQs on</text>
+  <rect class="fig-accent" x="548" y="162" width="152" height="56" rx="6"/>
+  <text class="fig-mono" x="624" y="185" text-anchor="middle" font-size="13">edu_irq()</text>
+  <text class="fig-muted" x="624" y="204" text-anchor="middle" font-size="12">takes the lock</text>
+  <line class="fig-line" x1="154" y1="190" x2="194" y2="190" marker-end="url(#16-irq-deadlock-arrow)"/>
+  <text class="fig-muted" x="175" y="182" text-anchor="middle" font-size="12">MSI</text>
+  <line class="fig-line" x1="330" y1="190" x2="370" y2="190" marker-end="url(#16-irq-deadlock-arrow)"/>
+  <text class="fig-muted" x="351" y="182" text-anchor="middle" font-size="12">waits</text>
+  <line class="fig-line" x1="506" y1="190" x2="546" y2="190" marker-end="url(#16-irq-deadlock-arrow)"/>
+  <text class="fig-muted" x="527" y="182" text-anchor="middle" font-size="12">runs</text>
+
+  <line class="fig-line" x1="20" y1="256" x2="698" y2="256" marker-end="url(#16-irq-deadlock-arrow)"/>
+  <text class="fig-muted" x="700" y="278" text-anchor="end" font-size="12">time</text>
+</svg>

@@ -1,0 +1,18 @@
+<svg viewBox="0 0 720 190" role="img" aria-label="A process starts with three streams: it reads stream 0 from the terminal and writes streams 1 and 2 to the terminal">
+  <defs>
+    <marker id="01-streams-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-accent" x="20" y="30" width="200" height="130" rx="6"/>
+  <text x="120" y="90" text-anchor="middle" font-size="14" font-weight="600">process</text>
+  <text class="fig-mono fig-muted" x="120" y="110" text-anchor="middle" font-size="12">./a.out</text>
+  <rect class="fig-box" x="500" y="30" width="200" height="130" rx="6"/>
+  <text x="600" y="100" text-anchor="middle" font-size="14" font-weight="600">terminal</text>
+  <line class="fig-line" x1="500" y1="60" x2="222" y2="60" marker-end="url(#01-streams-arrow)"/>
+  <text class="fig-mono" x="360" y="52" text-anchor="middle" font-size="13">0 stdin: input</text>
+  <line class="fig-line" x1="220" y1="100" x2="498" y2="100" marker-end="url(#01-streams-arrow)"/>
+  <text class="fig-mono" x="360" y="92" text-anchor="middle" font-size="13">1 stdout: results</text>
+  <line class="fig-line" x1="220" y1="140" x2="498" y2="140" marker-end="url(#01-streams-arrow)"/>
+  <text class="fig-mono" x="360" y="132" text-anchor="middle" font-size="13">2 stderr: problems</text>
+</svg>

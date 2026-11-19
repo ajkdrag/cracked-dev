@@ -1,0 +1,36 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="A vertex goes through six coordinate spaces. The model matrix moves it from the model&#x27;s own coordinates into the world, the view matrix into camera space, and the projection matrix into clip space. Dividing by w gives normalized device coordinates, and the viewport turns those into pixels">
+  <defs>
+    <marker id="13-spaces-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="40" width="170" height="64" rx="6"/>
+  <text x="105" y="67" text-anchor="middle" font-size="14" font-weight="600">model space</text>
+  <text class="fig-muted" x="105" y="87" text-anchor="middle" font-size="12">the cube's own x, y, z</text>
+  <rect class="fig-box" x="275" y="40" width="170" height="64" rx="6"/>
+  <text x="360" y="67" text-anchor="middle" font-size="14" font-weight="600">world space</text>
+  <text class="fig-muted" x="360" y="87" text-anchor="middle" font-size="12">where the cube stands</text>
+  <rect class="fig-box" x="530" y="40" width="170" height="64" rx="6"/>
+  <text x="615" y="67" text-anchor="middle" font-size="14" font-weight="600">view space</text>
+  <text class="fig-muted" x="615" y="87" text-anchor="middle" font-size="12">camera at 0, looks down -z</text>
+  <rect class="fig-box" x="20" y="196" width="170" height="64" rx="6"/>
+  <text x="105" y="223" text-anchor="middle" font-size="14" font-weight="600">clip space</text>
+  <text class="fig-muted" x="105" y="243" text-anchor="middle" font-size="12">x, y, z, w</text>
+  <rect class="fig-box" x="275" y="196" width="170" height="64" rx="6"/>
+  <text x="360" y="223" text-anchor="middle" font-size="14" font-weight="600">NDC</text>
+  <text class="fig-muted" x="360" y="243" text-anchor="middle" font-size="12">x, y, z in [-1, 1]</text>
+  <rect class="fig-accent" x="530" y="196" width="170" height="64" rx="6"/>
+  <text x="615" y="223" text-anchor="middle" font-size="14" font-weight="600">screen</text>
+  <text class="fig-muted" x="615" y="243" text-anchor="middle" font-size="12">pixels, y down</text>
+  <line class="fig-line" x1="190" y1="72" x2="273" y2="72" marker-end="url(#13-spaces-arrow)"/>
+  <text class="fig-muted" x="231.5" y="64" text-anchor="middle" font-size="12">model matrix</text>
+  <line class="fig-line" x1="445" y1="72" x2="528" y2="72" marker-end="url(#13-spaces-arrow)"/>
+  <text class="fig-muted" x="486.5" y="64" text-anchor="middle" font-size="12">view matrix</text>
+  <line class="fig-line" x1="190" y1="228" x2="273" y2="228" marker-end="url(#13-spaces-arrow)"/>
+  <text class="fig-muted" x="231.5" y="220" text-anchor="middle" font-size="12">divide by w</text>
+  <line class="fig-line" x1="445" y1="228" x2="528" y2="228" marker-end="url(#13-spaces-arrow)"/>
+  <text class="fig-muted" x="486.5" y="220" text-anchor="middle" font-size="12">viewport</text>
+  <path class="fig-line" d="M615 104 L615 150 L105 150 L105 194" marker-end="url(#13-spaces-arrow)"/>
+  <text class="fig-muted" x="360" y="142" text-anchor="middle" font-size="12">projection matrix</text>
+  <text class="fig-muted" x="360" y="288" text-anchor="middle" font-size="12">4 by 4 matrices act on (x, y, z, w) until the divide</text>
+</svg>

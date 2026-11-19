@@ -1,0 +1,29 @@
+<svg viewBox="0 0 720 340" role="img" aria-label="The event loop: wait for events, then for each ready descriptor accept new clients on the listening socket, read from a readable client into its input buffer, write queued bytes to a writable client, and close a client on end of file, error or timeout, then wait again">
+  <defs>
+    <marker id="08-event-loop-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-accent" x="20" y="130" width="170" height="64" rx="6"/>
+  <text x="105.0" y="159.0" text-anchor="middle" font-size="13" font-weight="600">loop_wait</text>
+  <text class="fig-muted" x="105.0" y="176.0" text-anchor="middle" font-size="12">epoll_wait, 1 s timeout</text>
+  <rect class="fig-box" x="330" y="30" width="370" height="52" rx="6"/>
+  <text x="515.0" y="53.0" text-anchor="middle" font-size="13" font-weight="600">listening socket readable</text>
+  <text class="fig-muted" x="515.0" y="70.0" text-anchor="middle" font-size="12">accept until EAGAIN, set O_NONBLOCK</text>
+  <line class="fig-line" x1="190" y1="162" x2="328" y2="56" marker-end="url(#08-event-loop-arrow)"/>
+  <rect class="fig-box" x="330" y="98" width="370" height="52" rx="6"/>
+  <text x="515.0" y="121.0" text-anchor="middle" font-size="13" font-weight="600">client readable</text>
+  <text class="fig-muted" x="515.0" y="138.0" text-anchor="middle" font-size="12">read into its input buffer</text>
+  <line class="fig-line" x1="190" y1="162" x2="328" y2="124" marker-end="url(#08-event-loop-arrow)"/>
+  <rect class="fig-box" x="330" y="166" width="370" height="52" rx="6"/>
+  <text x="515.0" y="189.0" text-anchor="middle" font-size="13" font-weight="600">client writable</text>
+  <text class="fig-muted" x="515.0" y="206.0" text-anchor="middle" font-size="12">write queued bytes, keep the rest</text>
+  <line class="fig-line" x1="190" y1="162" x2="328" y2="192" marker-end="url(#08-event-loop-arrow)"/>
+  <rect class="fig-box" x="330" y="234" width="370" height="52" rx="6"/>
+  <text x="515.0" y="257.0" text-anchor="middle" font-size="13" font-weight="600">end of file, error or idle</text>
+  <text class="fig-muted" x="515.0" y="274.0" text-anchor="middle" font-size="12">stop watching, close, free the slot</text>
+  <line class="fig-line" x1="190" y1="162" x2="328" y2="260" marker-end="url(#08-event-loop-arrow)"/>
+  <path class="fig-line" d="M515 286 L515 316 L105 316 L105 196" marker-end="url(#08-event-loop-arrow)"/>
+  <text class="fig-muted" x="310" y="308" text-anchor="middle" font-size="12">next round</text>
+  <text class="fig-muted" x="105" y="118" text-anchor="middle" font-size="12">for each ready fd</text>
+</svg>

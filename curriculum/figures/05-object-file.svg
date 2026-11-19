@@ -1,0 +1,51 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="Find the symbol table's uses rows. Those names have no address in this file, so each needs a relocation the linker will fill.">
+  <defs>
+    <marker id="05-object-file-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-mono" x="40" y="32" font-size="14" font-weight="600">json.o</text>
+
+  <text x="40" y="60" font-size="13" font-weight="600">sections</text>
+  <rect class="fig-box" x="40" y="70" width="200" height="28" rx="6"/>
+  <text class="fig-mono" x="52" y="89" font-size="13">.text</text>
+  <text class="fig-muted" x="228" y="89" text-anchor="end" font-size="12">code</text>
+  <rect class="fig-box" x="40" y="102" width="200" height="28" rx="6"/>
+  <text class="fig-mono" x="52" y="121" font-size="13">.data  .bss</text>
+  <text class="fig-muted" x="228" y="121" text-anchor="end" font-size="12">globals</text>
+  <rect class="fig-box" x="40" y="134" width="200" height="28" rx="6"/>
+  <text class="fig-mono" x="52" y="153" font-size="13">.rodata</text>
+  <text class="fig-muted" x="228" y="153" text-anchor="end" font-size="12">constants</text>
+
+  <text x="300" y="60" font-size="13" font-weight="600">symbol table</text>
+  <rect class="fig-box" x="300" y="70" width="170" height="28" rx="6"/>
+  <text class="fig-mono" x="312" y="89" font-size="13">json_parse</text>
+  <text class="fig-muted" x="458" y="89" text-anchor="end" font-size="12">defines</text>
+  <rect class="fig-accent" x="300" y="102" width="170" height="28" rx="6"/>
+  <text class="fig-mono" x="312" y="121" font-size="13">bump</text>
+  <text class="fig-muted" x="458" y="121" text-anchor="end" font-size="12">uses</text>
+  <rect class="fig-accent" x="300" y="134" width="170" height="28" rx="6"/>
+  <text class="fig-mono" x="312" y="153" font-size="13">memset</text>
+  <text class="fig-muted" x="458" y="153" text-anchor="end" font-size="12">uses</text>
+
+  <text x="510" y="60" font-size="13" font-weight="600">relocation</text>
+  <rect class="fig-accent" x="510" y="70" width="180" height="60" rx="6"/>
+  <text class="fig-mono" x="522" y="90" font-size="12">at .text + 0x0e</text>
+  <text class="fig-mono" x="522" y="108" font-size="12">fill with the</text>
+  <text class="fig-mono" x="522" y="124" font-size="12">distance to bump</text>
+
+  <text class="fig-muted" x="120" y="214" font-size="12">the call to bump in .text, with a 4-byte hole:</text>
+  <rect class="fig-box" x="120" y="224" width="44" height="30" rx="6"/>
+  <text class="fig-mono" x="142" y="244" text-anchor="middle" font-size="13">e8</text>
+  <rect class="fig-accent" x="168" y="224" width="40" height="30" rx="6"/>
+  <text class="fig-mono" x="188" y="244" text-anchor="middle" font-size="13">00</text>
+  <rect class="fig-accent" x="212" y="224" width="40" height="30" rx="6"/>
+  <text class="fig-mono" x="232" y="244" text-anchor="middle" font-size="13">00</text>
+  <rect class="fig-accent" x="256" y="224" width="40" height="30" rx="6"/>
+  <text class="fig-mono" x="276" y="244" text-anchor="middle" font-size="13">00</text>
+  <rect class="fig-accent" x="300" y="224" width="40" height="30" rx="6"/>
+  <text class="fig-mono" x="320" y="244" text-anchor="middle" font-size="13">00</text>
+  <text class="fig-muted" x="360" y="244" font-size="12">= call, then the hole</text>
+
+  <path class="fig-accent-line" d="M600 130 L600 274 L232 274 L232 256" fill="none" marker-end="url(#05-object-file-arrow)"/>
+</svg>

@@ -1,0 +1,50 @@
+<svg viewBox="0 0 720 226" role="img" aria-label="The GPU pipeline from vertices to pixels. The vertex shader and the fragment shader are programs you write. Clipping, the divide by w, the viewport, the rasterizer and the depth test are fixed hardware, and each one does what a chapter 13 function did.">
+  <defs>
+    <marker id="14-pipeline-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <path class="fig-accent-line" d="M22 40 L22 32 L118 32 L118 40"/>
+  <text class="fig-accent-text" x="70.0" y="24" text-anchor="middle" font-size="12">you write it</text>
+  <path class="fig-line" d="M138 40 L138 32 L450 32 L450 40"/>
+  <text class="fig-muted" x="294.0" y="24" text-anchor="middle" font-size="12">fixed hardware</text>
+  <path class="fig-accent-line" d="M486 40 L486 32 L582 32 L582 40"/>
+  <text class="fig-accent-text" x="534.0" y="24" text-anchor="middle" font-size="12">you write it</text>
+  <path class="fig-line" d="M602 40 L602 32 L698 32 L698 40"/>
+  <text class="fig-muted" x="650.0" y="24" text-anchor="middle" font-size="12">fixed hardware</text>
+  <rect class="fig-accent" x="20" y="46" width="100" height="64" rx="6"/>
+  <text x="70.0" y="73" text-anchor="middle" font-size="13" font-weight="600">vertex</text>
+  <text x="70.0" y="91" text-anchor="middle" font-size="13" font-weight="600">shader</text>
+  <line class="fig-line" x1="120" y1="78" x2="134" y2="78" marker-end="url(#14-pipeline-arrow)"/>
+  <text class="fig-muted" x="70.0" y="160" text-anchor="middle" font-size="12">transform</text>
+  <text class="fig-muted" x="70.0" y="176" text-anchor="middle" font-size="12">matrices</text>
+  <rect class="fig-box" x="136" y="46" width="100" height="64" rx="6"/>
+  <text x="186.0" y="73" text-anchor="middle" font-size="13" font-weight="600">clip and</text>
+  <text x="186.0" y="91" text-anchor="middle" font-size="13" font-weight="600">divide by w</text>
+  <line class="fig-line" x1="236" y1="78" x2="250" y2="78" marker-end="url(#14-pipeline-arrow)"/>
+  <text class="fig-muted" x="186.0" y="160" text-anchor="middle" font-size="12">clip_polygon,</text>
+  <text class="fig-muted" x="186.0" y="176" text-anchor="middle" font-size="12">x/w, y/w, z/w</text>
+  <rect class="fig-box" x="252" y="46" width="100" height="64" rx="6"/>
+  <text x="302.0" y="83" text-anchor="middle" font-size="13" font-weight="600">viewport</text>
+  <line class="fig-line" x1="352" y1="78" x2="366" y2="78" marker-end="url(#14-pipeline-arrow)"/>
+  <text class="fig-muted" x="302.0" y="160" text-anchor="middle" font-size="12">NDC to</text>
+  <text class="fig-muted" x="302.0" y="176" text-anchor="middle" font-size="12">pixels</text>
+  <rect class="fig-box" x="368" y="46" width="100" height="64" rx="6"/>
+  <text x="418.0" y="83" text-anchor="middle" font-size="13" font-weight="600">rasterizer</text>
+  <line class="fig-line" x1="468" y1="78" x2="482" y2="78" marker-end="url(#14-pipeline-arrow)"/>
+  <text class="fig-muted" x="418.0" y="160" text-anchor="middle" font-size="12">edge functions,</text>
+  <text class="fig-muted" x="418.0" y="176" text-anchor="middle" font-size="12">fill rule</text>
+  <rect class="fig-accent" x="484" y="46" width="100" height="64" rx="6"/>
+  <text x="534.0" y="73" text-anchor="middle" font-size="13" font-weight="600">fragment</text>
+  <text x="534.0" y="91" text-anchor="middle" font-size="13" font-weight="600">shader</text>
+  <line class="fig-line" x1="584" y1="78" x2="598" y2="78" marker-end="url(#14-pipeline-arrow)"/>
+  <text class="fig-muted" x="534.0" y="160" text-anchor="middle" font-size="12">per-pixel</text>
+  <text class="fig-muted" x="534.0" y="176" text-anchor="middle" font-size="12">color, texture</text>
+  <rect class="fig-box" x="600" y="46" width="100" height="64" rx="6"/>
+  <text x="650.0" y="73" text-anchor="middle" font-size="13" font-weight="600">depth test</text>
+  <text x="650.0" y="91" text-anchor="middle" font-size="13" font-weight="600">and blend</text>
+  <text class="fig-muted" x="650.0" y="160" text-anchor="middle" font-size="12">depth buffer,</text>
+  <text class="fig-muted" x="650.0" y="176" text-anchor="middle" font-size="12">write pixel</text>
+  <text x="20" y="138" font-size="12" font-weight="600">what chapter 13 did in C for each stage:</text>
+  <text class="fig-muted" x="360" y="206" text-anchor="middle" font-size="12">values the vertex shader returns are interpolated across the triangle for the fragment shader</text>
+</svg>

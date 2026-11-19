@@ -1,0 +1,47 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="The ALU computes x - y with zx=0 nx=1 zy=0 ny=0 f=1 no=1: x is flipped to -x-1, added to y to give y-x-1, and the result is flipped to x-y. The flags zr and ng come from the final output">
+  <defs>
+    <marker id="03-alu-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-mono" x="30" y="72" text-anchor="middle" font-size="14" font-weight="600">x</text>
+  <line class="fig-line" x1="42" y1="68" x2="78" y2="68" marker-end="url(#03-alu-arrow)"/>
+  <rect class="fig-box" x="80" y="40" width="100" height="56" rx="6"/>
+  <text x="130" y="64" text-anchor="middle" font-size="14" font-weight="600">zx</text>
+  <text class="fig-muted" x="130" y="82" text-anchor="middle" font-size="12">zero x?</text>
+  <text class="fig-accent-text" x="130" y="114" text-anchor="middle" font-size="12">zx=0: x</text>
+  <line class="fig-line" x1="180" y1="68" x2="208" y2="68" marker-end="url(#03-alu-arrow)"/>
+  <rect class="fig-accent" x="210" y="40" width="100" height="56" rx="6"/>
+  <text x="260" y="64" text-anchor="middle" font-size="14" font-weight="600">nx</text>
+  <text class="fig-muted" x="260" y="82" text-anchor="middle" font-size="12">flip x?</text>
+  <text class="fig-accent-text" x="260" y="114" text-anchor="middle" font-size="12">nx=1: -x-1</text>
+  <text class="fig-mono" x="30" y="212" text-anchor="middle" font-size="14" font-weight="600">y</text>
+  <line class="fig-line" x1="42" y1="208" x2="78" y2="208" marker-end="url(#03-alu-arrow)"/>
+  <rect class="fig-box" x="80" y="180" width="100" height="56" rx="6"/>
+  <text x="130" y="204" text-anchor="middle" font-size="14" font-weight="600">zy</text>
+  <text class="fig-muted" x="130" y="222" text-anchor="middle" font-size="12">zero y?</text>
+  <text class="fig-accent-text" x="130" y="254" text-anchor="middle" font-size="12">zy=0: y</text>
+  <line class="fig-line" x1="180" y1="208" x2="208" y2="208" marker-end="url(#03-alu-arrow)"/>
+  <rect class="fig-box" x="210" y="180" width="100" height="56" rx="6"/>
+  <text x="260" y="204" text-anchor="middle" font-size="14" font-weight="600">ny</text>
+  <text class="fig-muted" x="260" y="222" text-anchor="middle" font-size="12">flip y?</text>
+  <text class="fig-accent-text" x="260" y="254" text-anchor="middle" font-size="12">ny=0: y</text>
+  <path class="fig-line" d="M310 68 L334 68 L334 124 L358 124" marker-end="url(#03-alu-arrow)"/>
+  <path class="fig-line" d="M310 208 L334 208 L334 152 L358 152" marker-end="url(#03-alu-arrow)"/>
+  <rect class="fig-accent" x="360" y="110" width="100" height="56" rx="6"/>
+  <text x="410" y="134" text-anchor="middle" font-size="14" font-weight="600">f</text>
+  <text class="fig-muted" x="410" y="152" text-anchor="middle" font-size="12">x+y or x&amp;y</text>
+  <text class="fig-accent-text" x="410" y="184" text-anchor="middle" font-size="12">f=1: y-x-1</text>
+  <line class="fig-line" x1="460" y1="138" x2="488" y2="138" marker-end="url(#03-alu-arrow)"/>
+  <rect class="fig-accent" x="490" y="110" width="100" height="56" rx="6"/>
+  <text x="540" y="134" text-anchor="middle" font-size="14" font-weight="600">no</text>
+  <text class="fig-muted" x="540" y="152" text-anchor="middle" font-size="12">flip out?</text>
+  <text class="fig-accent-text" x="540" y="184" text-anchor="middle" font-size="12">no=1: x-y</text>
+  <line class="fig-line" x1="590" y1="138" x2="648" y2="138" marker-end="url(#03-alu-arrow)"/>
+  <text class="fig-mono" x="654" y="142" font-size="13">out</text>
+  <line class="fig-line" x1="620" y1="138" x2="620" y2="196" marker-end="url(#03-alu-arrow)"/>
+  <circle class="fig-accent-fill" cx="620" cy="138" r="3.5"/>
+  <text class="fig-mono" x="620" y="216" text-anchor="middle" font-size="12">zr = 1 if out is 0</text>
+  <text class="fig-mono" x="620" y="234" text-anchor="middle" font-size="12">ng = bit 15 of out</text>
+  <text class="fig-muted" x="360" y="284" text-anchor="middle" font-size="12">each stage is a Mux16 that picks the plain or the changed value</text>
+</svg>

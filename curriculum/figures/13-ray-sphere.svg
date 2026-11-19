@@ -1,0 +1,40 @@
+<svg viewBox="0 0 720 320" role="img" aria-label="A ray starts at the camera and passes through the center of one pixel. It hits the sphere where the quadratic for t has solutions, and the smaller t is the visible hit, where the surface normal points away from the center. A ray through another pixel misses, and the quadratic has no solution">
+  <defs>
+    <marker id="13-ray-sphere-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <line class="fig-line" x1="180" y1="50" x2="180" y2="270" stroke-width="1.5"/>
+  <line class="fig-line" x1="175" y1="50" x2="185" y2="50"/>
+  <line class="fig-line" x1="175" y1="70" x2="185" y2="70"/>
+  <line class="fig-line" x1="175" y1="90" x2="185" y2="90"/>
+  <line class="fig-line" x1="175" y1="110" x2="185" y2="110"/>
+  <line class="fig-line" x1="175" y1="130" x2="185" y2="130"/>
+  <line class="fig-line" x1="175" y1="150" x2="185" y2="150"/>
+  <line class="fig-line" x1="175" y1="170" x2="185" y2="170"/>
+  <line class="fig-line" x1="175" y1="190" x2="185" y2="190"/>
+  <line class="fig-line" x1="175" y1="210" x2="185" y2="210"/>
+  <line class="fig-line" x1="175" y1="230" x2="185" y2="230"/>
+  <line class="fig-line" x1="175" y1="250" x2="185" y2="250"/>
+  <line class="fig-line" x1="175" y1="270" x2="185" y2="270"/>
+  <text class="fig-muted" x="180" y="40" text-anchor="middle" font-size="12">image plane, one tick per pixel</text>
+  <circle class="fig-box" cx="500" cy="150" r="90"/>
+  <circle class="fig-line" cx="500" cy="150" r="3"/>
+  <text class="fig-muted" x="508" y="166" text-anchor="start" font-size="12">center</text>
+  <circle class="fig-accent-fill" cx="50" cy="180" r="5"/>
+  <text x="50" y="202" text-anchor="middle" font-size="12">camera</text>
+  <line class="fig-accent-line" x1="50" y1="180" x2="431.145" y2="92.0435" stroke-width="1.5"/>
+  <line class="fig-accent-line" x1="431.145" y1="92.0435" x2="536.496" y2="67.7318" stroke-dasharray="4 4"/>
+  <circle class="fig-accent-fill" cx="431.145" cy="92.0435" r="5"/>
+  <circle class="fig-box" cx="536.496" cy="67.7318" r="4"/>
+  <text class="fig-accent-text" x="351.145" y="78.0435" text-anchor="end" font-size="12">first hit, smaller t</text>
+  <text class="fig-muted" x="544.496" y="59.7318" text-anchor="start" font-size="12">larger t</text>
+  <line class="fig-line" x1="431.145" y1="92.0435" x2="389.067" y2="56.6257" marker-end="url(#13-ray-sphere-arrow)"/>
+  <text class="fig-muted" x="385.067" y="48.6257" text-anchor="end" font-size="12">normal</text>
+  <circle class="fig-accent-fill" cx="180" cy="150" r="3"/>
+  <line class="fig-line" x1="50" y1="180" x2="427" y2="267" stroke-dasharray="5 4"/>
+  <text class="fig-muted" x="435" y="271" text-anchor="start" font-size="12">misses: no t</text>
+  <circle class="fig-box" cx="180" cy="210" r="3"/>
+  <text class="fig-mono" x="30" y="300" text-anchor="start" font-size="13">ray: P(t) = origin + t * direction</text>
+  <text class="fig-mono" x="690" y="300" text-anchor="end" font-size="13">hit: |P(t) - center|^2 = radius^2</text>
+</svg>

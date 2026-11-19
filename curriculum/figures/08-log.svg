@@ -1,0 +1,32 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="The log protocol on a time line: blocks go to the log, then the header write commits, then the blocks are copied home and the header is cleared. A crash before the commit loses the whole transaction, and a crash after it is repaired by replaying the log at boot">
+  <defs>
+    <marker id="08-log-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="40" width="155" height="56" rx="6"/>
+  <text x="97.5" y="65.0" text-anchor="middle" font-size="13" font-weight="600">1. write blocks</text>
+  <text class="fig-muted" x="97.5" y="82.0" text-anchor="middle" font-size="12">into the log area</text>
+  <rect class="fig-accent" x="195" y="40" width="155" height="56" rx="6"/>
+  <text x="272.5" y="65.0" text-anchor="middle" font-size="13" font-weight="600">2. write header</text>
+  <text class="fig-muted" x="272.5" y="82.0" text-anchor="middle" font-size="12">count = n: commit</text>
+  <line class="fig-line" x1="176" y1="68" x2="193" y2="68" marker-end="url(#08-log-arrow)"/>
+  <rect class="fig-box" x="370" y="40" width="155" height="56" rx="6"/>
+  <text x="447.5" y="65.0" text-anchor="middle" font-size="13" font-weight="600">3. copy blocks</text>
+  <text class="fig-muted" x="447.5" y="82.0" text-anchor="middle" font-size="12">to their homes</text>
+  <line class="fig-line" x1="351" y1="68" x2="368" y2="68" marker-end="url(#08-log-arrow)"/>
+  <rect class="fig-box" x="545" y="40" width="155" height="56" rx="6"/>
+  <text x="622.5" y="65.0" text-anchor="middle" font-size="13" font-weight="600">4. clear header</text>
+  <text class="fig-muted" x="622.5" y="82.0" text-anchor="middle" font-size="12">count = 0</text>
+  <line class="fig-line" x1="526" y1="68" x2="543" y2="68" marker-end="url(#08-log-arrow)"/>
+  <line class="fig-line" x1="20" y1="124" x2="690" y2="124" marker-end="url(#08-log-arrow)"/>
+  <text class="fig-muted" x="690" y="144" text-anchor="end" font-size="12">time</text>
+  <line class="fig-accent-line" x1="360" y1="104" x2="360" y2="230"/>
+  <text class="fig-accent-text" x="366" y="144" font-size="12">commit point</text>
+  <text class="fig-muted" x="180" y="178" text-anchor="middle" font-size="12">crash before it: count is 0,</text>
+  <text class="fig-muted" x="180" y="196" text-anchor="middle" font-size="12">recovery does nothing,</text>
+  <text class="fig-muted" x="180" y="214" text-anchor="middle" font-size="12">the system call never happened</text>
+  <text class="fig-muted" x="525" y="178" text-anchor="middle" font-size="12">crash after it, before step 4: count is n,</text>
+  <text class="fig-muted" x="525" y="196" text-anchor="middle" font-size="12">recovery copies the blocks home again,</text>
+  <text class="fig-muted" x="525" y="214" text-anchor="middle" font-size="12">the system call happened in full</text>
+</svg>

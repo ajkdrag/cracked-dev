@@ -1,0 +1,36 @@
+<svg viewBox="0 0 720 390" role="img" aria-label="One connection with its sequence numbers. The peer&#x27;s SYN carries seq x, and your SYN-ACK carries seq y and ack x+1, because the SYN takes one number. Five data bytes from x+1 are acknowledged with x+6, the peer&#x27;s FIN takes x+6 and is acknowledged with x+7, and your FIN takes y+1 and is acknowledged with y+2. Your stack&#x27;s state is on the right.">
+  <defs>
+    <marker id="18-handshake-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="150" y="30" text-anchor="middle" font-size="13" font-weight="600">peer: nc</text>
+  <text x="520" y="30" text-anchor="middle" font-size="13" font-weight="600">your stack</text>
+  <text class="fig-muted" x="536" y="52" font-size="12">state</text>
+  <line class="fig-line" x1="150" y1="40" x2="150" y2="367"/>
+  <line class="fig-line" x1="520" y1="40" x2="520" y2="367"/>
+  <text class="fig-mono" x="536" y="74" font-size="12">LISTEN</text>
+  <line class="fig-accent-line" x1="150" y1="70" x2="518" y2="92" marker-end="url(#18-handshake-arrow)"/>
+  <text class="fig-mono fig-accent-text" x="335.0" y="71" text-anchor="middle" font-size="12">SYN seq=x</text>
+  <text class="fig-mono" x="536" y="96" font-size="12">SYN-RECEIVED</text>
+  <line class="fig-accent-line" x1="520" y1="103" x2="152" y2="125" marker-end="url(#18-handshake-arrow)"/>
+  <text class="fig-mono fig-accent-text" x="335.0" y="104" text-anchor="middle" font-size="12">SYN-ACK seq=y ack=x+1</text>
+  <line class="fig-line" x1="150" y1="136" x2="518" y2="158" marker-end="url(#18-handshake-arrow)"/>
+  <text class="fig-mono" x="335.0" y="137" text-anchor="middle" font-size="12">ACK seq=x+1 ack=y+1</text>
+  <text class="fig-mono" x="536" y="162" font-size="12">ESTABLISHED</text>
+  <line class="fig-line" x1="150" y1="169" x2="518" y2="191" marker-end="url(#18-handshake-arrow)"/>
+  <text class="fig-mono" x="335.0" y="170" text-anchor="middle" font-size="12">5 bytes seq=x+1</text>
+  <line class="fig-line" x1="520" y1="202" x2="152" y2="224" marker-end="url(#18-handshake-arrow)"/>
+  <text class="fig-mono" x="335.0" y="203" text-anchor="middle" font-size="12">ACK ack=x+6</text>
+  <line class="fig-accent-line" x1="150" y1="235" x2="518" y2="257" marker-end="url(#18-handshake-arrow)"/>
+  <text class="fig-mono fig-accent-text" x="335.0" y="236" text-anchor="middle" font-size="12">FIN seq=x+6</text>
+  <text class="fig-mono" x="536" y="261" font-size="12">CLOSE-WAIT</text>
+  <line class="fig-line" x1="520" y1="268" x2="152" y2="290" marker-end="url(#18-handshake-arrow)"/>
+  <text class="fig-mono" x="335.0" y="269" text-anchor="middle" font-size="12">ACK ack=x+7</text>
+  <line class="fig-accent-line" x1="520" y1="301" x2="152" y2="323" marker-end="url(#18-handshake-arrow)"/>
+  <text class="fig-mono fig-accent-text" x="335.0" y="302" text-anchor="middle" font-size="12">FIN seq=y+1 ack=x+7</text>
+  <text class="fig-mono" x="536" y="305" font-size="12">LAST-ACK</text>
+  <line class="fig-line" x1="150" y1="334" x2="518" y2="356" marker-end="url(#18-handshake-arrow)"/>
+  <text class="fig-mono" x="335.0" y="335" text-anchor="middle" font-size="12">ACK ack=y+2</text>
+  <text class="fig-mono" x="536" y="360" font-size="12">CLOSED</text>
+</svg>

@@ -1,0 +1,29 @@
+<svg viewBox="0 0 720 320" role="img" aria-label="A point p inside a triangle splits it into three smaller triangles. The weight of v0 is the area of the small triangle opposite v0 divided by the whole area. Here p has weights 0.5, 0.3 and 0.2, and its color is the weighted sum of the corner colors">
+  <defs>
+    <marker id="13-barycentric-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <polygon class="fig-box" points="60.0,270.0 230.0,40.0 400.0,260.0"/>
+  <polygon class="fig-accent" points="179.0,199.0 230.0,40.0 400.0,260.0"/>
+  <line class="fig-line" x1="179" y1="199" x2="60" y2="270"/>
+  <line class="fig-line" x1="179" y1="199" x2="230" y2="40"/>
+  <line class="fig-line" x1="179" y1="199" x2="400" y2="260"/>
+  <circle class="fig-accent-fill" cx="60" cy="270" r="4"/>
+  <text class="fig-mono" x="90" y="292" text-anchor="middle" font-size="12">v0 (1, 0, 0)</text>
+  <circle class="fig-accent-fill" cx="230" cy="40" r="4"/>
+  <text class="fig-mono" x="230" y="30" text-anchor="middle" font-size="12">v1 (0, 1, 0)</text>
+  <circle class="fig-accent-fill" cx="400" cy="260" r="4"/>
+  <text class="fig-mono" x="400" y="282" text-anchor="middle" font-size="12">v2 (0, 0, 1)</text>
+  <circle class="fig-accent-fill" cx="179" cy="199" r="4"/>
+  <text class="fig-mono" x="169" y="195" text-anchor="end" font-size="13">p</text>
+  <text class="fig-accent-text" x="277.667" y="170.333" text-anchor="middle" font-size="12">opposite v0</text>
+  <text x="440" y="70" text-anchor="start" font-size="13" font-weight="600">weight of v0:</text>
+  <text class="fig-mono" x="440" y="92" text-anchor="start" font-size="12">area(p, v1, v2) / area(v0, v1, v2)</text>
+  <text class="fig-mono" x="440" y="114" text-anchor="start" font-size="12">= E(v1, v2, p) / E(v1, v2, v0)</text>
+  <text x="440" y="150" text-anchor="start" font-size="13" font-weight="600">weights at p: 0.5, 0.3, 0.2</text>
+  <text class="fig-muted" x="440" y="172" text-anchor="start" font-size="12">they add up to 1</text>
+  <text x="440" y="208" text-anchor="start" font-size="13" font-weight="600">a value at p:</text>
+  <text class="fig-mono" x="440" y="230" text-anchor="start" font-size="12">c(p) = 0.5*c0 + 0.3*c1 + 0.2*c2</text>
+  <text class="fig-muted" x="440" y="252" text-anchor="start" font-size="12">for color, depth, u and v</text>
+</svg>

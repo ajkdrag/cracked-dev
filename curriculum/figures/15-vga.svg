@@ -1,0 +1,52 @@
+<svg viewBox="0 0 720 340" role="img" aria-label="The VGA text buffer at physical address 0xb8000 holds 80 by 25 cells of two bytes each, a character byte and a color byte. Cell n starts at 0xb8000 + 2n, and the video hardware draws whatever bytes are there.">
+  <defs>
+    <marker id="15-vga-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="30" width="680" height="96" rx="6"/>
+  <text class="fig-muted" x="684" y="116" text-anchor="end" font-size="12">the screen: 80 columns by 25 rows</text>
+  <rect class="fig-accent" x="40" y="44" width="30" height="34" rx="3"/>
+  <text class="fig-mono" x="55" y="67" text-anchor="middle" font-size="14">H</text>
+  <rect class="fig-accent" x="74" y="44" width="30" height="34" rx="3"/>
+  <text class="fig-mono" x="89" y="67" text-anchor="middle" font-size="14">e</text>
+  <rect class="fig-accent" x="108" y="44" width="30" height="34" rx="3"/>
+  <text class="fig-mono" x="123" y="67" text-anchor="middle" font-size="14">l</text>
+  <rect class="fig-accent" x="142" y="44" width="30" height="34" rx="3"/>
+  <text class="fig-mono" x="157" y="67" text-anchor="middle" font-size="14">l</text>
+  <rect class="fig-accent" x="40" y="190" width="76" height="40" rx="0"/>
+  <text class="fig-mono" x="78" y="215" text-anchor="middle" font-size="14">48</text>
+  <text class="fig-muted" x="78" y="270" text-anchor="middle" font-size="12">'H'</text>
+  <rect class="fig-box" x="116" y="190" width="76" height="40" rx="0"/>
+  <text class="fig-mono" x="154" y="215" text-anchor="middle" font-size="14">0b</text>
+  <text class="fig-muted" x="154" y="270" text-anchor="middle" font-size="12">color</text>
+  <rect class="fig-accent" x="192" y="190" width="76" height="40" rx="0"/>
+  <text class="fig-mono" x="230" y="215" text-anchor="middle" font-size="14">65</text>
+  <text class="fig-muted" x="230" y="270" text-anchor="middle" font-size="12">'e'</text>
+  <rect class="fig-box" x="268" y="190" width="76" height="40" rx="0"/>
+  <text class="fig-mono" x="306" y="215" text-anchor="middle" font-size="14">0b</text>
+  <text class="fig-muted" x="306" y="270" text-anchor="middle" font-size="12">color</text>
+  <rect class="fig-accent" x="344" y="190" width="76" height="40" rx="0"/>
+  <text class="fig-mono" x="382" y="215" text-anchor="middle" font-size="14">6c</text>
+  <text class="fig-muted" x="382" y="270" text-anchor="middle" font-size="12">'l'</text>
+  <rect class="fig-box" x="420" y="190" width="76" height="40" rx="0"/>
+  <text class="fig-mono" x="458" y="215" text-anchor="middle" font-size="14">0b</text>
+  <text class="fig-muted" x="458" y="270" text-anchor="middle" font-size="12">color</text>
+  <rect class="fig-accent" x="496" y="190" width="76" height="40" rx="0"/>
+  <text class="fig-mono" x="534" y="215" text-anchor="middle" font-size="14">6c</text>
+  <text class="fig-muted" x="534" y="270" text-anchor="middle" font-size="12">'l'</text>
+  <rect class="fig-box" x="572" y="190" width="76" height="40" rx="0"/>
+  <text class="fig-mono" x="610" y="215" text-anchor="middle" font-size="14">0b</text>
+  <text class="fig-muted" x="610" y="270" text-anchor="middle" font-size="12">color</text>
+  <text class="fig-mono" x="78" y="250" text-anchor="middle" font-size="12">0xb8000</text>
+  <line class="fig-line" x1="78" y1="188" x2="55" y2="80" marker-end="url(#15-vga-arrow)"/>
+  <text class="fig-mono" x="230" y="250" text-anchor="middle" font-size="12">0xb8002</text>
+  <line class="fig-line" x1="230" y1="188" x2="89" y2="80" marker-end="url(#15-vga-arrow)"/>
+  <text class="fig-mono" x="382" y="250" text-anchor="middle" font-size="12">0xb8004</text>
+  <line class="fig-line" x1="382" y1="188" x2="123" y2="80" marker-end="url(#15-vga-arrow)"/>
+  <text class="fig-mono" x="534" y="250" text-anchor="middle" font-size="12">0xb8006</text>
+  <line class="fig-line" x1="534" y1="188" x2="157" y2="80" marker-end="url(#15-vga-arrow)"/>
+  <text x="656" y="215" text-anchor="start" font-size="14">...</text>
+  <text class="fig-muted" x="40" y="304" text-anchor="start" font-size="12">color 0x0b: background 0 (black), foreground 11 (light cyan)</text>
+  <text class="fig-mono" x="40" y="324" text-anchor="start" font-size="12">row r, column c: 0xb8000 + 2 * (80 * r + c)</text>
+</svg>

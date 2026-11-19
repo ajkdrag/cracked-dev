@@ -1,0 +1,57 @@
+<svg viewBox="0 0 720 340" role="img" aria-label="Before main runs, Reset_Handler copies the initial values of .data from flash, starting at _sidata, into RAM from _sdata to _edata, then writes zeros from _sbss to _ebss, then calls main. The stack starts at _estack, the top of RAM, and grows down.">
+  <defs>
+    <marker id="17-startup-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <text x="190" y="34" text-anchor="middle" font-size="14" font-weight="600">flash</text>
+  <rect class="fig-box" x="110" y="50" width="160" height="110" rx="6"/>
+  <text x="190" y="100" text-anchor="middle" font-size="13">vector table,</text>
+  <text x="190" y="118" text-anchor="middle" font-size="13">IMAGE_DEF, code</text>
+  <rect class="fig-accent" x="110" y="160" width="160" height="50" rx="6"/>
+  <text x="190" y="182" text-anchor="middle" font-size="13">.data initial values</text>
+  <text class="fig-mono" x="190" y="200" text-anchor="middle" font-size="12">7</text>
+  <line class="fig-line" x1="96" y1="160" x2="108" y2="160"/>
+  <text class="fig-mono" x="90" y="164" text-anchor="end" font-size="12">_sidata</text>
+
+  <text x="505" y="34" text-anchor="middle" font-size="14" font-weight="600">RAM</text>
+  <rect class="fig-box" x="430" y="50" width="150" height="40" rx="6"/>
+  <text x="505" y="75" text-anchor="middle" font-size="13">stack, grows down</text>
+  <rect class="fig-box" x="430" y="90" width="150" height="50" rx="6"/>
+  <text class="fig-muted" x="505" y="119" text-anchor="middle" font-size="12">unused</text>
+  <rect class="fig-accent" x="430" y="140" width="150" height="50" rx="6"/>
+  <text x="505" y="161" text-anchor="middle" font-size="13">.bss</text>
+  <text class="fig-mono" x="505" y="179" text-anchor="middle" font-size="12">0 0 0 0</text>
+  <rect class="fig-accent" x="430" y="190" width="150" height="50" rx="6"/>
+  <text x="505" y="211" text-anchor="middle" font-size="13">.data</text>
+  <text class="fig-mono" x="505" y="229" text-anchor="middle" font-size="12">7</text>
+
+  <line class="fig-line" x1="582" y1="50" x2="594" y2="50"/>
+  <text class="fig-mono" x="600" y="54" font-size="12">_estack</text>
+  <line class="fig-line" x1="582" y1="140" x2="594" y2="140"/>
+  <text class="fig-mono" x="600" y="144" font-size="12">_ebss</text>
+  <line class="fig-line" x1="582" y1="190" x2="594" y2="190"/>
+  <text class="fig-mono" x="600" y="194" font-size="12">_edata = _sbss</text>
+  <line class="fig-line" x1="582" y1="240" x2="594" y2="240"/>
+  <text class="fig-mono" x="600" y="244" font-size="12">_sdata</text>
+  <text class="fig-mono fig-muted" x="600" y="260" font-size="12">0x20000000</text>
+
+  <rect class="fig-box" x="315" y="100" width="50" height="30" rx="6"/>
+  <text class="fig-mono" x="340" y="120" text-anchor="middle" font-size="13">0</text>
+  <text class="fig-accent-text" x="340" y="90" text-anchor="middle" font-size="13">2. write zeros</text>
+  <path class="fig-accent-line" d="M365 115 C395 115 400 165 428 165" fill="none" marker-end="url(#17-startup-arrow)"/>
+
+  <path class="fig-accent-line" d="M270 185 C340 185 360 215 428 215" fill="none" marker-end="url(#17-startup-arrow)"/>
+  <text class="fig-accent-text" x="320" y="225" text-anchor="middle" font-size="13">1. copy</text>
+
+  <text class="fig-muted" x="40" y="280" font-size="12">Reset_Handler, in order:</text>
+  <rect class="fig-box" x="60" y="292" width="160" height="32" rx="6"/>
+  <text x="140" y="313" text-anchor="middle" font-size="13">1. copy .data</text>
+  <rect class="fig-box" x="280" y="292" width="160" height="32" rx="6"/>
+  <text x="360" y="313" text-anchor="middle" font-size="13">2. zero .bss</text>
+  <rect class="fig-accent" x="500" y="292" width="160" height="32" rx="6"/>
+  <text x="580" y="313" text-anchor="middle" font-size="13">3. call main</text>
+  <line class="fig-line" x1="220" y1="308" x2="278" y2="308" marker-end="url(#17-startup-arrow)"/>
+  <line class="fig-line" x1="440" y1="308" x2="498" y2="308" marker-end="url(#17-startup-arrow)"/>
+</svg>

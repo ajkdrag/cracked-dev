@@ -1,0 +1,63 @@
+<svg viewBox="0 0 720 340" role="img" aria-label="On int3 the CPU looks up vector 3 in the IDT that lidt loaded, pushes five words onto the current stack and jumps to the handler with rsp pointing at RIP. SS sits at the highest address. A fault like a page fault adds an error code below RIP, and rsp then points at the error code.">
+  <defs>
+    <marker id="15-idt-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="40" width="140" height="44" rx="6"/>
+  <text class="fig-mono" x="90.0" y="57.5" text-anchor="middle" font-size="13">int3</text>
+  <text class="fig-muted" x="90.0" y="75.5" text-anchor="middle" font-size="12">vector 3</text>
+  <rect class="fig-box" x="20" y="120" width="140" height="44" rx="6"/>
+  <text class="fig-mono" x="90.0" y="137.5" text-anchor="middle" font-size="13">IDTR</text>
+  <text class="fig-muted" x="90.0" y="155.5" text-anchor="middle" font-size="12">set by lidt</text>
+  <rect class="fig-box" x="220" y="30" width="200" height="210" rx="6"/>
+  <text class="fig-muted" x="320" y="258" text-anchor="middle" font-size="12">IDT, 256 entries</text>
+  <rect class="fig-box" x="230" y="40" width="180" height="26" rx="3"/>
+  <text class="fig-mono" x="240" y="58" text-anchor="start" font-size="12">0</text>
+  <text x="270" y="58" text-anchor="start" font-size="12">divide error</text>
+  <rect class="fig-accent" x="230" y="72" width="180" height="26" rx="3"/>
+  <text class="fig-mono" x="240" y="90" text-anchor="start" font-size="12">3</text>
+  <text x="270" y="90" text-anchor="start" font-size="12">breakpoint</text>
+  <rect class="fig-box" x="230" y="104" width="180" height="26" rx="3"/>
+  <text class="fig-mono" x="240" y="122" text-anchor="start" font-size="12">8</text>
+  <text x="270" y="122" text-anchor="start" font-size="12">double fault</text>
+  <rect class="fig-box" x="230" y="136" width="180" height="26" rx="3"/>
+  <text class="fig-mono" x="240" y="154" text-anchor="start" font-size="12">13</text>
+  <text x="270" y="154" text-anchor="start" font-size="12">general protection</text>
+  <rect class="fig-box" x="230" y="168" width="180" height="26" rx="3"/>
+  <text class="fig-mono" x="240" y="186" text-anchor="start" font-size="12">14</text>
+  <text x="270" y="186" text-anchor="start" font-size="12">page fault</text>
+  <rect class="fig-box" x="230" y="200" width="180" height="26" rx="3"/>
+  <text class="fig-mono" x="240" y="218" text-anchor="start" font-size="12">32</text>
+  <text x="270" y="218" text-anchor="start" font-size="12">timer</text>
+  <line class="fig-line" x1="160" y1="62" x2="228" y2="85" marker-end="url(#15-idt-arrow)"/>
+  <text class="fig-muted" x="194" y="62" text-anchor="middle" font-size="12">index</text>
+  <line class="fig-line" x1="160" y1="142" x2="218" y2="142" marker-end="url(#15-idt-arrow)"/>
+  <text class="fig-muted" x="186" y="134" text-anchor="middle" font-size="12">base</text>
+  <rect class="fig-box" x="220" y="280" width="200" height="44" rx="6"/>
+  <text class="fig-mono" x="320.0" y="307.0" text-anchor="middle" font-size="12">breakpoint_handler</text>
+  <path class="fig-line" d="M410 85 L440 85 L440 302 L422 302" fill="none" marker-end="url(#15-idt-arrow)"/>
+  <text class="fig-muted" x="448" y="200" text-anchor="start" font-size="12">jumps</text>
+  <text class="fig-muted" x="600" y="32" text-anchor="middle" font-size="12">stack after the push</text>
+  <rect class="fig-box" x="510" y="44" width="180" height="36" rx="0"/>
+  <text class="fig-mono" x="600" y="60" text-anchor="middle" font-size="13">SS</text>
+  <text class="fig-muted" x="600" y="75" text-anchor="middle" font-size="11">old stack segment</text>
+  <rect class="fig-box" x="510" y="84" width="180" height="36" rx="0"/>
+  <text class="fig-mono" x="600" y="100" text-anchor="middle" font-size="13">RSP</text>
+  <text class="fig-muted" x="600" y="115" text-anchor="middle" font-size="11">old stack pointer</text>
+  <rect class="fig-box" x="510" y="124" width="180" height="36" rx="0"/>
+  <text class="fig-mono" x="600" y="140" text-anchor="middle" font-size="13">RFLAGS</text>
+  <text class="fig-muted" x="600" y="155" text-anchor="middle" font-size="11">flags, IF bit 9</text>
+  <rect class="fig-box" x="510" y="164" width="180" height="36" rx="0"/>
+  <text class="fig-mono" x="600" y="180" text-anchor="middle" font-size="13">CS</text>
+  <text class="fig-muted" x="600" y="195" text-anchor="middle" font-size="11">old code segment</text>
+  <rect class="fig-box" x="510" y="204" width="180" height="36" rx="0"/>
+  <text class="fig-mono" x="600" y="220" text-anchor="middle" font-size="13">RIP</text>
+  <text class="fig-muted" x="600" y="235" text-anchor="middle" font-size="11">next instruction</text>
+  <rect class="fig-box" x="510" y="244" width="180" height="36" rx="0" stroke-dasharray="4 3"/>
+  <text class="fig-mono" x="600" y="260" text-anchor="middle" font-size="13">error code</text>
+  <text class="fig-muted" x="600" y="275" text-anchor="middle" font-size="11">some faults only</text>
+  <text class="fig-muted" x="500" y="66" text-anchor="end" font-size="12">high</text>
+  <line class="fig-line" x1="474" y1="222" x2="506" y2="222" marker-end="url(#15-idt-arrow)"/>
+  <text class="fig-mono" x="470" y="226" text-anchor="end" font-size="12">rsp</text>
+</svg>

@@ -1,0 +1,45 @@
+<svg viewBox="0 0 720 340" role="img" aria-label="On F5 the platform copies the freshly built game.so to game_loaded_2.so, opens it with dlopen, points its function pointer at the new game_update_and_render and closes game_loaded_1.so. GameMemory belongs to the platform and stays mapped, so the new code continues from the same state">
+  <defs>
+    <marker id="13-reload-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="20" width="680" height="190" rx="6"/>
+  <text x="40" y="44" text-anchor="start" font-size="13" font-weight="600">the running platform process</text>
+  <rect class="fig-accent" x="40" y="62" width="230" height="120" rx="6"/>
+  <text class="fig-mono" x="155" y="86" text-anchor="middle" font-size="13">GameMemory</text>
+  <rect class="fig-box" x="56" y="100" width="198" height="30" rx="4"/>
+  <text x="155" y="120" text-anchor="middle" font-size="12">permanent: GameState</text>
+  <rect class="fig-box" x="56" y="138" width="198" height="30" rx="4"/>
+  <text x="155" y="158" text-anchor="middle" font-size="12">transient: scratch</text>
+  <text class="fig-accent-text" x="155" y="200" text-anchor="middle" font-size="12">mapped once, kept</text>
+  <rect class="fig-box" x="305" y="100" width="130" height="46" rx="6"/>
+  <text class="fig-mono" x="370" y="120" text-anchor="middle" font-size="13">update</text>
+  <text class="fig-muted" x="370" y="137" text-anchor="middle" font-size="12">function pointer</text>
+  <rect class="fig-box" x="480" y="52" width="200" height="52" rx="6" stroke-dasharray="5 4"/>
+  <text class="fig-mono fig-muted" x="580" y="74" text-anchor="middle" font-size="13">game_loaded_1.so</text>
+  <text class="fig-muted" x="580" y="93" text-anchor="middle" font-size="12">dlclose: pages unmapped</text>
+  <rect class="fig-accent" x="480" y="128" width="200" height="52" rx="6"/>
+  <text class="fig-mono" x="580" y="150" text-anchor="middle" font-size="13">game_loaded_2.so</text>
+  <text class="fig-muted" x="580" y="169" text-anchor="middle" font-size="12">dlopen, dlsym</text>
+  <line class="fig-line" x1="435" y1="112" x2="478" y2="84" stroke-dasharray="4 4"/>
+  <text class="fig-muted" x="452" y="86" text-anchor="end" font-size="12">old</text>
+  <line class="fig-accent-line" x1="435" y1="134" x2="478" y2="150" marker-end="url(#13-reload-arrow)"/>
+  <text class="fig-accent-text" x="452" y="162" text-anchor="end" font-size="12">new</text>
+  <line class="fig-line" x1="305" y1="123" x2="272" y2="123" marker-end="url(#13-reload-arrow)"/>
+  <text class="fig-muted" x="288" y="115" text-anchor="middle" font-size="12">uses</text>
+  <text x="40" y="240" text-anchor="start" font-size="13" font-weight="600">files in out/Linux-debug</text>
+  <rect class="fig-box" x="40" y="246" width="150" height="40" rx="6"/>
+  <text class="fig-mono" x="115" y="271" text-anchor="middle" font-size="13">game.tmp.so</text>
+  <rect class="fig-box" x="250" y="246" width="150" height="40" rx="6"/>
+  <text class="fig-mono" x="325" y="271" text-anchor="middle" font-size="13">game.so</text>
+  <rect class="fig-box" x="480" y="246" width="200" height="40" rx="6"/>
+  <text class="fig-mono" x="580" y="271" text-anchor="middle" font-size="13">game_loaded_2.so</text>
+  <line class="fig-line" x1="190" y1="266" x2="248" y2="266" marker-end="url(#13-reload-arrow)"/>
+  <text class="fig-mono fig-muted" x="219" y="258" text-anchor="middle" font-size="12">mv</text>
+  <line class="fig-line" x1="400" y1="266" x2="478" y2="266" marker-end="url(#13-reload-arrow)"/>
+  <text class="fig-muted" x="439" y="258" text-anchor="middle" font-size="12">copy on F5</text>
+  <line class="fig-line" x1="580" y1="244" x2="580" y2="182" marker-end="url(#13-reload-arrow)"/>
+  <text class="fig-mono fig-muted" x="590" y="228" text-anchor="start" font-size="12">dlopen</text>
+  <text class="fig-muted" x="115" y="304" text-anchor="middle" font-size="12">clang writes</text>
+</svg>

@@ -1,0 +1,49 @@
+<svg viewBox="0 0 720 240" role="img" aria-label="The virtual stack while C calls the Lua function f with 3 and 4. C pushes a message handler, the function and the arguments. lua_pcall pops the function and arguments and pushes one result, or the error message. Index 1 is the bottom and -1 the top.">
+  <defs>
+    <marker id="11-c-api-stack-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-mono" x="80.0" y="36" text-anchor="middle" font-size="12" font-weight="600">push handler</text>
+  <line class="fig-line" x1="28" y1="192" x2="132" y2="192"/>
+  <rect class="fig-box" x="38" y="160" width="84" height="26" rx="6"/>
+  <text class="fig-mono" x="80.0" y="178" text-anchor="middle" font-size="12">handler</text>
+  <text class="fig-mono" x="220.0" y="36" text-anchor="middle" font-size="12" font-weight="600">lua_getglobal</text>
+  <text class="fig-mono fig-muted" x="220.0" y="54" text-anchor="middle" font-size="12">&quot;f&quot;</text>
+  <line class="fig-line" x1="168" y1="192" x2="272" y2="192"/>
+  <rect class="fig-box" x="178" y="160" width="84" height="26" rx="6"/>
+  <text class="fig-mono" x="220.0" y="178" text-anchor="middle" font-size="12">handler</text>
+  <rect class="fig-box" x="178" y="130" width="84" height="26" rx="6"/>
+  <text class="fig-mono" x="220.0" y="148" text-anchor="middle" font-size="12">f</text>
+  <text class="fig-mono" x="360.0" y="36" text-anchor="middle" font-size="12" font-weight="600">push 3, push 4</text>
+  <line class="fig-line" x1="308" y1="192" x2="412" y2="192"/>
+  <rect class="fig-box" x="318" y="160" width="84" height="26" rx="6"/>
+  <text class="fig-mono" x="360.0" y="178" text-anchor="middle" font-size="12">handler</text>
+  <text class="fig-mono fig-muted" x="312" y="178" text-anchor="end" font-size="11">1</text>
+  <text class="fig-mono fig-muted" x="408" y="178" text-anchor="start" font-size="11">-4</text>
+  <rect class="fig-accent" x="318" y="130" width="84" height="26" rx="6"/>
+  <text class="fig-mono" x="360.0" y="148" text-anchor="middle" font-size="12">f</text>
+  <text class="fig-mono fig-muted" x="312" y="148" text-anchor="end" font-size="11">2</text>
+  <text class="fig-mono fig-muted" x="408" y="148" text-anchor="start" font-size="11">-3</text>
+  <rect class="fig-accent" x="318" y="100" width="84" height="26" rx="6"/>
+  <text class="fig-mono" x="360.0" y="118" text-anchor="middle" font-size="12">3</text>
+  <text class="fig-mono fig-muted" x="312" y="118" text-anchor="end" font-size="11">3</text>
+  <text class="fig-mono fig-muted" x="408" y="118" text-anchor="start" font-size="11">-2</text>
+  <rect class="fig-accent" x="318" y="70" width="84" height="26" rx="6"/>
+  <text class="fig-mono" x="360.0" y="88" text-anchor="middle" font-size="12">4</text>
+  <text class="fig-mono fig-muted" x="312" y="88" text-anchor="end" font-size="11">4</text>
+  <text class="fig-mono fig-muted" x="408" y="88" text-anchor="start" font-size="11">-1</text>
+  <text class="fig-mono" x="500.0" y="36" text-anchor="middle" font-size="12" font-weight="600">lua_pcall</text>
+  <text class="fig-mono fig-muted" x="500.0" y="54" text-anchor="middle" font-size="12">(L, 2, 1, 1)</text>
+  <line class="fig-line" x1="448" y1="192" x2="552" y2="192"/>
+  <rect class="fig-box" x="458" y="160" width="84" height="26" rx="6"/>
+  <text class="fig-mono" x="500.0" y="178" text-anchor="middle" font-size="12">handler</text>
+  <rect class="fig-accent" x="458" y="130" width="84" height="26" rx="6"/>
+  <text class="fig-mono" x="500.0" y="148" text-anchor="middle" font-size="12">result</text>
+  <text class="fig-mono" x="640.0" y="36" text-anchor="middle" font-size="12" font-weight="600">lua_pop</text>
+  <text class="fig-mono fig-muted" x="640.0" y="54" text-anchor="middle" font-size="12">(L, 2)</text>
+  <line class="fig-line" x1="588" y1="192" x2="692" y2="192"/>
+  <text class="fig-muted" x="640.0" y="178" text-anchor="middle" font-size="12">empty</text>
+  <text class="fig-muted" x="500.0" y="214" text-anchor="middle" font-size="11">or the error message</text>
+  <text class="fig-muted" x="360.0" y="214" text-anchor="middle" font-size="11">index: 1 up, -1 down</text>
+</svg>

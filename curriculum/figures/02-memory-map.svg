@@ -1,0 +1,54 @@
+<svg viewBox="0 0 720 450" role="img" aria-label="The memory map of a running program on x86-64 Linux with typical addresses: the stack at the top, shared libraries below it, then the heap, and the regions from the program file: globals, string literals and code">
+  <defs>
+    <marker id="02-memory-map-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="310" y="30" text-anchor="middle" font-size="12">high addresses</text>
+  <rect class="fig-accent" x="190" y="44" width="240" height="48"/>
+  <text x="204" y="73" font-size="13" font-weight="600">stack</text>
+  <text class="fig-mono fig-muted" x="416" y="72" text-anchor="end" font-size="12">rw-p</text>
+  <text class="fig-mono fig-muted" x="178" y="88" text-anchor="end" font-size="11">0x7ffffffdc000</text>
+  <text x="450" y="65" font-size="13">locals and parameters: <tspan class="fig-mono">l</tspan></text>
+  <text class="fig-muted" x="450" y="82" font-size="12">lives until its function returns</text>
+  <rect class="fig-box" x="190" y="142" width="240" height="40"/>
+  <text x="204" y="167" font-size="13" font-weight="600">libc and the loader</text>
+  <text class="fig-mono fig-muted" x="416" y="166" text-anchor="end" font-size="12">r-xp</text>
+  <text class="fig-mono fig-muted" x="178" y="178" text-anchor="end" font-size="11">0x7ffff7c00000</text>
+  <text x="450" y="159" font-size="13">shared libraries</text>
+  <text class="fig-muted" x="450" y="176" font-size="12">loaded when the program starts</text>
+  <rect class="fig-accent" x="190" y="232" width="240" height="48"/>
+  <text x="204" y="261" font-size="13" font-weight="600">heap</text>
+  <text class="fig-mono fig-muted" x="416" y="260" text-anchor="end" font-size="12">rw-p</text>
+  <text class="fig-mono fig-muted" x="178" y="276" text-anchor="end" font-size="11">0x555555559000</text>
+  <text x="450" y="253" font-size="13">malloc'd blocks: <tspan class="fig-mono">h</tspan></text>
+  <text class="fig-muted" x="450" y="270" font-size="12">lives until free</text>
+  <rect class="fig-box" x="190" y="290" width="240" height="40"/>
+  <text x="204" y="315" font-size="13" font-weight="600">globals</text>
+  <text class="fig-mono fig-muted" x="416" y="314" text-anchor="end" font-size="12">rw-p</text>
+  <text class="fig-mono fig-muted" x="178" y="326" text-anchor="end" font-size="11">0x555555558000</text>
+  <text x="450" y="307" font-size="13"><tspan class="fig-mono">g</tspan> and static locals</text>
+  <text class="fig-muted" x="450" y="324" font-size="12">live for the whole run</text>
+  <rect class="fig-box" x="190" y="330" width="240" height="40"/>
+  <text x="204" y="355" font-size="13" font-weight="600">string literals</text>
+  <text class="fig-mono fig-muted" x="416" y="354" text-anchor="end" font-size="12">r--p</text>
+  <text class="fig-mono fig-muted" x="178" y="366" text-anchor="end" font-size="11">0x555555556000</text>
+  <text x="450" y="347" font-size="13"><tspan class="fig-mono">&quot;literal&quot;</tspan></text>
+  <text class="fig-muted" x="450" y="364" font-size="12">read-only, the whole run</text>
+  <rect class="fig-box" x="190" y="370" width="240" height="40"/>
+  <text x="204" y="395" font-size="13" font-weight="600">code</text>
+  <text class="fig-mono fig-muted" x="416" y="394" text-anchor="end" font-size="12">r-xp</text>
+  <text class="fig-mono fig-muted" x="178" y="406" text-anchor="end" font-size="11">0x555555555000</text>
+  <text x="450" y="387" font-size="13">your compiled functions</text>
+  <text class="fig-muted" x="450" y="404" font-size="12">read and run, never written</text>
+  <line class="fig-line" x1="310" y1="96" x2="310" y2="128" marker-end="url(#02-memory-map-arrow)"/>
+  <text class="fig-muted" x="322" y="118" font-size="12">grows down</text>
+  <line class="fig-line" x1="310" y1="228" x2="310" y2="196" marker-end="url(#02-memory-map-arrow)"/>
+  <text class="fig-muted" x="322" y="216" font-size="12">grows up</text>
+  <line class="fig-line" x1="78" y1="292" x2="78" y2="408"/>
+  <line class="fig-line" x1="78" y1="292" x2="84" y2="292"/>
+  <line class="fig-line" x1="78" y1="408" x2="84" y2="408"/>
+  <text class="fig-muted" x="68" y="346" text-anchor="end" font-size="12">from</text>
+  <text class="fig-muted" x="68" y="362" text-anchor="end" font-size="12">the file</text>
+  <text class="fig-muted" x="310" y="434" text-anchor="middle" font-size="12">low addresses</text>
+</svg>

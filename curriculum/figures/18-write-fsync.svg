@@ -1,0 +1,27 @@
+<svg viewBox="0 0 720 210" role="img" aria-label="Bytes go from your buffer to the kernel&#x27;s page cache with write, and from the page cache to the disk with fsync. After write returns, the data survives a crash of your process but not a crash of the machine. After fsync returns, it survives a power cut too">
+  <defs>
+    <marker id="18-write-fsync-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="40" width="180" height="64" rx="6"/>
+  <text x="110.0" y="69.0" text-anchor="middle" font-size="13" font-weight="600">your buffer</text>
+  <text class="fig-muted" x="110.0" y="86.0" text-anchor="middle" font-size="12">process memory</text>
+  <rect class="fig-box" x="270" y="40" width="180" height="64" rx="6"/>
+  <text x="360.0" y="69.0" text-anchor="middle" font-size="13" font-weight="600">page cache</text>
+  <text class="fig-muted" x="360.0" y="86.0" text-anchor="middle" font-size="12">kernel memory, RAM</text>
+  <rect class="fig-accent" x="520" y="40" width="180" height="64" rx="6"/>
+  <text x="610.0" y="69.0" text-anchor="middle" font-size="13" font-weight="600">disk</text>
+  <text class="fig-muted" x="610.0" y="86.0" text-anchor="middle" font-size="12">ext4.vhdx under WSL2</text>
+  <line class="fig-line" x1="200" y1="72" x2="268" y2="72" marker-end="url(#18-write-fsync-arrow)"/>
+  <text class="fig-mono" x="234" y="64" text-anchor="middle" font-size="12">write</text>
+  <line class="fig-line" x1="450" y1="72" x2="518" y2="72" marker-end="url(#18-write-fsync-arrow)"/>
+  <text class="fig-mono" x="484" y="64" text-anchor="middle" font-size="12">fsync</text>
+  <text class="fig-muted" x="110" y="140" text-anchor="middle" font-size="12">lost when the</text>
+  <text class="fig-muted" x="110" y="158" text-anchor="middle" font-size="12">process dies</text>
+  <text x="360" y="140" text-anchor="middle" font-size="13" font-weight="600">after write returns:</text>
+  <text class="fig-muted" x="360" y="160" text-anchor="middle" font-size="12">survives a process crash</text>
+  <text class="fig-muted" x="360" y="178" text-anchor="middle" font-size="12">lost in a power cut</text>
+  <text class="fig-accent-text" x="610" y="140" text-anchor="middle" font-size="13" font-weight="600">after fsync returns:</text>
+  <text class="fig-muted" x="610" y="160" text-anchor="middle" font-size="12">survives a power cut</text>
+</svg>

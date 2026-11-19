@@ -1,0 +1,45 @@
+<svg viewBox="0 0 720 320" role="img" aria-label="The flash image starts at 0x10000000 with the 68-word vector table: the initial stack pointer, the reset handler's address with bit 0 set, 14 core exception handlers and 52 interrupt handlers. The 5-word IMAGE_DEF follows at 0x10000110, then code and constants, then the initial values of .data. The boot ROM finds the IMAGE_DEF, loads sp from word 0 and jumps to word 1.">
+  <defs>
+    <marker id="17-flash-image-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-mono" x="136" y="56" text-anchor="end" font-size="12">0x10000000</text>
+  <rect class="fig-accent" x="150" y="40" width="240" height="100" rx="6"/>
+  <text x="270" y="84" text-anchor="middle" font-size="14" font-weight="600">vector table</text>
+  <text class="fig-muted" x="270" y="104" text-anchor="middle" font-size="12">68 words, 272 bytes</text>
+
+  <text class="fig-mono" x="136" y="164" text-anchor="end" font-size="12">0x10000110</text>
+  <rect class="fig-accent" x="150" y="148" width="240" height="40" rx="6"/>
+  <text x="270" y="166" text-anchor="middle" font-size="13" font-weight="600">IMAGE_DEF</text>
+  <text class="fig-muted" x="270" y="182" text-anchor="middle" font-size="12">5 words, 20 bytes</text>
+
+  <text class="fig-mono" x="136" y="212" text-anchor="end" font-size="12">0x10000124</text>
+  <rect class="fig-box" x="150" y="196" width="240" height="50" rx="6"/>
+  <text x="270" y="218" text-anchor="middle" font-size="13">.text and .rodata</text>
+  <text class="fig-muted" x="270" y="236" text-anchor="middle" font-size="12">your functions and constants</text>
+
+  <rect class="fig-box" x="150" y="254" width="240" height="40" rx="6"/>
+  <text x="270" y="278" text-anchor="middle" font-size="13">initial values of .data</text>
+
+  <line class="fig-line" x1="390" y1="40" x2="430" y2="40" stroke-dasharray="4 4"/>
+  <line class="fig-line" x1="390" y1="140" x2="430" y2="148" stroke-dasharray="4 4"/>
+
+  <rect class="fig-accent" x="430" y="40" width="270" height="24" rx="6"/>
+  <text class="fig-mono" x="442" y="57" font-size="12">[0]</text>
+  <text x="510" y="57" font-size="12">initial SP: 0x20082000</text>
+  <rect class="fig-accent" x="430" y="68" width="270" height="24" rx="6"/>
+  <text class="fig-mono" x="442" y="85" font-size="12">[1]</text>
+  <text x="510" y="85" font-size="12">Reset_Handler + 1</text>
+  <rect class="fig-box" x="430" y="96" width="270" height="24" rx="6"/>
+  <text class="fig-mono" x="442" y="113" font-size="12">[2..15]</text>
+  <text x="510" y="113" font-size="12">core exceptions</text>
+  <rect class="fig-box" x="430" y="124" width="270" height="24" rx="6"/>
+  <text class="fig-mono" x="442" y="141" font-size="12">[16..67]</text>
+  <text x="510" y="141" font-size="12">peripheral interrupts</text>
+
+  <text x="430" y="190" font-size="13" font-weight="600">What the boot ROM does</text>
+  <text class="fig-muted" x="430" y="214" font-size="12">1. finds the IMAGE_DEF in the first 4 KB</text>
+  <text class="fig-muted" x="430" y="236" font-size="12">2. loads sp from word [0]</text>
+  <text class="fig-muted" x="430" y="258" font-size="12">3. jumps to the address in word [1]</text>
+</svg>

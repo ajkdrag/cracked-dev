@@ -1,0 +1,24 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="On the x86-64 laptop, WSL2&#x27;s Linux runs qemu-system-riscv64 as an ordinary process, and inside it the emulated RISC-V machine boots the xv6 kernel, which runs the xv6 shell and programs">
+  <defs>
+    <marker id="08-qemu-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="20" width="440" height="36" rx="6"/>
+  <text x="240.0" y="43.0" text-anchor="middle" font-size="13" font-weight="600">sh, ls and your xv6 programs</text>
+  <rect class="fig-accent" x="20" y="64" width="440" height="36" rx="6"/>
+  <text x="240.0" y="87.0" text-anchor="middle" font-size="13" font-weight="600">xv6 kernel</text>
+  <rect class="fig-box" x="20" y="108" width="440" height="36" rx="6"/>
+  <text x="240.0" y="131.0" text-anchor="middle" font-size="13" font-weight="600">emulated RISC-V machine: CPU, memory, disk, console</text>
+  <rect class="fig-box" x="20" y="152" width="440" height="36" rx="6"/>
+  <text x="240.0" y="175.0" text-anchor="middle" font-size="13" font-weight="600">qemu-system-riscv64, an ordinary Linux process</text>
+  <rect class="fig-box" x="480" y="152" width="220" height="36" rx="6"/>
+  <text x="590.0" y="175.0" text-anchor="middle" font-size="13" font-weight="600">bash, clang, gdb, your programs</text>
+  <rect class="fig-box" x="20" y="196" width="680" height="36" rx="6"/>
+  <text x="360.0" y="219.0" text-anchor="middle" font-size="13" font-weight="600">Linux kernel in WSL2</text>
+  <rect class="fig-box" x="20" y="240" width="680" height="36" rx="6"/>
+  <text x="360.0" y="263.0" text-anchor="middle" font-size="13" font-weight="600">your x86-64 laptop: CPU, memory, disk</text>
+  <text class="fig-muted" x="590.0" y="42" text-anchor="middle" font-size="12">RISC-V code</text>
+  <text class="fig-muted" x="590.0" y="86" text-anchor="middle" font-size="12">runs only inside QEMU</text>
+  <text class="fig-muted" x="590.0" y="130" text-anchor="middle" font-size="12">QEMU translates it</text>
+</svg>

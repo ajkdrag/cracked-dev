@@ -1,0 +1,39 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="Marking in progress. The roots reach A and B. A is black: marked and traced. B and C are gray: marked and waiting on the worklist. D and E point at each other, but nothing reachable points at them, so they stay white and the sweep frees them.">
+  <defs>
+    <marker id="11-mark-sweep-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="120" width="120" height="70" rx="6"/>
+  <text x="80" y="148" text-anchor="middle" font-size="13" font-weight="600">roots</text>
+  <text class="fig-muted" x="80" y="168" text-anchor="middle" font-size="11">stack, globals,</text>
+  <text class="fig-muted" x="80" y="182" text-anchor="middle" font-size="11">frames, upvalues</text>
+  <rect class="fig-box" x="200" y="50" width="80" height="44" rx="6" stroke-width="1.5"/>
+  <text x="240" y="77" text-anchor="middle" font-size="14" font-weight="600">A</text>
+  <text class="fig-muted" x="240" y="112" text-anchor="middle" font-size="12">black</text>
+  <rect class="fig-accent" x="200" y="200" width="80" height="44" rx="6"/>
+  <text x="240" y="227" text-anchor="middle" font-size="14" font-weight="600">B</text>
+  <text class="fig-accent-text" x="240" y="262" text-anchor="middle" font-size="12">gray</text>
+  <rect class="fig-accent" x="340" y="50" width="80" height="44" rx="6"/>
+  <text x="380" y="77" text-anchor="middle" font-size="14" font-weight="600">C</text>
+  <text class="fig-accent-text" x="380" y="112" text-anchor="middle" font-size="12">gray</text>
+  <rect class="fig-box" x="340" y="230" width="80" height="44" rx="6" stroke-dasharray="4 3"/>
+  <text x="380" y="257" text-anchor="middle" font-size="14" font-weight="600">D</text>
+  <text class="fig-muted" x="380" y="292" text-anchor="middle" font-size="12">white</text>
+  <rect class="fig-box" x="480" y="230" width="80" height="44" rx="6" stroke-dasharray="4 3"/>
+  <text x="520" y="257" text-anchor="middle" font-size="14" font-weight="600">E</text>
+  <text class="fig-muted" x="520" y="292" text-anchor="middle" font-size="12">white</text>
+  <line class="fig-line" x1="140" y1="140" x2="198" y2="80" marker-end="url(#11-mark-sweep-arrow)"/>
+  <line class="fig-line" x1="140" y1="170" x2="198" y2="215" marker-end="url(#11-mark-sweep-arrow)"/>
+  <line class="fig-line" x1="280" y1="72" x2="338" y2="72" marker-end="url(#11-mark-sweep-arrow)"/>
+  <line class="fig-line" x1="420" y1="245" x2="478" y2="245" marker-end="url(#11-mark-sweep-arrow)"/>
+  <line class="fig-line" x1="480" y1="262" x2="422" y2="262" marker-end="url(#11-mark-sweep-arrow)"/>
+  <rect class="fig-box" x="480" y="40" width="220" height="100" rx="6"/>
+  <text x="590" y="62" text-anchor="middle" font-size="13" font-weight="600">gray worklist</text>
+  <rect class="fig-accent" x="520" y="76" width="60" height="40" rx="6"/>
+  <text x="550" y="101" text-anchor="middle" font-size="13" font-weight="600">B</text>
+  <rect class="fig-accent" x="590" y="76" width="60" height="40" rx="6"/>
+  <text x="620" y="101" text-anchor="middle" font-size="13" font-weight="600">C</text>
+  <text class="fig-muted" x="590" y="132" text-anchor="middle" font-size="11">pop one, mark its children</text>
+  <text class="fig-muted" x="20" y="316" text-anchor="start" font-size="12">when the worklist is empty, sweep walks vm.objects and frees every white object: D and E</text>
+</svg>

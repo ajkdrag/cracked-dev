@@ -1,0 +1,40 @@
+<svg viewBox="0 0 720 270" role="img" aria-label="Left, while makeCounter runs: the upvalue is open and its location points at the stack slot of i. Right, after makeCounter returns: the upvalue is closed, the value 0 has been copied into it and location points at its own closed field.">
+  <defs>
+    <marker id="11-upvalue-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="32" text-anchor="start" font-size="13" font-weight="600">open: makeCounter is running</text>
+  <text x="380" y="32" text-anchor="start" font-size="13" font-weight="600">closed: makeCounter returned</text>
+  <rect class="fig-box" x="20" y="50" width="108" height="36" rx="6"/>
+  <text class="fig-mono" x="74" y="73" text-anchor="middle" font-size="12">makeCounter</text>
+  <rect class="fig-accent" x="128" y="50" width="108" height="36" rx="6"/>
+  <text class="fig-mono" x="182" y="73" text-anchor="middle" font-size="12">i = 0</text>
+  <rect class="fig-box" x="236" y="50" width="108" height="36" rx="6"/>
+  <text class="fig-mono" x="290" y="73" text-anchor="middle" font-size="12">count</text>
+  <text class="fig-muted" x="20" y="104" text-anchor="start" font-size="11">vm.stack</text>
+  <rect class="fig-box" x="380" y="50" width="320" height="36" rx="6" stroke-dasharray="4 3"/>
+  <text class="fig-muted" x="540" y="73" text-anchor="middle" font-size="12">frame popped, slots reused</text>
+  <rect class="fig-box" x="20" y="150" width="100" height="60" rx="6"/>
+  <text x="70" y="176" text-anchor="middle" font-size="12" font-weight="600">closure</text>
+  <text class="fig-mono" x="70" y="194" text-anchor="middle" font-size="12">count</text>
+  <line class="fig-line" x1="120" y1="180" x2="158" y2="180" marker-end="url(#11-upvalue-arrow)"/>
+  <rect class="fig-accent" x="160" y="140" width="160" height="40" rx="6"/>
+  <text class="fig-mono" x="172" y="165" text-anchor="start" font-size="12">location</text>
+  <rect class="fig-box" x="160" y="180" width="160" height="40" rx="6"/>
+  <text class="fig-mono" x="172" y="205" text-anchor="start" font-size="12">closed</text>
+  <text class="fig-muted" x="308" y="205" text-anchor="end" font-size="12">unused</text>
+  <text class="fig-muted" x="240" y="240" text-anchor="middle" font-size="12">ObjUpvalue</text>
+  <line class="fig-accent-line" x1="290" y1="140" x2="192" y2="88" marker-end="url(#11-upvalue-arrow)"/>
+  <rect class="fig-box" x="380" y="150" width="100" height="60" rx="6"/>
+  <text x="430" y="176" text-anchor="middle" font-size="12" font-weight="600">closure</text>
+  <text class="fig-mono" x="430" y="194" text-anchor="middle" font-size="12">count</text>
+  <line class="fig-line" x1="480" y1="180" x2="518" y2="180" marker-end="url(#11-upvalue-arrow)"/>
+  <rect class="fig-box" x="520" y="140" width="160" height="40" rx="6"/>
+  <text class="fig-mono" x="532" y="165" text-anchor="start" font-size="12">location</text>
+  <rect class="fig-accent" x="520" y="180" width="160" height="40" rx="6"/>
+  <text class="fig-mono" x="532" y="205" text-anchor="start" font-size="12">closed</text>
+  <text class="fig-mono" x="668" y="205" text-anchor="end" font-size="12">0</text>
+  <text class="fig-muted" x="600" y="240" text-anchor="middle" font-size="12">ObjUpvalue</text>
+  <path class="fig-accent-line" d="M 680 160 L 698 160 L 698 200 L 683 200" fill="none" marker-end="url(#11-upvalue-arrow)"/>
+</svg>

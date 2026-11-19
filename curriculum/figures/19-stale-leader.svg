@@ -1,0 +1,58 @@
+<svg viewBox="0 0 720 430" role="img" aria-label="A partition leaves S1 alone, still believing it leads term 1, while S2 and S3 have moved on to term 2 and x = new. In (a) S1 answers a read from its own store and client B gets the old value. In (b) the read goes through the log, S1 cannot reach a majority, and client B times out and gets x = new from S2.">
+  <defs>
+    <marker id="19-stale-leader-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="40" y="38" font-size="13" font-weight="600">(a) S1 answers from its own store</text>
+  <line class="fig-line" x1="360" y1="54" x2="360" y2="210" stroke-dasharray="5 4"/>
+  <text class="fig-muted" x="368" y="206" font-size="12">partition</text>
+  <rect class="fig-box" x="40" y="54" width="200" height="62" rx="6"/>
+  <text x="140" y="74" text-anchor="middle" font-size="13" font-weight="600">S1</text>
+  <text class="fig-muted" x="140" y="90" text-anchor="middle" font-size="12">thinks: leader, term 1</text>
+  <text class="fig-mono" x="140" y="107" text-anchor="middle" font-size="12">store: x = old</text>
+  <rect class="fig-accent" x="400" y="54" width="170" height="44" rx="6"/>
+  <text x="485" y="73" text-anchor="middle" font-size="13">S2, leader, term 2</text>
+  <text class="fig-mono" x="485" y="90" text-anchor="middle" font-size="12">store: x = new</text>
+  <rect class="fig-box" x="400" y="150" width="170" height="44" rx="6"/>
+  <text x="485" y="169" text-anchor="middle" font-size="13">S3, term 2</text>
+  <text class="fig-mono" x="485" y="186" text-anchor="middle" font-size="12">store: x = new</text>
+  <line class="fig-line" x1="485" y1="98" x2="485" y2="148" marker-end="url(#19-stale-leader-arrow)"/>
+  <text class="fig-muted" x="493" y="128" font-size="12">copies</text>
+  <rect class="fig-box" x="40" y="160" width="100" height="44" rx="6"/>
+  <text x="90" y="179" text-anchor="middle" font-size="13">client B</text>
+  <text class="fig-mono" x="90" y="196" text-anchor="middle" font-size="12">get x</text>
+  <line class="fig-line" x1="76" y1="160" x2="76" y2="118" marker-end="url(#19-stale-leader-arrow)"/>
+  <text class="fig-muted" x="68" y="144" text-anchor="end" font-size="12">asks</text>
+  <line class="fig-line" x1="110" y1="118" x2="110" y2="158" marker-end="url(#19-stale-leader-arrow)"/>
+  <text class="fig-mono" x="150" y="136" font-size="12">x = old</text>
+  <text class="fig-accent-text" x="150" y="152" font-size="12">a stale read</text>
+  <text x="40" y="248" font-size="13" font-weight="600">(b) the read goes through the log</text>
+  <line class="fig-line" x1="360" y1="264" x2="360" y2="420" stroke-dasharray="5 4"/>
+  <text class="fig-muted" x="368" y="416" font-size="12">partition</text>
+  <rect class="fig-box" x="40" y="264" width="200" height="62" rx="6"/>
+  <text x="140" y="284" text-anchor="middle" font-size="13" font-weight="600">S1</text>
+  <text class="fig-muted" x="140" y="300" text-anchor="middle" font-size="12">thinks: leader, term 1</text>
+  <text class="fig-mono" x="140" y="317" text-anchor="middle" font-size="12">store: x = old</text>
+  <rect class="fig-accent" x="400" y="264" width="170" height="44" rx="6"/>
+  <text x="485" y="283" text-anchor="middle" font-size="13">S2, leader, term 2</text>
+  <text class="fig-mono" x="485" y="300" text-anchor="middle" font-size="12">store: x = new</text>
+  <rect class="fig-box" x="400" y="360" width="170" height="44" rx="6"/>
+  <text x="485" y="379" text-anchor="middle" font-size="13">S3, term 2</text>
+  <text class="fig-mono" x="485" y="396" text-anchor="middle" font-size="12">store: x = new</text>
+  <line class="fig-line" x1="485" y1="308" x2="485" y2="358" marker-end="url(#19-stale-leader-arrow)"/>
+  <text class="fig-muted" x="493" y="338" font-size="12">copies</text>
+  <rect class="fig-box" x="40" y="370" width="100" height="44" rx="6"/>
+  <text x="90" y="389" text-anchor="middle" font-size="13">client B</text>
+  <text class="fig-mono" x="90" y="406" text-anchor="middle" font-size="12">get x</text>
+  <line class="fig-line" x1="76" y1="370" x2="76" y2="328" marker-end="url(#19-stale-leader-arrow)"/>
+  <text class="fig-muted" x="68" y="354" text-anchor="end" font-size="12">asks</text>
+  <line class="fig-line" x1="240" y1="290" x2="354" y2="290" marker-end="url(#19-stale-leader-arrow)" stroke-dasharray="5 4"/>
+  <text class="fig-muted" x="298" y="282" text-anchor="middle" font-size="12">get x entry</text>
+  <text class="fig-muted" x="298" y="310" text-anchor="middle" font-size="12">no majority,</text>
+  <text class="fig-muted" x="298" y="325" text-anchor="middle" font-size="12">no answer</text>
+  <path class="fig-line" d="M140 392 L382 392 L382 296 L398 296" marker-end="url(#19-stale-leader-arrow)" stroke-dasharray="5 4"/>
+  <text class="fig-muted" x="260" y="384" text-anchor="middle" font-size="12">times out, retries</text>
+  <text class="fig-muted" x="584" y="283" font-size="12">commits the read,</text>
+  <text class="fig-muted" x="584" y="299" font-size="12">answers x = new</text>
+</svg>

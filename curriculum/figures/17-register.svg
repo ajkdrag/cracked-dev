@@ -1,0 +1,85 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="The pad register of GPIO25 at 0x40038068 holds eight fields in bits 8 to 0, and reads 0x116 at reset, with ISO set. The same register also answers at three more addresses: plus 0x1000 XORs the bits you write, plus 0x2000 sets them and plus 0x3000 clears them. Writing 0x100 to the clear alias clears ISO and leaves the other bits alone.">
+  <defs>
+    <marker id="17-register-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="30" font-size="14" font-weight="600">PADS_BANK0 GPIO25</text>
+  <text class="fig-mono" x="190" y="30" font-size="13">0x40038068</text>
+
+  <text class="fig-muted" x="72" y="56" text-anchor="end" font-size="12">bit</text>
+  <text class="fig-muted" x="72" y="86" text-anchor="end" font-size="12">field</text>
+  <text class="fig-muted" x="72" y="120" text-anchor="end" font-size="12">reset</text>
+
+  <text class="fig-mono" x="130" y="56" text-anchor="middle" font-size="12">31..9</text>
+  <rect class="fig-box" x="80" y="64" width="100" height="36" rx="6"/>
+  <text class="fig-muted" x="130" y="86" text-anchor="middle" font-size="12">reserved</text>
+  <text class="fig-mono" x="130" y="120" text-anchor="middle" font-size="12">0</text>
+
+  <text class="fig-mono" x="210" y="56" text-anchor="middle" font-size="12">8</text>
+  <rect class="fig-accent" x="182" y="64" width="56" height="36" rx="6"/>
+  <text x="210" y="86" text-anchor="middle" font-size="12">ISO</text>
+  <text class="fig-mono" x="210" y="120" text-anchor="middle" font-size="12">1</text>
+
+  <text class="fig-mono" x="268" y="56" text-anchor="middle" font-size="12">7</text>
+  <rect class="fig-box" x="240" y="64" width="56" height="36" rx="6"/>
+  <text x="268" y="86" text-anchor="middle" font-size="12">OD</text>
+  <text class="fig-mono" x="268" y="120" text-anchor="middle" font-size="12">0</text>
+
+  <text class="fig-mono" x="326" y="56" text-anchor="middle" font-size="12">6</text>
+  <rect class="fig-box" x="298" y="64" width="56" height="36" rx="6"/>
+  <text x="326" y="86" text-anchor="middle" font-size="12">IE</text>
+  <text class="fig-mono" x="326" y="120" text-anchor="middle" font-size="12">0</text>
+
+  <text class="fig-mono" x="392" y="56" text-anchor="middle" font-size="12">5..4</text>
+  <rect class="fig-box" x="356" y="64" width="72" height="36" rx="6"/>
+  <text x="392" y="86" text-anchor="middle" font-size="12">DRIVE</text>
+  <text class="fig-mono" x="392" y="120" text-anchor="middle" font-size="12">01</text>
+
+  <text class="fig-mono" x="458" y="56" text-anchor="middle" font-size="12">3</text>
+  <rect class="fig-box" x="430" y="64" width="56" height="36" rx="6"/>
+  <text x="458" y="86" text-anchor="middle" font-size="12">PUE</text>
+  <text class="fig-mono" x="458" y="120" text-anchor="middle" font-size="12">0</text>
+
+  <text class="fig-mono" x="516" y="56" text-anchor="middle" font-size="12">2</text>
+  <rect class="fig-box" x="488" y="64" width="56" height="36" rx="6"/>
+  <text x="516" y="86" text-anchor="middle" font-size="12">PDE</text>
+  <text class="fig-mono" x="516" y="120" text-anchor="middle" font-size="12">1</text>
+
+  <text class="fig-mono" x="583" y="56" text-anchor="middle" font-size="12">1</text>
+  <rect class="fig-box" x="546" y="64" width="74" height="36" rx="6"/>
+  <text x="583" y="86" text-anchor="middle" font-size="12">SCHMITT</text>
+  <text class="fig-mono" x="583" y="120" text-anchor="middle" font-size="12">1</text>
+
+  <text class="fig-mono" x="660" y="56" text-anchor="middle" font-size="12">0</text>
+  <rect class="fig-box" x="622" y="64" width="78" height="36" rx="6"/>
+  <text x="661" y="86" text-anchor="middle" font-size="12">SLEWFAST</text>
+  <text class="fig-mono" x="661" y="120" text-anchor="middle" font-size="12">0</text>
+
+  <rect class="fig-box" x="40" y="168" width="150" height="62" rx="6"/>
+  <text class="fig-mono" x="115" y="188" text-anchor="middle" font-size="12">+0x0000</text>
+  <text class="fig-mono" x="115" y="204" text-anchor="middle" font-size="12">0x40038068</text>
+  <text class="fig-muted" x="115" y="221" text-anchor="middle" font-size="12">read and write</text>
+
+  <rect class="fig-box" x="206" y="168" width="150" height="62" rx="6"/>
+  <text class="fig-mono" x="281" y="188" text-anchor="middle" font-size="12">+0x1000</text>
+  <text class="fig-mono" x="281" y="204" text-anchor="middle" font-size="12">0x40039068</text>
+  <text class="fig-muted" x="281" y="221" text-anchor="middle" font-size="12">flips the bits written</text>
+
+  <rect class="fig-box" x="372" y="168" width="150" height="62" rx="6"/>
+  <text class="fig-mono" x="447" y="188" text-anchor="middle" font-size="12">+0x2000</text>
+  <text class="fig-mono" x="447" y="204" text-anchor="middle" font-size="12">0x4003a068</text>
+  <text class="fig-muted" x="447" y="221" text-anchor="middle" font-size="12">sets the bits written</text>
+
+  <rect class="fig-accent" x="538" y="168" width="150" height="62" rx="6"/>
+  <text class="fig-mono" x="613" y="188" text-anchor="middle" font-size="12">+0x3000</text>
+  <text class="fig-mono" x="613" y="204" text-anchor="middle" font-size="12">0x4003b068</text>
+  <text class="fig-muted" x="613" y="221" text-anchor="middle" font-size="12">clears the bits written</text>
+
+  <line class="fig-line" x1="115" y1="168" x2="115" y2="132" marker-end="url(#17-register-arrow)"/>
+  <line class="fig-line" x1="281" y1="168" x2="281" y2="132" marker-end="url(#17-register-arrow)"/>
+  <line class="fig-line" x1="447" y1="168" x2="447" y2="132" marker-end="url(#17-register-arrow)"/>
+  <line class="fig-accent-line" x1="613" y1="168" x2="613" y2="132" marker-end="url(#17-register-arrow)"/>
+
+  <text x="40" y="266" font-size="13">Store 0x100 at 0x4003b068: ISO becomes 0, every other bit stays, 0x116 becomes 0x016.</text>
+</svg>

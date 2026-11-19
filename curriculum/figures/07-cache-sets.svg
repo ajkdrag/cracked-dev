@@ -1,0 +1,71 @@
+<svg viewBox="0 0 720 306" role="img" aria-label="An address splits into a 6-bit offset inside the 64-byte line, a 6-bit set index that picks one of the 64 sets of a 48 KB 12-way L1 data cache, and a tag that is compared with the tags of the 12 lines in that set">
+  <defs>
+    <marker id="07-cache-sets-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="40" y="30" font-size="12">48 KB L1 data cache: 64 sets of 12 ways, 64-byte lines</text>
+  <rect class="fig-box" x="40" y="42" width="340" height="30" rx="6"/>
+  <text x="210" y="62" text-anchor="middle" font-size="13">tag, bits 63 to 12</text>
+  <rect class="fig-accent" x="380" y="42" width="160" height="30" rx="6"/>
+  <text x="460" y="62" text-anchor="middle" font-size="13">set, bits 11 to 6</text>
+  <rect class="fig-box" x="540" y="42" width="140" height="30" rx="6"/>
+  <text x="610" y="62" text-anchor="middle" font-size="13">offset, bits 5 to 0</text>
+  <path class="fig-accent-line" d="M460 72 L460 104 L676 104 L676 206 L640 206" fill="none" marker-end="url(#07-cache-sets-arrow)"/>
+  <text class="fig-accent-text" x="472" y="94" font-size="12">picks one set</text>
+  <text class="fig-muted" x="96" y="134" text-anchor="end" font-size="12">set 0</text>
+  <rect class="fig-box" x="110" y="120" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="154" y="120" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="198" y="120" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="242" y="120" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="286" y="120" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="330" y="120" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="374" y="120" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="418" y="120" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="462" y="120" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="506" y="120" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="550" y="120" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="594" y="120" width="40" height="20" rx="4"/>
+  <text class="fig-muted" x="96" y="160" text-anchor="end" font-size="12">set 1</text>
+  <rect class="fig-box" x="110" y="146" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="154" y="146" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="198" y="146" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="242" y="146" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="286" y="146" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="330" y="146" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="374" y="146" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="418" y="146" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="462" y="146" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="506" y="146" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="550" y="146" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="594" y="146" width="40" height="20" rx="4"/>
+  <text class="fig-accent-text" x="96" y="210" text-anchor="end" font-size="12">set k</text>
+  <rect class="fig-accent" x="110" y="196" width="40" height="20" rx="4"/>
+  <rect class="fig-accent" x="154" y="196" width="40" height="20" rx="4"/>
+  <rect class="fig-accent" x="198" y="196" width="40" height="20" rx="4"/>
+  <rect class="fig-accent" x="242" y="196" width="40" height="20" rx="4"/>
+  <rect class="fig-accent" x="286" y="196" width="40" height="20" rx="4"/>
+  <rect class="fig-accent" x="330" y="196" width="40" height="20" rx="4"/>
+  <rect class="fig-accent" x="374" y="196" width="40" height="20" rx="4"/>
+  <rect class="fig-accent" x="418" y="196" width="40" height="20" rx="4"/>
+  <rect class="fig-accent" x="462" y="196" width="40" height="20" rx="4"/>
+  <rect class="fig-accent" x="506" y="196" width="40" height="20" rx="4"/>
+  <rect class="fig-accent" x="550" y="196" width="40" height="20" rx="4"/>
+  <rect class="fig-accent" x="594" y="196" width="40" height="20" rx="4"/>
+  <text class="fig-muted" x="96" y="260" text-anchor="end" font-size="12">set 63</text>
+  <rect class="fig-box" x="110" y="246" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="154" y="246" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="198" y="246" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="242" y="246" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="286" y="246" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="330" y="246" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="374" y="246" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="418" y="246" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="462" y="246" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="506" y="246" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="550" y="246" width="40" height="20" rx="4"/>
+  <rect class="fig-box" x="594" y="246" width="40" height="20" rx="4"/>
+  <text class="fig-muted" x="372" y="184" text-anchor="middle" font-size="13">...</text>
+  <text class="fig-muted" x="372" y="234" text-anchor="middle" font-size="13">...</text>
+  <text class="fig-muted" x="372" y="290" text-anchor="middle" font-size="12">12 ways: each set holds up to 12 lines, found by their tags</text>
+</svg>

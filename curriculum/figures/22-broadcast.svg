@@ -1,0 +1,84 @@
+<svg viewBox="0 0 720 320" role="img" aria-label="Broadcasting two shapes in three moves: line them up on the right, pad the shorter one with 1 on the left, then compare each dimension. Equal sizes stay, a 1 stretches to the other size, and any other pair is an error.">
+  <defs>
+    <marker id="22-broadcast-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="28" font-size="13" font-weight="600">shapes</text>
+  <text x="210" y="28" font-size="13" font-weight="600">1. align right</text>
+  <text x="380" y="28" font-size="13" font-weight="600">2. pad with 1</text>
+  <text x="550" y="28" font-size="13" font-weight="600">3. compare</text>
+  <text class="fig-mono" x="20" y="68" font-size="13">a (5, 3)</text>
+  <text class="fig-mono" x="20" y="100" font-size="13">b (3,)</text>
+  <rect class="fig-box" x="262" y="50" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="279.0" y="68" text-anchor="middle" font-size="13">5</text>
+  <rect class="fig-box" x="296" y="50" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="313.0" y="68" text-anchor="middle" font-size="13">3</text>
+  <rect class="fig-box" x="262" y="82" width="34" height="26" rx="0" stroke-dasharray="3 3"/>
+  <rect class="fig-box" x="296" y="82" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="313.0" y="100" text-anchor="middle" font-size="13">3</text>
+  <rect class="fig-box" x="432" y="50" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="449.0" y="68" text-anchor="middle" font-size="13">5</text>
+  <rect class="fig-box" x="466" y="50" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="483.0" y="68" text-anchor="middle" font-size="13">3</text>
+  <rect class="fig-accent" x="432" y="82" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="449.0" y="100" text-anchor="middle" font-size="13">1</text>
+  <rect class="fig-box" x="466" y="82" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="483.0" y="100" text-anchor="middle" font-size="13">3</text>
+  <text class="fig-muted" x="550" y="84" font-size="12">out</text>
+  <rect class="fig-box" x="632" y="66" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="649.0" y="84" text-anchor="middle" font-size="13">5</text>
+  <rect class="fig-box" x="666" y="66" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="683.0" y="84" text-anchor="middle" font-size="13">3</text>
+  <text class="fig-mono" x="20" y="168" font-size="13">a (2, 1, 4)</text>
+  <text class="fig-mono" x="20" y="200" font-size="13">b (3, 1)</text>
+  <rect class="fig-box" x="228" y="150" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="245.0" y="168" text-anchor="middle" font-size="13">2</text>
+  <rect class="fig-box" x="262" y="150" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="279.0" y="168" text-anchor="middle" font-size="13">1</text>
+  <rect class="fig-box" x="296" y="150" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="313.0" y="168" text-anchor="middle" font-size="13">4</text>
+  <rect class="fig-box" x="228" y="182" width="34" height="26" rx="0" stroke-dasharray="3 3"/>
+  <rect class="fig-box" x="262" y="182" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="279.0" y="200" text-anchor="middle" font-size="13">3</text>
+  <rect class="fig-box" x="296" y="182" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="313.0" y="200" text-anchor="middle" font-size="13">1</text>
+  <rect class="fig-box" x="398" y="150" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="415.0" y="168" text-anchor="middle" font-size="13">2</text>
+  <rect class="fig-box" x="432" y="150" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="449.0" y="168" text-anchor="middle" font-size="13">1</text>
+  <rect class="fig-box" x="466" y="150" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="483.0" y="168" text-anchor="middle" font-size="13">4</text>
+  <rect class="fig-accent" x="398" y="182" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="415.0" y="200" text-anchor="middle" font-size="13">1</text>
+  <rect class="fig-box" x="432" y="182" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="449.0" y="200" text-anchor="middle" font-size="13">3</text>
+  <rect class="fig-box" x="466" y="182" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="483.0" y="200" text-anchor="middle" font-size="13">1</text>
+  <text class="fig-muted" x="550" y="184" font-size="12">out</text>
+  <rect class="fig-box" x="598" y="166" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="615.0" y="184" text-anchor="middle" font-size="13">2</text>
+  <rect class="fig-box" x="632" y="166" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="649.0" y="184" text-anchor="middle" font-size="13">3</text>
+  <rect class="fig-box" x="666" y="166" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="683.0" y="184" text-anchor="middle" font-size="13">4</text>
+  <text class="fig-mono" x="20" y="268" font-size="13">a (2, 3)</text>
+  <text class="fig-mono" x="20" y="300" font-size="13">b (3, 2)</text>
+  <rect class="fig-box" x="262" y="250" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="279.0" y="268" text-anchor="middle" font-size="13">2</text>
+  <rect class="fig-box" x="296" y="250" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="313.0" y="268" text-anchor="middle" font-size="13">3</text>
+  <rect class="fig-box" x="262" y="282" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="279.0" y="300" text-anchor="middle" font-size="13">3</text>
+  <rect class="fig-box" x="296" y="282" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="313.0" y="300" text-anchor="middle" font-size="13">2</text>
+  <rect class="fig-box" x="432" y="250" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="449.0" y="268" text-anchor="middle" font-size="13">2</text>
+  <rect class="fig-box" x="466" y="250" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="483.0" y="268" text-anchor="middle" font-size="13">3</text>
+  <rect class="fig-box" x="432" y="282" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="449.0" y="300" text-anchor="middle" font-size="13">3</text>
+  <rect class="fig-box" x="466" y="282" width="34" height="26" rx="0"/>
+  <text class="fig-mono" x="483.0" y="300" text-anchor="middle" font-size="13">2</text>
+  <text class="fig-accent-text" x="550" y="284" font-size="13">error: 3 vs 2</text>
+</svg>

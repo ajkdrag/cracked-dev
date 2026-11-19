@@ -1,0 +1,37 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="The same function in C and in C++. In C each failure jumps to a label, and the labels undo the steps in reverse order. In C++ each object lives in a scope, and every return that leaves a scope runs that object&#x27;s destructor on the way back to the caller, the newest object first.">
+  <defs>
+    <marker id="20-raii-goto-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="30" y="28" font-size="14" font-weight="600">C: goto cleanup</text>
+  <text x="344" y="28" font-size="14" font-weight="600">C++: destructors at scope exit</text>
+  <text class="fig-mono" x="30" y="60" font-size="12">FILE *f = fopen(path, "rb");</text>
+  <text class="fig-mono" x="30" y="92" font-size="12">if (!f) goto out;</text>
+  <text class="fig-mono" x="30" y="124" font-size="12">char *buf = malloc(4096);</text>
+  <text class="fig-mono" x="30" y="156" font-size="12">if (!buf) goto close_f;</text>
+  <text class="fig-mono" x="30" y="188" font-size="12">... work on buf ...</text>
+  <text class="fig-mono" x="30" y="220" font-size="12">free_buf: free(buf);</text>
+  <text class="fig-mono" x="30" y="252" font-size="12">close_f: fclose(f);</text>
+  <text class="fig-mono" x="30" y="284" font-size="12">out: return result;</text>
+  <path class="fig-accent-line" d="M164 88 L310 88 L310 280 L180 280" fill="none" marker-end="url(#20-raii-goto-arrow)"/>
+  <path class="fig-accent-line" d="M212 152 L290 152 L290 248 L180 248" fill="none" marker-end="url(#20-raii-goto-arrow)"/>
+  <rect class="fig-box" x="338" y="42" width="212" height="260" rx="6"/>
+  <rect class="fig-box" x="350" y="106" width="188" height="148" rx="6"/>
+  <text class="fig-mono" x="350" y="60" font-size="12">File file(path);</text>
+  <text class="fig-mono" x="350" y="92" font-size="12">if (!file.f) return -1;</text>
+  <text class="fig-mono" x="362" y="124" font-size="12">Mem buf(4096);</text>
+  <text class="fig-mono" x="362" y="156" font-size="12">if (!buf.p) return -1;</text>
+  <text class="fig-mono" x="362" y="188" font-size="12">... work on buf ...</text>
+  <text class="fig-mono" x="362" y="220" font-size="12">return result;</text>
+  <text class="fig-muted" x="444" y="292" text-anchor="middle" font-size="12">file lives here</text>
+  <text class="fig-muted" x="444" y="246" text-anchor="middle" font-size="12">buf lives here</text>
+  <rect class="fig-accent" x="636" y="42" width="64" height="260" rx="6"/>
+  <text x="668" y="160" text-anchor="middle" font-size="13" font-weight="600">caller</text>
+  <line class="fig-accent-line" x1="523.9" y1="88" x2="634" y2="88" marker-end="url(#20-raii-goto-arrow)"/>
+  <text class="fig-accent-text" x="593" y="80" text-anchor="middle" font-size="12">~File</text>
+  <line class="fig-accent-line" x1="528.6" y1="152" x2="634" y2="152" marker-end="url(#20-raii-goto-arrow)"/>
+  <text class="fig-accent-text" x="593" y="144" text-anchor="middle" font-size="12">~Mem ~File</text>
+  <line class="fig-accent-line" x1="470.2" y1="216" x2="634" y2="216" marker-end="url(#20-raii-goto-arrow)"/>
+  <text class="fig-accent-text" x="593" y="208" text-anchor="middle" font-size="12">~Mem ~File</text>
+</svg>

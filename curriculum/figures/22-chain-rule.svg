@@ -1,0 +1,34 @@
+<svg viewBox="0 0 720 270" role="img" aria-label="The chain rule at one Mul node. The forward pass computes z = x * y and saves x and y in the context. The backward pass receives d, the derivative of the final output with respect to z, and sends d * y to x and d * x to y.">
+  <defs>
+    <marker id="22-chain-rule-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="30" width="110" height="52" rx="6"/>
+  <text x="75.0" y="51.0" text-anchor="middle" font-size="13" font-weight="600">x</text>
+  <text class="fig-mono" x="75.0" y="70.0" text-anchor="middle" font-size="12">2</text>
+  <rect class="fig-box" x="20" y="178" width="110" height="52" rx="6"/>
+  <text x="75.0" y="199.0" text-anchor="middle" font-size="13" font-weight="600">y</text>
+  <text class="fig-mono" x="75.0" y="218.0" text-anchor="middle" font-size="12">3</text>
+  <rect class="fig-accent" x="250" y="70" width="220" height="120" rx="6"/>
+  <text x="360" y="96" text-anchor="middle" font-size="13" font-weight="600">Mul</text>
+  <text class="fig-mono" x="360" y="120" text-anchor="middle" font-size="12">forward: z = x * y</text>
+  <text class="fig-mono" x="360" y="140" text-anchor="middle" font-size="12">ctx saves x, y</text>
+  <text class="fig-mono" x="360" y="160" text-anchor="middle" font-size="12">backward(d): d * y, d * x</text>
+  <rect class="fig-box" x="590" y="104" width="110" height="52" rx="6"/>
+  <text x="645.0" y="125.0" text-anchor="middle" font-size="13" font-weight="600">z</text>
+  <text class="fig-mono" x="645.0" y="144.0" text-anchor="middle" font-size="12">6</text>
+  <line class="fig-line" x1="130" y1="48" x2="248" y2="88" marker-end="url(#22-chain-rule-arrow)"/>
+  <text class="fig-mono" x="170" y="52" text-anchor="middle" font-size="12">2</text>
+  <line class="fig-line" x1="130" y1="212" x2="248" y2="172" marker-end="url(#22-chain-rule-arrow)"/>
+  <text class="fig-mono" x="170" y="212" text-anchor="middle" font-size="12">3</text>
+  <line class="fig-line" x1="470" y1="120" x2="588" y2="120" marker-end="url(#22-chain-rule-arrow)"/>
+  <text class="fig-mono" x="529" y="112" text-anchor="middle" font-size="12">z = 6</text>
+  <line class="fig-accent-line" x1="248" y1="106" x2="132" y2="66" marker-end="url(#22-chain-rule-arrow)"/>
+  <text class="fig-accent-text fig-mono" x="176" y="106" text-anchor="middle" font-size="12">d * y</text>
+  <line class="fig-accent-line" x1="248" y1="154" x2="132" y2="194" marker-end="url(#22-chain-rule-arrow)"/>
+  <text class="fig-accent-text fig-mono" x="176" y="162" text-anchor="middle" font-size="12">d * x</text>
+  <line class="fig-accent-line" x1="588" y1="142" x2="472" y2="142" marker-end="url(#22-chain-rule-arrow)"/>
+  <text class="fig-accent-text fig-mono" x="529" y="160" text-anchor="middle" font-size="12">d</text>
+  <text class="fig-muted" x="360" y="256" text-anchor="middle" font-size="12" xml:space="preserve">black arrows: forward pass.   accent arrows: backward pass.</text>
+</svg>

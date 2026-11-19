@@ -1,0 +1,25 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="Before free the block at p belongs to the program and holds 7, and after free malloc owns it again and has written other bytes into it, but p still holds the address">
+  <defs>
+    <marker id="01-use-after-free-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="26" font-size="13" font-weight="600">before free(p)</text>
+  <rect class="fig-box" x="20" y="40" width="200" height="56" rx="6"/>
+  <text class="fig-mono" x="120.0" y="64.0" text-anchor="middle" font-size="14">p</text>
+  <text class="fig-muted" x="120.0" y="83.0" text-anchor="middle" font-size="12">holds the block&#x27;s address</text>
+  <rect class="fig-accent" x="420" y="40" width="260" height="56" rx="6"/>
+  <text class="fig-mono" x="550" y="65" text-anchor="middle" font-size="16">7</text>
+  <text class="fig-muted" x="550" y="84" text-anchor="middle" font-size="12">owned by your program</text>
+  <line class="fig-line" x1="220" y1="68" x2="418" y2="68" marker-end="url(#01-use-after-free-arrow)"/>
+  <text class="fig-muted" x="319" y="59" text-anchor="middle" font-size="12">points to</text>
+  <text x="20" y="136" font-size="13" font-weight="600">after free(p)</text>
+  <rect class="fig-box" x="20" y="150" width="200" height="56" rx="6"/>
+  <text class="fig-mono" x="120.0" y="174.0" text-anchor="middle" font-size="14">p</text>
+  <text class="fig-muted" x="120.0" y="193.0" text-anchor="middle" font-size="12">holds the block&#x27;s address</text>
+  <rect class="fig-box" x="420" y="150" width="260" height="56" rx="6"/>
+  <text x="550" y="175" text-anchor="middle" font-size="13">malloc&#x27;s bookkeeping</text>
+  <text class="fig-accent-text" x="550" y="194" text-anchor="middle" font-size="12">owned by malloc: not yours</text>
+  <line class="fig-accent-line" x1="220" y1="178" x2="418" y2="178" marker-end="url(#01-use-after-free-arrow)"/>
+  <text class="fig-accent-text" x="319" y="169" text-anchor="middle" font-size="12">still points to</text>
+</svg>

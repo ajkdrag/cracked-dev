@@ -1,0 +1,34 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="The host loop passes at 25, 31 and 62 ms. Each pass adds the elapsed time, counted in frames, to the accumulator, runs one frame for each whole frame in it and keeps the rest: one frame, then none, then two">
+  <text x="60" y="32" font-size="14" font-weight="600">the accumulator, counted in frames of 1/60 s</text>
+  <line class="fig-line" x1="60" y1="96" x2="680" y2="96"/>
+  <line class="fig-line" x1="60" y1="90" x2="60" y2="102"/>
+  <text class="fig-mono fig-muted" x="60" y="82" text-anchor="start" font-size="11">0</text>
+  <line class="fig-line" x1="210" y1="90" x2="210" y2="102"/>
+  <text class="fig-mono fig-muted" x="210" y="82" text-anchor="middle" font-size="11">16.7</text>
+  <line class="fig-line" x1="360" y1="90" x2="360" y2="102"/>
+  <text class="fig-mono fig-muted" x="360" y="82" text-anchor="middle" font-size="11">33.3</text>
+  <line class="fig-line" x1="510" y1="90" x2="510" y2="102"/>
+  <text class="fig-mono fig-muted" x="510" y="82" text-anchor="middle" font-size="11">50</text>
+  <line class="fig-line" x1="660" y1="90" x2="660" y2="102"/>
+  <text class="fig-mono fig-muted" x="680" y="82" text-anchor="end" font-size="11">66.7 ms</text>
+  <line class="fig-line" x1="285" y1="102" x2="130" y2="150"/>
+  <circle class="fig-accent-fill" cx="285" cy="96" r="5"/>
+  <rect class="fig-box" x="30" y="150" width="200" height="80" rx="6"/>
+  <text x="130" y="172" text-anchor="middle" font-size="13" font-weight="600">pass at 25 ms</text>
+  <text class="fig-mono" x="130" y="194" text-anchor="middle" font-size="12">acc 0 + 1.5 = 1.5</text>
+  <text class="fig-muted" x="130" y="214" text-anchor="middle" font-size="12">run 1 frame, keep 0.5</text>
+  <line class="fig-line" x1="339" y1="102" x2="360" y2="150"/>
+  <circle class="fig-accent-fill" cx="339" cy="96" r="5"/>
+  <rect class="fig-box" x="260" y="150" width="200" height="80" rx="6"/>
+  <text x="360" y="172" text-anchor="middle" font-size="13" font-weight="600">pass at 31 ms</text>
+  <text class="fig-mono" x="360" y="194" text-anchor="middle" font-size="12">acc 0.5 + 0.36 = 0.86</text>
+  <text class="fig-muted" x="360" y="214" text-anchor="middle" font-size="12">run no frame</text>
+  <line class="fig-line" x1="618" y1="102" x2="590" y2="150"/>
+  <circle class="fig-accent-fill" cx="618" cy="96" r="5"/>
+  <rect class="fig-accent" x="490" y="150" width="200" height="80" rx="6"/>
+  <text x="590" y="172" text-anchor="middle" font-size="13" font-weight="600">pass at 62 ms</text>
+  <text class="fig-mono" x="590" y="194" text-anchor="middle" font-size="12">acc 0.86 + 1.86 = 2.72</text>
+  <text class="fig-muted" x="590" y="214" text-anchor="middle" font-size="12">run 2 frames, keep 0.72</text>
+  <circle class="fig-accent-fill" cx="60" cy="96" r="5"/>
+  <text class="fig-muted" x="60" y="120" font-size="12">acc = 0</text>
+</svg>

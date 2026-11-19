@@ -1,0 +1,39 @@
+<svg viewBox="0 0 720 320" role="img" aria-label="The store calls the Disk interface. One implementation passes each call to a real file. The simulated one keeps a visible copy and a durable copy of each file, copies the visible bytes to the durable ones on disk_sync, counts operations and crashes at the chosen operation k">
+  <defs>
+    <marker id="18-sim-disk-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="140" width="120" height="56" rx="6"/>
+  <text x="80.0" y="165.0" text-anchor="middle" font-size="13" font-weight="600">kv store</text>
+  <text class="fig-muted" x="80.0" y="182.0" text-anchor="middle" font-size="12">log.c, kv.c</text>
+  <rect class="fig-accent" x="180" y="140" width="140" height="56" rx="6"/>
+  <text x="250.0" y="165.0" text-anchor="middle" font-size="13" font-weight="600">Disk interface</text>
+  <text class="fig-muted" x="250.0" y="182.0" text-anchor="middle" font-size="12">disk_pwrite, ...</text>
+  <line class="fig-line" x1="140" y1="168" x2="178" y2="168" marker-end="url(#18-sim-disk-arrow)"/>
+  <path class="fig-line" d="M320 168 L345 168 L345 65 L368 65" fill="none" marker-end="url(#18-sim-disk-arrow)"/>
+  <path class="fig-line" d="M345 168 L345 205 L368 205" fill="none" marker-end="url(#18-sim-disk-arrow)"/>
+  <rect class="fig-box" x="370" y="40" width="150" height="50" rx="6"/>
+  <text x="445.0" y="62.0" text-anchor="middle" font-size="13" font-weight="600">disk_posix.c</text>
+  <text class="fig-muted" x="445.0" y="79.0" text-anchor="middle" font-size="12">real system calls</text>
+  <line class="fig-line" x1="520" y1="65" x2="573" y2="65" marker-end="url(#18-sim-disk-arrow)"/>
+  <rect class="fig-box" x="575" y="40" width="125" height="50" rx="6"/>
+  <text x="637.5" y="62.0" text-anchor="middle" font-size="13" font-weight="600">ext4 file</text>
+  <text class="fig-muted" x="637.5" y="79.0" text-anchor="middle" font-size="12">on the disk</text>
+  <rect class="fig-box" x="370" y="110" width="330" height="190" rx="6"/>
+  <text x="535" y="134" text-anchor="middle" font-size="13" font-weight="600">disk_sim.c</text>
+  <rect class="fig-box" x="390" y="146" width="290" height="32" rx="6"/>
+  <text x="535" y="167" text-anchor="middle" font-size="12">visible bytes: what reads return</text>
+  <line class="fig-line" x1="535" y1="178" x2="535" y2="207" marker-end="url(#18-sim-disk-arrow)"/>
+  <text class="fig-muted" x="545" y="197" font-size="12">disk_sync copies</text>
+  <rect class="fig-box" x="390" y="209" width="290" height="32" rx="6"/>
+  <text x="535" y="230" text-anchor="middle" font-size="12">durable bytes: what a crash keeps</text>
+  <text class="fig-muted" x="390" y="273" font-size="12">ops</text>
+  <circle class="fig-box" cx="430" cy="269" r="6"/>
+  <circle class="fig-box" cx="458" cy="269" r="6"/>
+  <circle class="fig-box" cx="486" cy="269" r="6"/>
+  <circle class="fig-box" cx="514" cy="269" r="6"/>
+  <circle class="fig-accent-fill" cx="542" cy="269" r="7"/>
+  <circle class="fig-box" cx="570" cy="269" r="6"/>
+  <text class="fig-accent-text" x="590" y="273" font-size="12">crash at op k</text>
+</svg>

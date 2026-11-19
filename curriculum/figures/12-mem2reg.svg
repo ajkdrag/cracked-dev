@@ -1,0 +1,69 @@
+<svg viewBox="0 0 720 690" role="img" aria-label="ipow before and after mem2reg. Before, x, y, r and i each live in a stack slot made by alloca, every read is a load and every write a store. After, all four slots are gone, x and y are used directly, and two phi nodes at the top of for.cond pick r and i from the entry edge or from the back edge out of for.inc.">
+  <defs>
+    <marker id="12-mem2reg-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="151" y="30" text-anchor="middle" font-size="13" font-weight="600">before: clang -O0</text>
+  <text x="497" y="30" text-anchor="middle" font-size="13" font-weight="600">after: opt -passes=mem2reg</text>
+  <rect class="fig-accent" x="40" y="60" width="222" height="172" rx="6"/>
+  <text class="fig-mono" x="50" y="79" font-size="12" font-weight="600">entry:</text>
+  <text class="fig-mono" x="64" y="97" font-size="11">%x.addr = alloca i32</text>
+  <text class="fig-mono" x="64" y="115" font-size="11">%y.addr = alloca i32</text>
+  <text class="fig-mono" x="64" y="133" font-size="11">%r = alloca i32</text>
+  <text class="fig-mono" x="64" y="151" font-size="11">%i = alloca i32</text>
+  <text class="fig-mono" x="64" y="169" font-size="11">store i32 %x, ptr %x.addr</text>
+  <text class="fig-mono" x="64" y="187" font-size="11">store i32 %y, ptr %y.addr</text>
+  <text class="fig-mono" x="64" y="205" font-size="11">store i32 1, ptr %r</text>
+  <text class="fig-mono" x="64" y="223" font-size="11">store i32 0, ptr %i</text>
+  <rect class="fig-box" x="40" y="258" width="222" height="82" rx="6"/>
+  <text class="fig-mono" x="50" y="277" font-size="12" font-weight="600">for.cond:</text>
+  <text class="fig-mono" x="64" y="295" font-size="11">%0 = load i32, ptr %i</text>
+  <text class="fig-mono" x="64" y="313" font-size="11">%1 = load i32, ptr %y.addr</text>
+  <text class="fig-mono" x="64" y="331" font-size="11">%cmp = icmp slt i32 %0, %1</text>
+  <rect class="fig-box" x="40" y="366" width="222" height="100" rx="6"/>
+  <text class="fig-mono" x="50" y="385" font-size="12" font-weight="600">for.body:</text>
+  <text class="fig-mono" x="64" y="403" font-size="11">%2 = load i32, ptr %x.addr</text>
+  <text class="fig-mono" x="64" y="421" font-size="11">%3 = load i32, ptr %r</text>
+  <text class="fig-mono" x="64" y="439" font-size="11">%mul = mul nsw i32 %3, %2</text>
+  <text class="fig-mono" x="64" y="457" font-size="11">store i32 %mul, ptr %r</text>
+  <rect class="fig-box" x="40" y="492" width="222" height="82" rx="6"/>
+  <text class="fig-mono" x="50" y="511" font-size="12" font-weight="600">for.inc:</text>
+  <text class="fig-mono" x="64" y="529" font-size="11">%4 = load i32, ptr %i</text>
+  <text class="fig-mono" x="64" y="547" font-size="11">%inc = add nsw i32 %4, 1</text>
+  <text class="fig-mono" x="64" y="565" font-size="11">store i32 %inc, ptr %i</text>
+  <rect class="fig-box" x="40" y="600" width="222" height="64" rx="6"/>
+  <text class="fig-mono" x="50" y="619" font-size="12" font-weight="600">for.end:</text>
+  <text class="fig-mono" x="64" y="637" font-size="11">%5 = load i32, ptr %r</text>
+  <text class="fig-mono" x="64" y="655" font-size="11">ret i32 %5</text>
+  <line class="fig-line" x1="100" y1="232" x2="100" y2="256" marker-end="url(#12-mem2reg-arrow)"/>
+  <line class="fig-line" x1="100" y1="340" x2="100" y2="364" marker-end="url(#12-mem2reg-arrow)"/>
+  <line class="fig-line" x1="100" y1="466" x2="100" y2="490" marker-end="url(#12-mem2reg-arrow)"/>
+  <path class="fig-line" d="M 40 533 L 28 533 L 28 272 L 38 272" fill="none" marker-end="url(#12-mem2reg-arrow)"/>
+  <path class="fig-line" d="M 262 299 L 276 299 L 276 614 L 264 614" fill="none" marker-end="url(#12-mem2reg-arrow)"/>
+  <text class="fig-muted" x="108" y="358" font-size="12">true</text>
+  <rect class="fig-box" x="318" y="60" width="358" height="172" rx="6"/>
+  <text class="fig-mono" x="328" y="79" font-size="12" font-weight="600">entry:</text>
+  <text class="fig-muted" x="342" y="97" font-size="12">all four slots and stores removed</text>
+  <text class="fig-muted" x="342" y="115" font-size="12">x and y are used directly as %x and %y</text>
+  <rect class="fig-accent" x="318" y="258" width="358" height="82" rx="6"/>
+  <text class="fig-mono" x="328" y="277" font-size="12" font-weight="600">for.cond:</text>
+  <text class="fig-mono" x="342" y="295" font-size="11"><tspan class="fig-accent-text">%r.0</tspan> = phi i32 [ 1, %entry ], [ %mul, %for.inc ]</text>
+  <text class="fig-mono" x="342" y="313" font-size="11"><tspan class="fig-accent-text">%i.0</tspan> = phi i32 [ 0, %entry ], [ %inc, %for.inc ]</text>
+  <text class="fig-mono" x="342" y="331" font-size="11">%cmp = icmp slt i32 %i.0, %y</text>
+  <rect class="fig-box" x="318" y="366" width="358" height="100" rx="6"/>
+  <text class="fig-mono" x="328" y="385" font-size="12" font-weight="600">for.body:</text>
+  <text class="fig-mono" x="342" y="403" font-size="11">%mul = mul nsw i32 %r.0, %x</text>
+  <rect class="fig-box" x="318" y="492" width="358" height="82" rx="6"/>
+  <text class="fig-mono" x="328" y="511" font-size="12" font-weight="600">for.inc:</text>
+  <text class="fig-mono" x="342" y="529" font-size="11">%inc = add nsw i32 %i.0, 1</text>
+  <rect class="fig-box" x="318" y="600" width="358" height="64" rx="6"/>
+  <text class="fig-mono" x="328" y="619" font-size="12" font-weight="600">for.end:</text>
+  <text class="fig-mono" x="342" y="637" font-size="11">ret i32 %r.0</text>
+  <line class="fig-line" x1="378" y1="232" x2="378" y2="256" marker-end="url(#12-mem2reg-arrow)"/>
+  <line class="fig-line" x1="378" y1="340" x2="378" y2="364" marker-end="url(#12-mem2reg-arrow)"/>
+  <line class="fig-line" x1="378" y1="466" x2="378" y2="490" marker-end="url(#12-mem2reg-arrow)"/>
+  <path class="fig-line" d="M 318 533 L 306 533 L 306 272 L 316 272" fill="none" marker-end="url(#12-mem2reg-arrow)"/>
+  <path class="fig-line" d="M 676 299 L 690 299 L 690 614 L 678 614" fill="none" marker-end="url(#12-mem2reg-arrow)"/>
+  <text class="fig-muted" x="386" y="358" font-size="12">true</text>
+</svg>

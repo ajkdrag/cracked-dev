@@ -1,0 +1,45 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="One physical page holds the ring: head, pad and 255 event slots. edu_work writes it through the kernel's direct map at e->ring, and edumon reads the same page through the read-only entry that remap_pfn_range put in its page table, checking head before and after each copy.">
+  <defs>
+    <marker id="16-ring-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="20" width="220" height="60" rx="6"/>
+  <text class="fig-mono" x="130" y="45" text-anchor="middle" font-size="13">edu_work()</text>
+  <text class="fig-muted" x="130" y="65" text-anchor="middle" font-size="12">writes the events</text>
+  <rect class="fig-box" x="480" y="20" width="220" height="60" rx="6"/>
+  <text class="fig-mono" x="590" y="45" text-anchor="middle" font-size="13">edumon</text>
+  <text class="fig-muted" x="590" y="65" text-anchor="middle" font-size="12">reads the events</text>
+
+  <rect class="fig-box" x="20" y="120" width="220" height="60" rx="6"/>
+  <text x="130" y="145" text-anchor="middle" font-size="13" font-weight="600">kernel page tables</text>
+  <text class="fig-muted" x="130" y="165" text-anchor="middle" font-size="12">all of RAM, read-write</text>
+  <rect class="fig-box" x="480" y="120" width="220" height="60" rx="6"/>
+  <text x="590" y="145" text-anchor="middle" font-size="13" font-weight="600">edumon's page table</text>
+  <text class="fig-muted" x="590" y="165" text-anchor="middle" font-size="12">one page, read-only</text>
+
+  <line class="fig-line" x1="130" y1="80" x2="130" y2="118" marker-end="url(#16-ring-arrow)"/>
+  <text class="fig-mono" x="140" y="104" font-size="12">e-&gt;ring = 0xffff8880...</text>
+  <line class="fig-line" x1="590" y1="80" x2="590" y2="118" marker-end="url(#16-ring-arrow)"/>
+  <text class="fig-mono" x="580" y="104" text-anchor="end" font-size="12">ring = 0x7f...</text>
+
+  <text class="fig-muted" x="360" y="232" text-anchor="middle" font-size="12">one physical page, 4096 bytes</text>
+  <rect class="fig-accent" x="160" y="244" width="60" height="44" rx="6"/>
+  <text class="fig-mono" x="190" y="271" text-anchor="middle" font-size="12">head</text>
+  <rect class="fig-box" x="224" y="244" width="44" height="44" rx="6"/>
+  <text class="fig-mono" x="246" y="271" text-anchor="middle" font-size="12">pad</text>
+  <rect class="fig-box" x="272" y="244" width="70" height="44" rx="6"/>
+  <text class="fig-mono" x="307" y="271" text-anchor="middle" font-size="12">ev[0]</text>
+  <rect class="fig-box" x="346" y="244" width="70" height="44" rx="6"/>
+  <text class="fig-mono" x="381" y="271" text-anchor="middle" font-size="12">ev[1]</text>
+  <rect class="fig-box" x="420" y="244" width="50" height="44" rx="6"/>
+  <text class="fig-mono" x="445" y="271" text-anchor="middle" font-size="12">...</text>
+  <rect class="fig-box" x="474" y="244" width="86" height="44" rx="6"/>
+  <text class="fig-mono" x="517" y="271" text-anchor="middle" font-size="12">ev[254]</text>
+
+  <path class="fig-accent-line" d="M130 180 V266 H158" fill="none" marker-end="url(#16-ring-arrow)"/>
+  <text class="fig-accent-text" x="140" y="214" font-size="12">direct map</text>
+  <path class="fig-accent-line" d="M590 180 V266 H562" fill="none" marker-end="url(#16-ring-arrow)"/>
+  <text class="fig-accent-text" x="580" y="214" text-anchor="end" font-size="12">remap_pfn_range</text>
+  <text class="fig-muted" x="360" y="312" text-anchor="middle" font-size="12">8-byte header, then 255 slots of 16 bytes</text>
+</svg>

@@ -1,0 +1,54 @@
+<svg viewBox="0 0 720 310" role="img" aria-label="switch(old, new) pushes the six callee-saved registers on task A&#x27;s stack and stores rsp in A&#x27;s table entry. It then loads B&#x27;s saved rsp, pops B&#x27;s six registers and returns into B, which continues inside its own call to yield_now.">
+  <defs>
+    <marker id="15-switch-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="105.0" y="28" text-anchor="middle" font-size="13" font-weight="600">stack of task A</text>
+  <rect class="fig-box" x="20" y="40" width="170" height="50" rx="0"/>
+  <text class="fig-muted" x="105.0" y="70" text-anchor="middle" font-size="12">earlier frames</text>
+  <rect class="fig-box" x="20" y="90" width="170" height="22" rx="0"/>
+  <text class="fig-mono" x="105.0" y="105" text-anchor="middle" font-size="12">ret into yield_now</text>
+  <rect class="fig-accent" x="20" y="112" width="170" height="22" rx="0"/>
+  <text class="fig-mono" x="105.0" y="127" text-anchor="middle" font-size="12">rbp</text>
+  <rect class="fig-accent" x="20" y="134" width="170" height="22" rx="0"/>
+  <text class="fig-mono" x="105.0" y="149" text-anchor="middle" font-size="12">rbx</text>
+  <rect class="fig-accent" x="20" y="156" width="170" height="22" rx="0"/>
+  <text class="fig-mono" x="105.0" y="171" text-anchor="middle" font-size="12">r12</text>
+  <rect class="fig-accent" x="20" y="178" width="170" height="22" rx="0"/>
+  <text class="fig-mono" x="105.0" y="193" text-anchor="middle" font-size="12">r13</text>
+  <rect class="fig-accent" x="20" y="200" width="170" height="22" rx="0"/>
+  <text class="fig-mono" x="105.0" y="215" text-anchor="middle" font-size="12">r14</text>
+  <rect class="fig-accent" x="20" y="222" width="170" height="22" rx="0"/>
+  <text class="fig-mono" x="105.0" y="237" text-anchor="middle" font-size="12">r15</text>
+  <text x="615.0" y="28" text-anchor="middle" font-size="13" font-weight="600">stack of task B</text>
+  <rect class="fig-box" x="530" y="40" width="170" height="50" rx="0"/>
+  <text class="fig-muted" x="615.0" y="70" text-anchor="middle" font-size="12">earlier frames</text>
+  <rect class="fig-box" x="530" y="90" width="170" height="22" rx="0"/>
+  <text class="fig-mono" x="615.0" y="105" text-anchor="middle" font-size="12">ret into yield_now</text>
+  <rect class="fig-accent" x="530" y="112" width="170" height="22" rx="0"/>
+  <text class="fig-mono" x="615.0" y="127" text-anchor="middle" font-size="12">rbp</text>
+  <rect class="fig-accent" x="530" y="134" width="170" height="22" rx="0"/>
+  <text class="fig-mono" x="615.0" y="149" text-anchor="middle" font-size="12">rbx</text>
+  <rect class="fig-accent" x="530" y="156" width="170" height="22" rx="0"/>
+  <text class="fig-mono" x="615.0" y="171" text-anchor="middle" font-size="12">r12</text>
+  <rect class="fig-accent" x="530" y="178" width="170" height="22" rx="0"/>
+  <text class="fig-mono" x="615.0" y="193" text-anchor="middle" font-size="12">r13</text>
+  <rect class="fig-accent" x="530" y="200" width="170" height="22" rx="0"/>
+  <text class="fig-mono" x="615.0" y="215" text-anchor="middle" font-size="12">r14</text>
+  <rect class="fig-accent" x="530" y="222" width="170" height="22" rx="0"/>
+  <text class="fig-mono" x="615.0" y="237" text-anchor="middle" font-size="12">r15</text>
+  <text class="fig-muted" x="105" y="262" text-anchor="middle" font-size="12">pushed by switch</text>
+  <text class="fig-muted" x="615" y="262" text-anchor="middle" font-size="12">popped by switch</text>
+  <rect class="fig-box" x="280" y="150" width="160" height="80" rx="6"/>
+  <text class="fig-muted" x="360" y="140" text-anchor="middle" font-size="12">task table</text>
+  <rect class="fig-box" x="292" y="160" width="136" height="26" rx="3"/>
+  <text class="fig-mono" x="360" y="178" text-anchor="middle" font-size="12">tasks[A].rsp</text>
+  <rect class="fig-box" x="292" y="196" width="136" height="26" rx="3"/>
+  <text class="fig-mono" x="360" y="214" text-anchor="middle" font-size="12">tasks[B].rsp</text>
+  <line class="fig-line" x1="192" y1="233" x2="290" y2="173" marker-end="url(#15-switch-arrow)"/>
+  <text class="fig-mono" x="244" y="252" text-anchor="middle" font-size="12">mov [rdi], rsp</text>
+  <line class="fig-line" x1="430" y1="209" x2="528" y2="233" marker-end="url(#15-switch-arrow)"/>
+  <text class="fig-mono" x="480" y="252" text-anchor="middle" font-size="12">mov rsp, rsi</text>
+  <text class="fig-muted" x="360" y="290" text-anchor="middle" font-size="12">then pop six registers and ret</text>
+</svg>

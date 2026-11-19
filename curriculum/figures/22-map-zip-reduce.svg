@@ -1,0 +1,77 @@
+<svg viewBox="0 0 720 280" role="img" aria-label="The three primitives. map applies a one-argument function to every element. zip applies a two-argument function to pairs of elements from two tensors that broadcast. reduce folds one dimension down to size 1.">
+  <defs>
+    <marker id="22-map-zip-reduce-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-mono" x="120" y="30" text-anchor="middle" font-size="14" font-weight="600">map(fn)</text>
+  <rect class="fig-box" x="81" y="50" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="94.0" y="67" text-anchor="middle" font-size="12">a</text>
+  <rect class="fig-box" x="107" y="50" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="120.0" y="67" text-anchor="middle" font-size="12">b</text>
+  <rect class="fig-box" x="133" y="50" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="146.0" y="67" text-anchor="middle" font-size="12">c</text>
+  <rect class="fig-box" x="81" y="76" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="94.0" y="93" text-anchor="middle" font-size="12">d</text>
+  <rect class="fig-box" x="107" y="76" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="120.0" y="93" text-anchor="middle" font-size="12">e</text>
+  <rect class="fig-box" x="133" y="76" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="146.0" y="93" text-anchor="middle" font-size="12">f</text>
+  <line class="fig-line" x1="120" y1="108" x2="120" y2="150" marker-end="url(#22-map-zip-reduce-arrow)"/>
+  <text class="fig-mono" x="130" y="134" font-size="12">fn(a)</text>
+  <rect class="fig-accent" x="81" y="154" width="26" height="26" rx="0"/>
+  <rect class="fig-accent" x="107" y="154" width="26" height="26" rx="0"/>
+  <rect class="fig-accent" x="133" y="154" width="26" height="26" rx="0"/>
+  <rect class="fig-accent" x="81" y="180" width="26" height="26" rx="0"/>
+  <rect class="fig-accent" x="107" y="180" width="26" height="26" rx="0"/>
+  <rect class="fig-accent" x="133" y="180" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="120" y="230" text-anchor="middle" font-size="12">shape stays (2, 3)</text>
+  <text class="fig-mono" x="360" y="30" text-anchor="middle" font-size="14" font-weight="600">zip(fn)</text>
+  <rect class="fig-box" x="270" y="50" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="283.0" y="67" text-anchor="middle" font-size="12">a</text>
+  <rect class="fig-box" x="296" y="50" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="309.0" y="67" text-anchor="middle" font-size="12">b</text>
+  <rect class="fig-box" x="322" y="50" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="335.0" y="67" text-anchor="middle" font-size="12">c</text>
+  <rect class="fig-box" x="270" y="76" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="283.0" y="93" text-anchor="middle" font-size="12">d</text>
+  <rect class="fig-box" x="296" y="76" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="309.0" y="93" text-anchor="middle" font-size="12">e</text>
+  <rect class="fig-box" x="322" y="76" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="335.0" y="93" text-anchor="middle" font-size="12">f</text>
+  <text class="fig-muted" x="368" y="82" text-anchor="middle" font-size="12">with</text>
+  <rect class="fig-box" x="400" y="63" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="413.0" y="80" text-anchor="middle" font-size="12">u</text>
+  <rect class="fig-box" x="426" y="63" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="439.0" y="80" text-anchor="middle" font-size="12">v</text>
+  <rect class="fig-box" x="452" y="63" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="465.0" y="80" text-anchor="middle" font-size="12">w</text>
+  <line class="fig-line" x1="360" y1="108" x2="360" y2="150" marker-end="url(#22-map-zip-reduce-arrow)"/>
+  <text class="fig-mono" x="370" y="134" font-size="12">fn(a, u)</text>
+  <rect class="fig-accent" x="321" y="154" width="26" height="26" rx="0"/>
+  <rect class="fig-accent" x="347" y="154" width="26" height="26" rx="0"/>
+  <rect class="fig-accent" x="373" y="154" width="26" height="26" rx="0"/>
+  <rect class="fig-accent" x="321" y="180" width="26" height="26" rx="0"/>
+  <rect class="fig-accent" x="347" y="180" width="26" height="26" rx="0"/>
+  <rect class="fig-accent" x="373" y="180" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="360" y="230" text-anchor="middle" font-size="12">(2, 3) with (3,) gives (2, 3)</text>
+  <text class="fig-mono" x="600" y="30" text-anchor="middle" font-size="14" font-weight="600">reduce(fn, dim=1)</text>
+  <rect class="fig-box" x="561" y="50" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="574.0" y="67" text-anchor="middle" font-size="12">a</text>
+  <rect class="fig-box" x="587" y="50" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="600.0" y="67" text-anchor="middle" font-size="12">b</text>
+  <rect class="fig-box" x="613" y="50" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="626.0" y="67" text-anchor="middle" font-size="12">c</text>
+  <rect class="fig-box" x="561" y="76" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="574.0" y="93" text-anchor="middle" font-size="12">d</text>
+  <rect class="fig-box" x="587" y="76" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="600.0" y="93" text-anchor="middle" font-size="12">e</text>
+  <rect class="fig-box" x="613" y="76" width="26" height="26" rx="0"/>
+  <text class="fig-mono" x="626.0" y="93" text-anchor="middle" font-size="12">f</text>
+  <line class="fig-line" x1="600" y1="108" x2="600" y2="150" marker-end="url(#22-map-zip-reduce-arrow)"/>
+  <text class="fig-muted" x="610" y="134" font-size="12">fn over a row</text>
+  <rect class="fig-accent" x="587" y="154" width="26" height="26" rx="0"/>
+  <rect class="fig-accent" x="587" y="180" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="600" y="230" text-anchor="middle" font-size="12">(2, 3) gives (2, 1)</text>
+  <text class="fig-muted" x="360" y="266" text-anchor="middle" font-size="12">every tensor operation in MiniTorch is one of these three, or matrix multiply</text>
+</svg>

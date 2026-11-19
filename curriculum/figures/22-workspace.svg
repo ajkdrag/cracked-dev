@@ -1,0 +1,36 @@
+<svg viewBox="0 0 720 270" role="img" aria-label="The workspace: five template repositories side by side in ~/mt, one virtual environment and one constraints file for all of them. From module 1 on, sync_previous_module.py copies your finished files from the module before.">
+  <defs>
+    <marker id="22-workspace-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="20" width="680" height="230" rx="6"/>
+  <text class="fig-mono" x="36" y="44" font-size="14" font-weight="600">~/mt</text>
+  <rect class="fig-accent" x="200" y="36" width="220" height="56" rx="6"/>
+  <text x="310.0" y="59.0" text-anchor="middle" font-size="13" font-weight="600">.venv</text>
+  <text class="fig-muted" x="310.0" y="78.0" text-anchor="middle" font-size="12">Python 3.12, used by all five</text>
+  <rect class="fig-box" x="450" y="36" width="220" height="56" rx="6"/>
+  <text x="560.0" y="59.0" text-anchor="middle" font-size="13" font-weight="600">constraints.txt</text>
+  <text class="fig-mono" x="560.0" y="78.0" text-anchor="middle" font-size="12" xml:space="preserve">numpy==2.0.0  numba==0.60.0</text>
+  <rect class="fig-box" x="36" y="150" width="112" height="56" rx="6"/>
+  <text x="92.0" y="173.0" text-anchor="middle" font-size="13" font-weight="600">Module-0</text>
+  <text class="fig-muted" x="92.0" y="192.0" text-anchor="middle" font-size="12">your repository</text>
+  <rect class="fig-box" x="172" y="150" width="112" height="56" rx="6"/>
+  <text x="228.0" y="173.0" text-anchor="middle" font-size="13" font-weight="600">Module-1</text>
+  <text class="fig-muted" x="228.0" y="192.0" text-anchor="middle" font-size="12">your repository</text>
+  <line class="fig-line" x1="148" y1="178" x2="170" y2="178" marker-end="url(#22-workspace-arrow)"/>
+  <rect class="fig-box" x="308" y="150" width="112" height="56" rx="6"/>
+  <text x="364.0" y="173.0" text-anchor="middle" font-size="13" font-weight="600">Module-2</text>
+  <text class="fig-muted" x="364.0" y="192.0" text-anchor="middle" font-size="12">your repository</text>
+  <line class="fig-line" x1="284" y1="178" x2="306" y2="178" marker-end="url(#22-workspace-arrow)"/>
+  <rect class="fig-box" x="444" y="150" width="112" height="56" rx="6"/>
+  <text x="500.0" y="173.0" text-anchor="middle" font-size="13" font-weight="600">Module-3</text>
+  <text class="fig-muted" x="500.0" y="192.0" text-anchor="middle" font-size="12">your repository</text>
+  <line class="fig-line" x1="420" y1="178" x2="442" y2="178" marker-end="url(#22-workspace-arrow)"/>
+  <rect class="fig-box" x="580" y="150" width="112" height="56" rx="6"/>
+  <text x="636.0" y="173.0" text-anchor="middle" font-size="13" font-weight="600">Module-4</text>
+  <text class="fig-muted" x="636.0" y="192.0" text-anchor="middle" font-size="12">your repository</text>
+  <line class="fig-line" x1="556" y1="178" x2="578" y2="178" marker-end="url(#22-workspace-arrow)"/>
+  <text class="fig-muted" x="360" y="136" text-anchor="middle" font-size="12">sync_previous_module.py copies files_to_sync to the next module</text>
+  <text class="fig-mono" x="360" y="234" text-anchor="middle" font-size="12">in each module: pip install -c ~/mt/constraints.txt -e .</text>
+</svg>

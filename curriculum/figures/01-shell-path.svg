@@ -1,0 +1,33 @@
+<svg viewBox="0 0 720 310" role="img" aria-label="For a bare name the shell searches the PATH directories in order, and for ./a.out it goes straight to the file">
+  <defs>
+    <marker id="01-shell-path-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="74" width="180" height="60" rx="6"/>
+  <text class="fig-mono" x="110.0" y="100.0" text-anchor="middle" font-size="14">clang hello.c</text>
+  <text class="fig-muted" x="110.0" y="119.0" text-anchor="middle" font-size="12">you type</text>
+  <text class="fig-muted" x="280" y="32" font-size="12">PATH, searched in order</text>
+  <rect class="fig-box" x="280" y="44" width="200" height="28" rx="6"/>
+  <text class="fig-mono" x="380" y="63" text-anchor="middle" font-size="13">/usr/local/sbin</text>
+  <text class="fig-muted" x="496" y="63" font-size="12">no clang</text>
+  <rect class="fig-box" x="280" y="80" width="200" height="28" rx="6"/>
+  <text class="fig-mono" x="380" y="99" text-anchor="middle" font-size="13">/usr/local/bin</text>
+  <text class="fig-muted" x="496" y="99" font-size="12">no clang</text>
+  <rect class="fig-box" x="280" y="116" width="200" height="28" rx="6"/>
+  <text class="fig-mono" x="380" y="135" text-anchor="middle" font-size="13">/usr/sbin</text>
+  <text class="fig-muted" x="496" y="135" font-size="12">no clang</text>
+  <rect class="fig-accent" x="280" y="152" width="200" height="28" rx="6"/>
+  <text class="fig-mono" x="380" y="171" text-anchor="middle" font-size="13">/usr/bin</text>
+  <text class="fig-accent-text" x="496" y="171" font-size="13">clang is here: run it</text>
+  <text class="fig-muted" x="380" y="200" text-anchor="middle" font-size="12">/sbin, /bin, ...</text>
+  <line class="fig-line" x1="200" y1="104" x2="278" y2="104" marker-end="url(#01-shell-path-arrow)"/>
+  <text class="fig-muted" x="239" y="94" text-anchor="middle" font-size="12">searches</text>
+  <rect class="fig-box" x="20" y="230" width="180" height="60" rx="6"/>
+  <text class="fig-mono" x="110.0" y="256.0" text-anchor="middle" font-size="14">./a.out</text>
+  <text class="fig-muted" x="110.0" y="275.0" text-anchor="middle" font-size="12">you type</text>
+  <rect class="fig-box" x="280" y="238" width="240" height="44" rx="6"/>
+  <text class="fig-mono" x="400" y="265" text-anchor="middle" font-size="13">~/code/hello/a.out</text>
+  <line class="fig-line" x1="200" y1="260" x2="278" y2="260" marker-end="url(#01-shell-path-arrow)"/>
+  <text class="fig-muted" x="239" y="250" text-anchor="middle" font-size="12">no search</text>
+</svg>

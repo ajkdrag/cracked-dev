@@ -1,0 +1,38 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="x86 has two address spaces. mov reaches memory, where RAM and the VGA buffer live. in and out reach the 16-bit I/O port space, where the keyboard, the serial port and QEMU&#x27;s exit device live. QEMU connects each device to something on your machine.">
+  <defs>
+    <marker id="15-io-ports-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="140" width="110" height="60" rx="6"/>
+  <text x="75.0" y="175.0" text-anchor="middle" font-size="13" font-weight="600">CPU</text>
+  <rect class="fig-box" x="200" y="30" width="260" height="120" rx="6"/>
+  <text x="330" y="52" text-anchor="middle" font-size="13" font-weight="600">memory addresses</text>
+  <rect class="fig-box" x="216" y="64" width="228" height="32" rx="6"/>
+  <text x="330.0" y="85.0" text-anchor="middle" font-size="12" font-weight="600">RAM</text>
+  <rect class="fig-accent" x="216" y="104" width="228" height="32" rx="6"/>
+  <text class="fig-mono" x="330.0" y="125.0" text-anchor="middle" font-size="12">0xb8000  VGA text buffer</text>
+  <rect class="fig-box" x="200" y="180" width="260" height="140" rx="6"/>
+  <text x="330" y="202" text-anchor="middle" font-size="13" font-weight="600">I/O ports</text>
+  <rect class="fig-box" x="216" y="214" width="228" height="30" rx="6"/>
+  <text class="fig-mono" x="330.0" y="234.0" text-anchor="middle" font-size="12">0x60   keyboard</text>
+  <rect class="fig-accent" x="216" y="250" width="228" height="30" rx="6"/>
+  <text class="fig-mono" x="330.0" y="270.0" text-anchor="middle" font-size="12">0x3F8  serial port</text>
+  <rect class="fig-box" x="216" y="286" width="228" height="30" rx="6"/>
+  <text class="fig-mono" x="330.0" y="306.0" text-anchor="middle" font-size="12">0xF4   exit device</text>
+  <line class="fig-line" x1="130" y1="160" x2="198" y2="100" marker-end="url(#15-io-ports-arrow)"/>
+  <text class="fig-mono" x="150" y="116" text-anchor="middle" font-size="12">mov</text>
+  <line class="fig-line" x1="130" y1="180" x2="198" y2="240" marker-end="url(#15-io-ports-arrow)"/>
+  <text class="fig-mono" x="146" y="230" text-anchor="middle" font-size="12">in, out</text>
+  <rect class="fig-box" x="540" y="104" width="160" height="32" rx="6"/>
+  <text x="620.0" y="125.0" text-anchor="middle" font-size="12" font-weight="600">QEMU window</text>
+  <rect class="fig-box" x="540" y="250" width="160" height="30" rx="6"/>
+  <text x="620.0" y="270.0" text-anchor="middle" font-size="12" font-weight="600">your terminal</text>
+  <rect class="fig-box" x="540" y="286" width="160" height="30" rx="6"/>
+  <text x="620.0" y="306.0" text-anchor="middle" font-size="12" font-weight="600">QEMU exit code</text>
+  <line class="fig-line" x1="444" y1="120" x2="538" y2="120" marker-end="url(#15-io-ports-arrow)"/>
+  <text class="fig-muted" x="491" y="112" text-anchor="middle" font-size="12">draws</text>
+  <line class="fig-line" x1="444" y1="265" x2="538" y2="265" marker-end="url(#15-io-ports-arrow)"/>
+  <text class="fig-muted" x="491" y="257" text-anchor="middle" font-size="12">stdio</text>
+  <line class="fig-line" x1="444" y1="301" x2="538" y2="301" marker-end="url(#15-io-ports-arrow)"/>
+</svg>

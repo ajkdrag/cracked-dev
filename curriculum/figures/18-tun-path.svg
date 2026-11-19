@@ -1,0 +1,35 @@
+<svg viewBox="0 0 720 170" role="img" aria-label="nc asks the kernel to connect to 10.20.0.2. The kernel&#x27;s TCP sends a SYN out of tun0, your program reads the IP packet from the TUN descriptor and parses it, then writes a reply packet that the kernel receives on tun0 and hands to nc">
+  <defs>
+    <marker id="18-tun-path-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="40" width="120" height="60" rx="6"/>
+  <text x="80.0" y="67.0" text-anchor="middle" font-size="13" font-weight="600">nc</text>
+  <text class="fig-muted" x="80.0" y="84.0" text-anchor="middle" font-size="12">ordinary program</text>
+  <rect class="fig-box" x="207" y="40" width="120" height="60" rx="6"/>
+  <text x="267.0" y="67.0" text-anchor="middle" font-size="13" font-weight="600">kernel</text>
+  <text class="fig-muted" x="267.0" y="84.0" text-anchor="middle" font-size="12">TCP and IP</text>
+  <rect class="fig-box" x="393" y="40" width="120" height="60" rx="6"/>
+  <text x="453.0" y="67.0" text-anchor="middle" font-size="13" font-weight="600">tun0</text>
+  <text class="fig-muted" x="453.0" y="84.0" text-anchor="middle" font-size="12">10.20.0.1</text>
+  <rect class="fig-accent" x="580" y="40" width="120" height="60" rx="6"/>
+  <text x="640.0" y="67.0" text-anchor="middle" font-size="13" font-weight="600">your stack</text>
+  <text class="fig-muted" x="640.0" y="84.0" text-anchor="middle" font-size="12">plays 10.20.0.2</text>
+  <line class="fig-line" x1="142" y1="58" x2="205" y2="58" marker-end="url(#18-tun-path-arrow)"/>
+  <text class="fig-mono" x="173.5" y="50" text-anchor="middle" font-size="12">connect</text>
+  <line class="fig-line" x1="205" y1="84" x2="142" y2="84" marker-end="url(#18-tun-path-arrow)"/>
+  <text class="fig-mono" x="173.5" y="100" text-anchor="middle" font-size="12">answer</text>
+  <line class="fig-line" x1="329" y1="58" x2="391" y2="58" marker-end="url(#18-tun-path-arrow)"/>
+  <text class="fig-mono" x="360.0" y="50" text-anchor="middle" font-size="12">SYN</text>
+  <line class="fig-line" x1="391" y1="84" x2="329" y2="84" marker-end="url(#18-tun-path-arrow)"/>
+  <text class="fig-mono" x="360.0" y="100" text-anchor="middle" font-size="12">reply</text>
+  <line class="fig-line" x1="515" y1="58" x2="578" y2="58" marker-end="url(#18-tun-path-arrow)"/>
+  <text class="fig-mono" x="546.5" y="50" text-anchor="middle" font-size="12">read</text>
+  <line class="fig-line" x1="578" y1="84" x2="515" y2="84" marker-end="url(#18-tun-path-arrow)"/>
+  <text class="fig-mono" x="546.5" y="100" text-anchor="middle" font-size="12">write</text>
+  <text class="fig-muted" x="267.0" y="132" text-anchor="middle" font-size="12">routes 10.20.0.0/24</text>
+  <text class="fig-muted" x="267.0" y="148" text-anchor="middle" font-size="12">to tun0</text>
+  <text class="fig-muted" x="640.0" y="132" text-anchor="middle" font-size="12">whole IP packets</text>
+  <text class="fig-muted" x="640.0" y="148" text-anchor="middle" font-size="12">on a descriptor</text>
+</svg>

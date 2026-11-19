@@ -1,0 +1,39 @@
+<svg viewBox="0 0 720 290" role="img" aria-label="The host is the CPU with its RAM and the device is the GPU with its own memory. cudaMemcpy copies an array across PCIe into device memory, the kernel reads and writes it there, and a second cudaMemcpy copies the result back.">
+  <defs>
+    <marker id="21-host-device-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="20" width="220" height="250" rx="6" stroke-dasharray="5 4"/>
+  <text class="fig-muted" x="40" y="44" font-size="13">host</text>
+  <rect class="fig-box" x="480" y="20" width="220" height="250" rx="6" stroke-dasharray="5 4"/>
+  <text class="fig-muted" x="500" y="44" font-size="13">device</text>
+  <rect class="fig-box" x="40" y="60" width="180" height="50" rx="6"/>
+  <text x="130.0" y="82.0" text-anchor="middle" font-size="14" font-weight="600">CPU</text>
+  <text class="fig-muted" x="130.0" y="99.0" text-anchor="middle" font-size="12">runs main()</text>
+  <rect class="fig-box" x="40" y="190" width="180" height="56" rx="6"/>
+  <text x="130.0" y="215.0" text-anchor="middle" font-size="14" font-weight="600">RAM</text>
+  <text class="fig-muted" x="130.0" y="232.0" text-anchor="middle" font-size="12">a, c from malloc</text>
+  <rect class="fig-accent" x="500" y="60" width="180" height="50" rx="6"/>
+  <text x="590.0" y="82.0" text-anchor="middle" font-size="14" font-weight="600">GPU</text>
+  <text class="fig-muted" x="590.0" y="99.0" text-anchor="middle" font-size="12">runs the kernel</text>
+  <rect class="fig-box" x="500" y="190" width="180" height="56" rx="6"/>
+  <text x="590.0" y="215.0" text-anchor="middle" font-size="14" font-weight="600">device memory</text>
+  <text class="fig-muted" x="590.0" y="232.0" text-anchor="middle" font-size="12">da, dc from cudaMalloc</text>
+  <line class="fig-line" x1="125" y1="110" x2="125" y2="189" marker-end="url(#21-host-device-arrow)"/>
+  <line class="fig-line" x1="110" y1="189" x2="110" y2="111" marker-end="url(#21-host-device-arrow)"/>
+  <line class="fig-line" x1="585" y1="110" x2="585" y2="189" marker-end="url(#21-host-device-arrow)"/>
+  <line class="fig-line" x1="570" y1="189" x2="570" y2="111" marker-end="url(#21-host-device-arrow)"/>
+  <text class="fig-muted" x="137" y="147" font-size="12">reads,</text>
+  <text class="fig-muted" x="137" y="163" font-size="12">writes</text>
+  <text class="fig-muted" x="597" y="147" font-size="12">reads,</text>
+  <text class="fig-muted" x="597" y="163" font-size="12">writes</text>
+  <line class="fig-accent-line" x1="220" y1="205" x2="499" y2="205" marker-end="url(#21-host-device-arrow)" stroke-width="1.5"/>
+  <text class="fig-mono" x="360" y="197" text-anchor="middle" font-size="12">cudaMemcpy HostToDevice</text>
+  <line class="fig-accent-line" x1="500" y1="232" x2="221" y2="232" marker-end="url(#21-host-device-arrow)" stroke-width="1.5"/>
+  <text class="fig-mono" x="360" y="252" text-anchor="middle" font-size="12">cudaMemcpy DeviceToHost</text>
+  <text class="fig-muted" x="360" y="222" text-anchor="middle" font-size="12">over PCIe</text>
+  <text class="fig-muted" x="360" y="82" text-anchor="middle" font-size="12">cudaMalloc returns a</text>
+  <text class="fig-muted" x="360" y="98" text-anchor="middle" font-size="12">device address: the CPU</text>
+  <text class="fig-muted" x="360" y="114" text-anchor="middle" font-size="12">must not dereference it</text>
+</svg>

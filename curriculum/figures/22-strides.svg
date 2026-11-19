@@ -1,0 +1,58 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="A 2 by 3 tensor and its transpose share one storage of six numbers. Only the shape and the strides differ, and both index formulas land on position 5 for the element f.">
+  <defs>
+    <marker id="22-strides-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="141" y="30" text-anchor="middle" font-size="13" font-weight="600">t: shape (2, 3)</text>
+  <text class="fig-mono" x="141" y="50" text-anchor="middle" font-size="12">strides (3, 1)</text>
+  <rect class="fig-box" x="60" y="70" width="54" height="40" rx="0"/>
+  <text class="fig-mono" x="87.0" y="95" text-anchor="middle" font-size="14">a</text>
+  <rect class="fig-box" x="114" y="70" width="54" height="40" rx="0"/>
+  <text class="fig-mono" x="141.0" y="95" text-anchor="middle" font-size="14">b</text>
+  <rect class="fig-box" x="168" y="70" width="54" height="40" rx="0"/>
+  <text class="fig-mono" x="195.0" y="95" text-anchor="middle" font-size="14">c</text>
+  <rect class="fig-box" x="60" y="110" width="54" height="40" rx="0"/>
+  <text class="fig-mono" x="87.0" y="135" text-anchor="middle" font-size="14">d</text>
+  <rect class="fig-box" x="114" y="110" width="54" height="40" rx="0"/>
+  <text class="fig-mono" x="141.0" y="135" text-anchor="middle" font-size="14">e</text>
+  <rect class="fig-accent" x="168" y="110" width="54" height="40" rx="0"/>
+  <text class="fig-mono" x="195.0" y="135" text-anchor="middle" font-size="14">f</text>
+  <text x="574" y="18" text-anchor="middle" font-size="13" font-weight="600">t.permute(1, 0): shape (3, 2)</text>
+  <text class="fig-mono" x="574" y="36" text-anchor="middle" font-size="12">strides (1, 3)</text>
+  <rect class="fig-box" x="520" y="50" width="54" height="40" rx="0"/>
+  <text class="fig-mono" x="547.0" y="75" text-anchor="middle" font-size="14">a</text>
+  <rect class="fig-box" x="574" y="50" width="54" height="40" rx="0"/>
+  <text class="fig-mono" x="601.0" y="75" text-anchor="middle" font-size="14">d</text>
+  <rect class="fig-box" x="520" y="90" width="54" height="40" rx="0"/>
+  <text class="fig-mono" x="547.0" y="115" text-anchor="middle" font-size="14">b</text>
+  <rect class="fig-box" x="574" y="90" width="54" height="40" rx="0"/>
+  <text class="fig-mono" x="601.0" y="115" text-anchor="middle" font-size="14">e</text>
+  <rect class="fig-box" x="520" y="130" width="54" height="40" rx="0"/>
+  <text class="fig-mono" x="547.0" y="155" text-anchor="middle" font-size="14">c</text>
+  <rect class="fig-accent" x="574" y="130" width="54" height="40" rx="0"/>
+  <text class="fig-mono" x="601.0" y="155" text-anchor="middle" font-size="14">f</text>
+  <text x="136" y="261" text-anchor="end" font-size="13" font-weight="600">storage</text>
+  <rect class="fig-box" x="150" y="236" width="70" height="40" rx="0"/>
+  <text class="fig-mono" x="185.0" y="261" text-anchor="middle" font-size="14">a</text>
+  <text class="fig-muted" x="185.0" y="294" text-anchor="middle" font-size="12">0</text>
+  <rect class="fig-box" x="220" y="236" width="70" height="40" rx="0"/>
+  <text class="fig-mono" x="255.0" y="261" text-anchor="middle" font-size="14">b</text>
+  <text class="fig-muted" x="255.0" y="294" text-anchor="middle" font-size="12">1</text>
+  <rect class="fig-box" x="290" y="236" width="70" height="40" rx="0"/>
+  <text class="fig-mono" x="325.0" y="261" text-anchor="middle" font-size="14">c</text>
+  <text class="fig-muted" x="325.0" y="294" text-anchor="middle" font-size="12">2</text>
+  <rect class="fig-box" x="360" y="236" width="70" height="40" rx="0"/>
+  <text class="fig-mono" x="395.0" y="261" text-anchor="middle" font-size="14">d</text>
+  <text class="fig-muted" x="395.0" y="294" text-anchor="middle" font-size="12">3</text>
+  <rect class="fig-box" x="430" y="236" width="70" height="40" rx="0"/>
+  <text class="fig-mono" x="465.0" y="261" text-anchor="middle" font-size="14">e</text>
+  <text class="fig-muted" x="465.0" y="294" text-anchor="middle" font-size="12">4</text>
+  <rect class="fig-accent" x="500" y="236" width="70" height="40" rx="0"/>
+  <text class="fig-mono" x="535.0" y="261" text-anchor="middle" font-size="14">f</text>
+  <text class="fig-muted" x="535.0" y="294" text-anchor="middle" font-size="12">5</text>
+  <line class="fig-accent-line" x1="195.0" y1="150" x2="515.0" y2="234" marker-end="url(#22-strides-arrow)"/>
+  <text class="fig-mono" x="60" y="176" font-size="12">t[1, 2] = 1*3 + 2*1 = 5</text>
+  <line class="fig-accent-line" x1="601.0" y1="170" x2="541.0" y2="234" marker-end="url(#22-strides-arrow)"/>
+  <text class="fig-mono" x="560" y="196" text-anchor="end" font-size="12">[2, 1] = 2*1 + 1*3 = 5</text>
+</svg>

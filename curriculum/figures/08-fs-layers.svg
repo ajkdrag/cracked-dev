@@ -1,0 +1,28 @@
+<svg viewBox="0 0 720 310" role="img" aria-label="The xv6 file system layers from top to bottom: file descriptor, pathname, directory, inode, logging, buffer cache and disk, each with the job it does">
+  <defs>
+    <marker id="08-fs-layers-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="20" width="680" height="32" rx="6"/>
+  <text x="40" y="41" font-size="13" font-weight="600">file descriptor</text>
+  <text class="fig-muted" x="200" y="41" font-size="12">read(fd, ...), the per-process table</text>
+  <rect class="fig-box" x="20" y="60" width="680" height="32" rx="6"/>
+  <text x="40" y="81" font-size="13" font-weight="600">pathname</text>
+  <text class="fig-muted" x="200" y="81" font-size="12">resolves /a/b/c one directory at a time</text>
+  <rect class="fig-box" x="20" y="100" width="680" height="32" rx="6"/>
+  <text x="40" y="121" font-size="13" font-weight="600">directory</text>
+  <text class="fig-muted" x="200" y="121" font-size="12">a file of (name, inode number) entries</text>
+  <rect class="fig-accent" x="20" y="140" width="680" height="32" rx="6"/>
+  <text x="40" y="161" font-size="13" font-weight="600">inode</text>
+  <text class="fig-muted" x="200" y="161" font-size="12">type, size and the list of a file's blocks</text>
+  <rect class="fig-box" x="20" y="180" width="680" height="32" rx="6"/>
+  <text x="40" y="201" font-size="13" font-weight="600">logging</text>
+  <text class="fig-muted" x="200" y="201" font-size="12">a system call's block writes, all or nothing</text>
+  <rect class="fig-box" x="20" y="220" width="680" height="32" rx="6"/>
+  <text x="40" y="241" font-size="13" font-weight="600">buffer cache</text>
+  <text class="fig-muted" x="200" y="241" font-size="12">in-memory copies of disk blocks</text>
+  <rect class="fig-box" x="20" y="260" width="680" height="32" rx="6"/>
+  <text x="40" y="281" font-size="13" font-weight="600">disk</text>
+  <text class="fig-muted" x="200" y="281" font-size="12">the emulated disk, in 1024-byte blocks</text>
+</svg>

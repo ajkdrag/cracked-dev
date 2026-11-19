@@ -1,0 +1,38 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="The C function sum3sq next to its IR. Each value, such as %mul, is defined once on the left of an equals sign. Later instructions use it by name, as %add uses %mul and %mul1.">
+  <defs>
+    <marker id="12-ssa-values-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="125" y="30" text-anchor="middle" font-size="13" font-weight="600">C</text>
+  <text x="500" y="30" text-anchor="middle" font-size="13" font-weight="600">LLVM IR after mem2reg</text>
+
+  <rect class="fig-box" x="20" y="44" width="210" height="216" rx="6"/>
+  <text class="fig-mono" x="32" y="70" font-size="12">int sum3sq(int a,</text>
+  <text class="fig-mono" x="46" y="92" font-size="12">int b, int c) {</text>
+  <text class="fig-mono" x="46" y="114" font-size="12">return a * a</text>
+  <text class="fig-mono" x="96" y="136" font-size="12">+ b * b</text>
+  <text class="fig-mono" x="96" y="180" font-size="12">+ c * c;</text>
+  <text class="fig-mono" x="32" y="246" font-size="12">}</text>
+
+  <rect class="fig-box" x="280" y="44" width="420" height="216" rx="6"/>
+  <text class="fig-mono" x="292" y="70" font-size="12">define i32 @sum3sq(i32 %a, i32 %b, i32 %c) {</text>
+  <text class="fig-mono" x="292" y="92" font-size="12">entry:</text>
+  <text class="fig-mono" x="340" y="114" font-size="12"><tspan class="fig-accent-fill">%mul</tspan> = mul nsw i32 %a, %a</text>
+  <text class="fig-mono" x="340" y="136" font-size="12"><tspan class="fig-accent-fill">%mul1</tspan> = mul nsw i32 %b, %b</text>
+  <text class="fig-mono" x="340" y="158" font-size="12"><tspan class="fig-accent-fill">%add</tspan> = add nsw i32 %mul, %mul1</text>
+  <text class="fig-mono" x="340" y="180" font-size="12"><tspan class="fig-accent-fill">%mul2</tspan> = mul nsw i32 %c, %c</text>
+  <text class="fig-mono" x="340" y="202" font-size="12"><tspan class="fig-accent-fill">%add3</tspan> = add nsw i32 %add, %mul2</text>
+  <text class="fig-mono" x="340" y="224" font-size="12">ret i32 %add3</text>
+  <text class="fig-mono" x="292" y="246" font-size="12">}</text>
+
+  <path class="fig-accent-line" d="M 336 152 L 302 152 L 302 110 L 334 110" fill="none" marker-end="url(#12-ssa-values-arrow)"/>
+  <path class="fig-accent-line" d="M 336 156 L 314 156 L 314 132 L 334 132" fill="none" marker-end="url(#12-ssa-values-arrow)"/>
+
+  <line class="fig-line" x1="230" y1="114" x2="276" y2="114" stroke-dasharray="3 3"/>
+  <line class="fig-line" x1="230" y1="136" x2="276" y2="136" stroke-dasharray="3 3"/>
+  <line class="fig-line" x1="230" y1="180" x2="276" y2="180" stroke-dasharray="3 3"/>
+
+  <text class="fig-accent-text" x="340" y="284" font-size="12">each name is defined once</text>
+  <text class="fig-muted" x="125" y="284" text-anchor="middle" font-size="12">dashed: same work</text>
+</svg>

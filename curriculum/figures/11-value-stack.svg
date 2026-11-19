@@ -1,0 +1,49 @@
+<svg viewBox="0 0 720 230" role="img" aria-label="The value stack after each instruction of -((1.2 + 3.4) / 5.6). Each operation pops its operands from the top and pushes its result, and OP_RETURN pops the final value and prints it.">
+  <defs>
+    <marker id="11-value-stack-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-mono" x="66.0" y="44" text-anchor="middle" font-size="12" font-weight="600">CONSTANT</text>
+  <text class="fig-mono fig-muted" x="66.0" y="62" text-anchor="middle" font-size="12">1.2</text>
+  <line class="fig-line" x1="25" y1="152" x2="107" y2="152"/>
+  <rect class="fig-accent" x="29" y="120" width="74" height="26" rx="6"/>
+  <text class="fig-mono" x="66.0" y="138" text-anchor="middle" font-size="12">1.2</text>
+  <text class="fig-muted" x="66.0" y="174" text-anchor="middle" font-size="11">push</text>
+  <text class="fig-mono" x="164.0" y="44" text-anchor="middle" font-size="12" font-weight="600">CONSTANT</text>
+  <text class="fig-mono fig-muted" x="164.0" y="62" text-anchor="middle" font-size="12">3.4</text>
+  <line class="fig-line" x1="123" y1="152" x2="205" y2="152"/>
+  <rect class="fig-box" x="127" y="120" width="74" height="26" rx="6"/>
+  <text class="fig-mono" x="164.0" y="138" text-anchor="middle" font-size="12">1.2</text>
+  <rect class="fig-accent" x="127" y="90" width="74" height="26" rx="6"/>
+  <text class="fig-mono" x="164.0" y="108" text-anchor="middle" font-size="12">3.4</text>
+  <text class="fig-muted" x="164.0" y="174" text-anchor="middle" font-size="11">push</text>
+  <text class="fig-mono" x="262.0" y="44" text-anchor="middle" font-size="12" font-weight="600">ADD</text>
+  <line class="fig-line" x1="221" y1="152" x2="303" y2="152"/>
+  <rect class="fig-accent" x="225" y="120" width="74" height="26" rx="6"/>
+  <text class="fig-mono" x="262.0" y="138" text-anchor="middle" font-size="12">4.6</text>
+  <text class="fig-muted" x="262.0" y="174" text-anchor="middle" font-size="11">pop 2, push 1</text>
+  <text class="fig-mono" x="360.0" y="44" text-anchor="middle" font-size="12" font-weight="600">CONSTANT</text>
+  <text class="fig-mono fig-muted" x="360.0" y="62" text-anchor="middle" font-size="12">5.6</text>
+  <line class="fig-line" x1="319" y1="152" x2="401" y2="152"/>
+  <rect class="fig-box" x="323" y="120" width="74" height="26" rx="6"/>
+  <text class="fig-mono" x="360.0" y="138" text-anchor="middle" font-size="12">4.6</text>
+  <rect class="fig-accent" x="323" y="90" width="74" height="26" rx="6"/>
+  <text class="fig-mono" x="360.0" y="108" text-anchor="middle" font-size="12">5.6</text>
+  <text class="fig-muted" x="360.0" y="174" text-anchor="middle" font-size="11">push</text>
+  <text class="fig-mono" x="458.0" y="44" text-anchor="middle" font-size="12" font-weight="600">DIVIDE</text>
+  <line class="fig-line" x1="417" y1="152" x2="499" y2="152"/>
+  <rect class="fig-accent" x="421" y="120" width="74" height="26" rx="6"/>
+  <text class="fig-mono" x="458.0" y="138" text-anchor="middle" font-size="12">0.821429</text>
+  <text class="fig-muted" x="458.0" y="174" text-anchor="middle" font-size="11">pop 2, push 1</text>
+  <text class="fig-mono" x="556.0" y="44" text-anchor="middle" font-size="12" font-weight="600">NEGATE</text>
+  <line class="fig-line" x1="515" y1="152" x2="597" y2="152"/>
+  <rect class="fig-accent" x="519" y="120" width="74" height="26" rx="6"/>
+  <text class="fig-mono" x="556.0" y="138" text-anchor="middle" font-size="12">-0.821429</text>
+  <text class="fig-muted" x="556.0" y="174" text-anchor="middle" font-size="11">pop 1, push 1</text>
+  <text class="fig-mono" x="654.0" y="44" text-anchor="middle" font-size="12" font-weight="600">RETURN</text>
+  <line class="fig-line" x1="613" y1="152" x2="695" y2="152"/>
+  <text class="fig-muted" x="654.0" y="138" text-anchor="middle" font-size="12">empty</text>
+  <text class="fig-muted" x="654.0" y="174" text-anchor="middle" font-size="11">pop 1, print</text>
+  <text class="fig-muted" x="21" y="210" text-anchor="start" font-size="12">the top of the stack is highlighted, the bottom is the line</text>
+</svg>

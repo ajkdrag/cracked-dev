@@ -1,0 +1,77 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="The frame buffer is rows of 32-bit pixels. Each row holds width times 4 bytes of pixels and may end in padding. Pitch is the number of bytes from one row start to the next, so pixel (5, 2) lives at pixels plus 2 times pitch plus 5 times 4">
+  <defs>
+    <marker id="13-pitch-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="170" y="70" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="216" y="70" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="262" y="70" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="308" y="70" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="354" y="70" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="400" y="70" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="446" y="70" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="492" y="70" width="46" height="34" rx="0"/>
+  <rect class="fig-line" x="538" y="70" width="46" height="34" rx="0"/>
+  <text class="fig-muted" x="561" y="91" text-anchor="middle" font-size="11">pad</text>
+  <rect class="fig-line" x="584" y="70" width="46" height="34" rx="0"/>
+  <text class="fig-muted" x="607" y="91" text-anchor="middle" font-size="11">pad</text>
+  <text class="fig-mono" x="158" y="92" text-anchor="end" font-size="12">pixels + 0</text>
+  <rect class="fig-box" x="170" y="104" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="216" y="104" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="262" y="104" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="308" y="104" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="354" y="104" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="400" y="104" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="446" y="104" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="492" y="104" width="46" height="34" rx="0"/>
+  <rect class="fig-line" x="538" y="104" width="46" height="34" rx="0"/>
+  <text class="fig-muted" x="561" y="125" text-anchor="middle" font-size="11">pad</text>
+  <rect class="fig-line" x="584" y="104" width="46" height="34" rx="0"/>
+  <text class="fig-muted" x="607" y="125" text-anchor="middle" font-size="11">pad</text>
+  <text class="fig-mono" x="158" y="126" text-anchor="end" font-size="12">pixels + pitch</text>
+  <rect class="fig-box" x="170" y="138" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="216" y="138" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="262" y="138" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="308" y="138" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="354" y="138" width="46" height="34" rx="0"/>
+  <rect class="fig-accent" x="400" y="138" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="446" y="138" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="492" y="138" width="46" height="34" rx="0"/>
+  <rect class="fig-line" x="538" y="138" width="46" height="34" rx="0"/>
+  <text class="fig-muted" x="561" y="159" text-anchor="middle" font-size="11">pad</text>
+  <rect class="fig-line" x="584" y="138" width="46" height="34" rx="0"/>
+  <text class="fig-muted" x="607" y="159" text-anchor="middle" font-size="11">pad</text>
+  <text class="fig-mono" x="158" y="160" text-anchor="end" font-size="12">pixels + 2 * pitch</text>
+  <rect class="fig-box" x="170" y="172" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="216" y="172" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="262" y="172" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="308" y="172" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="354" y="172" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="400" y="172" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="446" y="172" width="46" height="34" rx="0"/>
+  <rect class="fig-box" x="492" y="172" width="46" height="34" rx="0"/>
+  <rect class="fig-line" x="538" y="172" width="46" height="34" rx="0"/>
+  <text class="fig-muted" x="561" y="193" text-anchor="middle" font-size="11">pad</text>
+  <rect class="fig-line" x="584" y="172" width="46" height="34" rx="0"/>
+  <text class="fig-muted" x="607" y="193" text-anchor="middle" font-size="11">pad</text>
+  <text class="fig-mono" x="158" y="194" text-anchor="end" font-size="12">pixels + 3 * pitch</text>
+  <text class="fig-muted" x="193" y="60" text-anchor="middle" font-size="11">x=0</text>
+  <text class="fig-muted" x="239" y="60" text-anchor="middle" font-size="11">x=1</text>
+  <text class="fig-muted" x="285" y="60" text-anchor="middle" font-size="11">x=2</text>
+  <text class="fig-muted" x="331" y="60" text-anchor="middle" font-size="11">x=3</text>
+  <text class="fig-muted" x="377" y="60" text-anchor="middle" font-size="11">x=4</text>
+  <text class="fig-muted" x="423" y="60" text-anchor="middle" font-size="11">x=5</text>
+  <text class="fig-muted" x="469" y="60" text-anchor="middle" font-size="11">x=6</text>
+  <text class="fig-muted" x="515" y="60" text-anchor="middle" font-size="11">x=7</text>
+  <text class="fig-mono" x="423" y="160" text-anchor="middle" font-size="12">(5,2)</text>
+  <line class="fig-line" x1="170" y1="222" x2="538" y2="222"/>
+  <line class="fig-line" x1="170" y1="217" x2="170" y2="227"/>
+  <line class="fig-line" x1="538" y1="217" x2="538" y2="227"/>
+  <text class="fig-muted" x="354" y="240" text-anchor="middle" font-size="12">width * 4 bytes of pixels</text>
+  <line class="fig-line" x1="170" y1="258" x2="630" y2="258"/>
+  <line class="fig-line" x1="170" y1="253" x2="170" y2="263"/>
+  <line class="fig-line" x1="630" y1="253" x2="630" y2="263"/>
+  <text class="fig-muted" x="400" y="276" text-anchor="middle" font-size="12">pitch: bytes from one row start to the next</text>
+  <text class="fig-mono fig-accent-text" x="360" y="30" text-anchor="middle" font-size="13">address of pixel (5, 2) = pixels + 2 * pitch + 5 * 4</text>
+</svg>

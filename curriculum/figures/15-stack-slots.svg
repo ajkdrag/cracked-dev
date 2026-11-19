@@ -1,0 +1,41 @@
+<svg viewBox="0 0 720 270" role="img" aria-label="map_stack gives each slot 64 KiB of addresses starting at 0x5555_0000_0000. The first page stays unmapped as a guard, the next four pages are mapped to fresh frames, and the returned top is the address just past them. The stack grows down toward the guard.">
+  <defs>
+    <marker id="15-stack-slots-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="30" text-anchor="start" font-size="13" font-weight="600">slot 0</text>
+  <rect class="fig-accent" x="20" y="40" width="90" height="40" rx="0" stroke-dasharray="4 3"/>
+  <text x="65" y="65" text-anchor="middle" font-size="12">guard</text>
+  <rect class="fig-box" x="110" y="40" width="90" height="40" rx="0"/>
+  <text class="fig-muted" x="155" y="65" text-anchor="middle" font-size="12">mapped</text>
+  <rect class="fig-box" x="200" y="40" width="90" height="40" rx="0"/>
+  <text class="fig-muted" x="245" y="65" text-anchor="middle" font-size="12">mapped</text>
+  <rect class="fig-box" x="290" y="40" width="90" height="40" rx="0"/>
+  <text class="fig-muted" x="335" y="65" text-anchor="middle" font-size="12">mapped</text>
+  <rect class="fig-box" x="380" y="40" width="90" height="40" rx="0"/>
+  <text class="fig-muted" x="425" y="65" text-anchor="middle" font-size="12">mapped</text>
+  <rect class="fig-box" x="470" y="40" width="230" height="40" rx="0" stroke-dasharray="4 3"/>
+  <text class="fig-muted" x="585" y="65" text-anchor="middle" font-size="12">11 pages, unused</text>
+  <text class="fig-mono" x="20" y="100" text-anchor="start" font-size="12">0x5555_0000_0000</text>
+  <text class="fig-mono" x="470" y="100" text-anchor="middle" font-size="12">0x5555_0000_5000 = top</text>
+  <line class="fig-line" x1="470" y1="86" x2="470" y2="82" marker-end="url(#15-stack-slots-arrow)"/>
+  <line class="fig-line" x1="460" y1="26" x2="330" y2="26" marker-end="url(#15-stack-slots-arrow)"/>
+  <text class="fig-muted" x="470" y="30" text-anchor="start" font-size="12">the stack grows down</text>
+  <text x="20" y="160" text-anchor="start" font-size="13" font-weight="600">slot 1</text>
+  <rect class="fig-accent" x="20" y="170" width="90" height="40" rx="0" stroke-dasharray="4 3"/>
+  <text x="65" y="195" text-anchor="middle" font-size="12">guard</text>
+  <rect class="fig-box" x="110" y="170" width="90" height="40" rx="0"/>
+  <text class="fig-muted" x="155" y="195" text-anchor="middle" font-size="12">mapped</text>
+  <rect class="fig-box" x="200" y="170" width="90" height="40" rx="0"/>
+  <text class="fig-muted" x="245" y="195" text-anchor="middle" font-size="12">mapped</text>
+  <rect class="fig-box" x="290" y="170" width="90" height="40" rx="0"/>
+  <text class="fig-muted" x="335" y="195" text-anchor="middle" font-size="12">mapped</text>
+  <rect class="fig-box" x="380" y="170" width="90" height="40" rx="0"/>
+  <text class="fig-muted" x="425" y="195" text-anchor="middle" font-size="12">mapped</text>
+  <rect class="fig-box" x="470" y="170" width="230" height="40" rx="0" stroke-dasharray="4 3"/>
+  <text class="fig-muted" x="585" y="195" text-anchor="middle" font-size="12">11 pages, unused</text>
+  <text class="fig-mono" x="20" y="230" text-anchor="start" font-size="12">0x5555_0001_0000</text>
+  <text class="fig-mono" x="470" y="230" text-anchor="middle" font-size="12">0x5555_0001_5000 = top</text>
+  <line class="fig-line" x1="470" y1="216" x2="470" y2="212" marker-end="url(#15-stack-slots-arrow)"/>
+</svg>

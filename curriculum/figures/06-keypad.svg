@@ -1,0 +1,70 @@
+<svg viewBox="0 0 720 320" role="img" aria-label="Each CHIP-8 key sits on the keyboard key at the same position in the four by four block at the left of the keyboard. Pressing W sends the scancode for W, and a table lookup sets keys[5]">
+  <defs>
+    <marker id="06-keypad-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="152" y="30" text-anchor="middle" font-size="14" font-weight="600">CHIP-8 key over your key</text>
+  <text class="fig-muted" x="152" y="48" text-anchor="middle" font-size="12">same position, by scancode</text>
+  <rect class="fig-box" x="40" y="62" width="52" height="52" rx="6"/>
+  <text class="fig-mono" x="66" y="86" text-anchor="middle" font-size="15" font-weight="600">1</text>
+  <text class="fig-muted fig-mono" x="66" y="104" text-anchor="middle" font-size="12">1</text>
+  <rect class="fig-box" x="98" y="62" width="52" height="52" rx="6"/>
+  <text class="fig-mono" x="124" y="86" text-anchor="middle" font-size="15" font-weight="600">2</text>
+  <text class="fig-muted fig-mono" x="124" y="104" text-anchor="middle" font-size="12">2</text>
+  <rect class="fig-box" x="156" y="62" width="52" height="52" rx="6"/>
+  <text class="fig-mono" x="182" y="86" text-anchor="middle" font-size="15" font-weight="600">3</text>
+  <text class="fig-muted fig-mono" x="182" y="104" text-anchor="middle" font-size="12">3</text>
+  <rect class="fig-box" x="214" y="62" width="52" height="52" rx="6"/>
+  <text class="fig-mono" x="240" y="86" text-anchor="middle" font-size="15" font-weight="600">C</text>
+  <text class="fig-muted fig-mono" x="240" y="104" text-anchor="middle" font-size="12">4</text>
+  <rect class="fig-box" x="40" y="120" width="52" height="52" rx="6"/>
+  <text class="fig-mono" x="66" y="144" text-anchor="middle" font-size="15" font-weight="600">4</text>
+  <text class="fig-muted fig-mono" x="66" y="162" text-anchor="middle" font-size="12">Q</text>
+  <rect class="fig-accent" x="98" y="120" width="52" height="52" rx="6"/>
+  <text class="fig-mono" x="124" y="144" text-anchor="middle" font-size="15" font-weight="600">5</text>
+  <text class="fig-muted fig-mono" x="124" y="162" text-anchor="middle" font-size="12">W</text>
+  <rect class="fig-box" x="156" y="120" width="52" height="52" rx="6"/>
+  <text class="fig-mono" x="182" y="144" text-anchor="middle" font-size="15" font-weight="600">6</text>
+  <text class="fig-muted fig-mono" x="182" y="162" text-anchor="middle" font-size="12">E</text>
+  <rect class="fig-box" x="214" y="120" width="52" height="52" rx="6"/>
+  <text class="fig-mono" x="240" y="144" text-anchor="middle" font-size="15" font-weight="600">D</text>
+  <text class="fig-muted fig-mono" x="240" y="162" text-anchor="middle" font-size="12">R</text>
+  <rect class="fig-box" x="40" y="178" width="52" height="52" rx="6"/>
+  <text class="fig-mono" x="66" y="202" text-anchor="middle" font-size="15" font-weight="600">7</text>
+  <text class="fig-muted fig-mono" x="66" y="220" text-anchor="middle" font-size="12">A</text>
+  <rect class="fig-box" x="98" y="178" width="52" height="52" rx="6"/>
+  <text class="fig-mono" x="124" y="202" text-anchor="middle" font-size="15" font-weight="600">8</text>
+  <text class="fig-muted fig-mono" x="124" y="220" text-anchor="middle" font-size="12">S</text>
+  <rect class="fig-box" x="156" y="178" width="52" height="52" rx="6"/>
+  <text class="fig-mono" x="182" y="202" text-anchor="middle" font-size="15" font-weight="600">9</text>
+  <text class="fig-muted fig-mono" x="182" y="220" text-anchor="middle" font-size="12">D</text>
+  <rect class="fig-box" x="214" y="178" width="52" height="52" rx="6"/>
+  <text class="fig-mono" x="240" y="202" text-anchor="middle" font-size="15" font-weight="600">E</text>
+  <text class="fig-muted fig-mono" x="240" y="220" text-anchor="middle" font-size="12">F</text>
+  <rect class="fig-box" x="40" y="236" width="52" height="52" rx="6"/>
+  <text class="fig-mono" x="66" y="260" text-anchor="middle" font-size="15" font-weight="600">A</text>
+  <text class="fig-muted fig-mono" x="66" y="278" text-anchor="middle" font-size="12">Z</text>
+  <rect class="fig-box" x="98" y="236" width="52" height="52" rx="6"/>
+  <text class="fig-mono" x="124" y="260" text-anchor="middle" font-size="15" font-weight="600">0</text>
+  <text class="fig-muted fig-mono" x="124" y="278" text-anchor="middle" font-size="12">X</text>
+  <rect class="fig-box" x="156" y="236" width="52" height="52" rx="6"/>
+  <text class="fig-mono" x="182" y="260" text-anchor="middle" font-size="15" font-weight="600">B</text>
+  <text class="fig-muted fig-mono" x="182" y="278" text-anchor="middle" font-size="12">C</text>
+  <rect class="fig-box" x="214" y="236" width="52" height="52" rx="6"/>
+  <text class="fig-mono" x="240" y="260" text-anchor="middle" font-size="15" font-weight="600">F</text>
+  <text class="fig-muted fig-mono" x="240" y="278" text-anchor="middle" font-size="12">V</text>
+  <rect class="fig-box" x="380" y="62" width="300" height="56" rx="6"/>
+  <text class="fig-mono" x="530" y="87" text-anchor="middle" font-size="14" font-weight="600">SDL_EVENT_KEY_DOWN</text>
+  <text class="fig-muted" x="530" y="106" text-anchor="middle" font-size="12">you press W</text>
+  <rect class="fig-box" x="380" y="150" width="300" height="56" rx="6"/>
+  <text class="fig-mono" x="530" y="175" text-anchor="middle" font-size="14" font-weight="600">SDL_SCANCODE_W</text>
+  <text class="fig-muted" x="530" y="194" text-anchor="middle" font-size="12">in e.key.scancode</text>
+  <rect class="fig-accent" x="380" y="238" width="300" height="56" rx="6"/>
+  <text class="fig-mono" x="530" y="263" text-anchor="middle" font-size="14" font-weight="600">keys[5] = true</text>
+  <text class="fig-muted" x="530" y="282" text-anchor="middle" font-size="12">key up sets it false</text>
+  <line class="fig-line" x1="530" y1="118" x2="530" y2="148" marker-end="url(#06-keypad-arrow)"/>
+  <text class="fig-muted" x="542" y="137" font-size="12">carries</text>
+  <line class="fig-line" x1="530" y1="206" x2="530" y2="236" marker-end="url(#06-keypad-arrow)"/>
+  <text class="fig-muted" x="542" y="225" font-size="12">look up in your key table</text>
+</svg>

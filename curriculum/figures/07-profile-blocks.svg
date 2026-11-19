@@ -1,0 +1,42 @@
+<svg viewBox="0 0 720 320" role="img" aria-label="A timeline of nested blocks: parse calls number three times. The inclusive time of parse is its whole bar, and its exclusive time is the parse bar minus the three number bars">
+  <defs>
+    <marker id="07-profile-blocks-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <text class="fig-mono" x="20" y="45" font-size="13">main</text>
+  <rect class="fig-box" x="140" y="30" width="550" height="22" rx="4"/>
+
+  <text class="fig-mono" x="20" y="85" font-size="13">parse</text>
+  <rect class="fig-accent" x="170" y="70" width="310" height="22" rx="4"/>
+
+  <text class="fig-mono" x="20" y="125" font-size="13">number</text>
+  <rect class="fig-box" x="210" y="110" width="40" height="22" rx="4"/>
+  <rect class="fig-box" x="300" y="110" width="40" height="22" rx="4"/>
+  <rect class="fig-box" x="390" y="110" width="40" height="22" rx="4"/>
+
+  <text class="fig-mono" x="20" y="165" font-size="13">sum</text>
+  <rect class="fig-box" x="510" y="150" width="160" height="22" rx="4"/>
+
+  <line class="fig-line" x1="140" y1="196" x2="690" y2="196" marker-end="url(#07-profile-blocks-arrow)"/>
+  <text class="fig-muted" x="690" y="214" text-anchor="end" font-size="12">time</text>
+
+  <text class="fig-mono" x="20" y="249" font-size="12">inclusive(parse)</text>
+  <rect class="fig-accent" x="170" y="234" width="310" height="22" rx="4"/>
+  <text class="fig-muted" x="500" y="249" font-size="12">start to end of parse</text>
+
+  <text class="fig-mono" x="20" y="289" font-size="12">exclusive(parse)</text>
+  <rect class="fig-accent" x="170" y="274" width="40" height="22" rx="4"/>
+  <rect class="fig-accent" x="250" y="274" width="50" height="22" rx="4"/>
+  <rect class="fig-accent" x="340" y="274" width="50" height="22" rx="4"/>
+  <rect class="fig-accent" x="430" y="274" width="50" height="22" rx="4"/>
+  <text class="fig-muted" x="500" y="289" font-size="12">minus the number calls</text>
+
+  <line class="fig-line" x1="210" y1="134" x2="210" y2="296" stroke-dasharray="3 3"/>
+  <line class="fig-line" x1="250" y1="134" x2="250" y2="296" stroke-dasharray="3 3"/>
+  <line class="fig-line" x1="300" y1="134" x2="300" y2="296" stroke-dasharray="3 3"/>
+  <line class="fig-line" x1="340" y1="134" x2="340" y2="296" stroke-dasharray="3 3"/>
+  <line class="fig-line" x1="390" y1="134" x2="390" y2="296" stroke-dasharray="3 3"/>
+  <line class="fig-line" x1="430" y1="134" x2="430" y2="296" stroke-dasharray="3 3"/>
+</svg>

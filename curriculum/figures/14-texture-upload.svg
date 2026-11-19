@@ -1,0 +1,34 @@
+<svg viewBox="0 0 720 230" role="img" aria-label="A texture upload: the CPU copies pixels into the mapped transfer buffer, a copy pass in the command buffer copies them into a GPU texture, and the fragment shader samples that texture in a later render pass.">
+  <defs>
+    <marker id="14-texture-upload-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="20" y="34" font-size="12">CPU memory</text>
+  <text class="fig-muted" x="390" y="34" font-size="12">GPU memory</text>
+  <rect class="fig-box" x="20" y="60" width="110" height="60" rx="6"/>
+  <text x="75.0" y="86.0" text-anchor="middle" font-size="13" font-weight="600">pixels</text>
+  <text class="fig-muted" x="75.0" y="104.0" text-anchor="middle" font-size="12">your array</text>
+  <rect class="fig-box" x="190" y="60" width="140" height="60" rx="6"/>
+  <text x="260.0" y="86.0" text-anchor="middle" font-size="13" font-weight="600">transfer buffer</text>
+  <text class="fig-muted" x="260.0" y="104.0" text-anchor="middle" font-size="12">mapped by the CPU</text>
+  <rect class="fig-accent" x="390" y="60" width="140" height="60" rx="6"/>
+  <text x="460.0" y="86.0" text-anchor="middle" font-size="13" font-weight="600">texture</text>
+  <text class="fig-muted" x="460.0" y="104.0" text-anchor="middle" font-size="12">GPU-only memory</text>
+  <rect class="fig-box" x="590" y="60" width="110" height="60" rx="6"/>
+  <text x="645.0" y="86.0" text-anchor="middle" font-size="13" font-weight="600">fragment</text>
+  <text class="fig-muted" x="645.0" y="104.0" text-anchor="middle" font-size="12">shader</text>
+  <line class="fig-line" x1="130" y1="90" x2="188" y2="90" marker-end="url(#14-texture-upload-arrow)"/>
+  <text class="fig-muted" x="159" y="82" text-anchor="middle" font-size="12">memcpy</text>
+  <line class="fig-line" x1="330" y1="90" x2="388" y2="90" marker-end="url(#14-texture-upload-arrow)"/>
+  <text class="fig-muted" x="372" y="82" text-anchor="middle" font-size="12">copy</text>
+  <line class="fig-line" x1="530" y1="90" x2="588" y2="90" marker-end="url(#14-texture-upload-arrow)"/>
+  <text class="fig-muted" x="559" y="82" text-anchor="middle" font-size="12">samples</text>
+  <line class="fig-line" x1="346" y1="22" x2="346" y2="125" stroke-dasharray="4 4"/>
+  <text class="fig-mono" x="260" y="148" text-anchor="middle" font-size="12">SDL_MapGPUTransferBuffer</text>
+  <text class="fig-muted" x="260" y="166" text-anchor="middle" font-size="12">returns the pointer</text>
+  <text class="fig-mono" x="410" y="196" text-anchor="middle" font-size="12">SDL_UploadToGPUTexture</text>
+  <text class="fig-muted" x="410" y="214" text-anchor="middle" font-size="12">in a copy pass</text>
+  <text class="fig-muted" x="645" y="148" text-anchor="middle" font-size="12">in a later</text>
+  <text class="fig-muted" x="645" y="166" text-anchor="middle" font-size="12">render pass</text>
+</svg>

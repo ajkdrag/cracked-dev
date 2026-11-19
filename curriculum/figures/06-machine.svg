@@ -1,0 +1,118 @@
+<svg viewBox="0 0 720 360" role="img" aria-label="The CHIP-8 machine: 4 KB of memory with the font at 0x050 and the program from 0x200, sixteen registers V0 to VF, the timers, the stack, PC and I, the 64 by 32 display and the 16-key keypad">
+  <defs>
+    <marker id="06-machine-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="185" y="30" text-anchor="middle" font-size="14" font-weight="600">memory, 4096 bytes</text>
+  <rect class="fig-box" x="100" y="44" width="170" height="36" rx="6"/>
+  <text class="fig-muted" x="185" y="67" text-anchor="middle" font-size="12">unused</text>
+  <rect class="fig-box" x="100" y="80" width="170" height="36" rx="6"/>
+  <text x="185" y="103" text-anchor="middle" font-size="13">font, digits 0 to F</text>
+  <rect class="fig-box" x="100" y="116" width="170" height="44" rx="6"/>
+  <text class="fig-muted" x="185" y="143" text-anchor="middle" font-size="12">unused</text>
+  <rect class="fig-accent" x="100" y="160" width="170" height="180" rx="6"/>
+  <text x="185" y="244" text-anchor="middle" font-size="14" font-weight="600">program and data</text>
+  <text class="fig-muted" x="185" y="264" text-anchor="middle" font-size="12">the ROM is copied here</text>
+  <text class="fig-mono" x="90" y="48" text-anchor="end" font-size="12">0x000</text>
+  <text class="fig-mono" x="90" y="84" text-anchor="end" font-size="12">0x050</text>
+  <text class="fig-mono" x="90" y="120" text-anchor="end" font-size="12">0x0A0</text>
+  <text class="fig-mono" x="90" y="164" text-anchor="end" font-size="12">0x200</text>
+  <text class="fig-mono" x="90" y="340" text-anchor="end" font-size="12">0xFFF</text>
+
+  <text x="330" y="30" font-size="14" font-weight="600">registers</text>
+  <rect class="fig-box" x="330" y="44" width="21" height="30" rx="4"/>
+  <text class="fig-mono" x="340.5" y="64" text-anchor="middle" font-size="11">V0</text>
+  <rect class="fig-box" x="353" y="44" width="21" height="30" rx="4"/>
+  <text class="fig-mono" x="363.5" y="64" text-anchor="middle" font-size="11">V1</text>
+  <rect class="fig-box" x="376" y="44" width="21" height="30" rx="4"/>
+  <text class="fig-mono" x="386.5" y="64" text-anchor="middle" font-size="11">V2</text>
+  <rect class="fig-box" x="399" y="44" width="21" height="30" rx="4"/>
+  <text class="fig-mono" x="409.5" y="64" text-anchor="middle" font-size="11">V3</text>
+  <rect class="fig-box" x="422" y="44" width="21" height="30" rx="4"/>
+  <text class="fig-mono" x="432.5" y="64" text-anchor="middle" font-size="11">V4</text>
+  <rect class="fig-box" x="445" y="44" width="21" height="30" rx="4"/>
+  <text class="fig-mono" x="455.5" y="64" text-anchor="middle" font-size="11">V5</text>
+  <rect class="fig-box" x="468" y="44" width="21" height="30" rx="4"/>
+  <text class="fig-mono" x="478.5" y="64" text-anchor="middle" font-size="11">V6</text>
+  <rect class="fig-box" x="491" y="44" width="21" height="30" rx="4"/>
+  <text class="fig-mono" x="501.5" y="64" text-anchor="middle" font-size="11">V7</text>
+  <rect class="fig-box" x="514" y="44" width="21" height="30" rx="4"/>
+  <text class="fig-mono" x="524.5" y="64" text-anchor="middle" font-size="11">V8</text>
+  <rect class="fig-box" x="537" y="44" width="21" height="30" rx="4"/>
+  <text class="fig-mono" x="547.5" y="64" text-anchor="middle" font-size="11">V9</text>
+  <rect class="fig-box" x="560" y="44" width="21" height="30" rx="4"/>
+  <text class="fig-mono" x="570.5" y="64" text-anchor="middle" font-size="11">VA</text>
+  <rect class="fig-box" x="583" y="44" width="21" height="30" rx="4"/>
+  <text class="fig-mono" x="593.5" y="64" text-anchor="middle" font-size="11">VB</text>
+  <rect class="fig-box" x="606" y="44" width="21" height="30" rx="4"/>
+  <text class="fig-mono" x="616.5" y="64" text-anchor="middle" font-size="11">VC</text>
+  <rect class="fig-box" x="629" y="44" width="21" height="30" rx="4"/>
+  <text class="fig-mono" x="639.5" y="64" text-anchor="middle" font-size="11">VD</text>
+  <rect class="fig-box" x="652" y="44" width="21" height="30" rx="4"/>
+  <text class="fig-mono" x="662.5" y="64" text-anchor="middle" font-size="11">VE</text>
+  <rect class="fig-accent" x="675" y="44" width="21" height="30" rx="4"/>
+  <text class="fig-mono" x="685.5" y="64" text-anchor="middle" font-size="11">VF</text>
+  <text class="fig-muted" x="330" y="92" font-size="12">sixteen 8-bit registers</text>
+  <text class="fig-accent-text" x="696" y="92" text-anchor="end" font-size="12">VF is also the flag</text>
+
+  <rect class="fig-box" x="330" y="108" width="100" height="44" rx="6"/>
+  <text x="380" y="127" text-anchor="middle" font-size="13" font-weight="600">DT</text>
+  <text class="fig-muted" x="380" y="144" text-anchor="middle" font-size="12">delay timer</text>
+  <rect class="fig-box" x="440" y="108" width="100" height="44" rx="6"/>
+  <text x="490" y="127" text-anchor="middle" font-size="13" font-weight="600">ST</text>
+  <text class="fig-muted" x="490" y="144" text-anchor="middle" font-size="12">sound timer</text>
+  <rect class="fig-box" x="556" y="108" width="140" height="44" rx="6"/>
+  <text x="626" y="127" text-anchor="middle" font-size="13" font-weight="600">stack and SP</text>
+  <text class="fig-muted" x="626" y="144" text-anchor="middle" font-size="12">16 return addresses</text>
+
+  <rect class="fig-accent" x="330" y="168" width="100" height="44" rx="6"/>
+  <text x="380" y="187" text-anchor="middle" font-size="13" font-weight="600">PC</text>
+  <text class="fig-muted" x="380" y="204" text-anchor="middle" font-size="12">next instruction</text>
+  <rect class="fig-box" x="440" y="168" width="100" height="44" rx="6"/>
+  <text x="490" y="187" text-anchor="middle" font-size="13" font-weight="600">I</text>
+  <text class="fig-muted" x="490" y="204" text-anchor="middle" font-size="12">an address</text>
+  <line class="fig-accent-line" x1="330" y1="190" x2="272" y2="190" marker-end="url(#06-machine-arrow)"/>
+  <text class="fig-muted" x="301" y="182" text-anchor="middle" font-size="12">starts</text>
+
+  <rect class="fig-box" x="556" y="168" width="140" height="70" rx="4"/>
+  <text x="626" y="192" text-anchor="middle" font-size="13" font-weight="600">display</text>
+  <text class="fig-muted" x="626" y="210" text-anchor="middle" font-size="12">64 x 32 pixels</text>
+  <text class="fig-muted" x="626" y="226" text-anchor="middle" font-size="12">each on or off</text>
+
+  <rect class="fig-box" x="330" y="232" width="22" height="22" rx="3"/>
+  <text class="fig-mono" x="341" y="248" text-anchor="middle" font-size="12">1</text>
+  <rect class="fig-box" x="356" y="232" width="22" height="22" rx="3"/>
+  <text class="fig-mono" x="367" y="248" text-anchor="middle" font-size="12">2</text>
+  <rect class="fig-box" x="382" y="232" width="22" height="22" rx="3"/>
+  <text class="fig-mono" x="393" y="248" text-anchor="middle" font-size="12">3</text>
+  <rect class="fig-box" x="408" y="232" width="22" height="22" rx="3"/>
+  <text class="fig-mono" x="419" y="248" text-anchor="middle" font-size="12">C</text>
+  <rect class="fig-box" x="330" y="258" width="22" height="22" rx="3"/>
+  <text class="fig-mono" x="341" y="274" text-anchor="middle" font-size="12">4</text>
+  <rect class="fig-box" x="356" y="258" width="22" height="22" rx="3"/>
+  <text class="fig-mono" x="367" y="274" text-anchor="middle" font-size="12">5</text>
+  <rect class="fig-box" x="382" y="258" width="22" height="22" rx="3"/>
+  <text class="fig-mono" x="393" y="274" text-anchor="middle" font-size="12">6</text>
+  <rect class="fig-box" x="408" y="258" width="22" height="22" rx="3"/>
+  <text class="fig-mono" x="419" y="274" text-anchor="middle" font-size="12">D</text>
+  <rect class="fig-box" x="330" y="284" width="22" height="22" rx="3"/>
+  <text class="fig-mono" x="341" y="300" text-anchor="middle" font-size="12">7</text>
+  <rect class="fig-box" x="356" y="284" width="22" height="22" rx="3"/>
+  <text class="fig-mono" x="367" y="300" text-anchor="middle" font-size="12">8</text>
+  <rect class="fig-box" x="382" y="284" width="22" height="22" rx="3"/>
+  <text class="fig-mono" x="393" y="300" text-anchor="middle" font-size="12">9</text>
+  <rect class="fig-box" x="408" y="284" width="22" height="22" rx="3"/>
+  <text class="fig-mono" x="419" y="300" text-anchor="middle" font-size="12">E</text>
+  <rect class="fig-box" x="330" y="310" width="22" height="22" rx="3"/>
+  <text class="fig-mono" x="341" y="326" text-anchor="middle" font-size="12">A</text>
+  <rect class="fig-box" x="356" y="310" width="22" height="22" rx="3"/>
+  <text class="fig-mono" x="367" y="326" text-anchor="middle" font-size="12">0</text>
+  <rect class="fig-box" x="382" y="310" width="22" height="22" rx="3"/>
+  <text class="fig-mono" x="393" y="326" text-anchor="middle" font-size="12">B</text>
+  <rect class="fig-box" x="408" y="310" width="22" height="22" rx="3"/>
+  <text class="fig-mono" x="419" y="326" text-anchor="middle" font-size="12">F</text>
+  <text x="444" y="276" font-size="13" font-weight="600">keypad</text>
+  <text class="fig-muted" x="444" y="294" font-size="12">16 keys, each</text>
+  <text class="fig-muted" x="444" y="310" font-size="12">held or not</text>
+</svg>

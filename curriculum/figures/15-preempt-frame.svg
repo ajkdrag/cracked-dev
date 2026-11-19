@@ -1,0 +1,48 @@
+<svg viewBox="0 0 720 340" role="img" aria-label="The frame spawn writes for a preemptive task. timer_entry pops the fifteen zeros into the general registers, and iretq pops RIP, CS, RFLAGS, RSP and SS, which starts the entry function with interrupts on.">
+  <defs>
+    <marker id="15-preempt-frame-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="250.0" y="26" text-anchor="middle" font-size="13" font-weight="600">new task's stack</text>
+  <text class="fig-muted" x="80" y="26" text-anchor="middle" font-size="12">address</text>
+  <rect class="fig-box" x="150" y="40" width="200" height="26" rx="0" stroke-dasharray="4 3"/>
+  <text class="fig-muted" x="250.0" y="58" text-anchor="middle" font-size="12">unused, above top</text>
+  <rect class="fig-box" x="150" y="66" width="200" height="24" rx="0"/>
+  <text class="fig-mono" x="250.0" y="83" text-anchor="middle" font-size="12">task_exit</text>
+  <text class="fig-mono" x="80" y="83" text-anchor="middle" font-size="12">top - 8</text>
+  <rect class="fig-accent" x="150" y="90" width="200" height="24" rx="0"/>
+  <text class="fig-mono" x="250.0" y="107" text-anchor="middle" font-size="12">SS  current SS</text>
+  <text class="fig-mono" x="80" y="107" text-anchor="middle" font-size="12">top - 16</text>
+  <rect class="fig-accent" x="150" y="114" width="200" height="24" rx="0"/>
+  <text class="fig-mono" x="250.0" y="131" text-anchor="middle" font-size="12">RSP  top - 8</text>
+  <text class="fig-mono" x="80" y="131" text-anchor="middle" font-size="12">top - 24</text>
+  <rect class="fig-accent" x="150" y="138" width="200" height="24" rx="0"/>
+  <text class="fig-mono" x="250.0" y="155" text-anchor="middle" font-size="12">RFLAGS  0x202</text>
+  <text class="fig-mono" x="80" y="155" text-anchor="middle" font-size="12">top - 32</text>
+  <rect class="fig-accent" x="150" y="162" width="200" height="24" rx="0"/>
+  <text class="fig-mono" x="250.0" y="179" text-anchor="middle" font-size="12">CS  current CS</text>
+  <text class="fig-mono" x="80" y="179" text-anchor="middle" font-size="12">top - 40</text>
+  <rect class="fig-accent" x="150" y="186" width="200" height="24" rx="0"/>
+  <text class="fig-mono" x="250.0" y="203" text-anchor="middle" font-size="12">RIP  entry</text>
+  <text class="fig-mono" x="80" y="203" text-anchor="middle" font-size="12">top - 48</text>
+  <rect class="fig-box" x="150" y="210" width="200" height="24" rx="0"/>
+  <text class="fig-mono" x="250.0" y="227" text-anchor="middle" font-size="12">0  rax</text>
+  <text class="fig-mono" x="80" y="227" text-anchor="middle" font-size="12">top - 56</text>
+  <rect class="fig-box" x="150" y="234" width="200" height="24" rx="0"/>
+  <text class="fig-mono" x="250.0" y="251" text-anchor="middle" font-size="12">0  rbx ... r14, 13 words</text>
+  <text class="fig-mono" x="80" y="251" text-anchor="middle" font-size="12"></text>
+  <rect class="fig-box" x="150" y="258" width="200" height="24" rx="0"/>
+  <text class="fig-mono" x="250.0" y="275" text-anchor="middle" font-size="12">0  r15</text>
+  <text class="fig-mono" x="80" y="275" text-anchor="middle" font-size="12">top - 168</text>
+  <path class="fig-line" d="M362 69 L370 69 L370 87 L362 87" fill="none"/>
+  <text x="382" y="82.0" text-anchor="start" font-size="12">return address of entry</text>
+  <path class="fig-line" d="M362 93 L370 93 L370 207 L362 207" fill="none"/>
+  <text x="382" y="150.0" text-anchor="start" font-size="12">popped by iretq</text>
+  <text class="fig-muted" x="382" y="166.0" text-anchor="start" font-size="12">five words, RIP first</text>
+  <path class="fig-line" d="M362 213 L370 213 L370 279 L362 279" fill="none"/>
+  <text x="382" y="246.0" text-anchor="start" font-size="12">popped by timer_entry</text>
+  <text class="fig-muted" x="382" y="262.0" text-anchor="start" font-size="12">15 registers, r15 first</text>
+  <line class="fig-line" x1="170" y1="312" x2="170" y2="284" marker-end="url(#15-preempt-frame-arrow)"/>
+  <text class="fig-mono" x="180" y="312" text-anchor="start" font-size="12">saved rsp of the new task</text>
+</svg>

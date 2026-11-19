@@ -1,0 +1,48 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="The event loop thread hands a slow request to the workers through the injection queue. Each worker pushes its result into its own done ring and writes one byte to the wake pipe, which wakes the loop to pop the rings.">
+  <defs>
+    <marker id="09-server-jobs-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-accent" x="20" y="30" width="180" height="270" rx="6"/>
+  <text x="110" y="54" text-anchor="middle" font-size="13" font-weight="600">event loop thread</text>
+  <text class="fig-muted" x="110" y="74" text-anchor="middle" font-size="12">owns every socket</text>
+  <text class="fig-mono" x="110" y="160" text-anchor="middle" font-size="12">epoll_wait</text>
+  <text class="fig-muted" x="110" y="226" text-anchor="middle" font-size="12">client slots</text>
+  <text class="fig-muted" x="110" y="242" text-anchor="middle" font-size="12">with generations</text>
+  <rect class="fig-box" x="270" y="30" width="180" height="50" rx="6"/>
+  <text x="360.0" y="52.0" text-anchor="middle" font-size="13" font-weight="600">injection queue</text>
+  <text class="fig-muted" x="360.0" y="69.0" text-anchor="middle" font-size="12">mutex and cond var</text>
+  <rect class="fig-box" x="270" y="104" width="180" height="44" rx="6"/>
+  <text class="fig-mono" x="360.0" y="123.0" text-anchor="middle" font-size="13">done[0]</text>
+  <text class="fig-muted" x="360.0" y="140.0" text-anchor="middle" font-size="12">ring</text>
+  <rect class="fig-box" x="270" y="172" width="180" height="40" rx="6"/>
+  <text x="360.0" y="197.0" text-anchor="middle" font-size="13" font-weight="600">wake pipe</text>
+  <rect class="fig-box" x="270" y="236" width="180" height="44" rx="6"/>
+  <text class="fig-mono" x="360.0" y="255.0" text-anchor="middle" font-size="13">done[1]</text>
+  <text class="fig-muted" x="360.0" y="272.0" text-anchor="middle" font-size="12">ring</text>
+  <rect class="fig-box" x="520" y="101" width="140" height="50" rx="6"/>
+  <text x="590.0" y="123.0" text-anchor="middle" font-size="13" font-weight="600">worker 0</text>
+  <text class="fig-muted" x="590.0" y="140.0" text-anchor="middle" font-size="12">runs the job</text>
+  <rect class="fig-box" x="520" y="233" width="140" height="50" rx="6"/>
+  <text x="590.0" y="255.0" text-anchor="middle" font-size="13" font-weight="600">worker 1</text>
+  <text class="fig-muted" x="590.0" y="272.0" text-anchor="middle" font-size="12">runs the job</text>
+  <line class="fig-line" x1="200" y1="55" x2="268" y2="55" marker-end="url(#09-server-jobs-arrow)"/>
+  <text class="fig-mono" x="234" y="47" text-anchor="middle" font-size="12">job_run</text>
+  <path class="fig-line" d="M 450 50 L 690 50 L 690 258 L 662 258" marker-end="url(#09-server-jobs-arrow)"/>
+  <line class="fig-line" x1="690" y1="126" x2="662" y2="126" marker-end="url(#09-server-jobs-arrow)"/>
+  <text class="fig-muted" x="570" y="42" text-anchor="middle" font-size="12">workers take jobs</text>
+  <line class="fig-line" x1="520" y1="126" x2="452" y2="126" marker-end="url(#09-server-jobs-arrow)"/>
+  <text class="fig-muted" x="486" y="118" text-anchor="middle" font-size="12">pushes</text>
+  <line class="fig-line" x1="520" y1="258" x2="452" y2="258" marker-end="url(#09-server-jobs-arrow)"/>
+  <text class="fig-muted" x="486" y="250" text-anchor="middle" font-size="12">pushes</text>
+  <line class="fig-line" x1="540" y1="151" x2="452" y2="186" marker-end="url(#09-server-jobs-arrow)"/>
+  <line class="fig-line" x1="540" y1="233" x2="452" y2="200" marker-end="url(#09-server-jobs-arrow)"/>
+  <text class="fig-muted" x="548" y="196" font-size="12">each writes 1 byte</text>
+  <line class="fig-line" x1="270" y1="126" x2="202" y2="126" marker-end="url(#09-server-jobs-arrow)"/>
+  <text class="fig-muted" x="236" y="118" text-anchor="middle" font-size="12">pops</text>
+  <line class="fig-line" x1="270" y1="258" x2="202" y2="258" marker-end="url(#09-server-jobs-arrow)"/>
+  <text class="fig-muted" x="236" y="250" text-anchor="middle" font-size="12">pops</text>
+  <line class="fig-line" x1="270" y1="192" x2="202" y2="192" marker-end="url(#09-server-jobs-arrow)"/>
+  <text class="fig-muted" x="236" y="184" text-anchor="middle" font-size="12">wakes</text>
+</svg>

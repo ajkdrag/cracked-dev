@@ -1,0 +1,59 @@
+<svg viewBox="0 0 720 320" role="img" aria-label="A linear scan reads cache lines in address order, so the prefetcher loads the next lines before the loop asks for them. A pointer chase finds each next address inside the line it just loaded, so every hop waits for the full latency of a load">
+  <defs>
+    <marker id="07-pointer-chase-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="28" font-size="14" font-weight="600">linear scan</text>
+  <text class="fig-muted" x="125" y="28" font-size="12">the next address is the one after this, so the prefetcher loads ahead</text>
+  <rect class="fig-box" x="45" y="70" width="66" height="34" rx="4"/>
+  <text class="fig-mono" x="78" y="92" text-anchor="middle" font-size="12">line 0</text>
+  <rect class="fig-box" x="125" y="70" width="66" height="34" rx="4"/>
+  <text class="fig-mono" x="158" y="92" text-anchor="middle" font-size="12">line 1</text>
+  <rect class="fig-accent" x="205" y="70" width="66" height="34" rx="4"/>
+  <text class="fig-mono" x="238" y="92" text-anchor="middle" font-size="12">line 2</text>
+  <rect class="fig-box" x="285" y="70" width="66" height="34" rx="4"/>
+  <text class="fig-mono" x="318" y="92" text-anchor="middle" font-size="12">line 3</text>
+  <rect class="fig-box" x="365" y="70" width="66" height="34" rx="4"/>
+  <text class="fig-mono" x="398" y="92" text-anchor="middle" font-size="12">line 4</text>
+  <rect class="fig-box" x="445" y="70" width="66" height="34" rx="4"/>
+  <text class="fig-mono" x="478" y="92" text-anchor="middle" font-size="12">line 5</text>
+  <rect class="fig-box" x="525" y="70" width="66" height="34" rx="4"/>
+  <text class="fig-mono" x="558" y="92" text-anchor="middle" font-size="12">line 6</text>
+  <rect class="fig-box" x="605" y="70" width="66" height="34" rx="4"/>
+  <text class="fig-mono" x="638" y="92" text-anchor="middle" font-size="12">line 7</text>
+  <path class="fig-line" d="M78 70 Q118 48 154 68" fill="none" marker-end="url(#07-pointer-chase-arrow)"/>
+  <path class="fig-line" d="M158 70 Q198 48 234 68" fill="none" marker-end="url(#07-pointer-chase-arrow)"/>
+  <path class="fig-line" d="M238 70 Q278 48 314 68" fill="none" marker-end="url(#07-pointer-chase-arrow)"/>
+  <path class="fig-line" d="M318 70 Q358 48 394 68" fill="none" marker-end="url(#07-pointer-chase-arrow)"/>
+  <path class="fig-line" d="M398 70 Q438 48 474 68" fill="none" marker-end="url(#07-pointer-chase-arrow)"/>
+  <path class="fig-line" d="M478 70 Q518 48 554 68" fill="none" marker-end="url(#07-pointer-chase-arrow)"/>
+  <path class="fig-line" d="M558 70 Q598 48 634 68" fill="none" marker-end="url(#07-pointer-chase-arrow)"/>
+  <text class="fig-accent-text" x="238" y="124" text-anchor="middle" font-size="12">loop reads</text>
+  <text class="fig-muted" x="358" y="124" text-anchor="middle" font-size="12">already on the way</text>
+  <line class="fig-line" x1="285" y1="110" x2="431" y2="110"/>
+  <text x="20" y="170" font-size="14" font-weight="600">pointer chase</text>
+  <text class="fig-muted" x="140" y="170" font-size="12">the next address is inside the line just loaded, so each hop waits</text>
+  <rect class="fig-accent" x="45" y="236" width="66" height="34" rx="4"/>
+  <text class="fig-mono" x="78" y="258" text-anchor="middle" font-size="12">line 0</text>
+  <rect class="fig-box" x="125" y="236" width="66" height="34" rx="4"/>
+  <text class="fig-mono" x="158" y="258" text-anchor="middle" font-size="12">line 1</text>
+  <rect class="fig-accent" x="205" y="236" width="66" height="34" rx="4"/>
+  <text class="fig-mono" x="238" y="258" text-anchor="middle" font-size="12">line 2</text>
+  <rect class="fig-box" x="285" y="236" width="66" height="34" rx="4"/>
+  <text class="fig-mono" x="318" y="258" text-anchor="middle" font-size="12">line 3</text>
+  <rect class="fig-box" x="365" y="236" width="66" height="34" rx="4"/>
+  <text class="fig-mono" x="398" y="258" text-anchor="middle" font-size="12">line 4</text>
+  <rect class="fig-accent" x="445" y="236" width="66" height="34" rx="4"/>
+  <text class="fig-mono" x="478" y="258" text-anchor="middle" font-size="12">line 5</text>
+  <rect class="fig-box" x="525" y="236" width="66" height="34" rx="4"/>
+  <text class="fig-mono" x="558" y="258" text-anchor="middle" font-size="12">line 6</text>
+  <rect class="fig-accent" x="605" y="236" width="66" height="34" rx="4"/>
+  <text class="fig-mono" x="638" y="258" text-anchor="middle" font-size="12">line 7</text>
+  <path class="fig-accent-line" d="M86 236 Q278 172 470 234" fill="none" marker-end="url(#07-pointer-chase-arrow)"/>
+  <text class="fig-accent-text" x="278" y="196" text-anchor="middle" font-size="12">hop 1</text>
+  <path class="fig-accent-line" d="M470 270 Q358 310 246 272" fill="none" marker-end="url(#07-pointer-chase-arrow)"/>
+  <text class="fig-accent-text" x="358" y="298" text-anchor="middle" font-size="12">hop 2</text>
+  <path class="fig-accent-line" d="M246 236 Q438 216 630 234" fill="none" marker-end="url(#07-pointer-chase-arrow)"/>
+  <text class="fig-accent-text" x="640" y="220" text-anchor="middle" font-size="12">hop 3</text>
+</svg>

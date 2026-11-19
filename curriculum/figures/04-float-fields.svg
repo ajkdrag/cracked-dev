@@ -1,0 +1,81 @@
+<svg viewBox="0 0 720 210" role="img" aria-label="The float 0.15625 is 0x3E200000: sign 0, exponent 124, fraction 01 followed by zeros. That is 1.25 times 2 to the -3.">
+  <defs>
+    <marker id="04-float-fields-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="56" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="65.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-accent" x="75" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="84.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-accent" x="94" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="103.5" y="72" text-anchor="middle" font-size="13">1</text>
+  <rect class="fig-accent" x="113" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="122.5" y="72" text-anchor="middle" font-size="13">1</text>
+  <rect class="fig-accent" x="132" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="141.5" y="72" text-anchor="middle" font-size="13">1</text>
+  <rect class="fig-accent" x="151" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="160.5" y="72" text-anchor="middle" font-size="13">1</text>
+  <rect class="fig-accent" x="170" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="179.5" y="72" text-anchor="middle" font-size="13">1</text>
+  <rect class="fig-accent" x="189" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="198.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-accent" x="208" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="217.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="227" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="236.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="246" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="255.5" y="72" text-anchor="middle" font-size="13">1</text>
+  <rect class="fig-box" x="265" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="274.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="284" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="293.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="303" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="312.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="322" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="331.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="341" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="350.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="360" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="369.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="379" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="388.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="398" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="407.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="417" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="426.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="436" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="445.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="455" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="464.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="474" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="483.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="493" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="502.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="512" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="521.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="531" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="540.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="550" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="559.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="569" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="578.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="588" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="597.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="607" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="616.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="626" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="635.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <rect class="fig-box" x="645" y="50" width="19" height="34"/>
+  <text class="fig-mono" x="654.5" y="72" text-anchor="middle" font-size="13">0</text>
+  <text class="fig-muted" x="65.5" y="40" text-anchor="middle" font-size="12">sign</text>
+  <text class="fig-accent-text" x="151" y="40" text-anchor="middle" font-size="12">exponent, 8 bits</text>
+  <text class="fig-muted" x="445.5" y="40" text-anchor="middle" font-size="12">fraction, 23 bits</text>
+  <text class="fig-mono" x="65.5" y="108" text-anchor="middle" font-size="13">0</text>
+  <text class="fig-muted" x="65.5" y="126" text-anchor="middle" font-size="12">positive</text>
+  <text class="fig-mono" x="151" y="108" text-anchor="middle" font-size="13">124 - 127 = -3</text>
+  <text class="fig-muted" x="151" y="126" text-anchor="middle" font-size="12">power of 2</text>
+  <text class="fig-mono" x="445.5" y="108" text-anchor="middle" font-size="13">1.01 in binary = 1.25</text>
+  <text class="fig-muted" x="445.5" y="126" text-anchor="middle" font-size="12">with the implied 1 in front</text>
+  <text class="fig-mono" x="360" y="172" text-anchor="middle" font-size="14">0x3E200000 = +1.25 × 2<tspan baseline-shift="super" font-size="11">-3</tspan> = 0.15625</text>
+</svg>

@@ -1,0 +1,45 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="One chunk from mmap: an allocated prologue, an allocated block of 48 bytes with its header and footer, a free block of 96 bytes whose next and prev words link it into the free list, and the epilogue header of size 0">
+  <defs>
+    <marker id="08-malloc-block-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="20" y="26" font-size="12">each header and footer holds size | allocated bit</text>
+  <rect class="fig-box" x="20" y="86" width="70" height="44" rx="0"/>
+  <text x="55.0" y="113" text-anchor="middle" font-size="12">prologue</text>
+  <rect class="fig-box" x="90" y="86" width="60" height="44" rx="0"/>
+  <text class="fig-mono" x="120.0" y="113" text-anchor="middle" font-size="13">48|1</text>
+  <rect class="fig-box" x="150" y="86" width="140" height="44" rx="0"/>
+  <text x="220.0" y="113" text-anchor="middle" font-size="12">payload</text>
+  <rect class="fig-box" x="290" y="86" width="60" height="44" rx="0"/>
+  <text class="fig-mono" x="320.0" y="113" text-anchor="middle" font-size="13">48|1</text>
+  <rect class="fig-accent" x="350" y="86" width="60" height="44" rx="0"/>
+  <text class="fig-mono" x="380.0" y="113" text-anchor="middle" font-size="13">96|0</text>
+  <rect class="fig-accent" x="410" y="86" width="60" height="44" rx="0"/>
+  <text class="fig-mono" x="440.0" y="113" text-anchor="middle" font-size="13">next</text>
+  <rect class="fig-accent" x="470" y="86" width="60" height="44" rx="0"/>
+  <text class="fig-mono" x="500.0" y="113" text-anchor="middle" font-size="13">prev</text>
+  <rect class="fig-accent" x="530" y="86" width="50" height="44" rx="0"/>
+  <text x="555.0" y="113" text-anchor="middle" font-size="12">...</text>
+  <rect class="fig-accent" x="580" y="86" width="60" height="44" rx="0"/>
+  <text class="fig-mono" x="610.0" y="113" text-anchor="middle" font-size="13">96|0</text>
+  <rect class="fig-box" x="640" y="86" width="60" height="44" rx="0"/>
+  <text class="fig-mono" x="670.0" y="113" text-anchor="middle" font-size="13">0|1</text>
+  <line class="fig-line" x1="90" y1="70" x2="350" y2="70"/>
+  <line class="fig-line" x1="90" y1="64" x2="90" y2="76"/>
+  <line class="fig-line" x1="350" y1="64" x2="350" y2="76"/>
+  <text class="fig-muted" x="220" y="60" text-anchor="middle" font-size="12">allocated block, 48 bytes</text>
+  <line class="fig-line" x1="352" y1="70" x2="640" y2="70"/>
+  <line class="fig-line" x1="352" y1="64" x2="352" y2="76"/>
+  <line class="fig-line" x1="640" y1="64" x2="640" y2="76"/>
+  <text class="fig-muted" x="496" y="60" text-anchor="middle" font-size="12">free block, 96 bytes</text>
+  <text class="fig-muted" x="120" y="150" text-anchor="middle" font-size="12">header</text>
+  <text class="fig-muted" x="320" y="150" text-anchor="middle" font-size="12">footer</text>
+  <text class="fig-muted" x="670" y="150" text-anchor="middle" font-size="12">epilogue</text>
+  <rect class="fig-box" x="330" y="190" width="160" height="40" rx="6"/>
+  <text x="410.0" y="215.0" text-anchor="middle" font-size="13" font-weight="600">free list head</text>
+  <line class="fig-line" x1="410" y1="188" x2="380" y2="132" marker-end="url(#08-malloc-block-arrow)"/>
+  <path class="fig-line" d="M440 132 L440 170 L560 170 L560 210 L600 210" marker-end="url(#08-malloc-block-arrow)"/>
+  <text class="fig-muted" x="608" y="206" font-size="12">next free</text>
+  <text class="fig-muted" x="608" y="222" font-size="12">block</text>
+</svg>

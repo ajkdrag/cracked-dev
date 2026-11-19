@@ -1,0 +1,28 @@
+<svg viewBox="0 0 720 200" role="img" aria-label="The CPU records frame 2 while the GPU still draws frame 1. Without cycling, frame 2's write lands in memory that frame 1's draw is reading.">
+  <defs>
+    <marker id="14-frames-in-flight-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="64" font-size="13" font-weight="600">CPU</text>
+  <text x="20" y="124" font-size="13" font-weight="600">GPU</text>
+  <rect class="fig-box" x="70" y="40" width="200" height="40" rx="6"/>
+  <text x="170.0" y="65.0" text-anchor="middle" font-size="13" font-weight="600">record frame 1</text>
+  <rect class="fig-accent" x="280" y="40" width="200" height="40" rx="6"/>
+  <text x="380.0" y="65.0" text-anchor="middle" font-size="13" font-weight="600">record frame 2</text>
+  <rect class="fig-box" x="490" y="40" width="200" height="40" rx="6"/>
+  <text x="590.0" y="65.0" text-anchor="middle" font-size="13" font-weight="600">record frame 3</text>
+  <rect class="fig-accent" x="180" y="100" width="200" height="40" rx="6"/>
+  <text x="280.0" y="125.0" text-anchor="middle" font-size="13" font-weight="600">draw frame 1</text>
+  <rect class="fig-box" x="390" y="100" width="200" height="40" rx="6"/>
+  <text x="490.0" y="125.0" text-anchor="middle" font-size="13" font-weight="600">draw frame 2</text>
+  <rect class="fig-box" x="600" y="100" width="100" height="40" rx="6"/>
+  <text x="650.0" y="125.0" text-anchor="middle" font-size="13" font-weight="600">frame 3</text>
+  <line class="fig-accent-line" x1="370" y1="82" x2="370" y2="98"/>
+  <circle class="fig-accent-fill" cx="370" cy="90" r="3"/>
+  <text class="fig-accent-text" x="370" y="170" text-anchor="middle" font-size="12">frame 2 writes the transfer buffer here</text>
+  <text class="fig-muted" x="370" y="188" text-anchor="middle" font-size="12">while frame 1's draw may still read it</text>
+  <line class="fig-accent-line" x1="370" y1="156" x2="370" y2="144" marker-end="url(#14-frames-in-flight-arrow)"/>
+  <line class="fig-line" x1="70" y1="30" x2="690" y2="30" marker-end="url(#14-frames-in-flight-arrow)"/>
+  <text class="fig-muted" x="700" y="26" text-anchor="end" font-size="12">time</text>
+</svg>

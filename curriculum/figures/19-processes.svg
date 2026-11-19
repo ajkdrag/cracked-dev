@@ -1,0 +1,44 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="Three raftd processes on one machine, each listening on a peer port and a client port, connected to each other over TCP, and each keeping its own state file, log file and store directory on disk.">
+  <defs>
+    <marker id="19-processes-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="40" y="120" width="180" height="80" rx="6"/>
+  <text x="130" y="144" text-anchor="middle" font-size="13" font-weight="600">raftd 0</text>
+  <text class="fig-mono" x="130" y="166" text-anchor="middle" font-size="12">peers :9000</text>
+  <text class="fig-mono" x="130" y="184" text-anchor="middle" font-size="12">clients :9100</text>
+  <rect class="fig-box" x="50" y="250" width="160" height="56" rx="6"/>
+  <text class="fig-mono" x="130" y="272" text-anchor="middle" font-size="13">node0/</text>
+  <text class="fig-mono" x="130" y="292" text-anchor="middle" font-size="12">state  log  store/</text>
+  <line class="fig-line" x1="130" y1="200" x2="130" y2="248" marker-end="url(#19-processes-arrow)"/>
+  <text class="fig-muted" x="138" y="230" font-size="12">fsync</text>
+  <rect class="fig-box" x="270" y="120" width="180" height="80" rx="6"/>
+  <text x="360" y="144" text-anchor="middle" font-size="13" font-weight="600">raftd 1</text>
+  <text class="fig-mono" x="360" y="166" text-anchor="middle" font-size="12">peers :9001</text>
+  <text class="fig-mono" x="360" y="184" text-anchor="middle" font-size="12">clients :9101</text>
+  <rect class="fig-box" x="280" y="250" width="160" height="56" rx="6"/>
+  <text class="fig-mono" x="360" y="272" text-anchor="middle" font-size="13">node1/</text>
+  <text class="fig-mono" x="360" y="292" text-anchor="middle" font-size="12">state  log  store/</text>
+  <line class="fig-line" x1="360" y1="200" x2="360" y2="248" marker-end="url(#19-processes-arrow)"/>
+  <text class="fig-muted" x="368" y="230" font-size="12">fsync</text>
+  <rect class="fig-accent" x="500" y="120" width="180" height="80" rx="6"/>
+  <text x="590" y="144" text-anchor="middle" font-size="13" font-weight="600">raftd 2</text>
+  <text class="fig-mono" x="590" y="166" text-anchor="middle" font-size="12">peers :9002</text>
+  <text class="fig-mono" x="590" y="184" text-anchor="middle" font-size="12">clients :9102</text>
+  <rect class="fig-box" x="510" y="250" width="160" height="56" rx="6"/>
+  <text class="fig-mono" x="590" y="272" text-anchor="middle" font-size="13">node2/</text>
+  <text class="fig-mono" x="590" y="292" text-anchor="middle" font-size="12">state  log  store/</text>
+  <line class="fig-line" x1="590" y1="200" x2="590" y2="248" marker-end="url(#19-processes-arrow)"/>
+  <text class="fig-muted" x="598" y="230" font-size="12">fsync</text>
+  <line class="fig-line" x1="220" y1="160" x2="270" y2="160"/>
+  <text class="fig-muted" x="245" y="152" text-anchor="middle" font-size="12">TCP</text>
+  <line class="fig-line" x1="450" y1="160" x2="500" y2="160"/>
+  <text class="fig-muted" x="475" y="152" text-anchor="middle" font-size="12">TCP</text>
+  <path class="fig-line" d="M130 120 L130 90 L590 90 L590 120"/>
+  <text class="fig-muted" x="360" y="82" text-anchor="middle" font-size="12">TCP</text>
+  <rect class="fig-box" x="560" y="24" width="140" height="36" rx="6"/>
+  <text class="fig-mono" x="630" y="47" text-anchor="middle" font-size="13">raftc</text>
+  <line class="fig-line" x1="660" y1="60" x2="660" y2="118" marker-end="url(#19-processes-arrow)"/>
+  <text class="fig-muted" x="668" y="100" font-size="12">put</text>
+</svg>

@@ -1,0 +1,31 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="The CPU's loop: fetch the instruction at ROM[PC], decode its bits into control wires, execute it in the ALU and store the result, then set the PC to A on a jump or to PC + 1 otherwise">
+  <defs>
+    <marker id="03-cpu-loop-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="30" y="30" width="250" height="84" rx="6"/>
+  <text x="155" y="56" text-anchor="middle" font-size="14" font-weight="600">fetch</text>
+  <text class="fig-muted" x="155" y="78" text-anchor="middle" font-size="12">read the word at ROM[PC]</text>
+  <rect class="fig-accent" x="440" y="30" width="250" height="84" rx="6"/>
+  <text x="565" y="56" text-anchor="middle" font-size="14" font-weight="600">decode</text>
+  <text class="fig-muted" x="565" y="78" text-anchor="middle" font-size="12">bit 15: A- or C-instruction</text>
+  <text class="fig-muted" x="565" y="96" text-anchor="middle" font-size="12">a, comp, dest, jump bits drive parts</text>
+  <rect class="fig-box" x="440" y="190" width="250" height="84" rx="6"/>
+  <text x="565" y="216" text-anchor="middle" font-size="14" font-weight="600">execute</text>
+  <text class="fig-muted" x="565" y="238" text-anchor="middle" font-size="12">the ALU computes from D and A or M</text>
+  <text class="fig-muted" x="565" y="256" text-anchor="middle" font-size="12">A, D or M stores the result</text>
+  <rect class="fig-box" x="30" y="190" width="250" height="84" rx="6"/>
+  <text x="155" y="216" text-anchor="middle" font-size="14" font-weight="600">next PC</text>
+  <text class="fig-muted" x="155" y="238" text-anchor="middle" font-size="12">jump taken: PC = A</text>
+  <text class="fig-muted" x="155" y="256" text-anchor="middle" font-size="12">otherwise: PC = PC + 1</text>
+  <line class="fig-line" x1="280" y1="72" x2="438" y2="72" marker-end="url(#03-cpu-loop-arrow)"/>
+  <text class="fig-muted" x="359" y="64" text-anchor="middle" font-size="12">instruction</text>
+  <line class="fig-line" x1="565" y1="114" x2="565" y2="188" marker-end="url(#03-cpu-loop-arrow)"/>
+  <text class="fig-muted" x="575" y="156" font-size="12">control wires</text>
+  <line class="fig-line" x1="440" y1="232" x2="282" y2="232" marker-end="url(#03-cpu-loop-arrow)"/>
+  <text class="fig-mono" x="361" y="224" text-anchor="middle" font-size="12">zr, ng</text>
+  <line class="fig-line" x1="155" y1="190" x2="155" y2="116" marker-end="url(#03-cpu-loop-arrow)"/>
+  <text class="fig-muted" x="145" y="156" text-anchor="end" font-size="12">new PC</text>
+  <text class="fig-accent-text" x="360" y="156" text-anchor="middle" font-size="13">one turn per clock cycle</text>
+</svg>

@@ -1,0 +1,40 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="The Lua state holds pointers into the game library's pages: its allocator, the C functions it calls and the VM code. game_unload closes the state before SDL_UnloadObject unmaps those pages, and the new library opens a fresh state.">
+  <defs>
+    <marker id="14-lua-reload-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="30" width="300" height="150" rx="6"/>
+  <text x="36" y="54" font-size="13" font-weight="600">game library pages</text>
+  <text class="fig-muted" x="36" y="72" font-size="12">unmapped by SDL_UnloadObject</text>
+  <rect class="fig-box" x="40" y="86" width="260" height="34" rx="6"/>
+  <text x="170.0" y="108.0" text-anchor="middle" font-size="12" font-weight="600">Lua VM and allocator code</text>
+  <rect class="fig-box" x="40" y="130" width="260" height="34" rx="6"/>
+  <text x="170.0" y="152.0" text-anchor="middle" font-size="12" font-weight="600">C functions you register</text>
+  <rect class="fig-accent" x="400" y="30" width="300" height="150" rx="6"/>
+  <text class="fig-mono" x="416" y="54" font-size="13" font-weight="600">lua_State</text>
+  <text class="fig-muted" x="416" y="72" font-size="12">lives in heap memory</text>
+  <rect class="fig-box" x="420" y="86" width="260" height="34" rx="6"/>
+  <text x="550.0" y="108.0" text-anchor="middle" font-size="12" font-weight="600">allocator pointer</text>
+  <rect class="fig-box" x="420" y="130" width="260" height="34" rx="6"/>
+  <text x="550.0" y="152.0" text-anchor="middle" font-size="12" font-weight="600">C function pointers</text>
+  <line class="fig-accent-line" x1="420" y1="103" x2="302" y2="103" marker-end="url(#14-lua-reload-arrow)"/>
+  <line class="fig-accent-line" x1="420" y1="147" x2="302" y2="147" marker-end="url(#14-lua-reload-arrow)"/>
+  <text class="fig-accent-text" x="360" y="96" text-anchor="middle" font-size="12">points into</text>
+  <text x="20" y="214" font-size="12" font-weight="600">on F5, in this order:</text>
+  <rect class="fig-accent" x="20" y="226" width="156" height="52" rx="6"/>
+  <text x="98.0" y="248.0" text-anchor="middle" font-size="12" font-weight="600">1 game_unload</text>
+  <text class="fig-muted" x="98.0" y="266.0" text-anchor="middle" font-size="12">lua_close</text>
+  <line class="fig-line" x1="176" y1="252" x2="190" y2="252" marker-end="url(#14-lua-reload-arrow)"/>
+  <rect class="fig-box" x="192" y="226" width="156" height="52" rx="6"/>
+  <text x="270.0" y="248.0" text-anchor="middle" font-size="12" font-weight="600">2 SDL_UnloadObject</text>
+  <text class="fig-muted" x="270.0" y="266.0" text-anchor="middle" font-size="12">pages go away</text>
+  <line class="fig-line" x1="348" y1="252" x2="362" y2="252" marker-end="url(#14-lua-reload-arrow)"/>
+  <rect class="fig-box" x="364" y="226" width="156" height="52" rx="6"/>
+  <text x="442.0" y="248.0" text-anchor="middle" font-size="12" font-weight="600">3 load new library</text>
+  <text class="fig-muted" x="442.0" y="266.0" text-anchor="middle" font-size="12">new code</text>
+  <line class="fig-line" x1="520" y1="252" x2="534" y2="252" marker-end="url(#14-lua-reload-arrow)"/>
+  <rect class="fig-box" x="536" y="226" width="156" height="52" rx="6"/>
+  <text x="614.0" y="248.0" text-anchor="middle" font-size="12" font-weight="600">4 new lua_State</text>
+  <text class="fig-muted" x="614.0" y="266.0" text-anchor="middle" font-size="12">run the scripts</text>
+</svg>

@@ -1,0 +1,30 @@
+<svg viewBox="0 0 720 150" role="img" aria-label="8F14 with VF = 0x80 and V1 = 0x80: the result and the carry go into locals first, then VX, which is VF, gets the low byte 0x00, and the carry 1 is written to VF last">
+  <defs>
+    <marker id="06-vf-order-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="26" y="40" width="140" height="86" rx="6"/>
+  <text x="96" y="64" text-anchor="middle" font-size="13" font-weight="600">read the operands</text>
+  <text class="fig-mono" x="96" y="88" text-anchor="middle" font-size="13">VF = 0x80</text>
+  <text class="fig-mono" x="96" y="108" text-anchor="middle" font-size="13">V1 = 0x80</text>
+  <line class="fig-line" x1="166" y1="83" x2="200" y2="83" marker-end="url(#06-vf-order-arrow)"/>
+  <text class="fig-muted" x="183" y="75" text-anchor="middle" font-size="12">then</text>
+  <rect class="fig-box" x="202" y="40" width="140" height="86" rx="6"/>
+  <text x="272" y="64" text-anchor="middle" font-size="13" font-weight="600">compute in locals</text>
+  <text class="fig-mono" x="272" y="88" text-anchor="middle" font-size="13">r = 0x00</text>
+  <text class="fig-mono" x="272" y="108" text-anchor="middle" font-size="13">f = 1</text>
+  <line class="fig-line" x1="342" y1="83" x2="376" y2="83" marker-end="url(#06-vf-order-arrow)"/>
+  <text class="fig-muted" x="359" y="75" text-anchor="middle" font-size="12">then</text>
+  <rect class="fig-box" x="378" y="40" width="140" height="86" rx="6"/>
+  <text x="448" y="64" text-anchor="middle" font-size="13" font-weight="600">write VX first</text>
+  <text class="fig-mono" x="448" y="88" text-anchor="middle" font-size="13">VF = 0x00</text>
+  <text class="fig-muted" x="448" y="108" text-anchor="middle" font-size="12">VX is VF here</text>
+  <line class="fig-line" x1="518" y1="83" x2="552" y2="83" marker-end="url(#06-vf-order-arrow)"/>
+  <text class="fig-muted" x="535" y="75" text-anchor="middle" font-size="12">then</text>
+  <rect class="fig-accent" x="554" y="40" width="140" height="86" rx="6"/>
+  <text x="624" y="64" text-anchor="middle" font-size="13" font-weight="600">write VF last</text>
+  <text class="fig-mono" x="624" y="88" text-anchor="middle" font-size="13">VF = 0x01</text>
+  <text class="fig-muted" x="624" y="108" text-anchor="middle" font-size="12">the final value</text>
+  <text class="fig-mono" x="26" y="26" font-size="13" font-weight="600">8F14: VF = VF + V1, VF = carry</text>
+</svg>

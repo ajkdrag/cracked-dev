@@ -1,0 +1,48 @@
+<svg viewBox="0 0 720 416" role="img" aria-label="One IR function, newton_sqrt, goes through two target machines. The x86-64 one writes an ELF object where x arrives in xmm0 and is copied to xmm1, and the loop runs divsd and addsd on xmm registers. The AArch64 one writes an ELF object where x stays in d0 and the loop runs fdiv and fadd on d registers. Both return the result in register 0. clang links the x86-64 object for the laptop, and links the AArch64 one statically for qemu-aarch64.">
+  <defs>
+    <marker id="12-two-targets-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-accent" x="20" y="145" width="190" height="110" rx="6"/>
+  <text x="115" y="171" text-anchor="middle" font-size="13" font-weight="600">newton_sqrt, IR</text>
+  <text class="fig-mono" x="32" y="197" font-size="11">fdiv double %x, %g.0</text>
+  <text class="fig-mono" x="32" y="217" font-size="11">fadd double %g.0, ...</text>
+  <text class="fig-mono" x="32" y="237" font-size="11">fmul double ..., 0.5</text>
+
+  <rect class="fig-box" x="250" y="60" width="180" height="70" rx="6"/>
+  <text x="340" y="86" text-anchor="middle" font-size="13" font-weight="600">target machine</text>
+  <text class="fig-mono" x="340" y="110" text-anchor="middle" font-size="12">x86_64-pc-linux-gnu</text>
+
+  <rect class="fig-box" x="250" y="270" width="180" height="70" rx="6"/>
+  <text x="340" y="296" text-anchor="middle" font-size="13" font-weight="600">target machine</text>
+  <text class="fig-mono" x="340" y="320" text-anchor="middle" font-size="12">aarch64-linux-gnu</text>
+
+  <path class="fig-line" d="M 210 185 L 230 185 L 230 95 L 248 95" fill="none" marker-end="url(#12-two-targets-arrow)"/>
+  <path class="fig-line" d="M 210 215 L 230 215 L 230 305 L 248 305" fill="none" marker-end="url(#12-two-targets-arrow)"/>
+
+  <rect class="fig-box" x="470" y="20" width="230" height="150" rx="6"/>
+  <text x="585" y="44" text-anchor="middle" font-size="13" font-weight="600">output.o, ELF x86-64</text>
+  <text class="fig-mono" x="484" y="68" font-size="12">movapd %xmm0, %xmm1</text>
+  <text class="fig-mono" x="484" y="86" font-size="12">movapd %xmm1, %xmm6</text>
+  <text class="fig-mono" x="484" y="104" font-size="12">divsd  %xmm0, %xmm6</text>
+  <text class="fig-mono" x="484" y="122" font-size="12">addsd  %xmm6, %xmm0</text>
+  <text class="fig-muted" x="484" y="144" font-size="12">x arrives in xmm0, lives in xmm1</text>
+  <text class="fig-muted" x="484" y="162" font-size="12">g and the result in xmm0</text>
+
+  <rect class="fig-box" x="470" y="230" width="230" height="140" rx="6"/>
+  <text x="585" y="254" text-anchor="middle" font-size="13" font-weight="600">output.o, ELF AArch64</text>
+  <text class="fig-mono" x="484" y="278" font-size="12">fdiv d6, d0, d1</text>
+  <text class="fig-mono" x="484" y="296" font-size="12">fadd d1, d1, d6</text>
+  <text class="fig-mono" x="484" y="314" font-size="12">fmov d0, d1</text>
+  <text class="fig-muted" x="484" y="336" font-size="12">x arrives and stays in d0</text>
+  <text class="fig-muted" x="484" y="354" font-size="12">g in d1, result leaves in d0</text>
+
+  <line class="fig-line" x1="430" y1="95" x2="468" y2="95" marker-end="url(#12-two-targets-arrow)"/>
+  <text class="fig-muted" x="449" y="87" text-anchor="middle" font-size="12">writes</text>
+  <line class="fig-line" x1="430" y1="305" x2="468" y2="305" marker-end="url(#12-two-targets-arrow)"/>
+  <text class="fig-muted" x="449" y="297" text-anchor="middle" font-size="12">writes</text>
+
+  <text class="fig-muted" x="585" y="196" text-anchor="middle" font-size="12">clang links it, the laptop runs it</text>
+  <text class="fig-muted" x="585" y="396" text-anchor="middle" font-size="12">clang links it, qemu-aarch64 runs it</text>
+</svg>

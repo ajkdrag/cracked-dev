@@ -1,0 +1,69 @@
+<svg viewBox="0 0 720 370" role="img" aria-label="When TIMER0's alarm 0 fires, it sets bit 0 of INTR and raises IRQ 0. The NVIC, with IRQ 0 enabled, marks it pending and interrupts the core. The core pushes eight words onto main's stack, puts EXC_RETURN 0xFFFFFFF9 in lr, reads the handler address from vector table slot 16 and runs timer0_irq. Its bx lr makes the core pop the eight words and resume main.">
+  <defs>
+    <marker id="17-interrupt-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="30" width="116" height="70" rx="6"/>
+  <text x="78" y="52" text-anchor="middle" font-size="13" font-weight="600">TIMER0</text>
+  <text class="fig-muted" x="78" y="70" text-anchor="middle" font-size="12">alarm 0 reached</text>
+  <text class="fig-mono" x="78" y="88" text-anchor="middle" font-size="12">INTR bit 0</text>
+  <line class="fig-line" x1="136" y1="65" x2="154" y2="65" marker-end="url(#17-interrupt-arrow)"/>
+
+  <rect class="fig-box" x="156" y="30" width="116" height="70" rx="6"/>
+  <text x="214" y="52" text-anchor="middle" font-size="13" font-weight="600">NVIC</text>
+  <text class="fig-muted" x="214" y="70" text-anchor="middle" font-size="12">IRQ 0 enabled</text>
+  <text class="fig-muted" x="214" y="88" text-anchor="middle" font-size="12">now pending</text>
+  <line class="fig-line" x1="272" y1="65" x2="290" y2="65" marker-end="url(#17-interrupt-arrow)"/>
+
+  <rect class="fig-accent" x="292" y="30" width="116" height="70" rx="6"/>
+  <text x="350" y="52" text-anchor="middle" font-size="13" font-weight="600">core</text>
+  <text class="fig-muted" x="350" y="70" text-anchor="middle" font-size="12">pushes 8 words</text>
+  <text class="fig-muted" x="350" y="88" text-anchor="middle" font-size="12">sets lr</text>
+  <line class="fig-line" x1="408" y1="65" x2="426" y2="65" marker-end="url(#17-interrupt-arrow)"/>
+
+  <rect class="fig-box" x="428" y="30" width="116" height="70" rx="6"/>
+  <text x="486" y="52" text-anchor="middle" font-size="13" font-weight="600">vector table</text>
+  <text class="fig-muted" x="486" y="70" text-anchor="middle" font-size="12">slot 16 + 0</text>
+  <text class="fig-muted" x="486" y="88" text-anchor="middle" font-size="12">found by VTOR</text>
+  <line class="fig-line" x1="544" y1="65" x2="562" y2="65" marker-end="url(#17-interrupt-arrow)"/>
+
+  <rect class="fig-accent" x="564" y="30" width="136" height="70" rx="6"/>
+  <text class="fig-mono" x="632" y="52" text-anchor="middle" font-size="13">timer0_irq</text>
+  <text class="fig-muted" x="632" y="70" text-anchor="middle" font-size="12">clears INTR bit 0</text>
+  <text class="fig-mono" x="632" y="88" text-anchor="middle" font-size="12">bx lr</text>
+
+  <text x="40" y="150" font-size="13" font-weight="600">lr during the handler</text>
+  <text class="fig-mono" x="40" y="176" font-size="13">0xFFFFFFF9</text>
+  <text class="fig-muted" x="40" y="200" font-size="12">bits 31 to 24 all ones: an EXC_RETURN,</text>
+  <text class="fig-muted" x="40" y="218" font-size="12">not a code address</text>
+  <text class="fig-muted" x="40" y="242" font-size="12">bit 3 = 1: return to thread mode</text>
+  <text class="fig-muted" x="40" y="264" font-size="12">bit 2 = 0: the frame is on the main stack</text>
+  <text class="fig-muted" x="40" y="294" font-size="12">bx lr with this value makes the core pop</text>
+  <text class="fig-muted" x="40" y="312" font-size="12">the 8 words and resume main</text>
+
+  <text x="550" y="142" text-anchor="middle" font-size="13" font-weight="600">main's stack</text>
+  <rect class="fig-box" x="480" y="152" width="140" height="22" rx="4"/>
+  <text class="fig-mono" x="550" y="167" text-anchor="middle" font-size="12">xPSR</text>
+  <rect class="fig-accent" x="480" y="176" width="140" height="22" rx="4"/>
+  <text class="fig-mono" x="550" y="191" text-anchor="middle" font-size="12">return address</text>
+  <rect class="fig-box" x="480" y="200" width="140" height="22" rx="4"/>
+  <text class="fig-mono" x="550" y="215" text-anchor="middle" font-size="12">lr</text>
+  <rect class="fig-box" x="480" y="224" width="140" height="22" rx="4"/>
+  <text class="fig-mono" x="550" y="239" text-anchor="middle" font-size="12">r12</text>
+  <rect class="fig-box" x="480" y="248" width="140" height="22" rx="4"/>
+  <text class="fig-mono" x="550" y="263" text-anchor="middle" font-size="12">r3</text>
+  <rect class="fig-box" x="480" y="272" width="140" height="22" rx="4"/>
+  <text class="fig-mono" x="550" y="287" text-anchor="middle" font-size="12">r2</text>
+  <rect class="fig-box" x="480" y="296" width="140" height="22" rx="4"/>
+  <text class="fig-mono" x="550" y="311" text-anchor="middle" font-size="12">r1</text>
+  <rect class="fig-box" x="480" y="320" width="140" height="22" rx="4"/>
+  <text class="fig-mono" x="550" y="335" text-anchor="middle" font-size="12">r0</text>
+
+  <text class="fig-mono" x="628" y="191" font-size="12">frame[6]</text>
+  <text class="fig-mono" x="628" y="215" font-size="12">frame[5]</text>
+  <text class="fig-mono" x="628" y="335" font-size="12">frame[0]</text>
+  <line class="fig-line" x1="410" y1="331" x2="478" y2="331" marker-end="url(#17-interrupt-arrow)"/>
+  <text class="fig-mono" x="402" y="335" text-anchor="end" font-size="12">sp</text>
+  <text class="fig-muted" x="470" y="160" text-anchor="end" font-size="12">higher addresses</text>
+</svg>

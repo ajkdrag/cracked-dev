@@ -1,0 +1,42 @@
+<svg viewBox="0 0 720 360" role="img" aria-label="write(1, &quot;hi&quot;, 2) goes from the user stub&#x27;s ecall through uservec, usertrap, syscall and sys_write in supervisor mode, and back through prepare_return and userret with sret, with a0 = 2">
+  <defs>
+    <marker id="08-syscall-path-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="140" y="26" text-anchor="middle" font-size="12">user mode</text>
+  <text class="fig-muted" x="520" y="26" text-anchor="middle" font-size="12">supervisor mode</text>
+  <line class="fig-line" x1="300" y1="14" x2="300" y2="346"/>
+  <rect class="fig-box" x="20" y="40" width="240" height="44" rx="6"/>
+  <text class="fig-mono" x="140.0" y="67.0" text-anchor="middle" font-size="13">write(1, "hi", 2)</text>
+  <rect class="fig-box" x="20" y="100" width="240" height="52" rx="6"/>
+  <text x="140.0" y="123.0" text-anchor="middle" font-size="13" font-weight="600">user/usys.S</text>
+  <text class="fig-muted" x="140.0" y="140.0" text-anchor="middle" font-size="12">li a7, SYS_write, then ecall</text>
+  <line class="fig-line" x1="140.0" y1="84" x2="140.0" y2="98" marker-end="url(#08-syscall-path-arrow)"/>
+  <rect class="fig-box" x="340" y="40" width="360" height="48" rx="6"/>
+  <text x="520.0" y="61.0" text-anchor="middle" font-size="13" font-weight="600">uservec, trampoline.S</text>
+  <text class="fig-muted" x="520.0" y="78.0" text-anchor="middle" font-size="12">saves registers, switches page table</text>
+  <rect class="fig-box" x="340" y="104" width="360" height="48" rx="6"/>
+  <text x="520.0" y="125.0" text-anchor="middle" font-size="13" font-weight="600">usertrap, trap.c</text>
+  <text class="fig-muted" x="520.0" y="142.0" text-anchor="middle" font-size="12">cause is ecall: saved pc += 4</text>
+  <line class="fig-line" x1="520.0" y1="88" x2="520.0" y2="102" marker-end="url(#08-syscall-path-arrow)"/>
+  <rect class="fig-accent" x="340" y="168" width="360" height="48" rx="6"/>
+  <text x="520.0" y="189.0" text-anchor="middle" font-size="13" font-weight="600">syscall, syscall.c</text>
+  <text class="fig-muted" x="520.0" y="206.0" text-anchor="middle" font-size="12">num = a7, a0 = syscalls[num]()</text>
+  <line class="fig-line" x1="520.0" y1="152" x2="520.0" y2="166" marker-end="url(#08-syscall-path-arrow)"/>
+  <rect class="fig-box" x="340" y="232" width="360" height="48" rx="6"/>
+  <text x="520.0" y="253.0" text-anchor="middle" font-size="13" font-weight="600">sys_write, sysfile.c</text>
+  <text class="fig-muted" x="520.0" y="270.0" text-anchor="middle" font-size="12">reads arguments, copies the buffer in</text>
+  <line class="fig-line" x1="520.0" y1="216" x2="520.0" y2="230" marker-end="url(#08-syscall-path-arrow)"/>
+  <rect class="fig-box" x="340" y="296" width="360" height="48" rx="6"/>
+  <text x="520.0" y="317.0" text-anchor="middle" font-size="13" font-weight="600">prepare_return, userret</text>
+  <text class="fig-muted" x="520.0" y="334.0" text-anchor="middle" font-size="12">restore registers, sret</text>
+  <line class="fig-line" x1="520.0" y1="280" x2="520.0" y2="294" marker-end="url(#08-syscall-path-arrow)"/>
+  <path class="fig-accent-line" d="M260 126 L320 126 L320 64 L338 64" marker-end="url(#08-syscall-path-arrow)"/>
+  <text class="fig-accent-text" x="266" y="118" font-size="12">ecall</text>
+  <rect class="fig-box" x="20" y="296" width="240" height="48" rx="6"/>
+  <text x="140.0" y="317.0" text-anchor="middle" font-size="13" font-weight="600">write returns</text>
+  <text class="fig-muted" x="140.0" y="334.0" text-anchor="middle" font-size="12">a0 = 2, bytes written</text>
+  <line class="fig-accent-line" x1="340" y1="320" x2="262" y2="320" marker-end="url(#08-syscall-path-arrow)"/>
+  <text class="fig-accent-text" x="266" y="312" font-size="12">sret</text>
+</svg>

@@ -1,0 +1,28 @@
+<svg viewBox="0 0 720 380" role="img" aria-label="A process's address space holds code and data at low addresses, the heap above them growing up, and the stack at high addresses growing down">
+  <defs>
+    <marker id="01-address-space-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="220" y="44" text-anchor="end" font-size="12">high addresses</text>
+  <text class="fig-muted" x="220" y="352" text-anchor="end" font-size="12">low addresses</text>
+  <rect class="fig-accent" x="240" y="30" width="240" height="60" rx="6"/>
+  <text x="360" y="54" text-anchor="middle" font-size="14" font-weight="600">stack</text>
+  <text class="fig-muted" x="360" y="74" text-anchor="middle" font-size="12">local variables, a frame per call</text>
+  <line class="fig-accent-line" x1="300" y1="92" x2="300" y2="132" marker-end="url(#01-address-space-arrow)"/>
+  <text class="fig-accent-text" x="312" y="117" font-size="12">grows down</text>
+  <text class="fig-muted" x="420" y="152" text-anchor="middle" font-size="12">unused</text>
+  <line class="fig-accent-line" x1="300" y1="208" x2="300" y2="168" marker-end="url(#01-address-space-arrow)"/>
+  <text class="fig-accent-text" x="312" y="193" font-size="12">grows up</text>
+  <rect class="fig-accent" x="240" y="210" width="240" height="50" rx="6"/>
+  <text x="360" y="232" text-anchor="middle" font-size="14" font-weight="600">heap</text>
+  <text class="fig-muted" x="360" y="250" text-anchor="middle" font-size="12">blocks from malloc</text>
+  <rect class="fig-box" x="240" y="270" width="240" height="40" rx="6"/>
+  <text x="360" y="295" text-anchor="middle" font-size="13">data: the text "hello, world"</text>
+  <rect class="fig-box" x="240" y="320" width="240" height="40" rx="6"/>
+  <text x="360" y="345" text-anchor="middle" font-size="13">code: instructions of main</text>
+  <line class="fig-line" x1="526" y1="60" x2="484" y2="60" marker-end="url(#01-address-space-arrow)"/>
+  <text class="fig-mono" x="534" y="64" font-size="13">int a[4];</text>
+  <line class="fig-line" x1="526" y1="235" x2="484" y2="235" marker-end="url(#01-address-space-arrow)"/>
+  <text class="fig-mono" x="534" y="239" font-size="13">malloc(32)</text>
+</svg>

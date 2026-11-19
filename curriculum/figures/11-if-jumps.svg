@@ -1,0 +1,32 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="An if with an else compiles to two forward jumps. OP_JUMP_IF_FALSE skips the then-branch, OP_JUMP at its end skips the else-branch, and each branch starts by popping the condition.">
+  <defs>
+    <marker id="11-if-jumps-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="220" y="30" width="220" height="28" rx="6"/>
+  <text x="330.0" y="49" text-anchor="middle" font-size="12">condition</text>
+  <text class="fig-muted" x="456" y="49" text-anchor="start" font-size="12">pushes true or false</text>
+  <rect class="fig-accent" x="220" y="66" width="220" height="28" rx="6"/>
+  <text class="fig-mono" x="330.0" y="85" text-anchor="middle" font-size="12">OP_JUMP_IF_FALSE</text>
+  <text class="fig-muted" x="456" y="85" text-anchor="start" font-size="12">offset patched once else is known</text>
+  <rect class="fig-box" x="220" y="102" width="220" height="28" rx="6"/>
+  <text class="fig-mono" x="330.0" y="121" text-anchor="middle" font-size="12">OP_POP</text>
+  <text class="fig-muted" x="456" y="121" text-anchor="start" font-size="12">then-branch pops the condition</text>
+  <rect class="fig-box" x="220" y="138" width="220" height="28" rx="6"/>
+  <text x="330.0" y="157" text-anchor="middle" font-size="12">then-branch</text>
+  <rect class="fig-accent" x="220" y="174" width="220" height="28" rx="6"/>
+  <text class="fig-mono" x="330.0" y="193" text-anchor="middle" font-size="12">OP_JUMP</text>
+  <text class="fig-muted" x="456" y="193" text-anchor="start" font-size="12">offset patched once end is known</text>
+  <rect class="fig-box" x="220" y="210" width="220" height="28" rx="6"/>
+  <text class="fig-mono" x="330.0" y="229" text-anchor="middle" font-size="12">OP_POP</text>
+  <text class="fig-muted" x="456" y="229" text-anchor="start" font-size="12">else-branch pops the condition</text>
+  <rect class="fig-box" x="220" y="246" width="220" height="28" rx="6"/>
+  <text x="330.0" y="265" text-anchor="middle" font-size="12">else-branch</text>
+  <rect class="fig-box" x="220" y="282" width="220" height="28" rx="6"/>
+  <text x="330.0" y="301" text-anchor="middle" font-size="12">end: next statement</text>
+  <path class="fig-accent-line" d="M 220 80.0 L 180 80.0 L 180 224.0 L 217 224.0" fill="none" marker-end="url(#11-if-jumps-arrow)"/>
+  <text class="fig-accent-text" x="172" y="152.0" text-anchor="end" font-size="12">false</text>
+  <path class="fig-accent-line" d="M 220 188.0 L 130 188.0 L 130 296.0 L 217 296.0" fill="none" marker-end="url(#11-if-jumps-arrow)"/>
+  <text class="fig-accent-text" x="122" y="262.0" text-anchor="end" font-size="12">always</text>
+</svg>

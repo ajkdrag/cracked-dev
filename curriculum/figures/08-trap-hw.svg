@@ -1,0 +1,32 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="What the RISC-V hardware does on an ecall from user mode: it copies the user pc into sepc, the old mode into sstatus.SPP and the cause into scause, then jumps to the address in stvec in supervisor mode, and it leaves the 31 general registers and satp alone">
+<defs><marker id="08-trap-hw-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<text x="150" y="34" text-anchor="middle" font-size="14" font-weight="600">before: the ecall runs</text>
+<text x="570" y="34" text-anchor="middle" font-size="14" font-weight="600">after: the first trap instruction</text>
+<rect class="fig-box" x="20" y="52" width="260" height="36" rx="6"/>
+<text class="fig-mono" x="150" y="75" text-anchor="middle" font-size="13">stvec = 0x3ffffff000</text>
+<rect class="fig-box" x="20" y="102" width="260" height="36" rx="6"/>
+<text class="fig-mono" x="150" y="125" text-anchor="middle" font-size="13">pc = 0x1a4, the ecall</text>
+<rect class="fig-box" x="20" y="152" width="260" height="36" rx="6"/>
+<text class="fig-mono" x="150" y="175" text-anchor="middle" font-size="13">mode = user</text>
+<rect class="fig-accent" x="420" y="52" width="280" height="36" rx="6"/>
+<text class="fig-mono" x="560" y="75" text-anchor="middle" font-size="13">pc = 0x3ffffff000, uservec</text>
+<rect class="fig-accent" x="420" y="102" width="280" height="36" rx="6"/>
+<text class="fig-mono" x="560" y="125" text-anchor="middle" font-size="13">sepc = 0x1a4</text>
+<rect class="fig-accent" x="420" y="152" width="280" height="36" rx="6"/>
+<text class="fig-mono" x="560" y="175" text-anchor="middle" font-size="13">sstatus.SPP = user</text>
+<rect class="fig-accent" x="420" y="202" width="280" height="36" rx="6"/>
+<text class="fig-mono" x="560" y="225" text-anchor="middle" font-size="13">scause = 8, ecall from user</text>
+<rect class="fig-accent" x="420" y="252" width="280" height="36" rx="6"/>
+<text class="fig-mono" x="560" y="275" text-anchor="middle" font-size="13">mode = supervisor</text>
+<line class="fig-line" x1="282" y1="70" x2="417" y2="70" marker-end="url(#08-trap-hw-arrow)"/>
+<text class="fig-muted" x="350" y="64" text-anchor="middle" font-size="12">jumps to</text>
+<line class="fig-line" x1="282" y1="120" x2="417" y2="120" marker-end="url(#08-trap-hw-arrow)"/>
+<text class="fig-muted" x="350" y="114" text-anchor="middle" font-size="12">copies</text>
+<line class="fig-line" x1="282" y1="170" x2="417" y2="170" marker-end="url(#08-trap-hw-arrow)"/>
+<text class="fig-muted" x="350" y="164" text-anchor="middle" font-size="12">copies</text>
+<rect class="fig-box" x="20" y="202" width="260" height="86" rx="6"/>
+<text x="150" y="232" text-anchor="middle" font-size="13" font-weight="600">not touched</text>
+<text class="fig-muted" x="150" y="254" text-anchor="middle" font-size="12">x1 to x31, including sp</text>
+<text class="fig-muted" x="150" y="272" text-anchor="middle" font-size="12">satp, the user page table</text>
+<text class="fig-muted" x="560" y="310" text-anchor="middle" font-size="12">interrupts are also turned off</text>
+</svg>

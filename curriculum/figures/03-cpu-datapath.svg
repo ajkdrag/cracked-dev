@@ -1,0 +1,56 @@
+<svg viewBox="0 0 720 400" role="img" aria-label="Inside the Hack CPU: the instruction's bits drive the select pins of the two Mux16s, the load pins of A and D, the ALU's six control pins, writeM and the jump logic that loads the PC">
+  <defs>
+    <marker id="03-cpu-datapath-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-mono" x="20" y="140" font-size="13">instruction</text>
+  <line class="fig-line" x1="20" y1="170" x2="98" y2="170" marker-end="url(#03-cpu-datapath-arrow)"/>
+  <rect class="fig-box" x="100" y="150" width="60" height="80" rx="6"/>
+  <text x="130.0" y="188.0" text-anchor="middle" font-size="14" font-weight="600">Mux</text>
+  <text class="fig-muted" x="130.0" y="205.0" text-anchor="middle" font-size="12">16</text>
+  <text class="fig-accent-text" x="130" y="250" text-anchor="middle" font-size="12">sel: bit 15</text>
+  <line class="fig-line" x1="160" y1="190" x2="198" y2="190" marker-end="url(#03-cpu-datapath-arrow)"/>
+  <rect class="fig-box" x="200" y="162" width="70" height="56" rx="6"/>
+  <text x="235.0" y="195.0" text-anchor="middle" font-size="14" font-weight="600">A</text>
+  <text class="fig-accent-text" x="235" y="152" text-anchor="middle" font-size="12">load: bit 15, d1</text>
+  <line class="fig-line" x1="270" y1="190" x2="300" y2="190"/>
+  <circle class="fig-accent-fill" cx="300" cy="190" r="2.5"/>
+  <path class="fig-line" d="M300 190 L300 230 L328 230" marker-end="url(#03-cpu-datapath-arrow)"/>
+  <path class="fig-line" d="M300 190 L300 61 L598 61" marker-end="url(#03-cpu-datapath-arrow)"/>
+  <text class="fig-muted" x="450" y="53" text-anchor="middle" font-size="12">A is addressM and the jump target</text>
+  <rect class="fig-box" x="330" y="210" width="60" height="80" rx="6"/>
+  <text x="360.0" y="248.0" text-anchor="middle" font-size="14" font-weight="600">Mux</text>
+  <text class="fig-muted" x="360.0" y="265.0" text-anchor="middle" font-size="12">16</text>
+  <text class="fig-accent-text" x="360" y="202" text-anchor="middle" font-size="12">sel: a bit</text>
+  <text class="fig-mono" x="256" y="274" font-size="13">inM</text>
+  <line class="fig-line" x1="286" y1="270" x2="328" y2="270" marker-end="url(#03-cpu-datapath-arrow)"/>
+  <line class="fig-line" x1="390" y1="250" x2="448" y2="250" marker-end="url(#03-cpu-datapath-arrow)"/>
+  <rect class="fig-box" x="330" y="300" width="70" height="40" rx="6"/>
+  <text x="365.0" y="325.0" text-anchor="middle" font-size="14" font-weight="600">D</text>
+  <text class="fig-accent-text" x="365" y="358" text-anchor="middle" font-size="12">load: d2</text>
+  <line class="fig-line" x1="400" y1="320" x2="448" y2="320" marker-end="url(#03-cpu-datapath-arrow)"/>
+  <rect class="fig-accent" x="450" y="220" width="90" height="120" rx="6"/>
+  <text x="495" y="286" text-anchor="middle" font-size="14" font-weight="600">ALU</text>
+  <text class="fig-muted" x="460" y="254" font-size="11">y</text>
+  <text class="fig-muted" x="460" y="324" font-size="11">x</text>
+  <text class="fig-accent-text" x="495" y="212" text-anchor="middle" font-size="12">comp: bits 11-6</text>
+  <line class="fig-line" x1="540" y1="280" x2="570" y2="280"/>
+  <circle class="fig-accent-fill" cx="570" cy="280" r="2.5"/>
+  <line class="fig-line" x1="570" y1="280" x2="596" y2="280" marker-end="url(#03-cpu-datapath-arrow)"/>
+  <text class="fig-mono" x="602" y="284" font-size="13">outM</text>
+  <text class="fig-accent-text" x="602" y="304" font-size="12">writeM: d3</text>
+  <path class="fig-line" d="M570 280 L570 372 L80 372 L80 210 L98 210" marker-end="url(#03-cpu-datapath-arrow)"/>
+  <circle class="fig-accent-fill" cx="310" cy="372" r="2.5"/>
+  <path class="fig-line" d="M310 372 L310 320 L328 320" marker-end="url(#03-cpu-datapath-arrow)"/>
+  <path class="fig-line" d="M540 240 L580 240 L580 160 L598 160" marker-end="url(#03-cpu-datapath-arrow)"/>
+  <text class="fig-mono fig-muted" x="560" y="232" text-anchor="middle" font-size="11">zr ng</text>
+  <rect class="fig-box" x="600" y="132" width="96" height="56" rx="6"/>
+  <text x="648.0" y="158.0" text-anchor="middle" font-size="14" font-weight="600">jump</text>
+  <text class="fig-muted" x="648.0" y="175.0" text-anchor="middle" font-size="12">j bits 2-0</text>
+  <line class="fig-line" x1="648" y1="132" x2="648" y2="90" marker-end="url(#03-cpu-datapath-arrow)"/>
+  <text class="fig-muted" x="654" y="116" font-size="11">load</text>
+  <rect class="fig-box" x="600" y="36" width="96" height="52" rx="6"/>
+  <text x="648.0" y="60.0" text-anchor="middle" font-size="14" font-weight="600">PC</text>
+  <text class="fig-muted" x="648.0" y="77.0" text-anchor="middle" font-size="12">next address</text>
+</svg>

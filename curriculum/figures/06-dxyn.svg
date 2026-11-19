@@ -1,0 +1,158 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="D013 reads three sprite rows at I and XORs them onto the display at column 60, row 2: columns 60 to 63 are drawn and the four columns past the right edge are cut off">
+  <defs>
+    <marker id="06-dxyn-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="36" font-size="14" font-weight="600">sprite rows in memory</text>
+  <text class="fig-mono" x="20" y="123" font-size="12">I</text>
+  <text class="fig-mono fig-muted" x="58" y="123" font-size="12">0xFF</text>
+  <rect class="fig-box" x="104" y="110" width="14" height="18" rx="2"/>
+  <rect class="fig-accent-fill" x="107" y="113" width="8" height="12" rx="1"/>
+  <rect class="fig-box" x="120" y="110" width="14" height="18" rx="2"/>
+  <rect class="fig-accent-fill" x="123" y="113" width="8" height="12" rx="1"/>
+  <rect class="fig-box" x="136" y="110" width="14" height="18" rx="2"/>
+  <rect class="fig-accent-fill" x="139" y="113" width="8" height="12" rx="1"/>
+  <rect class="fig-box" x="152" y="110" width="14" height="18" rx="2"/>
+  <rect class="fig-accent-fill" x="155" y="113" width="8" height="12" rx="1"/>
+  <rect class="fig-box" x="168" y="110" width="14" height="18" rx="2"/>
+  <rect class="fig-accent-fill" x="171" y="113" width="8" height="12" rx="1"/>
+  <rect class="fig-box" x="184" y="110" width="14" height="18" rx="2"/>
+  <rect class="fig-accent-fill" x="187" y="113" width="8" height="12" rx="1"/>
+  <rect class="fig-box" x="200" y="110" width="14" height="18" rx="2"/>
+  <rect class="fig-accent-fill" x="203" y="113" width="8" height="12" rx="1"/>
+  <rect class="fig-box" x="216" y="110" width="14" height="18" rx="2"/>
+  <rect class="fig-accent-fill" x="219" y="113" width="8" height="12" rx="1"/>
+  <text class="fig-mono" x="20" y="147" font-size="12">I+1</text>
+  <text class="fig-mono fig-muted" x="58" y="147" font-size="12">0x81</text>
+  <rect class="fig-box" x="104" y="134" width="14" height="18" rx="2"/>
+  <rect class="fig-accent-fill" x="107" y="137" width="8" height="12" rx="1"/>
+  <rect class="fig-box" x="120" y="134" width="14" height="18" rx="2"/>
+  <rect class="fig-box" x="136" y="134" width="14" height="18" rx="2"/>
+  <rect class="fig-box" x="152" y="134" width="14" height="18" rx="2"/>
+  <rect class="fig-box" x="168" y="134" width="14" height="18" rx="2"/>
+  <rect class="fig-box" x="184" y="134" width="14" height="18" rx="2"/>
+  <rect class="fig-box" x="200" y="134" width="14" height="18" rx="2"/>
+  <rect class="fig-box" x="216" y="134" width="14" height="18" rx="2"/>
+  <rect class="fig-accent-fill" x="219" y="137" width="8" height="12" rx="1"/>
+  <text class="fig-mono" x="20" y="171" font-size="12">I+2</text>
+  <text class="fig-mono fig-muted" x="58" y="171" font-size="12">0xFF</text>
+  <rect class="fig-box" x="104" y="158" width="14" height="18" rx="2"/>
+  <rect class="fig-accent-fill" x="107" y="161" width="8" height="12" rx="1"/>
+  <rect class="fig-box" x="120" y="158" width="14" height="18" rx="2"/>
+  <rect class="fig-accent-fill" x="123" y="161" width="8" height="12" rx="1"/>
+  <rect class="fig-box" x="136" y="158" width="14" height="18" rx="2"/>
+  <rect class="fig-accent-fill" x="139" y="161" width="8" height="12" rx="1"/>
+  <rect class="fig-box" x="152" y="158" width="14" height="18" rx="2"/>
+  <rect class="fig-accent-fill" x="155" y="161" width="8" height="12" rx="1"/>
+  <rect class="fig-box" x="168" y="158" width="14" height="18" rx="2"/>
+  <rect class="fig-accent-fill" x="171" y="161" width="8" height="12" rx="1"/>
+  <rect class="fig-box" x="184" y="158" width="14" height="18" rx="2"/>
+  <rect class="fig-accent-fill" x="187" y="161" width="8" height="12" rx="1"/>
+  <rect class="fig-box" x="200" y="158" width="14" height="18" rx="2"/>
+  <rect class="fig-accent-fill" x="203" y="161" width="8" height="12" rx="1"/>
+  <rect class="fig-box" x="216" y="158" width="14" height="18" rx="2"/>
+  <rect class="fig-accent-fill" x="219" y="161" width="8" height="12" rx="1"/>
+  <text class="fig-muted" x="20" y="96" font-size="12">8 pixels per byte</text>
+  <line class="fig-line" x1="250" y1="140" x2="350" y2="140" marker-end="url(#06-dxyn-arrow)"/>
+  <text class="fig-mono" x="300" y="130" text-anchor="middle" font-size="13" font-weight="600">D013</text>
+  <text class="fig-muted" x="300" y="158" text-anchor="middle" font-size="12">V0 = 60, V1 = 2</text>
+  <text class="fig-muted" x="300" y="174" text-anchor="middle" font-size="12">XOR onto display</text>
+  <text x="380" y="36" font-size="14" font-weight="600">display, near its right edge</text>
+  <text class="fig-mono fig-muted" x="390" y="62" text-anchor="middle" font-size="11">56</text>
+  <text class="fig-mono fig-muted" x="410" y="62" text-anchor="middle" font-size="11">57</text>
+  <text class="fig-mono fig-muted" x="430" y="62" text-anchor="middle" font-size="11">58</text>
+  <text class="fig-mono fig-muted" x="450" y="62" text-anchor="middle" font-size="11">59</text>
+  <text class="fig-mono fig-muted" x="470" y="62" text-anchor="middle" font-size="11">60</text>
+  <text class="fig-mono fig-muted" x="490" y="62" text-anchor="middle" font-size="11">61</text>
+  <text class="fig-mono fig-muted" x="510" y="62" text-anchor="middle" font-size="11">62</text>
+  <text class="fig-mono fig-muted" x="530" y="62" text-anchor="middle" font-size="11">63</text>
+  <text class="fig-mono fig-muted" x="550" y="62" text-anchor="middle" font-size="11">64</text>
+  <text class="fig-mono fig-muted" x="570" y="62" text-anchor="middle" font-size="11">65</text>
+  <text class="fig-mono fig-muted" x="590" y="62" text-anchor="middle" font-size="11">66</text>
+  <text class="fig-mono fig-muted" x="610" y="62" text-anchor="middle" font-size="11">67</text>
+  <text class="fig-mono fig-muted" x="372" y="84" text-anchor="end" font-size="11">0</text>
+  <rect class="fig-box" x="380" y="70" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="400" y="70" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="420" y="70" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="440" y="70" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="460" y="70" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="480" y="70" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="500" y="70" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="520" y="70" width="20" height="20" rx="2"/>
+  <text class="fig-mono fig-muted" x="372" y="104" text-anchor="end" font-size="11">1</text>
+  <rect class="fig-box" x="380" y="90" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="400" y="90" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="420" y="90" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="440" y="90" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="460" y="90" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="480" y="90" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="500" y="90" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="520" y="90" width="20" height="20" rx="2"/>
+  <text class="fig-mono fig-muted" x="372" y="124" text-anchor="end" font-size="11">2</text>
+  <rect class="fig-box" x="380" y="110" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="400" y="110" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="420" y="110" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="440" y="110" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="460" y="110" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="480" y="110" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="500" y="110" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="520" y="110" width="20" height="20" rx="2"/>
+  <text class="fig-mono fig-muted" x="372" y="144" text-anchor="end" font-size="11">3</text>
+  <rect class="fig-box" x="380" y="130" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="400" y="130" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="420" y="130" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="440" y="130" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="460" y="130" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="480" y="130" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="500" y="130" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="520" y="130" width="20" height="20" rx="2"/>
+  <text class="fig-mono fig-muted" x="372" y="164" text-anchor="end" font-size="11">4</text>
+  <rect class="fig-box" x="380" y="150" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="400" y="150" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="420" y="150" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="440" y="150" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="460" y="150" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="480" y="150" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="500" y="150" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="520" y="150" width="20" height="20" rx="2"/>
+  <text class="fig-mono fig-muted" x="372" y="184" text-anchor="end" font-size="11">5</text>
+  <rect class="fig-box" x="380" y="170" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="400" y="170" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="420" y="170" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="440" y="170" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="460" y="170" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="480" y="170" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="500" y="170" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="520" y="170" width="20" height="20" rx="2"/>
+  <text class="fig-mono fig-muted" x="372" y="204" text-anchor="end" font-size="11">6</text>
+  <rect class="fig-box" x="380" y="190" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="400" y="190" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="420" y="190" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="440" y="190" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="460" y="190" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="480" y="190" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="500" y="190" width="20" height="20" rx="2"/>
+  <rect class="fig-box" x="520" y="190" width="20" height="20" rx="2"/>
+  <rect class="fig-accent-fill" x="463" y="113" width="14" height="14" rx="1"/>
+  <rect class="fig-accent-fill" x="483" y="113" width="14" height="14" rx="1"/>
+  <rect class="fig-accent-fill" x="503" y="113" width="14" height="14" rx="1"/>
+  <rect class="fig-accent-fill" x="523" y="113" width="14" height="14" rx="1"/>
+  <rect class="fig-line" x="543" y="113" width="14" height="14" rx="1" stroke-dasharray="3 2"/>
+  <rect class="fig-line" x="563" y="113" width="14" height="14" rx="1" stroke-dasharray="3 2"/>
+  <rect class="fig-line" x="583" y="113" width="14" height="14" rx="1" stroke-dasharray="3 2"/>
+  <rect class="fig-line" x="603" y="113" width="14" height="14" rx="1" stroke-dasharray="3 2"/>
+  <rect class="fig-accent-fill" x="463" y="133" width="14" height="14" rx="1"/>
+  <rect class="fig-line" x="603" y="133" width="14" height="14" rx="1" stroke-dasharray="3 2"/>
+  <rect class="fig-accent-fill" x="463" y="153" width="14" height="14" rx="1"/>
+  <rect class="fig-accent-fill" x="483" y="153" width="14" height="14" rx="1"/>
+  <rect class="fig-accent-fill" x="503" y="153" width="14" height="14" rx="1"/>
+  <rect class="fig-accent-fill" x="523" y="153" width="14" height="14" rx="1"/>
+  <rect class="fig-line" x="543" y="153" width="14" height="14" rx="1" stroke-dasharray="3 2"/>
+  <rect class="fig-line" x="563" y="153" width="14" height="14" rx="1" stroke-dasharray="3 2"/>
+  <rect class="fig-line" x="583" y="153" width="14" height="14" rx="1" stroke-dasharray="3 2"/>
+  <rect class="fig-line" x="603" y="153" width="14" height="14" rx="1" stroke-dasharray="3 2"/>
+  <line class="fig-accent-line" x1="540" y1="66" x2="540" y2="216" stroke-width="1.5"/>
+  <text class="fig-accent-text" x="534" y="234" text-anchor="end" font-size="12">right edge, x = 64</text>
+  <text class="fig-muted" x="580" y="234" text-anchor="middle" font-size="12">cut off</text>
+</svg>

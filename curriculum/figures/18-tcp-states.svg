@@ -1,0 +1,36 @@
+<svg viewBox="0 0 720 290" role="img" aria-label="The server&#x27;s path through TCP&#x27;s states. LISTEN receives a SYN and answers SYN-ACK, moving to SYN-RECEIVED. The ACK of that SYN-ACK moves it to ESTABLISHED. The peer&#x27;s FIN is acknowledged and moves it to CLOSE-WAIT. The application closes, which sends a FIN and moves it to LAST-ACK, and the ACK of that FIN moves it to CLOSED. A RST in SYN-RECEIVED or any later state frees the connection&#x27;s table entry at once, and the listener stays">
+  <defs>
+    <marker id="18-tcp-states-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="40" width="140" height="48" rx="6"/>
+  <text x="90.0" y="68.55" text-anchor="middle" font-size="13" font-weight="600">LISTEN</text>
+  <rect class="fig-box" x="290" y="40" width="150" height="48" rx="6"/>
+  <text x="365.0" y="68.55" text-anchor="middle" font-size="13" font-weight="600">SYN-RECEIVED</text>
+  <rect class="fig-accent" x="560" y="40" width="140" height="48" rx="6"/>
+  <text x="630.0" y="61.0" text-anchor="middle" font-size="13" font-weight="600">ESTABLISHED</text>
+  <text class="fig-muted" x="630.0" y="78.0" text-anchor="middle" font-size="12">data both ways</text>
+  <rect class="fig-box" x="560" y="190" width="140" height="48" rx="6"/>
+  <text x="630.0" y="218.55" text-anchor="middle" font-size="13" font-weight="600">CLOSE-WAIT</text>
+  <rect class="fig-box" x="290" y="190" width="150" height="48" rx="6"/>
+  <text x="365.0" y="218.55" text-anchor="middle" font-size="13" font-weight="600">LAST-ACK</text>
+  <rect class="fig-box" x="20" y="190" width="140" height="48" rx="6"/>
+  <text x="90.0" y="218.55" text-anchor="middle" font-size="13" font-weight="600">CLOSED</text>
+  <line class="fig-line" x1="160" y1="64" x2="288" y2="64" marker-end="url(#18-tcp-states-arrow)"/>
+  <text class="fig-mono" x="224" y="56" text-anchor="middle" font-size="12">rcv SYN</text>
+  <text class="fig-muted" x="224" y="82" text-anchor="middle" font-size="12">snd SYN-ACK</text>
+  <line class="fig-line" x1="440" y1="64" x2="558" y2="64" marker-end="url(#18-tcp-states-arrow)"/>
+  <text class="fig-mono" x="499" y="56" text-anchor="middle" font-size="12">rcv ACK</text>
+  <text class="fig-muted" x="499" y="82" text-anchor="middle" font-size="12">of the SYN</text>
+  <line class="fig-line" x1="630" y1="88" x2="630" y2="188" marker-end="url(#18-tcp-states-arrow)"/>
+  <text class="fig-mono" x="620" y="140" text-anchor="end" font-size="12">rcv FIN</text>
+  <text class="fig-muted" x="620" y="156" text-anchor="end" font-size="12">snd ACK</text>
+  <line class="fig-line" x1="560" y1="214" x2="442" y2="214" marker-end="url(#18-tcp-states-arrow)"/>
+  <text class="fig-mono" x="499" y="206" text-anchor="middle" font-size="12">app closes</text>
+  <text class="fig-muted" x="499" y="232" text-anchor="middle" font-size="12">snd FIN</text>
+  <line class="fig-line" x1="290" y1="214" x2="162" y2="214" marker-end="url(#18-tcp-states-arrow)"/>
+  <text class="fig-mono" x="224" y="206" text-anchor="middle" font-size="12">rcv ACK</text>
+  <text class="fig-muted" x="224" y="232" text-anchor="middle" font-size="12">of the FIN</text>
+  <text class="fig-accent-text" x="360" y="272" text-anchor="middle" font-size="12">rcv RST in SYN-RECEIVED or later: free the entry, the listener stays</text>
+</svg>

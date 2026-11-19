@@ -1,18 +1,21 @@
 {
-  "name": "systems-roadmap-portal",
+  "name": "cracked-dev-portal",
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node build.mjs",
+    "start": "node server.mjs",
     "test": "node --test tests/*.test.mjs",
-    "format": "prettier --write build.mjs app.js diagrams.js styles.css curated.json tests/*.mjs README.md RESOURCE-REVIEW.md",
-    "format:check": "prettier --check build.mjs app.js diagrams.js styles.css curated.json tests/*.mjs README.md RESOURCE-REVIEW.md",
-    "check": "node --check app.js && node --check diagrams.js && node --check build.mjs"
+    "format": "prettier --write *.mjs static tests README.md",
+    "format:check": "prettier --check *.mjs static tests README.md",
+    "check-links": "node check-links.mjs",
+    "build-site": "node build-site.mjs"
   },
   "devDependencies": {
-    "esbuild": "^0.28.2",
-    "marked": "18.0.14",
-    "mermaid": "^12.0.0",
     "prettier": "3.9.9"
+  },
+  "dependencies": {
+    "bulma": "1.0.4",
+    "htmx.org": "2.0.11",
+    "marked": "18.2.0"
   }
 }

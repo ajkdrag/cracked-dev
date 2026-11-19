@@ -1,0 +1,33 @@
+<svg viewBox="0 0 720 190" role="img" aria-label="head on the stack points at the first of three nodes on the heap, each node points at the next, and the last next is NULL">
+  <defs>
+    <marker id="02-linked-list-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="415" y="40" text-anchor="middle" font-size="12">on the heap, each node from its own malloc, all owned by the list</text>
+  <rect class="fig-box" x="20" y="60" width="80" height="44" rx="6"/>
+  <text class="fig-mono" x="60" y="87" text-anchor="middle" font-size="14">head</text>
+  <line class="fig-line" x1="100" y1="82" x2="148" y2="82" marker-end="url(#02-linked-list-arrow)"/>
+  <rect class="fig-accent" x="150" y="60" width="150" height="44"/>
+  <line class="fig-line" x1="200" y1="60" x2="200" y2="104"/>
+  <text class="fig-mono" x="175" y="87" text-anchor="middle" font-size="14">3</text>
+  <circle class="fig-accent-fill" cx="250" cy="82" r="4"/>
+  <line class="fig-line" x1="250" y1="82" x2="338" y2="82" marker-end="url(#02-linked-list-arrow)"/>
+  <text class="fig-mono fig-muted" x="175" y="126" text-anchor="middle" font-size="12">value</text>
+  <text class="fig-mono fig-muted" x="250" y="126" text-anchor="middle" font-size="12">next</text>
+  <rect class="fig-accent" x="340" y="60" width="150" height="44"/>
+  <line class="fig-line" x1="390" y1="60" x2="390" y2="104"/>
+  <text class="fig-mono" x="365" y="87" text-anchor="middle" font-size="14">7</text>
+  <circle class="fig-accent-fill" cx="440" cy="82" r="4"/>
+  <line class="fig-line" x1="440" y1="82" x2="528" y2="82" marker-end="url(#02-linked-list-arrow)"/>
+  <text class="fig-mono fig-muted" x="365" y="126" text-anchor="middle" font-size="12">value</text>
+  <text class="fig-mono fig-muted" x="440" y="126" text-anchor="middle" font-size="12">next</text>
+  <rect class="fig-accent" x="530" y="60" width="150" height="44"/>
+  <line class="fig-line" x1="580" y1="60" x2="580" y2="104"/>
+  <text class="fig-mono" x="555" y="87" text-anchor="middle" font-size="14">9</text>
+  <text class="fig-mono fig-muted" x="630" y="87" text-anchor="middle" font-size="13">NULL</text>
+  <text class="fig-mono fig-muted" x="555" y="126" text-anchor="middle" font-size="12">value</text>
+  <text class="fig-mono fig-muted" x="630" y="126" text-anchor="middle" font-size="12">next</text>
+  <text class="fig-muted" x="60" y="126" text-anchor="middle" font-size="12">on the stack</text>
+  <text class="fig-muted" x="20" y="166" font-size="12">list_free walks this chain and frees every node, then sets head to NULL.</text>
+</svg>

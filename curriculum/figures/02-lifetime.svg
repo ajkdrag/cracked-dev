@@ -1,0 +1,26 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="A local of list_push_front dies when the function returns, while the node it got from malloc lives on until free is called">
+  <defs>
+    <marker id="02-lifetime-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <line class="fig-line" x1="260" y1="36" x2="260" y2="186" stroke-dasharray="3 3"/>
+  <text class="fig-mono fig-muted" x="260" y="228" text-anchor="middle" font-size="12">call</text>
+  <line class="fig-line" x1="320" y1="36" x2="320" y2="186" stroke-dasharray="3 3"/>
+  <text class="fig-mono fig-muted" x="320" y="228" text-anchor="middle" font-size="12">malloc</text>
+  <line class="fig-line" x1="420" y1="36" x2="420" y2="186" stroke-dasharray="3 3"/>
+  <text class="fig-mono fig-muted" x="420" y="228" text-anchor="middle" font-size="12">return</text>
+  <line class="fig-line" x1="620" y1="36" x2="620" y2="186" stroke-dasharray="3 3"/>
+  <text class="fig-mono fig-muted" x="620" y="228" text-anchor="middle" font-size="12">free</text>
+  <text x="20" y="61" font-size="13">main's locals</text>
+  <rect class="fig-box" x="200" y="40" width="490" height="30" rx="6"/>
+  <text class="fig-muted" x="445" y="60" text-anchor="middle" font-size="12">the stack, main's frame</text>
+  <text x="20" y="111" font-size="13">list_push_front's locals</text>
+  <rect class="fig-box" x="260" y="90" width="160" height="30" rx="6"/>
+  <text class="fig-muted" x="340" y="110" text-anchor="middle" font-size="12">the stack, a new frame</text>
+  <text x="20" y="161" font-size="13">the node from malloc</text>
+  <rect class="fig-accent" x="320" y="140" width="300" height="30" rx="6"/>
+  <text class="fig-muted" x="470" y="160" text-anchor="middle" font-size="12">the heap</text>
+  <line class="fig-line" x1="200" y1="200" x2="698" y2="200" marker-end="url(#02-lifetime-arrow)"/>
+  <text class="fig-muted" x="20" y="204" font-size="12">time</text>
+</svg>

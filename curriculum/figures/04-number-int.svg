@@ -1,0 +1,32 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="The integer part of a JSON number as states: an optional minus sign, then either a single 0 or a digit from 1 to 9 followed by any number of digits. The ringed states are where the integer part may end.">
+  <defs>
+    <marker id="04-number-int-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <circle class="fig-box" cx="70" cy="120" r="26"/>
+  <text x="70" y="125" text-anchor="middle" font-size="12">start</text>
+  <circle class="fig-box" cx="230" cy="60" r="26"/>
+  <text x="230" y="65" text-anchor="middle" font-size="12">sign</text>
+  <circle class="fig-accent" cx="430" cy="60" r="31"/>
+  <circle class="fig-accent" cx="430" cy="60" r="26"/>
+  <circle class="fig-accent" cx="430" cy="190" r="31"/>
+  <circle class="fig-accent" cx="430" cy="190" r="26"/>
+  <text x="430" y="65" text-anchor="middle" font-size="12">zero</text>
+  <text x="430" y="195" text-anchor="middle" font-size="12">digits</text>
+  <line class="fig-line" x1="94" y1="108" x2="204" y2="70" marker-end="url(#04-number-int-arrow)"/>
+  <text class="fig-mono" x="140" y="80" text-anchor="middle" font-size="14">-</text>
+  <line class="fig-line" x1="256" y1="60" x2="397" y2="60" marker-end="url(#04-number-int-arrow)"/>
+  <text class="fig-mono" x="326" y="50" text-anchor="middle" font-size="14">0</text>
+  <path class="fig-line" d="M 248 79 L 401 178" fill="none" marker-end="url(#04-number-int-arrow)"/>
+  <text class="fig-mono" x="310" y="140" text-anchor="middle" font-size="13">1-9</text>
+  <path class="fig-line" d="M 92 135 Q 200 230 397 196" fill="none" marker-end="url(#04-number-int-arrow)"/>
+  <text class="fig-mono" x="210" y="212" text-anchor="middle" font-size="13">1-9</text>
+  <path class="fig-line" d="M 90 102 Q 220 -10 400 50" fill="none" marker-end="url(#04-number-int-arrow)"/>
+  <text class="fig-mono" x="230" y="24" text-anchor="middle" font-size="14">0</text>
+  <path class="fig-line" d="M 458 172 C 520 140 540 230 461 204" fill="none" marker-end="url(#04-number-int-arrow)"/>
+  <text class="fig-mono" x="548" y="196" font-size="13">0-9</text>
+  <line class="fig-accent-line" x1="461" y1="60" x2="560" y2="60" marker-end="url(#04-number-int-arrow)"/>
+  <text class="fig-muted" x="570" y="64" font-size="12">end, or . e E</text>
+  <text class="fig-muted" x="570" y="120" font-size="12">ringed: may end here</text>
+</svg>

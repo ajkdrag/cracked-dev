@@ -1,0 +1,49 @@
+<svg viewBox="0 0 720 340" role="img" aria-label="The cooker reads a manifest that lists PNG, glTF and WAV files and writes data.pack: a header, a table of entries with name hash, type, offset and size, then the texture, mesh, collision box and sound data each entry points to.">
+  <defs>
+    <marker id="14-cooker-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="34" font-size="13" font-weight="600">source files</text>
+  <rect class="fig-box" x="20" y="56" width="150" height="48" rx="6"/>
+  <text class="fig-mono" x="95.0" y="76.0" text-anchor="middle" font-size="13" font-weight="600">manifest.txt</text>
+  <text class="fig-muted" x="95.0" y="94.0" text-anchor="middle" font-size="12">one line per entry</text>
+  <rect class="fig-box" x="20" y="118" width="150" height="48" rx="6"/>
+  <text class="fig-mono" x="95.0" y="138.0" text-anchor="middle" font-size="13" font-weight="600">crate.png</text>
+  <text class="fig-muted" x="95.0" y="156.0" text-anchor="middle" font-size="12">image</text>
+  <rect class="fig-box" x="20" y="180" width="150" height="48" rx="6"/>
+  <text class="fig-mono" x="95.0" y="200.0" text-anchor="middle" font-size="13" font-weight="600">level.glb</text>
+  <text class="fig-muted" x="95.0" y="218.0" text-anchor="middle" font-size="12">meshes, col_ nodes</text>
+  <rect class="fig-box" x="20" y="242" width="150" height="48" rx="6"/>
+  <text class="fig-mono" x="95.0" y="262.0" text-anchor="middle" font-size="13" font-weight="600">jump.wav</text>
+  <text class="fig-muted" x="95.0" y="280.0" text-anchor="middle" font-size="12">sound</text>
+  <rect class="fig-accent" x="220" y="140" width="120" height="60" rx="6"/>
+  <text x="280.0" y="166.0" text-anchor="middle" font-size="13" font-weight="600">tools/cook</text>
+  <text class="fig-muted" x="280.0" y="184.0" text-anchor="middle" font-size="12">reads, converts</text>
+  <line class="fig-line" x1="170" y1="80" x2="218" y2="170"/>
+  <line class="fig-line" x1="170" y1="142" x2="218" y2="170" marker-end="url(#14-cooker-arrow)"/>
+  <line class="fig-line" x1="170" y1="204" x2="218" y2="170"/>
+  <line class="fig-line" x1="170" y1="266" x2="218" y2="170"/>
+  <line class="fig-line" x1="340" y1="170" x2="398" y2="170" marker-end="url(#14-cooker-arrow)"/>
+  <text class="fig-muted" x="369" y="162" text-anchor="middle" font-size="12">writes</text>
+  <text class="fig-mono" x="400" y="34" font-size="13" font-weight="600">data.pack</text>
+  <rect class="fig-box" x="400" y="46" width="300" height="36" rx="4"/>
+  <text x="412" y="69" font-size="13" font-weight="600">header</text>
+  <text class="fig-muted" x="690" y="69" text-anchor="end" font-size="12">magic PAK1, version, entry count</text>
+  <rect class="fig-accent" x="400" y="88" width="300" height="36" rx="4"/>
+  <text x="412" y="111" font-size="13" font-weight="600">entry table</text>
+  <text class="fig-muted" x="690" y="111" text-anchor="end" font-size="12">hash, type, offset, size</text>
+  <rect class="fig-box" x="400" y="130" width="300" height="36" rx="4"/>
+  <text x="412" y="153" font-size="13" font-weight="600">texture</text>
+  <text class="fig-muted" x="690" y="153" text-anchor="end" font-size="12">width, height, RGBA bytes</text>
+  <rect class="fig-box" x="400" y="172" width="300" height="36" rx="4"/>
+  <text x="412" y="195" font-size="13" font-weight="600">mesh</text>
+  <text class="fig-muted" x="690" y="195" text-anchor="end" font-size="12">counts, bounds, vertices, indices</text>
+  <rect class="fig-box" x="400" y="214" width="300" height="36" rx="4"/>
+  <text x="412" y="237" font-size="13" font-weight="600">boxes</text>
+  <text class="fig-muted" x="690" y="237" text-anchor="end" font-size="12">count, then 6 floats per box</text>
+  <rect class="fig-box" x="400" y="256" width="300" height="36" rx="4"/>
+  <text x="412" y="279" font-size="13" font-weight="600">sound</text>
+  <text class="fig-muted" x="690" y="279" text-anchor="end" font-size="12">count, stereo float samples</text>
+  <text class="fig-muted" x="550" y="318" text-anchor="middle" font-size="12">little-endian, fixed-width fields</text>
+</svg>

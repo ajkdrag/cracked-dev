@@ -1,0 +1,40 @@
+<svg viewBox="0 0 720 280" role="img" aria-label="Passing an allocator down a call chain. In C every function takes an Arena * parameter and hands it on. In Odin, main sets context.allocator once, the context travels with every call without appearing in a parameter list, and make allocates from the arena three calls down.">
+  <defs>
+    <marker id="20-odin-context-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="30" y="30" font-size="14" font-weight="600">C: the arena in every parameter list</text>
+  <rect class="fig-box" x="20" y="52" width="110" height="50" rx="6"/>
+  <text class="fig-mono" x="75.0" y="82" text-anchor="middle" font-size="12">main</text>
+  <rect class="fig-box" x="210" y="52" width="110" height="50" rx="6"/>
+  <text class="fig-mono" x="265.0" y="82" text-anchor="middle" font-size="12">load(a, path)</text>
+  <line class="fig-line" x1="130" y1="77" x2="208" y2="77" marker-end="url(#20-odin-context-arrow)"/>
+  <text class="fig-mono" x="170.0" y="69" text-anchor="middle" font-size="12">Arena *a</text>
+  <rect class="fig-box" x="400" y="52" width="110" height="50" rx="6"/>
+  <text class="fig-mono" x="455.0" y="82" text-anchor="middle" font-size="12">parse(a, text)</text>
+  <line class="fig-line" x1="320" y1="77" x2="398" y2="77" marker-end="url(#20-odin-context-arrow)"/>
+  <text class="fig-mono" x="360.0" y="69" text-anchor="middle" font-size="12">Arena *a</text>
+  <rect class="fig-box" x="590" y="52" width="110" height="50" rx="6"/>
+  <text class="fig-mono" x="645.0" y="82" text-anchor="middle" font-size="12">new(a, T, n)</text>
+  <line class="fig-line" x1="510" y1="77" x2="588" y2="77" marker-end="url(#20-odin-context-arrow)"/>
+  <text class="fig-mono" x="550.0" y="69" text-anchor="middle" font-size="12">Arena *a</text>
+  <text x="30" y="152" font-size="14" font-weight="600">Odin: the arena in the implicit context</text>
+  <rect class="fig-box" x="20" y="166" width="110" height="50" rx="6"/>
+  <text class="fig-mono" x="75.0" y="196" text-anchor="middle" font-size="12">main</text>
+  <rect class="fig-box" x="210" y="166" width="110" height="50" rx="6"/>
+  <text class="fig-mono" x="265.0" y="196" text-anchor="middle" font-size="12">load(path)</text>
+  <line class="fig-line" x1="130" y1="191" x2="208" y2="191" marker-end="url(#20-odin-context-arrow)"/>
+  <rect class="fig-box" x="400" y="166" width="110" height="50" rx="6"/>
+  <text class="fig-mono" x="455.0" y="196" text-anchor="middle" font-size="12">parse(text)</text>
+  <line class="fig-line" x1="320" y1="191" x2="398" y2="191" marker-end="url(#20-odin-context-arrow)"/>
+  <rect class="fig-accent" x="590" y="166" width="110" height="50" rx="6"/>
+  <text class="fig-mono" x="645.0" y="196" text-anchor="middle" font-size="12">make([]T, n)</text>
+  <line class="fig-line" x1="510" y1="191" x2="588" y2="191" marker-end="url(#20-odin-context-arrow)"/>
+  <line class="fig-line" x1="75.0" y1="216" x2="75.0" y2="230"/>
+  <line class="fig-line" x1="265.0" y1="216" x2="265.0" y2="230"/>
+  <line class="fig-line" x1="455.0" y1="216" x2="455.0" y2="230"/>
+  <line class="fig-line" x1="645.0" y1="216" x2="645.0" y2="230"/>
+  <rect class="fig-box" x="20" y="230" width="680" height="30" rx="6" stroke-dasharray="4 3"/>
+  <text class="fig-mono" x="360" y="250" text-anchor="middle" font-size="12">context: allocator = arena, temp_allocator, logger, ...</text>
+</svg>

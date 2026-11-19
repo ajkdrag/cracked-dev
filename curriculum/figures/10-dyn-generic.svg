@@ -1,0 +1,59 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="A generic function is copied once per type, and each copy calls its type's method directly. A trait object reference is two pointers, one to the value and one to a vtable, and the single function calls the method whose address it reads from the vtable.">
+  <defs>
+    <marker id="10-dyn-generic-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <!-- left: generic -->
+  <text x="180" y="30" text-anchor="middle" font-size="14" font-weight="600">generic: one copy per type</text>
+  <rect class="fig-box" x="90" y="48" width="180" height="34" rx="6"/>
+  <text x="180" y="70" text-anchor="middle" font-size="12" class="fig-mono">emit_all&lt;E: Emit&gt;</text>
+  <line class="fig-line" x1="150" y1="82" x2="105" y2="126" marker-end="url(#10-dyn-generic-arrow)"/>
+  <line class="fig-line" x1="210" y1="82" x2="255" y2="126" marker-end="url(#10-dyn-generic-arrow)"/>
+  <text x="180" y="112" text-anchor="middle" font-size="12" class="fig-muted">compiler copies</text>
+  <rect class="fig-accent" x="25" y="128" width="150" height="34" rx="6"/>
+  <text x="100" y="150" text-anchor="middle" font-size="12" class="fig-mono">emit_all::&lt;Binary&gt;</text>
+  <rect class="fig-accent" x="185" y="128" width="150" height="34" rx="6"/>
+  <text x="260" y="150" text-anchor="middle" font-size="12" class="fig-mono">emit_all::&lt;Hex&gt;</text>
+  <line class="fig-line" x1="100" y1="162" x2="100" y2="226" marker-end="url(#10-dyn-generic-arrow)"/>
+  <line class="fig-line" x1="260" y1="162" x2="260" y2="226" marker-end="url(#10-dyn-generic-arrow)"/>
+  <text x="108" y="198" font-size="12" class="fig-muted">call by name</text>
+  <text x="268" y="198" font-size="12" class="fig-muted">call by name</text>
+  <rect class="fig-box" x="25" y="228" width="150" height="34" rx="6"/>
+  <text x="100" y="250" text-anchor="middle" font-size="12" class="fig-mono">Binary::emit</text>
+  <rect class="fig-box" x="185" y="228" width="150" height="34" rx="6"/>
+  <text x="260" y="250" text-anchor="middle" font-size="12" class="fig-mono">Hex::emit</text>
+
+  <line class="fig-line" x1="360" y1="20" x2="360" y2="280" stroke-dasharray="4 4"/>
+
+  <!-- right: trait object -->
+  <text x="540" y="30" text-anchor="middle" font-size="14" font-weight="600">trait object: one copy</text>
+  <rect class="fig-box" x="390" y="48" width="180" height="34" rx="6"/>
+  <text x="480" y="70" text-anchor="middle" font-size="12" class="fig-mono">emit_all_dyn</text>
+  <line class="fig-line" x1="480" y1="82" x2="480" y2="126" marker-end="url(#10-dyn-generic-arrow)"/>
+  <text x="488" y="110" font-size="12" class="fig-muted">gets</text>
+  <rect class="fig-accent" x="390" y="128" width="90" height="34" rx="6"/>
+  <rect class="fig-accent" x="480" y="128" width="90" height="34" rx="6"/>
+  <text x="435" y="150" text-anchor="middle" font-size="12" class="fig-mono">data ptr</text>
+  <text x="525" y="150" text-anchor="middle" font-size="12" class="fig-mono">vtable ptr</text>
+  <text x="447" y="184" font-size="12" class="fig-muted">&amp;dyn Emit, 16 bytes</text>
+  <line class="fig-line" x1="435" y1="162" x2="435" y2="226" marker-end="url(#10-dyn-generic-arrow)"/>
+  <rect class="fig-box" x="390" y="228" width="90" height="34" rx="6"/>
+  <text x="435" y="250" text-anchor="middle" font-size="12" class="fig-mono">the Hex</text>
+
+  <rect class="fig-box" x="600" y="48" width="100" height="26" rx="6"/>
+  <rect class="fig-box" x="600" y="74" width="100" height="26" rx="6"/>
+  <rect class="fig-box" x="600" y="100" width="100" height="26" rx="6"/>
+  <rect class="fig-accent" x="600" y="126" width="100" height="26" rx="6"/>
+  <text x="650" y="66" text-anchor="middle" font-size="12" class="fig-mono">drop</text>
+  <text x="650" y="92" text-anchor="middle" font-size="12" class="fig-mono">size</text>
+  <text x="650" y="118" text-anchor="middle" font-size="12" class="fig-mono">align</text>
+  <text x="650" y="144" text-anchor="middle" font-size="12" class="fig-mono">emit</text>
+  <path class="fig-line" d="M570 145 L585 145 L585 61 L597 61" fill="none" marker-end="url(#10-dyn-generic-arrow)"/>
+  <text x="604" y="172" font-size="12" class="fig-muted">vtable</text>
+  <line class="fig-accent-line" x1="680" y1="152" x2="680" y2="226" marker-end="url(#10-dyn-generic-arrow)"/>
+  <text x="672" y="206" text-anchor="end" font-size="12" class="fig-muted">call through it</text>
+  <rect class="fig-box" x="600" y="228" width="100" height="34" rx="6"/>
+  <text x="650" y="250" text-anchor="middle" font-size="12" class="fig-mono">Hex::emit</text>
+</svg>

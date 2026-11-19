@@ -1,0 +1,23 @@
+<svg viewBox="0 0 720 160" role="img" aria-label="The kernel reads a.out from disk, loads it into a new process and starts it on the CPU, and the process hands its exit status back to the kernel when it ends">
+  <defs>
+    <marker id="01-process-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="40" width="140" height="64" rx="6"/>
+  <text class="fig-mono" x="90" y="68" text-anchor="middle" font-size="14">a.out</text>
+  <text class="fig-muted" x="90" y="88" text-anchor="middle" font-size="12">file on disk</text>
+  <rect class="fig-accent" x="290" y="40" width="140" height="64" rx="6"/>
+  <text x="360" y="68" text-anchor="middle" font-size="14" font-weight="600">kernel</text>
+  <text class="fig-muted" x="360" y="88" text-anchor="middle" font-size="12">part of the OS</text>
+  <rect class="fig-box" x="560" y="40" width="140" height="64" rx="6"/>
+  <text x="630" y="68" text-anchor="middle" font-size="14" font-weight="600">process</text>
+  <text class="fig-muted" x="630" y="88" text-anchor="middle" font-size="12">runs on the CPU</text>
+  <line class="fig-line" x1="160" y1="62" x2="288" y2="62" marker-end="url(#01-process-arrow)"/>
+  <text class="fig-muted" x="224" y="54" text-anchor="middle" font-size="12">reads</text>
+  <line class="fig-accent-line" x1="430" y1="62" x2="558" y2="62" marker-end="url(#01-process-arrow)"/>
+  <text class="fig-accent-text" x="494" y="54" text-anchor="middle" font-size="12">loads and starts</text>
+  <line class="fig-line" x1="560" y1="90" x2="432" y2="90" marker-end="url(#01-process-arrow)"/>
+  <text class="fig-muted" x="494" y="124" text-anchor="middle" font-size="12">exit status</text>
+  <text class="fig-muted" x="494" y="140" text-anchor="middle" font-size="12">when it ends</text>
+</svg>

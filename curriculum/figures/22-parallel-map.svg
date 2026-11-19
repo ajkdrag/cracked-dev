@@ -1,0 +1,66 @@
+<svg viewBox="0 0 720 280" role="img" aria-label="How the Numba backend runs a map with prange on four threads. The output positions are cut into four equal chunks. Each thread walks its own chunk with its own index buffers, so no two threads write the same element.">
+  <defs>
+    <marker id="22-parallel-map-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="40" y="34" font-size="13" font-weight="600">output positions 0 to 15</text>
+  <rect class="fig-accent" x="40" y="50" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="60.0" y="72" text-anchor="middle" font-size="12">0</text>
+  <rect class="fig-accent" x="80" y="50" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="100.0" y="72" text-anchor="middle" font-size="12">1</text>
+  <rect class="fig-accent" x="120" y="50" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="140.0" y="72" text-anchor="middle" font-size="12">2</text>
+  <rect class="fig-accent" x="160" y="50" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="180.0" y="72" text-anchor="middle" font-size="12">3</text>
+  <rect class="fig-box" x="200" y="50" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="220.0" y="72" text-anchor="middle" font-size="12">4</text>
+  <rect class="fig-box" x="240" y="50" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="260.0" y="72" text-anchor="middle" font-size="12">5</text>
+  <rect class="fig-box" x="280" y="50" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="300.0" y="72" text-anchor="middle" font-size="12">6</text>
+  <rect class="fig-box" x="320" y="50" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="340.0" y="72" text-anchor="middle" font-size="12">7</text>
+  <rect class="fig-accent" x="360" y="50" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="380.0" y="72" text-anchor="middle" font-size="12">8</text>
+  <rect class="fig-accent" x="400" y="50" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="420.0" y="72" text-anchor="middle" font-size="12">9</text>
+  <rect class="fig-accent" x="440" y="50" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="460.0" y="72" text-anchor="middle" font-size="12">10</text>
+  <rect class="fig-accent" x="480" y="50" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="500.0" y="72" text-anchor="middle" font-size="12">11</text>
+  <rect class="fig-box" x="520" y="50" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="540.0" y="72" text-anchor="middle" font-size="12">12</text>
+  <rect class="fig-box" x="560" y="50" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="580.0" y="72" text-anchor="middle" font-size="12">13</text>
+  <rect class="fig-box" x="600" y="50" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="620.0" y="72" text-anchor="middle" font-size="12">14</text>
+  <rect class="fig-box" x="640" y="50" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="660.0" y="72" text-anchor="middle" font-size="12">15</text>
+  <rect class="fig-box" x="20" y="150" width="158" height="96" rx="6"/>
+  <text x="99.0" y="174" text-anchor="middle" font-size="13" font-weight="600">thread 0</text>
+  <text class="fig-mono" x="99.0" y="194" text-anchor="middle" font-size="12">i = 0 to 3</text>
+  <text class="fig-muted" x="99.0" y="212" text-anchor="middle" font-size="12">own out_index, in_index</text>
+  <text class="fig-mono" x="99.0" y="230" text-anchor="middle" font-size="12">out[o] = fn(in[j])</text>
+  <line class="fig-line" x1="120" y1="86" x2="99.0" y2="148" marker-end="url(#22-parallel-map-arrow)"/>
+  <rect class="fig-box" x="190" y="150" width="158" height="96" rx="6"/>
+  <text x="269.0" y="174" text-anchor="middle" font-size="13" font-weight="600">thread 1</text>
+  <text class="fig-mono" x="269.0" y="194" text-anchor="middle" font-size="12">i = 4 to 7</text>
+  <text class="fig-muted" x="269.0" y="212" text-anchor="middle" font-size="12">own out_index, in_index</text>
+  <text class="fig-mono" x="269.0" y="230" text-anchor="middle" font-size="12">out[o] = fn(in[j])</text>
+  <line class="fig-line" x1="280" y1="86" x2="269.0" y2="148" marker-end="url(#22-parallel-map-arrow)"/>
+  <rect class="fig-box" x="360" y="150" width="158" height="96" rx="6"/>
+  <text x="439.0" y="174" text-anchor="middle" font-size="13" font-weight="600">thread 2</text>
+  <text class="fig-mono" x="439.0" y="194" text-anchor="middle" font-size="12">i = 8 to 11</text>
+  <text class="fig-muted" x="439.0" y="212" text-anchor="middle" font-size="12">own out_index, in_index</text>
+  <text class="fig-mono" x="439.0" y="230" text-anchor="middle" font-size="12">out[o] = fn(in[j])</text>
+  <line class="fig-line" x1="440" y1="86" x2="439.0" y2="148" marker-end="url(#22-parallel-map-arrow)"/>
+  <rect class="fig-box" x="530" y="150" width="158" height="96" rx="6"/>
+  <text x="609.0" y="174" text-anchor="middle" font-size="13" font-weight="600">thread 3</text>
+  <text class="fig-mono" x="609.0" y="194" text-anchor="middle" font-size="12">i = 12 to 15</text>
+  <text class="fig-muted" x="609.0" y="212" text-anchor="middle" font-size="12">own out_index, in_index</text>
+  <text class="fig-mono" x="609.0" y="230" text-anchor="middle" font-size="12">out[o] = fn(in[j])</text>
+  <line class="fig-line" x1="600" y1="86" x2="609.0" y2="148" marker-end="url(#22-parallel-map-arrow)"/>
+  <text class="fig-muted" x="680" y="34" text-anchor="end" font-size="12">prange: equal chunks, one per thread</text>
+  <text class="fig-muted" x="360" y="268" text-anchor="middle" font-size="12">fast path: same shape and strides, so out[i] = fn(in[i]) with no index math</text>
+</svg>

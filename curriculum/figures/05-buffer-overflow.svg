@@ -1,0 +1,33 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="A write longer than the buffer runs upward past it, over the saved rbp and then over the return address, so ret jumps to the address the input left in the return-address slot.">
+  <defs>
+    <marker id="05-buffer-overflow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="200" y="28" text-anchor="middle" font-size="12">high addresses</text>
+
+  <text x="200" y="52" text-anchor="middle" font-size="13" font-weight="600">before the write</text>
+  <rect class="fig-box" x="110" y="64" width="180" height="34" rx="6"/>
+  <text x="200" y="86" text-anchor="middle" font-size="13">return address</text>
+  <rect class="fig-box" x="110" y="100" width="180" height="34" rx="6"/>
+  <text x="200" y="122" text-anchor="middle" font-size="13">saved rbp</text>
+  <rect class="fig-box" x="110" y="136" width="180" height="48" rx="6"/>
+  <text x="200" y="158" text-anchor="middle" font-size="13">char buf[16]</text>
+  <text class="fig-muted" x="200" y="175" text-anchor="middle" font-size="12">16 bytes</text>
+  <text class="fig-muted" x="200" y="200" text-anchor="middle" font-size="12">low addresses</text>
+
+  <text x="520" y="52" text-anchor="middle" font-size="13" font-weight="600">a 32-byte input</text>
+  <rect class="fig-accent" x="430" y="64" width="180" height="34" rx="6"/>
+  <text x="520" y="86" text-anchor="middle" font-size="13">attacker's address</text>
+  <rect class="fig-accent" x="430" y="100" width="180" height="34" rx="6"/>
+  <text x="520" y="122" text-anchor="middle" font-size="13">saved rbp (overwritten)</text>
+  <rect class="fig-accent" x="430" y="136" width="180" height="48" rx="6"/>
+  <text x="520" y="164" text-anchor="middle" font-size="13">input fills the buffer</text>
+
+  <line class="fig-accent-line" x1="400" y1="192" x2="400" y2="72" marker-end="url(#05-buffer-overflow-arrow)"/>
+  <text class="fig-accent-text" x="640" y="118" text-anchor="middle" font-size="12">the write</text>
+  <text class="fig-accent-text" x="640" y="134" text-anchor="middle" font-size="12">runs upward</text>
+
+  <text class="fig-muted" x="360" y="240" text-anchor="middle" font-size="13">a copy with no length check keeps writing past the 16 bytes</text>
+  <text class="fig-muted" x="360" y="264" text-anchor="middle" font-size="13">ret then jumps to the address the input left where the real one was</text>
+</svg>

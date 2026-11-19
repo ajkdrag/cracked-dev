@@ -1,0 +1,84 @@
+<svg viewBox="0 0 720 410" role="img" aria-label="The reduce for one output position over 10 elements, drawn with 4 threads where MiniTorch uses 1024. Thread t adds the elements at t, t + 4, t + 8 into a register, the four partial sums go to shared memory, and the tree reduction of chapter 21 leaves one value that thread 0 writes to out[o].">
+  <defs>
+    <marker id="22-cuda-reduce-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="20" y="35" font-size="12">thread</text>
+  <text class="fig-muted" x="20" y="69" font-size="12">a, one row</text>
+  <text class="fig-muted" x="20" y="83" font-size="12">of block o</text>
+  <text class="fig-accent-text" x="152" y="35" text-anchor="middle" font-size="12">t0</text>
+  <rect class="fig-accent" x="130" y="48" width="44" height="30" rx="6"/>
+  <text class="fig-mono" x="152" y="68" text-anchor="middle" font-size="12">a[0]</text>
+  <text class="fig-muted" x="202" y="35" text-anchor="middle" font-size="12">t1</text>
+  <rect class="fig-box" x="180" y="48" width="44" height="30" rx="6"/>
+  <text class="fig-mono" x="202" y="68" text-anchor="middle" font-size="12">a[1]</text>
+  <text class="fig-muted" x="252" y="35" text-anchor="middle" font-size="12">t2</text>
+  <rect class="fig-box" x="230" y="48" width="44" height="30" rx="6"/>
+  <text class="fig-mono" x="252" y="68" text-anchor="middle" font-size="12">a[2]</text>
+  <text class="fig-muted" x="302" y="35" text-anchor="middle" font-size="12">t3</text>
+  <rect class="fig-box" x="280" y="48" width="44" height="30" rx="6"/>
+  <text class="fig-mono" x="302" y="68" text-anchor="middle" font-size="12">a[3]</text>
+  <text class="fig-accent-text" x="352" y="35" text-anchor="middle" font-size="12">t0</text>
+  <rect class="fig-accent" x="330" y="48" width="44" height="30" rx="6"/>
+  <text class="fig-mono" x="352" y="68" text-anchor="middle" font-size="12">a[4]</text>
+  <text class="fig-muted" x="402" y="35" text-anchor="middle" font-size="12">t1</text>
+  <rect class="fig-box" x="380" y="48" width="44" height="30" rx="6"/>
+  <text class="fig-mono" x="402" y="68" text-anchor="middle" font-size="12">a[5]</text>
+  <text class="fig-muted" x="452" y="35" text-anchor="middle" font-size="12">t2</text>
+  <rect class="fig-box" x="430" y="48" width="44" height="30" rx="6"/>
+  <text class="fig-mono" x="452" y="68" text-anchor="middle" font-size="12">a[6]</text>
+  <text class="fig-muted" x="502" y="35" text-anchor="middle" font-size="12">t3</text>
+  <rect class="fig-box" x="480" y="48" width="44" height="30" rx="6"/>
+  <text class="fig-mono" x="502" y="68" text-anchor="middle" font-size="12">a[7]</text>
+  <text class="fig-accent-text" x="552" y="35" text-anchor="middle" font-size="12">t0</text>
+  <rect class="fig-accent" x="530" y="48" width="44" height="30" rx="6"/>
+  <text class="fig-mono" x="552" y="68" text-anchor="middle" font-size="12">a[8]</text>
+  <text class="fig-muted" x="602" y="35" text-anchor="middle" font-size="12">t1</text>
+  <rect class="fig-box" x="580" y="48" width="44" height="30" rx="6"/>
+  <text class="fig-mono" x="602" y="68" text-anchor="middle" font-size="12">a[9]</text>
+  <text class="fig-muted" x="20" y="174" font-size="12">registers</text>
+  <rect class="fig-accent" x="130" y="150" width="104" height="40" rx="6"/>
+  <text class="fig-mono" x="182" y="166" text-anchor="middle" font-size="12">acc of t0</text>
+  <text class="fig-mono" x="182" y="182" text-anchor="middle" font-size="12">a0+a4+a8</text>
+  <rect class="fig-box" x="262" y="150" width="104" height="40" rx="6"/>
+  <text class="fig-mono" x="314" y="166" text-anchor="middle" font-size="12">acc of t1</text>
+  <text class="fig-mono" x="314" y="182" text-anchor="middle" font-size="12">a1+a5+a9</text>
+  <rect class="fig-box" x="394" y="150" width="104" height="40" rx="6"/>
+  <text class="fig-mono" x="446" y="166" text-anchor="middle" font-size="12">acc of t2</text>
+  <text class="fig-mono" x="446" y="182" text-anchor="middle" font-size="12">a2+a6</text>
+  <rect class="fig-box" x="526" y="150" width="104" height="40" rx="6"/>
+  <text class="fig-mono" x="578" y="166" text-anchor="middle" font-size="12">acc of t3</text>
+  <text class="fig-mono" x="578" y="182" text-anchor="middle" font-size="12">a3+a7</text>
+  <line class="fig-accent-line" x1="152" y1="78" x2="168" y2="149" marker-end="url(#22-cuda-reduce-arrow)"/>
+  <line class="fig-accent-line" x1="352" y1="78" x2="182" y2="149" marker-end="url(#22-cuda-reduce-arrow)"/>
+  <line class="fig-accent-line" x1="552" y1="78" x2="196" y2="149" marker-end="url(#22-cuda-reduce-arrow)"/>
+  <text class="fig-muted" x="642" y="166" font-size="12">adds</text>
+  <text class="fig-muted" x="642" y="182" font-size="12">in a loop</text>
+  <text class="fig-muted" x="20" y="250" font-size="12">shared</text>
+  <rect class="fig-box" x="152" y="232" width="60" height="28" rx="6"/>
+  <text class="fig-mono" x="182" y="251" text-anchor="middle" font-size="12">s[0]</text>
+  <line class="fig-line" x1="182" y1="190" x2="182" y2="231" marker-end="url(#22-cuda-reduce-arrow)"/>
+  <rect class="fig-box" x="284" y="232" width="60" height="28" rx="6"/>
+  <text class="fig-mono" x="314" y="251" text-anchor="middle" font-size="12">s[1]</text>
+  <line class="fig-line" x1="314" y1="190" x2="314" y2="231" marker-end="url(#22-cuda-reduce-arrow)"/>
+  <rect class="fig-box" x="416" y="232" width="60" height="28" rx="6"/>
+  <text class="fig-mono" x="446" y="251" text-anchor="middle" font-size="12">s[2]</text>
+  <line class="fig-line" x1="446" y1="190" x2="446" y2="231" marker-end="url(#22-cuda-reduce-arrow)"/>
+  <rect class="fig-box" x="548" y="232" width="60" height="28" rx="6"/>
+  <text class="fig-mono" x="578" y="251" text-anchor="middle" font-size="12">s[3]</text>
+  <line class="fig-line" x1="578" y1="190" x2="578" y2="231" marker-end="url(#22-cuda-reduce-arrow)"/>
+  <text class="fig-muted" x="642" y="215" font-size="12">stores</text>
+  <rect class="fig-box" x="230" y="292" width="330" height="32" rx="6"/>
+  <text x="395" y="313" text-anchor="middle" font-size="13">tree reduction with syncthreads</text>
+  <line class="fig-line" x1="182" y1="260" x2="305" y2="291" marker-end="url(#22-cuda-reduce-arrow)"/>
+  <line class="fig-line" x1="314" y1="260" x2="365" y2="291" marker-end="url(#22-cuda-reduce-arrow)"/>
+  <line class="fig-line" x1="446" y1="260" x2="425" y2="291" marker-end="url(#22-cuda-reduce-arrow)"/>
+  <line class="fig-line" x1="578" y1="260" x2="485" y2="291" marker-end="url(#22-cuda-reduce-arrow)"/>
+  <text class="fig-muted" x="574" y="313" font-size="12">as in chapter 21</text>
+  <line class="fig-line" x1="395" y1="324" x2="395" y2="353" marker-end="url(#22-cuda-reduce-arrow)"/>
+  <rect class="fig-accent" x="320" y="354" width="150" height="32" rx="6"/>
+  <text class="fig-mono" x="395" y="375" text-anchor="middle" font-size="13">out[o]</text>
+  <text class="fig-muted" x="484" y="375" font-size="12">written once, by thread 0</text>
+  <text class="fig-muted" x="20" y="375" font-size="12">global</text>
+</svg>

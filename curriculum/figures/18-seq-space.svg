@@ -1,0 +1,41 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="The send sequence space: bytes before SND.UNA are acknowledged, bytes from SND.UNA to SND.NXT are sent and not yet acknowledged, bytes from SND.NXT to SND.UNA plus SND.WND may be sent now, and later bytes must wait. On the receive side, bytes before RCV.NXT have arrived in order, and the window of RCV.WND bytes after it may be accepted">
+  <defs>
+    <marker id="18-seq-space-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="36" font-size="13" font-weight="600">send side</text>
+  <rect class="fig-box" x="20" y="70" width="180" height="40" rx="6"/>
+  <text x="110.0" y="95" text-anchor="middle" font-size="12">acknowledged</text>
+  <rect class="fig-accent" x="200" y="70" width="180" height="40" rx="6"/>
+  <text x="290.0" y="95" text-anchor="middle" font-size="12">sent, not acked</text>
+  <rect class="fig-box" x="380" y="70" width="180" height="40" rx="6"/>
+  <text x="470.0" y="95" text-anchor="middle" font-size="12">may send now</text>
+  <rect class="fig-box" x="560" y="70" width="140" height="40" rx="6" stroke-dasharray="4 4" fill-opacity="0"/>
+  <text class="fig-muted" x="630.0" y="95" text-anchor="middle" font-size="12">must wait</text>
+  <line class="fig-line" x1="200" y1="58" x2="200" y2="69" marker-end="url(#18-seq-space-arrow)"/>
+  <text class="fig-mono" x="200" y="54" text-anchor="middle" font-size="12">SND.UNA</text>
+  <line class="fig-line" x1="380" y1="58" x2="380" y2="69" marker-end="url(#18-seq-space-arrow)"/>
+  <text class="fig-mono" x="380" y="54" text-anchor="middle" font-size="12">SND.NXT</text>
+  <line class="fig-line" x1="560" y1="58" x2="560" y2="69" marker-end="url(#18-seq-space-arrow)"/>
+  <text class="fig-mono" x="566" y="54" text-anchor="end" font-size="12">SND.UNA + SND.WND</text>
+  <line class="fig-line" x1="200" y1="122" x2="560" y2="122"/>
+  <line class="fig-line" x1="200" y1="116" x2="200" y2="128"/>
+  <line class="fig-line" x1="560" y1="116" x2="560" y2="128"/>
+  <text class="fig-muted" x="380.0" y="140" text-anchor="middle" font-size="12">SND.WND: the peer&#x27;s window</text>
+  <text x="20" y="176" font-size="13" font-weight="600">receive side</text>
+  <rect class="fig-box" x="20" y="210" width="280" height="40" rx="6"/>
+  <text x="160.0" y="235" text-anchor="middle" font-size="12">arrived in order</text>
+  <rect class="fig-accent" x="300" y="210" width="260" height="40" rx="6"/>
+  <text x="430.0" y="235" text-anchor="middle" font-size="12">may be accepted</text>
+  <rect class="fig-box" x="560" y="210" width="140" height="40" rx="6" stroke-dasharray="4 4" fill-opacity="0"/>
+  <text class="fig-muted" x="630.0" y="235" text-anchor="middle" font-size="12">not yet</text>
+  <line class="fig-line" x1="300" y1="198" x2="300" y2="209" marker-end="url(#18-seq-space-arrow)"/>
+  <text class="fig-mono" x="300" y="194" text-anchor="middle" font-size="12">RCV.NXT</text>
+  <line class="fig-line" x1="560" y1="198" x2="560" y2="209" marker-end="url(#18-seq-space-arrow)"/>
+  <text class="fig-mono" x="566" y="194" text-anchor="end" font-size="12">RCV.NXT + RCV.WND</text>
+  <line class="fig-line" x1="300" y1="262" x2="560" y2="262"/>
+  <line class="fig-line" x1="300" y1="256" x2="300" y2="268"/>
+  <line class="fig-line" x1="560" y1="256" x2="560" y2="268"/>
+  <text class="fig-muted" x="430.0" y="280" text-anchor="middle" font-size="12">RCV.WND: your free buffer space</text>
+</svg>

@@ -1,0 +1,33 @@
+<svg viewBox="0 0 720 280" role="img" aria-label="A process&#x27;s file descriptor table: fds 0, 1 and 2 point at the console, fd 3 at an open file with its offset, fd 4 at the write end of a pipe, all objects the kernel keeps">
+  <defs>
+    <marker id="08-fd-table-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="30" width="200" height="236" rx="6"/>
+  <text class="fig-muted" x="36" y="50" font-size="12">process: fd table</text>
+  <rect class="fig-box" x="340" y="30" width="360" height="236" rx="6"/>
+  <text class="fig-muted" x="356" y="50" font-size="12">kernel</text>
+  <rect class="fig-box" x="50" y="60" width="110" height="28" rx="6"/>
+  <text class="fig-mono" x="105" y="79" text-anchor="middle" font-size="13">fd 0</text>
+  <rect class="fig-box" x="50" y="98" width="110" height="28" rx="6"/>
+  <text class="fig-mono" x="105" y="117" text-anchor="middle" font-size="13">fd 1</text>
+  <rect class="fig-box" x="50" y="136" width="110" height="28" rx="6"/>
+  <text class="fig-mono" x="105" y="155" text-anchor="middle" font-size="13">fd 2</text>
+  <rect class="fig-accent" x="50" y="174" width="110" height="28" rx="6"/>
+  <text class="fig-mono" x="105" y="193" text-anchor="middle" font-size="13">fd 3</text>
+  <rect class="fig-box" x="50" y="212" width="110" height="28" rx="6"/>
+  <text class="fig-mono" x="105" y="231" text-anchor="middle" font-size="13">fd 4</text>
+  <rect class="fig-box" x="380" y="60" width="300" height="104" rx="6"/>
+  <text x="530.0" y="109.0" text-anchor="middle" font-size="13" font-weight="600">console</text>
+  <text class="fig-muted" x="530.0" y="126.0" text-anchor="middle" font-size="12">the terminal</text>
+  <line class="fig-line" x1="160" y1="74" x2="378" y2="74" marker-end="url(#08-fd-table-arrow)"/>
+  <line class="fig-line" x1="160" y1="112" x2="378" y2="112" marker-end="url(#08-fd-table-arrow)"/>
+  <line class="fig-line" x1="160" y1="150" x2="378" y2="150" marker-end="url(#08-fd-table-arrow)"/>
+  <rect class="fig-accent" x="380" y="172" width="300" height="36" rx="6"/>
+  <text x="530.0" y="195.0" text-anchor="middle" font-size="13" font-weight="600">open file: notes.txt, offset 512, read</text>
+  <line class="fig-line" x1="160" y1="188" x2="378" y2="190" marker-end="url(#08-fd-table-arrow)"/>
+  <rect class="fig-box" x="380" y="216" width="300" height="36" rx="6"/>
+  <text x="530.0" y="239.0" text-anchor="middle" font-size="13" font-weight="600">pipe, write end</text>
+  <line class="fig-line" x1="160" y1="226" x2="378" y2="234" marker-end="url(#08-fd-table-arrow)"/>
+</svg>

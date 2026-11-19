@@ -1,0 +1,116 @@
+<svg viewBox="0 0 720 270" role="img" aria-label="The same pairs in two layouts. A plain dynamic array of Pair stores the four fields of each pair together, so a loop that reads only x0 uses one value in every 32 bytes. An #soa dynamic array stores each field in its own array, so the same loop reads x0 values back to back.">
+  <defs>
+    <marker id="20-odin-soa-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="30" y="30" font-size="14" font-weight="600">[dynamic]Pair: array of structs</text>
+  <rect class="fig-accent" x="30" y="44" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="50.0" y="66" text-anchor="middle" font-size="12">x0</text>
+  <rect class="fig-box" x="70" y="44" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="90.0" y="66" text-anchor="middle" font-size="12">y0</text>
+  <rect class="fig-box" x="110" y="44" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="130.0" y="66" text-anchor="middle" font-size="12">x1</text>
+  <rect class="fig-box" x="150" y="44" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="170.0" y="66" text-anchor="middle" font-size="12">y1</text>
+  <rect class="fig-accent" x="190" y="44" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="210.0" y="66" text-anchor="middle" font-size="12">x0</text>
+  <rect class="fig-box" x="230" y="44" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="250.0" y="66" text-anchor="middle" font-size="12">y0</text>
+  <rect class="fig-box" x="270" y="44" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="290.0" y="66" text-anchor="middle" font-size="12">x1</text>
+  <rect class="fig-box" x="310" y="44" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="330.0" y="66" text-anchor="middle" font-size="12">y1</text>
+  <rect class="fig-accent" x="350" y="44" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="370.0" y="66" text-anchor="middle" font-size="12">x0</text>
+  <rect class="fig-box" x="390" y="44" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="410.0" y="66" text-anchor="middle" font-size="12">y0</text>
+  <rect class="fig-box" x="430" y="44" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="450.0" y="66" text-anchor="middle" font-size="12">x1</text>
+  <rect class="fig-box" x="470" y="44" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="490.0" y="66" text-anchor="middle" font-size="12">y1</text>
+  <rect class="fig-accent" x="510" y="44" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="530.0" y="66" text-anchor="middle" font-size="12">x0</text>
+  <rect class="fig-box" x="550" y="44" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="570.0" y="66" text-anchor="middle" font-size="12">y0</text>
+  <rect class="fig-box" x="590" y="44" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="610.0" y="66" text-anchor="middle" font-size="12">x1</text>
+  <rect class="fig-box" x="630" y="44" width="40" height="34" rx="0"/>
+  <text class="fig-mono" x="650.0" y="66" text-anchor="middle" font-size="12">y1</text>
+  <text class="fig-muted" x="350.0" y="100" text-anchor="middle" font-size="12">pairs[i].x0: every 32 bytes</text>
+  <text x="30" y="140" font-size="14" font-weight="600">#soa[dynamic]Pair: struct of arrays</text>
+  <text class="fig-muted" x="56" y="170" text-anchor="end" font-size="12">x0</text>
+  <rect class="fig-accent" x="66" y="154" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="86.0" y="170" text-anchor="middle" font-size="12">x0</text>
+  <rect class="fig-accent" x="106" y="154" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="126.0" y="170" text-anchor="middle" font-size="12">x0</text>
+  <rect class="fig-accent" x="146" y="154" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="166.0" y="170" text-anchor="middle" font-size="12">x0</text>
+  <rect class="fig-accent" x="186" y="154" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="206.0" y="170" text-anchor="middle" font-size="12">x0</text>
+  <rect class="fig-accent" x="226" y="154" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="246.0" y="170" text-anchor="middle" font-size="12">x0</text>
+  <rect class="fig-accent" x="266" y="154" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="286.0" y="170" text-anchor="middle" font-size="12">x0</text>
+  <rect class="fig-accent" x="306" y="154" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="326.0" y="170" text-anchor="middle" font-size="12">x0</text>
+  <rect class="fig-accent" x="346" y="154" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="366.0" y="170" text-anchor="middle" font-size="12">x0</text>
+  <text class="fig-muted" x="400" y="170" font-size="12">...</text>
+  <text class="fig-muted" x="56" y="194" text-anchor="end" font-size="12">y0</text>
+  <rect class="fig-box" x="66" y="178" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="86.0" y="194" text-anchor="middle" font-size="12">y0</text>
+  <rect class="fig-box" x="106" y="178" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="126.0" y="194" text-anchor="middle" font-size="12">y0</text>
+  <rect class="fig-box" x="146" y="178" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="166.0" y="194" text-anchor="middle" font-size="12">y0</text>
+  <rect class="fig-box" x="186" y="178" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="206.0" y="194" text-anchor="middle" font-size="12">y0</text>
+  <rect class="fig-box" x="226" y="178" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="246.0" y="194" text-anchor="middle" font-size="12">y0</text>
+  <rect class="fig-box" x="266" y="178" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="286.0" y="194" text-anchor="middle" font-size="12">y0</text>
+  <rect class="fig-box" x="306" y="178" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="326.0" y="194" text-anchor="middle" font-size="12">y0</text>
+  <rect class="fig-box" x="346" y="178" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="366.0" y="194" text-anchor="middle" font-size="12">y0</text>
+  <text class="fig-muted" x="400" y="194" font-size="12">...</text>
+  <text class="fig-muted" x="56" y="218" text-anchor="end" font-size="12">x1</text>
+  <rect class="fig-box" x="66" y="202" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="86.0" y="218" text-anchor="middle" font-size="12">x1</text>
+  <rect class="fig-box" x="106" y="202" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="126.0" y="218" text-anchor="middle" font-size="12">x1</text>
+  <rect class="fig-box" x="146" y="202" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="166.0" y="218" text-anchor="middle" font-size="12">x1</text>
+  <rect class="fig-box" x="186" y="202" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="206.0" y="218" text-anchor="middle" font-size="12">x1</text>
+  <rect class="fig-box" x="226" y="202" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="246.0" y="218" text-anchor="middle" font-size="12">x1</text>
+  <rect class="fig-box" x="266" y="202" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="286.0" y="218" text-anchor="middle" font-size="12">x1</text>
+  <rect class="fig-box" x="306" y="202" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="326.0" y="218" text-anchor="middle" font-size="12">x1</text>
+  <rect class="fig-box" x="346" y="202" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="366.0" y="218" text-anchor="middle" font-size="12">x1</text>
+  <text class="fig-muted" x="400" y="218" font-size="12">...</text>
+  <text class="fig-muted" x="56" y="242" text-anchor="end" font-size="12">y1</text>
+  <rect class="fig-box" x="66" y="226" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="86.0" y="242" text-anchor="middle" font-size="12">y1</text>
+  <rect class="fig-box" x="106" y="226" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="126.0" y="242" text-anchor="middle" font-size="12">y1</text>
+  <rect class="fig-box" x="146" y="226" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="166.0" y="242" text-anchor="middle" font-size="12">y1</text>
+  <rect class="fig-box" x="186" y="226" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="206.0" y="242" text-anchor="middle" font-size="12">y1</text>
+  <rect class="fig-box" x="226" y="226" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="246.0" y="242" text-anchor="middle" font-size="12">y1</text>
+  <rect class="fig-box" x="266" y="226" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="286.0" y="242" text-anchor="middle" font-size="12">y1</text>
+  <rect class="fig-box" x="306" y="226" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="326.0" y="242" text-anchor="middle" font-size="12">y1</text>
+  <rect class="fig-box" x="346" y="226" width="40" height="22" rx="0"/>
+  <text class="fig-mono" x="366.0" y="242" text-anchor="middle" font-size="12">y1</text>
+  <text class="fig-muted" x="400" y="242" font-size="12">...</text>
+  <text class="fig-muted" x="560" y="170" text-anchor="middle" font-size="12">pairs[i].x0:</text>
+  <text class="fig-muted" x="560" y="188" text-anchor="middle" font-size="12">back to back</text>
+</svg>

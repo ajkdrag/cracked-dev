@@ -1,0 +1,52 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="Bytes arrive on GP1 into the UART's 32-byte receive FIFO. uart0_irq empties the FIFO into the ring buffer and advances tail. main advances head as it takes bytes out, parses lines and writes replies through uart_putc into the transmit FIFO, which sends them on GP0. Each index is written by one side only.">
+  <defs>
+    <marker id="17-uart-ring-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="20" y="24" font-size="12">interrupt side</text>
+  <rect class="fig-box" x="20" y="34" width="120" height="56" rx="6"/>
+  <text class="fig-mono" x="80" y="57" text-anchor="middle" font-size="13">GP1</text>
+  <text class="fig-muted" x="80" y="76" text-anchor="middle" font-size="12">RX wire</text>
+  <line class="fig-line" x1="140" y1="62" x2="178" y2="62" marker-end="url(#17-uart-ring-arrow)"/>
+  <rect class="fig-box" x="180" y="34" width="150" height="56" rx="6"/>
+  <text x="255" y="57" text-anchor="middle" font-size="13" font-weight="600">RX FIFO</text>
+  <text class="fig-muted" x="255" y="76" text-anchor="middle" font-size="12">32 bytes, in UART0</text>
+  <line class="fig-line" x1="330" y1="62" x2="388" y2="62" marker-end="url(#17-uart-ring-arrow)"/>
+  <text class="fig-muted" x="359" y="54" text-anchor="middle" font-size="12">IRQ 33</text>
+  <rect class="fig-accent" x="390" y="34" width="200" height="56" rx="6"/>
+  <text class="fig-mono" x="490" y="57" text-anchor="middle" font-size="13">uart0_irq</text>
+  <text class="fig-muted" x="490" y="76" text-anchor="middle" font-size="12">reads UARTDR until empty</text>
+
+  <rect class="fig-box" x="200" y="146" width="40" height="36" rx="4"/>
+  <rect class="fig-box" x="240" y="146" width="40" height="36" rx="4"/>
+  <rect class="fig-accent" x="280" y="146" width="40" height="36" rx="4"/>
+  <text class="fig-mono" x="300" y="169" text-anchor="middle" font-size="13">l</text>
+  <rect class="fig-accent" x="320" y="146" width="40" height="36" rx="4"/>
+  <text class="fig-mono" x="340" y="169" text-anchor="middle" font-size="13">e</text>
+  <rect class="fig-accent" x="360" y="146" width="40" height="36" rx="4"/>
+  <text class="fig-mono" x="380" y="169" text-anchor="middle" font-size="13">d</text>
+  <rect class="fig-box" x="400" y="146" width="40" height="36" rx="4"/>
+  <rect class="fig-box" x="440" y="146" width="40" height="36" rx="4"/>
+  <rect class="fig-box" x="480" y="146" width="40" height="36" rx="4"/>
+  <text x="530" y="169" font-size="13">ring of 2048 bytes</text>
+
+  <path class="fig-line" d="M420 90 V144" fill="none" marker-end="url(#17-uart-ring-arrow)"/>
+  <text class="fig-mono" x="428" y="124" font-size="12">tail: next free slot</text>
+  <path class="fig-line" d="M300 182 V236" fill="none" marker-end="url(#17-uart-ring-arrow)"/>
+  <text class="fig-mono" x="308" y="214" font-size="12">head: next byte to read</text>
+
+  <text class="fig-muted" x="20" y="232" font-size="12">main loop</text>
+  <rect class="fig-accent" x="200" y="238" width="200" height="56" rx="6"/>
+  <text class="fig-mono" x="300" y="261" text-anchor="middle" font-size="13">main</text>
+  <text class="fig-muted" x="300" y="280" text-anchor="middle" font-size="12">pops bytes, parses lines</text>
+  <line class="fig-line" x1="400" y1="266" x2="438" y2="266" marker-end="url(#17-uart-ring-arrow)"/>
+  <text class="fig-mono" x="419" y="258" text-anchor="middle" font-size="11">putc</text>
+  <rect class="fig-box" x="440" y="238" width="120" height="56" rx="6"/>
+  <text x="500" y="261" text-anchor="middle" font-size="13" font-weight="600">TX FIFO</text>
+  <text class="fig-muted" x="500" y="280" text-anchor="middle" font-size="12">32 bytes</text>
+  <line class="fig-line" x1="560" y1="266" x2="598" y2="266" marker-end="url(#17-uart-ring-arrow)"/>
+  <rect class="fig-box" x="600" y="238" width="100" height="56" rx="6"/>
+  <text class="fig-mono" x="650" y="261" text-anchor="middle" font-size="13">GP0</text>
+  <text class="fig-muted" x="650" y="280" text-anchor="middle" font-size="12">TX wire</text>
+</svg>

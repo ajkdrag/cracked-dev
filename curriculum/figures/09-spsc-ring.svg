@@ -1,0 +1,66 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="A ring of 16 slots with head = 19 and tail = 25, so the items 19 to 24 sit in slots 3 to 8. The consumer owns those slots, and the producer owns the free ones. Each index sits on its own cache line next to a private copy of the other index.">
+  <defs>
+    <marker id="09-spsc-ring-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-mono" x="180.0" y="46" text-anchor="middle" font-size="13">head = 19</text>
+  <text class="fig-muted fig-mono" x="180.0" y="62" text-anchor="middle" font-size="12">19 &amp; 15 = 3</text>
+  <line class="fig-line" x1="180.0" y1="66" x2="180.0" y2="88" marker-end="url(#09-spsc-ring-arrow)"/>
+  <text class="fig-mono" x="420.0" y="46" text-anchor="middle" font-size="13">tail = 25</text>
+  <text class="fig-muted fig-mono" x="420.0" y="62" text-anchor="middle" font-size="12">25 &amp; 15 = 9</text>
+  <line class="fig-line" x1="420.0" y1="66" x2="420.0" y2="88" marker-end="url(#09-spsc-ring-arrow)"/>
+  <rect class="fig-box" x="40" y="90" width="40" height="36" rx="6"/>
+  <text class="fig-muted fig-mono" x="60.0" y="142" text-anchor="middle" font-size="11">0</text>
+  <rect class="fig-box" x="80" y="90" width="40" height="36" rx="6"/>
+  <text class="fig-muted fig-mono" x="100.0" y="142" text-anchor="middle" font-size="11">1</text>
+  <rect class="fig-box" x="120" y="90" width="40" height="36" rx="6"/>
+  <text class="fig-muted fig-mono" x="140.0" y="142" text-anchor="middle" font-size="11">2</text>
+  <rect class="fig-accent" x="160" y="90" width="40" height="36" rx="6"/>
+  <text class="fig-mono" x="180.0" y="113" text-anchor="middle" font-size="13">19</text>
+  <text class="fig-muted fig-mono" x="180.0" y="142" text-anchor="middle" font-size="11">3</text>
+  <rect class="fig-accent" x="200" y="90" width="40" height="36" rx="6"/>
+  <text class="fig-mono" x="220.0" y="113" text-anchor="middle" font-size="13">20</text>
+  <text class="fig-muted fig-mono" x="220.0" y="142" text-anchor="middle" font-size="11">4</text>
+  <rect class="fig-accent" x="240" y="90" width="40" height="36" rx="6"/>
+  <text class="fig-mono" x="260.0" y="113" text-anchor="middle" font-size="13">21</text>
+  <text class="fig-muted fig-mono" x="260.0" y="142" text-anchor="middle" font-size="11">5</text>
+  <rect class="fig-accent" x="280" y="90" width="40" height="36" rx="6"/>
+  <text class="fig-mono" x="300.0" y="113" text-anchor="middle" font-size="13">22</text>
+  <text class="fig-muted fig-mono" x="300.0" y="142" text-anchor="middle" font-size="11">6</text>
+  <rect class="fig-accent" x="320" y="90" width="40" height="36" rx="6"/>
+  <text class="fig-mono" x="340.0" y="113" text-anchor="middle" font-size="13">23</text>
+  <text class="fig-muted fig-mono" x="340.0" y="142" text-anchor="middle" font-size="11">7</text>
+  <rect class="fig-accent" x="360" y="90" width="40" height="36" rx="6"/>
+  <text class="fig-mono" x="380.0" y="113" text-anchor="middle" font-size="13">24</text>
+  <text class="fig-muted fig-mono" x="380.0" y="142" text-anchor="middle" font-size="11">8</text>
+  <rect class="fig-box" x="400" y="90" width="40" height="36" rx="6"/>
+  <text class="fig-muted fig-mono" x="420.0" y="142" text-anchor="middle" font-size="11">9</text>
+  <rect class="fig-box" x="440" y="90" width="40" height="36" rx="6"/>
+  <text class="fig-muted fig-mono" x="460.0" y="142" text-anchor="middle" font-size="11">10</text>
+  <rect class="fig-box" x="480" y="90" width="40" height="36" rx="6"/>
+  <text class="fig-muted fig-mono" x="500.0" y="142" text-anchor="middle" font-size="11">11</text>
+  <rect class="fig-box" x="520" y="90" width="40" height="36" rx="6"/>
+  <text class="fig-muted fig-mono" x="540.0" y="142" text-anchor="middle" font-size="11">12</text>
+  <rect class="fig-box" x="560" y="90" width="40" height="36" rx="6"/>
+  <text class="fig-muted fig-mono" x="580.0" y="142" text-anchor="middle" font-size="11">13</text>
+  <rect class="fig-box" x="600" y="90" width="40" height="36" rx="6"/>
+  <text class="fig-muted fig-mono" x="620.0" y="142" text-anchor="middle" font-size="11">14</text>
+  <rect class="fig-box" x="640" y="90" width="40" height="36" rx="6"/>
+  <text class="fig-muted fig-mono" x="660.0" y="142" text-anchor="middle" font-size="11">15</text>
+  <text class="fig-muted" x="34" y="142" text-anchor="end" font-size="11">slot</text>
+  <path class="fig-line" d="M 164 150 L 164 158 L 396 158 L 396 150"/>
+  <text class="fig-muted" x="280.0" y="176" text-anchor="middle" font-size="12">consumer owns: items 19 to 24</text>
+  <path class="fig-line" d="M 404 150 L 404 158 L 676 158 L 676 150"/>
+  <text class="fig-muted" x="540.0" y="176" text-anchor="middle" font-size="12">producer owns: free</text>
+  <path class="fig-line" d="M 44 150 L 44 158 L 156 158 L 156 150"/>
+  <text class="fig-muted" x="100.0" y="176" text-anchor="middle" font-size="12">producer owns: free</text>
+  <rect class="fig-box" x="40" y="214" width="300" height="52" rx="6"/>
+  <text x="190.0" y="237.0" text-anchor="middle" font-size="13" font-weight="600">consumer's cache line</text>
+  <text class="fig-muted" x="190.0" y="254.0" text-anchor="middle" font-size="12">head, private copy of tail</text>
+  <rect class="fig-box" x="380" y="214" width="300" height="52" rx="6"/>
+  <text x="530.0" y="237.0" text-anchor="middle" font-size="13" font-weight="600">producer's cache line</text>
+  <text class="fig-muted" x="530.0" y="254.0" text-anchor="middle" font-size="12">tail, private copy of head</text>
+  <text class="fig-mono" x="40" y="296" font-size="12">push: fill slot tail &amp; 15, then release-store tail + 1</text>
+  <text class="fig-mono" x="40" y="316" font-size="12">pop: read slot head &amp; 15, then release-store head + 1</text>
+</svg>

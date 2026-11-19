@@ -1,0 +1,31 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="One frame: the CPU acquires a command buffer, records a copy pass and a render pass with its draws, and submits it. The GPU runs the recorded passes later, and the swapchain texture is shown when they finish.">
+  <defs>
+    <marker id="14-frame-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="34" font-size="14" font-weight="600">CPU records</text>
+  <rect class="fig-box" x="20" y="46" width="560" height="92" rx="6"/>
+  <text x="36" y="68" font-size="13" font-weight="600">command buffer</text>
+  <rect class="fig-box" x="36" y="80" width="150" height="44" rx="6"/>
+  <text x="111.0" y="98.0" text-anchor="middle" font-size="13" font-weight="600">copy pass</text>
+  <text class="fig-muted" x="111.0" y="116.0" text-anchor="middle" font-size="12">upload vertices, pixels</text>
+  <rect class="fig-accent" x="200" y="80" width="300" height="44" rx="6"/>
+  <text x="350.0" y="98.0" text-anchor="middle" font-size="13" font-weight="600">render pass</text>
+  <text class="fig-muted" x="350.0" y="116.0" text-anchor="middle" font-size="12">bind pipeline, draw, draw, draw</text>
+  <text x="514" y="107" font-size="13" font-weight="600">...</text>
+  <rect class="fig-box" x="600" y="66" width="100" height="52" rx="6"/>
+  <text x="650.0" y="97.0" text-anchor="middle" font-size="13" font-weight="600">submit</text>
+  <line class="fig-line" x1="580" y1="92" x2="598" y2="92" marker-end="url(#14-frame-arrow)"/>
+  <path class="fig-line" d="M650 118 L650 150 L100 150 L100 186" stroke-dasharray="4 4" marker-end="url(#14-frame-arrow)"/>
+  <text class="fig-muted" x="390" y="172" text-anchor="middle" font-size="12">the GPU starts after submit, while the CPU records the next frame</text>
+  <text x="20" y="176" font-size="14" font-weight="600">GPU runs it</text>
+  <rect class="fig-box" x="20" y="188" width="160" height="40" rx="6"/>
+  <text x="100" y="213" text-anchor="middle" font-size="13" font-weight="600">copies</text>
+  <rect class="fig-accent" x="190" y="188" width="310" height="40" rx="6"/>
+  <text x="345" y="213" text-anchor="middle" font-size="13" font-weight="600">vertex and fragment work</text>
+  <rect class="fig-box" x="600" y="188" width="100" height="40" rx="6"/>
+  <text x="650.0" y="213.0" text-anchor="middle" font-size="13" font-weight="600">present</text>
+  <line class="fig-line" x1="500" y1="208" x2="598" y2="208" marker-end="url(#14-frame-arrow)"/>
+  <text class="fig-muted" x="549" y="200" text-anchor="middle" font-size="12">shows</text>
+</svg>

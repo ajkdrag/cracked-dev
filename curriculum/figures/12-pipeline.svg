@@ -1,0 +1,52 @@
+<svg viewBox="0 0 720 280" role="img" aria-label="You write the front end that turns source into LLVM IR. LLVM supplies the optimizer and the back end that turns the IR into x86-64 code, either in memory for a JIT or in an object file. clang and rustc are other front ends that emit the same IR.">
+  <defs>
+    <marker id="12-pipeline-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-accent-text" x="235" y="36" text-anchor="middle" font-size="13" font-weight="600">you write: toy.cpp</text>
+  <line class="fig-accent-line" x1="160" y1="46" x2="310" y2="46"/>
+  <text x="530" y="36" text-anchor="middle" font-size="13" font-weight="600">LLVM supplies: libLLVM</text>
+  <line class="fig-line" x1="360" y1="46" x2="700" y2="46"/>
+
+  <rect class="fig-box" x="20" y="70" width="110" height="80" rx="6"/>
+  <text x="75" y="100" text-anchor="middle" font-size="14" font-weight="600">source</text>
+  <text class="fig-mono" x="75" y="124" text-anchor="middle" font-size="12">def f(x) x*2</text>
+
+  <line class="fig-line" x1="130" y1="110" x2="158" y2="110" marker-end="url(#12-pipeline-arrow)"/>
+
+  <rect class="fig-accent" x="160" y="70" width="150" height="80" rx="6"/>
+  <text x="235" y="96" text-anchor="middle" font-size="14" font-weight="600">front end</text>
+  <text class="fig-muted" x="235" y="116" text-anchor="middle" font-size="12">lexer, parser, AST</text>
+  <text class="fig-muted" x="235" y="134" text-anchor="middle" font-size="12">codegen</text>
+
+  <line class="fig-line" x1="310" y1="110" x2="358" y2="110" marker-end="url(#12-pipeline-arrow)"/>
+  <text class="fig-mono" x="334" y="102" text-anchor="middle" font-size="12">IR</text>
+
+  <rect class="fig-box" x="360" y="70" width="110" height="80" rx="6"/>
+  <text x="415" y="100" text-anchor="middle" font-size="14" font-weight="600">optimizer</text>
+  <text class="fig-muted" x="415" y="122" text-anchor="middle" font-size="12">passes</text>
+
+  <line class="fig-line" x1="470" y1="110" x2="518" y2="110" marker-end="url(#12-pipeline-arrow)"/>
+  <text class="fig-mono" x="494" y="102" text-anchor="middle" font-size="12">IR</text>
+
+  <rect class="fig-box" x="520" y="70" width="180" height="80" rx="6"/>
+  <text x="610" y="96" text-anchor="middle" font-size="14" font-weight="600">back end</text>
+  <text class="fig-muted" x="610" y="116" text-anchor="middle" font-size="12">instruction selection</text>
+  <text class="fig-muted" x="610" y="134" text-anchor="middle" font-size="12">register allocation</text>
+
+  <line class="fig-line" x1="565" y1="150" x2="565" y2="198" marker-end="url(#12-pipeline-arrow)"/>
+  <line class="fig-line" x1="655" y1="150" x2="655" y2="198" marker-end="url(#12-pipeline-arrow)"/>
+  <rect class="fig-box" x="520" y="200" width="88" height="56" rx="6"/>
+  <text x="564" y="224" text-anchor="middle" font-size="13" font-weight="600">JIT</text>
+  <text class="fig-muted" x="564" y="243" text-anchor="middle" font-size="12">in memory</text>
+  <rect class="fig-box" x="612" y="200" width="88" height="56" rx="6"/>
+  <text class="fig-mono" x="656" y="224" text-anchor="middle" font-size="12">output.o</text>
+  <text class="fig-muted" x="656" y="243" text-anchor="middle" font-size="12">object file</text>
+  <text class="fig-muted" x="610" y="180" text-anchor="middle" font-size="12">x86-64 code</text>
+
+  <rect class="fig-box" x="160" y="200" width="150" height="56" rx="6"/>
+  <text x="235" y="224" text-anchor="middle" font-size="13" font-weight="600">clang, rustc</text>
+  <text class="fig-muted" x="235" y="243" text-anchor="middle" font-size="12">other front ends</text>
+  <path class="fig-line" d="M 310 228 L 334 228 L 334 116" fill="none" marker-end="url(#12-pipeline-arrow)"/>
+</svg>

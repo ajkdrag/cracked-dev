@@ -1,0 +1,32 @@
+<svg viewBox="0 0 720 240" role="img" aria-label="An arena over one block: a char at offset 0, seven bytes of padding, an int64_t at offsets 8 to 15, and beg at offset 16, where the free part runs to end.">
+  <defs>
+    <marker id="04-arena-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-mono" x="55.0" y="36" text-anchor="middle" font-size="12">char</text>
+  <text class="fig-muted" x="175.0" y="36" text-anchor="middle" font-size="12">padding, 7 bytes</text>
+  <rect class="fig-accent" x="40" y="64" width="30" height="46"/>
+  <rect class="fig-box" x="70" y="64" width="30" height="46" stroke-dasharray="4 3"/>
+  <rect class="fig-box" x="100" y="64" width="30" height="46" stroke-dasharray="4 3"/>
+  <rect class="fig-box" x="130" y="64" width="30" height="46" stroke-dasharray="4 3"/>
+  <rect class="fig-box" x="160" y="64" width="30" height="46" stroke-dasharray="4 3"/>
+  <rect class="fig-box" x="190" y="64" width="30" height="46" stroke-dasharray="4 3"/>
+  <rect class="fig-box" x="220" y="64" width="30" height="46" stroke-dasharray="4 3"/>
+  <rect class="fig-box" x="250" y="64" width="30" height="46" stroke-dasharray="4 3"/>
+  <rect class="fig-accent" x="280" y="64" width="240" height="46"/>
+  <text class="fig-mono" x="400" y="92" text-anchor="middle" font-size="13">int64_t</text>
+  <rect class="fig-box" x="520" y="64" width="160" height="46"/>
+  <text class="fig-muted" x="600.0" y="92" text-anchor="middle" font-size="13">free</text>
+  <text class="fig-mono fig-muted" x="40" y="56" text-anchor="middle" font-size="11">0</text>
+  <text class="fig-mono fig-muted" x="70" y="56" text-anchor="middle" font-size="11">1</text>
+  <text class="fig-mono fig-muted" x="280" y="56" text-anchor="middle" font-size="11">8</text>
+  <text class="fig-mono fig-muted" x="520" y="56" text-anchor="middle" font-size="11">16</text>
+  <line class="fig-line" x1="40" y1="156" x2="40" y2="114" marker-end="url(#04-arena-arrow)"/>
+  <text class="fig-mono" x="40" y="174" text-anchor="middle" font-size="13">block</text>
+  <line class="fig-accent-line" x1="520" y1="156" x2="520" y2="114" marker-end="url(#04-arena-arrow)"/>
+  <text class="fig-mono" x="520" y="174" text-anchor="middle" font-size="13">a.beg</text>
+  <line class="fig-line" x1="680" y1="156" x2="680" y2="114" marker-end="url(#04-arena-arrow)"/>
+  <text class="fig-mono" x="680" y="174" text-anchor="middle" font-size="13">a.end</text>
+  <text class="fig-muted" x="20" y="220" font-size="12">new(&amp;a, char, 1), then new(&amp;a, int64_t, 1): padding is -addr &amp; 7 = 7, and beg moved 16 bytes.</text>
+</svg>

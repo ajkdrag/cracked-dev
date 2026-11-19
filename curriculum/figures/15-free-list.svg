@@ -1,0 +1,36 @@
+<svg viewBox="0 0 720 260" role="img" aria-label="The linked list allocator keeps a list of free regions inside the heap itself. Each free region starts with a node holding its size and a pointer to the next free region. alloc unlinks a region that fits, and dealloc pushes the region back on the front of the list.">
+  <defs>
+    <marker id="15-free-list-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="140" text-anchor="start" font-size="13" font-weight="600">heap</text>
+  <rect class="fig-box" x="80" y="110" width="90" height="50" rx="0"/>
+  <text class="fig-muted" x="125.0" y="140" text-anchor="middle" font-size="12">in use</text>
+  <rect class="fig-accent" x="170" y="110" width="120" height="50" rx="0"/>
+  <rect class="fig-box" x="176" y="116" width="64" height="38" rx="3"/>
+  <text class="fig-mono" x="208" y="132" text-anchor="middle" font-size="11">size 32</text>
+  <text class="fig-mono" x="208" y="148" text-anchor="middle" font-size="11">next</text>
+  <rect class="fig-box" x="290" y="110" width="70" height="50" rx="0"/>
+  <text class="fig-muted" x="325.0" y="140" text-anchor="middle" font-size="12">in use</text>
+  <rect class="fig-accent" x="360" y="110" width="150" height="50" rx="0"/>
+  <rect class="fig-box" x="366" y="116" width="64" height="38" rx="3"/>
+  <text class="fig-mono" x="398" y="132" text-anchor="middle" font-size="11">size 112</text>
+  <text class="fig-mono" x="398" y="148" text-anchor="middle" font-size="11">next</text>
+  <rect class="fig-box" x="510" y="110" width="60" height="50" rx="0"/>
+  <text class="fig-muted" x="540.0" y="140" text-anchor="middle" font-size="12">in use</text>
+  <rect class="fig-accent" x="570" y="110" width="130" height="50" rx="0"/>
+  <rect class="fig-box" x="576" y="116" width="64" height="38" rx="3"/>
+  <text class="fig-mono" x="608" y="132" text-anchor="middle" font-size="11">size 96</text>
+  <text class="fig-mono" x="608" y="148" text-anchor="middle" font-size="11">next</text>
+  <rect class="fig-box" x="20" y="190" width="60" height="34" rx="6"/>
+  <text class="fig-mono" x="50" y="212" text-anchor="middle" font-size="12">head</text>
+  <path class="fig-line" d="M50 190 C 60 175, 180 175, 200 162" fill="none" marker-end="url(#15-free-list-arrow)"/>
+  <path class="fig-line" d="M232 116 C 260 70, 360 70, 380 108" fill="none" marker-end="url(#15-free-list-arrow)"/>
+  <path class="fig-line" d="M432 116 C 470 70, 570 70, 590 108" fill="none" marker-end="url(#15-free-list-arrow)"/>
+  <path class="fig-line" d="M622 116 C 630 96, 650 86, 664 84" fill="none"/>
+  <text class="fig-mono" x="668" y="88" text-anchor="start" font-size="11">null</text>
+  <text class="fig-muted" x="300" y="74" text-anchor="middle" font-size="12">next</text>
+  <text class="fig-muted" x="510" y="74" text-anchor="middle" font-size="12">next</text>
+  <text class="fig-muted" x="360" y="234" text-anchor="middle" font-size="12">free regions are the shaded ones</text>
+</svg>

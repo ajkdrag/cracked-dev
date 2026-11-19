@@ -1,0 +1,30 @@
+<svg viewBox="0 0 720 380" role="img" aria-label="Client 7 sends command 12. S1 commits and applies it, then crashes before it answers. The client times out and sends the same command 12 to S2, the new leader. The entry goes into the log a second time, and the duplicate table makes the state machine skip it and answer with the saved reply.">
+  <defs>
+    <marker id="19-dedupe-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="40" y="24" width="140" height="34" rx="6"/>
+  <text x="110" y="46" text-anchor="middle" font-size="13">client 7</text>
+  <line class="fig-line" x1="110" y1="58" x2="110" y2="350"/>
+  <rect class="fig-box" x="290" y="24" width="140" height="34" rx="6"/>
+  <text x="360" y="46" text-anchor="middle" font-size="13">S1, old leader</text>
+  <line class="fig-line" x1="360" y1="58" x2="360" y2="160"/>
+  <rect class="fig-box" x="540" y="24" width="140" height="34" rx="6"/>
+  <text x="610" y="46" text-anchor="middle" font-size="13">S2, new leader</text>
+  <line class="fig-line" x1="610" y1="58" x2="610" y2="350"/>
+  <line class="fig-line" x1="110" y1="84" x2="358" y2="104" marker-end="url(#19-dedupe-arrow)"/>
+  <text class="fig-mono" x="234" y="82" text-anchor="middle" font-size="12">7 12 put a 1</text>
+  <text class="fig-muted" x="372" y="128" font-size="12">index 5 committed, applied:</text>
+  <text class="fig-mono" x="372" y="144" font-size="12">a = 1, table: client 7 at 12</text>
+  <line class="fig-accent-line" x1="352" y1="166" x2="368" y2="182" stroke-width="1.5"/>
+  <line class="fig-accent-line" x1="368" y1="166" x2="352" y2="182" stroke-width="1.5"/>
+  <text class="fig-accent-text" x="384" y="180" font-size="12">crashes before it answers</text>
+  <text class="fig-muted" x="122" y="220" font-size="12">no answer in 1 s</text>
+  <line class="fig-line" x1="110" y1="240" x2="608" y2="262" marker-end="url(#19-dedupe-arrow)"/>
+  <text class="fig-mono" x="360" y="240" text-anchor="middle" font-size="12">7 12 put a 1, same number</text>
+  <text class="fig-muted" x="598" y="286" text-anchor="end" font-size="12">index 6 applied: 12 is not</text>
+  <text class="fig-muted" x="598" y="302" text-anchor="end" font-size="12">above 12, skip, saved reply</text>
+  <line class="fig-line" x1="608" y1="322" x2="112" y2="340" marker-end="url(#19-dedupe-arrow)"/>
+  <text class="fig-mono" x="360" y="322" text-anchor="middle" font-size="12">ok</text>
+</svg>

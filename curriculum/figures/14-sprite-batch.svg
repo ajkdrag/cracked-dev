@@ -1,0 +1,62 @@
+<svg viewBox="0 0 720 290" role="img" aria-label="One storage buffer holds a 64-byte record per sprite. The draw runs 6 vertices per sprite: vertex 7 reads record 1 and corner triangleIndices[1] = 1, and the six vertices of a sprite make the triangles 0, 1, 2 and 3, 2, 1 of its rectangle.">
+  <defs>
+    <marker id="14-sprite-batch-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="34" font-size="13" font-weight="600">storage buffer, 64 bytes per sprite</text>
+  <rect class="fig-box" x="20" y="46" width="110" height="46" rx="6"/>
+  <text x="75.0" y="65.0" text-anchor="middle" font-size="13" font-weight="600">record 0</text>
+  <text class="fig-muted" x="75.0" y="83.0" text-anchor="middle" font-size="12">sprite 0</text>
+  <rect class="fig-accent" x="140" y="46" width="110" height="46" rx="6"/>
+  <text x="195.0" y="65.0" text-anchor="middle" font-size="13" font-weight="600">record 1</text>
+  <text class="fig-muted" x="195.0" y="83.0" text-anchor="middle" font-size="12">sprite 1</text>
+  <rect class="fig-box" x="260" y="46" width="110" height="46" rx="6"/>
+  <text x="315.0" y="65.0" text-anchor="middle" font-size="13" font-weight="600">record 2</text>
+  <text class="fig-muted" x="315.0" y="83.0" text-anchor="middle" font-size="12">sprite 2</text>
+  <rect class="fig-box" x="380" y="46" width="110" height="46" rx="6"/>
+  <text x="435.0" y="65.0" text-anchor="middle" font-size="13" font-weight="600">record 3</text>
+  <text class="fig-muted" x="435.0" y="83.0" text-anchor="middle" font-size="12">sprite 3</text>
+  <text x="500" y="74" font-size="13" font-weight="600">...</text>
+  <text x="20" y="136" font-size="13" font-weight="600">vertex ids of the draw, 6 per sprite</text>
+  <rect class="fig-box" x="20" y="148" width="34" height="30" rx="6"/>
+  <text class="fig-mono" x="37" y="168" text-anchor="middle" font-size="12">0</text>
+  <rect class="fig-box" x="60" y="148" width="34" height="30" rx="6"/>
+  <text class="fig-mono" x="77" y="168" text-anchor="middle" font-size="12">1</text>
+  <rect class="fig-box" x="100" y="148" width="34" height="30" rx="6"/>
+  <text class="fig-mono" x="117" y="168" text-anchor="middle" font-size="12">2</text>
+  <rect class="fig-box" x="140" y="148" width="34" height="30" rx="6"/>
+  <text class="fig-mono" x="157" y="168" text-anchor="middle" font-size="12">3</text>
+  <rect class="fig-box" x="180" y="148" width="34" height="30" rx="6"/>
+  <text class="fig-mono" x="197" y="168" text-anchor="middle" font-size="12">4</text>
+  <rect class="fig-box" x="220" y="148" width="34" height="30" rx="6"/>
+  <text class="fig-mono" x="237" y="168" text-anchor="middle" font-size="12">5</text>
+  <rect class="fig-box" x="260" y="148" width="34" height="30" rx="6"/>
+  <text class="fig-mono" x="277" y="168" text-anchor="middle" font-size="12">6</text>
+  <rect class="fig-accent" x="300" y="148" width="34" height="30" rx="6"/>
+  <text class="fig-mono" x="317" y="168" text-anchor="middle" font-size="12">7</text>
+  <rect class="fig-box" x="340" y="148" width="34" height="30" rx="6"/>
+  <text class="fig-mono" x="357" y="168" text-anchor="middle" font-size="12">8</text>
+  <rect class="fig-box" x="380" y="148" width="34" height="30" rx="6"/>
+  <text class="fig-mono" x="397" y="168" text-anchor="middle" font-size="12">9</text>
+  <rect class="fig-box" x="420" y="148" width="34" height="30" rx="6"/>
+  <text class="fig-mono" x="437" y="168" text-anchor="middle" font-size="12">10</text>
+  <rect class="fig-box" x="460" y="148" width="34" height="30" rx="6"/>
+  <text class="fig-mono" x="477" y="168" text-anchor="middle" font-size="12">11</text>
+  <text x="500" y="168" font-size="13" font-weight="600">...</text>
+  <path class="fig-accent-line" d="M317 148 L317 112 L200 94" marker-end="url(#14-sprite-batch-arrow)"/>
+  <text class="fig-mono fig-accent-text" x="326" y="124" font-size="12">id / 6 = 1</text>
+  <text class="fig-mono" x="20" y="208" font-size="12">corner = triangleIndices[id % 6]</text>
+  <text class="fig-mono" x="20" y="228" font-size="12">triangleIndices = {0, 1, 2, 3, 2, 1}</text>
+  <text class="fig-mono fig-accent-text" x="20" y="248" font-size="12">vertex 7: id % 6 = 1, corner 1</text>
+  <rect class="fig-box" x="560" y="130" width="130" height="110" rx="0"/>
+  <line class="fig-line" x1="690" y1="130" x2="560" y2="240"/>
+  <text class="fig-mono" x="552" y="124" text-anchor="middle" font-size="12">0</text>
+  <text class="fig-mono fig-accent-text" x="698" y="124" text-anchor="middle" font-size="12">1</text>
+  <text class="fig-mono" x="552" y="256" text-anchor="middle" font-size="12">2</text>
+  <text class="fig-mono" x="698" y="256" text-anchor="middle" font-size="12">3</text>
+  <circle class="fig-accent-fill" cx="690" cy="130" r="5"/>
+  <text class="fig-muted" x="600" y="172" text-anchor="middle" font-size="12">0, 1, 2</text>
+  <text class="fig-muted" x="652" y="210" text-anchor="middle" font-size="12">3, 2, 1</text>
+  <text class="fig-muted" x="625.0" y="280" text-anchor="middle" font-size="12">one sprite's rectangle</text>
+</svg>

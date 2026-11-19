@@ -1,0 +1,73 @@
+<svg viewBox="0 0 720 312" role="img" aria-label="The Rust enum stores a one-byte tag and the payload in 4 bytes. The C struct stores a 4-byte int tag and a 4-byte union in 8 bytes, and the compiler never checks that the code reads the member the tag names.">
+  <text x="24" y="34" font-size="14" font-weight="600">Rust enum: 4 bytes</text>
+  <text x="260" y="56" text-anchor="middle" font-size="12" class="fig-muted">0</text>
+  <text x="300" y="56" text-anchor="middle" font-size="12" class="fig-muted">1</text>
+  <text x="340" y="56" text-anchor="middle" font-size="12" class="fig-muted">2</text>
+  <text x="380" y="56" text-anchor="middle" font-size="12" class="fig-muted">3</text>
+  <text x="24" y="85" font-size="13" class="fig-mono">Instr::A(0x1234)</text>
+  <rect class="fig-accent" x="240" y="64" width="40" height="32" rx="6"/>
+  <text x="260" y="85" text-anchor="middle" font-size="13" class="fig-mono">00</text>
+  <rect class="fig-box" x="280" y="64" width="40" height="32" rx="6" stroke-dasharray="4 3"/>
+  <text x="300" y="85" text-anchor="middle" font-size="13" class="fig-mono fig-muted">--</text>
+  <rect class="fig-box" x="320" y="64" width="40" height="32" rx="6"/>
+  <text x="340" y="85" text-anchor="middle" font-size="13" class="fig-mono">34</text>
+  <rect class="fig-box" x="360" y="64" width="40" height="32" rx="6"/>
+  <text x="380" y="85" text-anchor="middle" font-size="13" class="fig-mono">12</text>
+  <text x="24" y="125" font-size="13" class="fig-mono">Instr::C{1,2,3}</text>
+  <rect class="fig-accent" x="240" y="104" width="40" height="32" rx="6"/>
+  <text x="260" y="125" text-anchor="middle" font-size="13" class="fig-mono">01</text>
+  <rect class="fig-box" x="280" y="104" width="40" height="32" rx="6"/>
+  <text x="300" y="125" text-anchor="middle" font-size="13" class="fig-mono">01</text>
+  <rect class="fig-box" x="320" y="104" width="40" height="32" rx="6"/>
+  <text x="340" y="125" text-anchor="middle" font-size="13" class="fig-mono">02</text>
+  <rect class="fig-box" x="360" y="104" width="40" height="32" rx="6"/>
+  <text x="380" y="125" text-anchor="middle" font-size="13" class="fig-mono">03</text>
+  <text x="420" y="85" font-size="12" class="fig-muted">tag byte, then the payload</text>
+  <text x="420" y="125" font-size="12" class="fig-muted">match reads the tag first</text>
+  <line class="fig-line" x1="20" y1="158" x2="700" y2="158" stroke-dasharray="4 4"/>
+  <text x="24" y="190" font-size="14" font-weight="600">C struct with a union: 8 bytes</text>
+  <text x="260" y="212" text-anchor="middle" font-size="12" class="fig-muted">0</text>
+  <text x="300" y="212" text-anchor="middle" font-size="12" class="fig-muted">1</text>
+  <text x="340" y="212" text-anchor="middle" font-size="12" class="fig-muted">2</text>
+  <text x="380" y="212" text-anchor="middle" font-size="12" class="fig-muted">3</text>
+  <text x="420" y="212" text-anchor="middle" font-size="12" class="fig-muted">4</text>
+  <text x="460" y="212" text-anchor="middle" font-size="12" class="fig-muted">5</text>
+  <text x="500" y="212" text-anchor="middle" font-size="12" class="fig-muted">6</text>
+  <text x="540" y="212" text-anchor="middle" font-size="12" class="fig-muted">7</text>
+  <text x="24" y="241" font-size="13" class="fig-mono">.tag = INSTR_A</text>
+  <rect class="fig-accent" x="240" y="220" width="40" height="32" rx="6"/>
+  <text x="260" y="241" text-anchor="middle" font-size="13" class="fig-mono">00</text>
+  <rect class="fig-accent" x="280" y="220" width="40" height="32" rx="6"/>
+  <text x="300" y="241" text-anchor="middle" font-size="13" class="fig-mono">00</text>
+  <rect class="fig-accent" x="320" y="220" width="40" height="32" rx="6"/>
+  <text x="340" y="241" text-anchor="middle" font-size="13" class="fig-mono">00</text>
+  <rect class="fig-accent" x="360" y="220" width="40" height="32" rx="6"/>
+  <text x="380" y="241" text-anchor="middle" font-size="13" class="fig-mono">00</text>
+  <rect class="fig-box" x="400" y="220" width="40" height="32" rx="6"/>
+  <text x="420" y="241" text-anchor="middle" font-size="13" class="fig-mono">34</text>
+  <rect class="fig-box" x="440" y="220" width="40" height="32" rx="6"/>
+  <text x="460" y="241" text-anchor="middle" font-size="13" class="fig-mono">12</text>
+  <rect class="fig-box" x="480" y="220" width="40" height="32" rx="6" stroke-dasharray="4 3"/>
+  <text x="500" y="241" text-anchor="middle" font-size="13" class="fig-mono fig-muted">--</text>
+  <rect class="fig-box" x="520" y="220" width="40" height="32" rx="6" stroke-dasharray="4 3"/>
+  <text x="540" y="241" text-anchor="middle" font-size="13" class="fig-mono fig-muted">--</text>
+  <text x="24" y="281" font-size="13" class="fig-mono">.tag = INSTR_C</text>
+  <rect class="fig-accent" x="240" y="260" width="40" height="32" rx="6"/>
+  <text x="260" y="281" text-anchor="middle" font-size="13" class="fig-mono">01</text>
+  <rect class="fig-accent" x="280" y="260" width="40" height="32" rx="6"/>
+  <text x="300" y="281" text-anchor="middle" font-size="13" class="fig-mono">00</text>
+  <rect class="fig-accent" x="320" y="260" width="40" height="32" rx="6"/>
+  <text x="340" y="281" text-anchor="middle" font-size="13" class="fig-mono">00</text>
+  <rect class="fig-accent" x="360" y="260" width="40" height="32" rx="6"/>
+  <text x="380" y="281" text-anchor="middle" font-size="13" class="fig-mono">00</text>
+  <rect class="fig-box" x="400" y="260" width="40" height="32" rx="6"/>
+  <text x="420" y="281" text-anchor="middle" font-size="13" class="fig-mono">01</text>
+  <rect class="fig-box" x="440" y="260" width="40" height="32" rx="6"/>
+  <text x="460" y="281" text-anchor="middle" font-size="13" class="fig-mono">02</text>
+  <rect class="fig-box" x="480" y="260" width="40" height="32" rx="6"/>
+  <text x="500" y="281" text-anchor="middle" font-size="13" class="fig-mono">03</text>
+  <rect class="fig-box" x="520" y="260" width="40" height="32" rx="6" stroke-dasharray="4 3"/>
+  <text x="540" y="281" text-anchor="middle" font-size="13" class="fig-mono fig-muted">--</text>
+  <text x="572" y="241" font-size="12" class="fig-muted">int tag, then union</text>
+  <text x="572" y="281" font-size="12" class="fig-muted">tag never checked</text>
+</svg>

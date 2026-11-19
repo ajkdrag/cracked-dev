@@ -1,0 +1,36 @@
+<svg viewBox="0 0 720 270" role="img" aria-label="The shipped Windows zip holds one folder: platformer.exe with Lua and the thread library inside, SDL3.dll next to it, the shaders as .spv files, the game's assets and a README. The log is written later to the player's AppData folder, outside the zip.">
+  <defs>
+    <marker id="14-zip-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="20" width="420" height="230" rx="6"/>
+  <text class="fig-mono" x="36" y="44" font-size="13" font-weight="600">platformer-1.0.0-windows.zip</text>
+  <text class="fig-mono" x="52" y="70" font-size="12">platformer-windows/</text>
+  <rect class="fig-accent" x="52" y="84" width="372" height="22" rx="4"/>
+  <text class="fig-mono" x="64" y="100" font-size="12">platformer.exe</text>
+  <text class="fig-muted" x="412" y="100" text-anchor="end" font-size="12">your code, Lua, threads</text>
+  <rect class="fig-box" x="52" y="110" width="372" height="22" rx="4"/>
+  <text class="fig-mono" x="64" y="126" font-size="12">SDL3.dll</text>
+  <text class="fig-muted" x="412" y="126" text-anchor="end" font-size="12">loaded at start</text>
+  <rect class="fig-box" x="52" y="136" width="372" height="22" rx="4"/>
+  <text class="fig-mono" x="64" y="152" font-size="12">shaders/*.spv</text>
+  <text class="fig-muted" x="412" y="152" text-anchor="end" font-size="12">SPIR-V, built in WSL</text>
+  <rect class="fig-box" x="52" y="162" width="372" height="22" rx="4"/>
+  <text class="fig-mono" x="64" y="178" font-size="12">assets/ or data.pack</text>
+  <text class="fig-muted" x="412" y="178" text-anchor="end" font-size="12">art, sounds, levels</text>
+  <rect class="fig-box" x="52" y="188" width="372" height="22" rx="4"/>
+  <text class="fig-mono" x="64" y="204" font-size="12">scripts/*.lua</text>
+  <text class="fig-muted" x="412" y="204" text-anchor="end" font-size="12">tuning and enemies</text>
+  <rect class="fig-box" x="52" y="214" width="372" height="22" rx="4"/>
+  <text class="fig-mono" x="64" y="230" font-size="12">README.txt</text>
+  <text class="fig-muted" x="412" y="230" text-anchor="end" font-size="12">controls, version, license</text>
+  <rect class="fig-box" x="480" y="60" width="220" height="60" rx="6"/>
+  <text x="590.0" y="86.0" text-anchor="middle" font-size="13" font-weight="600">SDL_GetBasePath()</text>
+  <text class="fig-muted" x="590.0" y="104.0" text-anchor="middle" font-size="12">points here, read only</text>
+  <line class="fig-line" x1="478" y1="72" x2="194" y2="66" marker-end="url(#14-zip-arrow)"/>
+  <rect class="fig-box" x="480" y="170" width="220" height="60" rx="6"/>
+  <text x="590.0" y="196.0" text-anchor="middle" font-size="13" font-weight="600">SDL_GetPrefPath()</text>
+  <text class="fig-muted" x="590.0" y="214.0" text-anchor="middle" font-size="12">AppData: log, saves</text>
+  <text class="fig-muted" x="590" y="254" text-anchor="middle" font-size="12">outside the zip, written at run time</text>
+</svg>

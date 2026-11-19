@@ -1,0 +1,54 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="A table of 8 slots with linear probing. a and b both hash to slot 2, so b goes to slot 3, and c, which hashes to 3, goes to 4. Deleting b leaves a tombstone, so a lookup of c still probes past slot 3 and finds c in slot 4.">
+  <defs>
+    <marker id="11-hash-table-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="56" y="30" text-anchor="start" font-size="12">after inserting a, b and c: hash(a) = hash(b) = 2, hash(c) = 3</text>
+  <rect class="fig-box" x="56" y="70" width="76" height="40" rx="6"/>
+  <text class="fig-muted" x="94.0" y="95" text-anchor="middle" font-size="11">empty</text>
+  <text class="fig-mono fig-muted" x="94.0" y="128" text-anchor="middle" font-size="11">0</text>
+  <rect class="fig-box" x="132" y="70" width="76" height="40" rx="6"/>
+  <text class="fig-muted" x="170.0" y="95" text-anchor="middle" font-size="11">empty</text>
+  <text class="fig-mono fig-muted" x="170.0" y="128" text-anchor="middle" font-size="11">1</text>
+  <rect class="fig-box" x="208" y="70" width="76" height="40" rx="6"/>
+  <text class="fig-mono" x="246.0" y="95" text-anchor="middle" font-size="12">a</text>
+  <text class="fig-mono fig-muted" x="246.0" y="128" text-anchor="middle" font-size="11">2</text>
+  <rect class="fig-box" x="284" y="70" width="76" height="40" rx="6"/>
+  <text class="fig-mono" x="322.0" y="95" text-anchor="middle" font-size="12">b</text>
+  <text class="fig-mono fig-muted" x="322.0" y="128" text-anchor="middle" font-size="11">3</text>
+  <rect class="fig-box" x="360" y="70" width="76" height="40" rx="6"/>
+  <text class="fig-mono" x="398.0" y="95" text-anchor="middle" font-size="12">c</text>
+  <text class="fig-mono fig-muted" x="398.0" y="128" text-anchor="middle" font-size="11">4</text>
+  <rect class="fig-box" x="436" y="70" width="76" height="40" rx="6"/>
+  <text class="fig-muted" x="474.0" y="95" text-anchor="middle" font-size="11">empty</text>
+  <text class="fig-mono fig-muted" x="474.0" y="128" text-anchor="middle" font-size="11">5</text>
+  <rect class="fig-box" x="512" y="70" width="76" height="40" rx="6"/>
+  <text class="fig-muted" x="550.0" y="95" text-anchor="middle" font-size="11">empty</text>
+  <text class="fig-mono fig-muted" x="550.0" y="128" text-anchor="middle" font-size="11">6</text>
+  <rect class="fig-box" x="588" y="70" width="76" height="40" rx="6"/>
+  <text class="fig-muted" x="626.0" y="95" text-anchor="middle" font-size="11">empty</text>
+  <text class="fig-mono fig-muted" x="626.0" y="128" text-anchor="middle" font-size="11">7</text>
+  <path class="fig-line" d="M 246.0 68 C 246.0 48, 322.0 48, 322.0 66" fill="none" marker-end="url(#11-hash-table-arrow)"/>
+  <text class="fig-muted" x="236.0" y="56" text-anchor="end" font-size="11">b: 2 is taken</text>
+  <text class="fig-muted" x="56" y="170" text-anchor="start" font-size="12">after deleting b: slot 3 holds a tombstone, not empty</text>
+  <rect class="fig-box" x="56" y="180" width="76" height="40" rx="6"/>
+  <text class="fig-muted" x="94.0" y="205" text-anchor="middle" font-size="11">empty</text>
+  <rect class="fig-box" x="132" y="180" width="76" height="40" rx="6"/>
+  <text class="fig-muted" x="170.0" y="205" text-anchor="middle" font-size="11">empty</text>
+  <rect class="fig-box" x="208" y="180" width="76" height="40" rx="6"/>
+  <text class="fig-mono" x="246.0" y="205" text-anchor="middle" font-size="12">a</text>
+  <rect class="fig-accent" x="284" y="180" width="76" height="40" rx="6"/>
+  <text x="322.0" y="205" text-anchor="middle" font-size="12">tombstone</text>
+  <rect class="fig-box" x="360" y="180" width="76" height="40" rx="6"/>
+  <text class="fig-mono" x="398.0" y="205" text-anchor="middle" font-size="12">c</text>
+  <rect class="fig-box" x="436" y="180" width="76" height="40" rx="6"/>
+  <text class="fig-muted" x="474.0" y="205" text-anchor="middle" font-size="11">empty</text>
+  <rect class="fig-box" x="512" y="180" width="76" height="40" rx="6"/>
+  <text class="fig-muted" x="550.0" y="205" text-anchor="middle" font-size="11">empty</text>
+  <rect class="fig-box" x="588" y="180" width="76" height="40" rx="6"/>
+  <text class="fig-muted" x="626.0" y="205" text-anchor="middle" font-size="11">empty</text>
+  <path class="fig-accent-line" d="M 322.0 222 L 322.0 240 L 398.0 240 L 398.0 224" fill="none" marker-end="url(#11-hash-table-arrow)"/>
+  <text class="fig-accent-text" x="284" y="266" text-anchor="start" font-size="12">find c: start at 3, a tombstone, so keep going, 4 has c</text>
+  <text class="fig-muted" x="664" y="290" text-anchor="end" font-size="12">an empty slot ends a lookup</text>
+</svg>

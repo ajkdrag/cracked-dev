@@ -1,0 +1,63 @@
+<svg viewBox="0 0 720 230" role="img" aria-label="Two CHIP-8 frames on a time line: each frame of 1/60 s first counts DT and ST down by one, then runs IPF instructions, here 15, and the rest of the frame is left for drawing and waiting">
+  <defs>
+    <marker id="06-frame-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-accent" x="50" y="80" width="64" height="50" rx="6"/>
+  <text x="82" y="101" text-anchor="middle" font-size="13" font-weight="600">DT, ST</text>
+  <text class="fig-muted" x="82" y="118" text-anchor="middle" font-size="12">minus 1</text>
+  <rect class="fig-box" x="122" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="132" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="142" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="152" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="162" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="172" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="182" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="192" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="202" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="212" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="222" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="232" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="242" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="252" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="262" y="90" width="8" height="30" rx="2"/>
+  <text class="fig-muted" x="197" y="70" text-anchor="middle" font-size="12">15 instructions</text>
+  <text class="fig-muted" x="316" y="109" text-anchor="middle" font-size="12">draw, wait</text>
+  <rect class="fig-accent" x="360" y="80" width="64" height="50" rx="6"/>
+  <text x="392" y="101" text-anchor="middle" font-size="13" font-weight="600">DT, ST</text>
+  <text class="fig-muted" x="392" y="118" text-anchor="middle" font-size="12">minus 1</text>
+  <rect class="fig-box" x="432" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="442" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="452" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="462" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="472" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="482" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="492" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="502" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="512" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="522" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="532" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="542" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="552" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="562" y="90" width="8" height="30" rx="2"/>
+  <rect class="fig-box" x="572" y="90" width="8" height="30" rx="2"/>
+  <text class="fig-muted" x="507" y="70" text-anchor="middle" font-size="12">15 instructions</text>
+  <text class="fig-muted" x="626" y="109" text-anchor="middle" font-size="12">draw, wait</text>
+  <line class="fig-line" x1="50" y1="170" x2="682" y2="170" marker-end="url(#06-frame-arrow)"/>
+  <line class="fig-line" x1="50" y1="164" x2="50" y2="176"/>
+  <text class="fig-mono fig-muted" x="50" y="192" text-anchor="start" font-size="12">0 ms</text>
+  <line class="fig-line" x1="360" y1="164" x2="360" y2="176"/>
+  <text class="fig-mono fig-muted" x="360" y="192" text-anchor="middle" font-size="12">16.7 ms</text>
+  <line class="fig-line" x1="670" y1="164" x2="670" y2="176"/>
+  <text class="fig-mono fig-muted" x="670" y="192" text-anchor="middle" font-size="12">33.3 ms</text>
+  <line class="fig-line" x1="54" y1="148" x2="356" y2="148"/>
+  <line class="fig-line" x1="54" y1="143" x2="54" y2="148"/>
+  <line class="fig-line" x1="356" y1="143" x2="356" y2="148"/>
+  <line class="fig-line" x1="364" y1="148" x2="666" y2="148"/>
+  <line class="fig-line" x1="364" y1="143" x2="364" y2="148"/>
+  <line class="fig-line" x1="666" y1="143" x2="666" y2="148"/>
+  <text x="205" y="210" text-anchor="middle" font-size="13" font-weight="600">frame 1, 1/60 s</text>
+  <text x="515" y="210" text-anchor="middle" font-size="13" font-weight="600">frame 2</text>
+  <text x="50" y="36" font-size="14" font-weight="600">chip8_frame with IPF = 15</text>
+</svg>

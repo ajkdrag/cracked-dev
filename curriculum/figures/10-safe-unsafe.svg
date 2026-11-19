@@ -1,0 +1,44 @@
+<svg viewBox="0 0 720 290" role="img" aria-label="Safe callers reach the Swiss table only through get, put and del. Inside the crate the fields are private, and the two unsafe blocks rely on invariants that only the crate's own code can break.">
+  <defs>
+    <marker id="10-safe-unsafe-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <text x="95" y="40" text-anchor="middle" font-size="12" class="fig-muted">safe code anywhere</text>
+  <rect class="fig-box" x="20" y="60" width="150" height="40" rx="6"/>
+  <text x="95" y="85" text-anchor="middle" font-size="13">tests</text>
+  <rect class="fig-box" x="20" y="125" width="150" height="40" rx="6"/>
+  <text x="95" y="150" text-anchor="middle" font-size="13" class="fig-mono">swissbench</text>
+  <rect class="fig-box" x="20" y="190" width="150" height="40" rx="6"/>
+  <text x="95" y="215" text-anchor="middle" font-size="13">scoped threads</text>
+  <line class="fig-line" x1="170" y1="80" x2="203" y2="110" marker-end="url(#10-safe-unsafe-arrow)"/>
+  <line class="fig-line" x1="170" y1="145" x2="203" y2="145" marker-end="url(#10-safe-unsafe-arrow)"/>
+  <line class="fig-line" x1="170" y1="210" x2="203" y2="180" marker-end="url(#10-safe-unsafe-arrow)"/>
+
+  <rect class="fig-accent" x="205" y="60" width="130" height="170" rx="6" stroke-width="1.5"/>
+  <text x="270" y="86" text-anchor="middle" font-size="13" font-weight="600">safe API</text>
+  <text x="270" y="122" text-anchor="middle" font-size="12" class="fig-mono">get(&amp;self)</text>
+  <text x="270" y="150" text-anchor="middle" font-size="12" class="fig-mono">put(&amp;mut self)</text>
+  <text x="270" y="178" text-anchor="middle" font-size="12" class="fig-mono">del(&amp;mut self)</text>
+  <text x="270" y="250" text-anchor="middle" font-size="12" class="fig-muted">the only way in</text>
+
+  <rect class="fig-box" x="355" y="30" width="345" height="240" rx="6"/>
+  <text x="527" y="52" text-anchor="middle" font-size="12" class="fig-muted">inside the swiss crate</text>
+  <line class="fig-line" x1="335" y1="145" x2="353" y2="145" marker-end="url(#10-safe-unsafe-arrow)"/>
+
+  <rect class="fig-box" x="375" y="66" width="305" height="70" rx="6"/>
+  <text x="527" y="88" text-anchor="middle" font-size="13">private fields and invariants</text>
+  <text x="527" y="108" text-anchor="middle" font-size="12" class="fig-mono">ctrl.len() is a multiple of 16</text>
+  <text x="527" y="126" text-anchor="middle" font-size="12" class="fig-mono">keys.len() == ctrl.len()</text>
+
+  <rect class="fig-accent" x="375" y="190" width="145" height="56" rx="6"/>
+  <text x="447" y="212" text-anchor="middle" font-size="12" font-weight="600">unsafe block</text>
+  <text x="447" y="232" text-anchor="middle" font-size="12" class="fig-mono">16-byte SSE2 load</text>
+  <rect class="fig-accent" x="535" y="190" width="145" height="56" rx="6"/>
+  <text x="607" y="212" text-anchor="middle" font-size="12" font-weight="600">unsafe block</text>
+  <text x="607" y="232" text-anchor="middle" font-size="12" class="fig-mono">get_unchecked(i)</text>
+  <line class="fig-line" x1="447" y1="190" x2="447" y2="139" stroke-dasharray="4 3" marker-end="url(#10-safe-unsafe-arrow)"/>
+  <line class="fig-line" x1="607" y1="190" x2="607" y2="139" stroke-dasharray="4 3" marker-end="url(#10-safe-unsafe-arrow)"/>
+  <text x="527" y="168" text-anchor="middle" font-size="12" class="fig-muted">rely on</text>
+</svg>
