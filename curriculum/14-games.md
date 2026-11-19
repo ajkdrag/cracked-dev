@@ -898,4 +898,4 @@ You have taken two games from an empty window to a public download, on an engine
 
 Every part of both games ran as an ordinary process. Windows or Linux created it, gave it virtual memory, scheduled its threads, and passed its commands to the GPU driver. Chapter 08 showed you those services from the user side and in xv6.
 
-In chapter 15, A small kernel, you write them yourself. You start from a Rust binary with no standard library, boot it as a kernel on an x86-64 PC that QEMU emulates in WSL, set up interrupts and page tables by hand and switch between two tasks. The GPU returns in chapter 20, where CUDA shows you the execution model under the shaders you wrote here.
+In chapter 15, A small kernel, you write them yourself. You start from a Rust binary with no standard library, boot it as a kernel on an x86-64 PC that QEMU emulates in WSL, set up interrupts and page tables by hand and switch between two tasks. The GPU returns in chapter 21, where CUDA shows you the execution model under the shaders you wrote here.

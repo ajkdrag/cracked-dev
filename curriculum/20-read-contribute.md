@@ -1,5 +1,5 @@
 ---
-id: 19
+id: 20
 title: Reading real code and contributing
 part: Storage, networks and real codebases
 weeks: 6
@@ -10,7 +10,7 @@ Chapter 18 ended with a key-value store and a TCP stack of a few thousand lines 
 
 Valkey started as the Redis server under another name. It was forked from Redis 7.2.4 in 2024, right before Redis moved to source-available licenses, and it keeps the BSD license and most of Redis's file and function names. SQLite, Lua, Redis and TigerBeetle are also worth reading, but three of them make an outside fix hard. SQLite is open source and closed to outside contributions. Lua asks you not to send pull requests and takes bug reports on its mailing list. Redis now takes contributions only under a contributor license agreement and its new licenses. Valkey takes pull requests on GitHub with a sign-off line in each commit. TigerBeetle also takes pull requests, and you read it in step 6.
 
-The pull request goes out at the end of step 4. It is a bug fix with a regression test if you find a bug that fits, and a new test on its own if you do not. Step 3 says when to switch. Review on a busy project takes weeks, so you spend that time on three more languages, each read inside real code and each checked against C you already have. Step 5 is C++ in the restricted style of this book's school, which you need again in chapter 20 for CUDA. Step 6 is Zig, read through TigerBeetle, a database built around static allocation. Step 7 is Odin, whose allocators travel in an implicit context and whose `#soa` arrays turn the data layouts of chapter 07 into syntax.
+The pull request goes out at the end of step 4. It is a bug fix with a regression test if you find a bug that fits, and a new test on its own if you do not. Step 3 says when to switch. Review on a busy project takes weeks, so you spend that time on three more languages, each read inside real code and each checked against C you already have. Step 5 is C++ in the restricted style of this book's school, which you need again in chapter 21 for CUDA. Step 6 is Zig, read through TigerBeetle, a database built around static allocation. Step 7 is Odin, whose allocators travel in an implicit context and whose `#soa` arrays turn the data layouts of chapter 07 into syntax.
 
 Do the Valkey steps in the Linux VM. Valkey's CI runs on Linux, its unit tests link with a GNU linker feature, and `gdb` in the VM is the debugger chapter 01 set up for Linux. Steps 5 to 7 run on the Mac.
 
@@ -183,7 +183,7 @@ The pull request is open against `unstable`, links the issue if there is one, an
 
 ## C++ as C with a few things
 
-Chapter 12 taught you enough C++ to follow the LLVM tutorial: classes, virtual functions, references, `std::unique_ptr` and the use of templates. Step 3 added GoogleTest. Chapter 20 is CUDA, and CUDA kernels are C++. This step settles which parts of C++ you write yourself.
+Chapter 12 taught you enough C++ to follow the LLVM tutorial: classes, virtual functions, references, `std::unique_ptr` and the use of templates. Step 3 added GoogleTest. Chapter 21 is CUDA, and CUDA kernels are C++. This step settles which parts of C++ you write yourself.
 
 The school this book follows writes C++ as C with a few additions. Branimir Karadžić, the author of the bgfx rendering library, calls it Orthodox C++. His page is a list of things to leave out: exceptions, RTTI, the C++ wrappers for C headers such as `<cstdio>`, streams, any part of the standard library that allocates, heavy template metaprogramming and modules. The things you keep are this chapter's choice. You keep operator overloading for math types, function overloading, references where they remove a pointer, `constexpr`, `static_assert` and small templates. You have read compiler output since chapter 05, so add one rule of your own: before you use a feature, read the code it emits.
 
@@ -314,4 +314,4 @@ Both layouts print the same average, and it agrees with your C generator in at l
 
 You can now take a large C code base you have never seen, build it at a pinned version, map it, trace a request through it in a debugger, find a bug or an untested path in it, and get a change in front of its maintainers in the form they ask for. You also read C++, Zig and Odin well enough to follow real code in each, and you checked that claim by porting code of your own and matching its output against your C. Keep answering review on your pull request until it merges.
 
-Chapter 20, GPU programming with CUDA, takes the C++ from step 5 to a different machine. A CUDA kernel is a C++ function that thousands of GPU threads run at once, and its tile sizes are often template parameters. The chapter runs on your NVIDIA laptop, in Ubuntu under WSL2 on the laptop's Windows install. It starts by installing NVIDIA's driver in Windows and the CUDA toolkit inside Ubuntu. Linux reaches that driver through a paravirtual device, not through a kernel module of the chapter 16 kind. Then the chapter has you write first kernels and check every launch for errors. Next it measures the card's memory bandwidth with NVIDIA's profiler, the way chapter 07 measured your Mac. Later, reading what the compiler emits, which you did for operator overloads and `std::sort` here, becomes reading PTX and SASS.
+Chapter 21, GPU programming with CUDA, takes the C++ from step 5 to a different machine. A CUDA kernel is a C++ function that thousands of GPU threads run at once, and its tile sizes are often template parameters. The chapter runs on your NVIDIA laptop, in Ubuntu under WSL2 on the laptop's Windows install. It starts by installing NVIDIA's driver in Windows and the CUDA toolkit inside Ubuntu. Linux reaches that driver through a paravirtual device, not through a kernel module of the chapter 16 kind. Then the chapter has you write first kernels and check every launch for errors. Next it measures the card's memory bandwidth with NVIDIA's profiler, the way chapter 07 measured your Mac. Later, reading what the compiler emits, which you did for operator overloads and `std::sort` here, becomes reading PTX and SASS.
