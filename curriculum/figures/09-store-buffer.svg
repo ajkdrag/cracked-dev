@@ -1,0 +1,36 @@
+<svg viewBox="0 0 720 340" role="img" aria-label="Each core&#x27;s store of 1 waits in its store buffer while its next load reads the other variable from memory, where it is still 0. Both loads return 0.">
+  <defs>
+    <marker id="09-store-buffer-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="30" width="200" height="84" rx="6"/>
+  <text x="120" y="52" text-anchor="middle" font-size="13" font-weight="600">core 0</text>
+  <text class="fig-mono" x="120" y="76" text-anchor="middle" font-size="13">1. X = 1</text>
+  <text class="fig-mono" x="120" y="98" text-anchor="middle" font-size="13">2. r1 = Y</text>
+  <rect class="fig-accent" x="20" y="160" width="200" height="54" rx="6"/>
+  <text x="120.0" y="184.0" text-anchor="middle" font-size="13" font-weight="600">store buffer</text>
+  <text class="fig-muted" x="120.0" y="201.0" text-anchor="middle" font-size="12">X = 1, not yet in memory</text>
+  <rect class="fig-box" x="500" y="30" width="200" height="84" rx="6"/>
+  <text x="600" y="52" text-anchor="middle" font-size="13" font-weight="600">core 1</text>
+  <text class="fig-mono" x="600" y="76" text-anchor="middle" font-size="13">1. Y = 1</text>
+  <text class="fig-mono" x="600" y="98" text-anchor="middle" font-size="13">2. r2 = X</text>
+  <rect class="fig-accent" x="500" y="160" width="200" height="54" rx="6"/>
+  <text x="600.0" y="184.0" text-anchor="middle" font-size="13" font-weight="600">store buffer</text>
+  <text class="fig-muted" x="600.0" y="201.0" text-anchor="middle" font-size="12">Y = 1, not yet in memory</text>
+  <rect class="fig-box" x="220" y="266" width="280" height="54" rx="6"/>
+  <text x="360.0" y="290.0" text-anchor="middle" font-size="13" font-weight="600">memory</text>
+  <text class="fig-muted fig-mono" x="360.0" y="307.0" text-anchor="middle" font-size="12">X = 0, Y = 0</text>
+  <line class="fig-line" x1="70" y1="114" x2="70" y2="158" marker-end="url(#09-store-buffer-arrow)"/>
+  <text class="fig-muted" x="78" y="142" font-size="12">1. store</text>
+  <line class="fig-line" x1="650" y1="114" x2="650" y2="158" marker-end="url(#09-store-buffer-arrow)"/>
+  <text class="fig-muted" x="642" y="142" text-anchor="end" font-size="12">1. store</text>
+  <line class="fig-line" x1="120" y1="214" x2="236" y2="264" marker-end="url(#09-store-buffer-arrow)"/>
+  <text class="fig-muted" x="150" y="254" text-anchor="end" font-size="12">drains later</text>
+  <line class="fig-line" x1="600" y1="214" x2="484" y2="264" marker-end="url(#09-store-buffer-arrow)"/>
+  <text class="fig-muted" x="570" y="254" font-size="12">drains later</text>
+  <path class="fig-line" d="M 220 90 L 320 90 L 320 264" marker-end="url(#09-store-buffer-arrow)"/>
+  <text class="fig-accent-text" x="312" y="130" text-anchor="end" font-size="12">2. load Y: 0</text>
+  <path class="fig-line" d="M 500 90 L 400 90 L 400 264" marker-end="url(#09-store-buffer-arrow)"/>
+  <text class="fig-accent-text" x="408" y="130" font-size="12">2. load X: 0</text>
+</svg>

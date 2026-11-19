@@ -1,0 +1,67 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="Two cores write different counters that sit in the same 64-byte line, so the line moves between their caches on every write. With each counter aligned to 64 bytes, each line stays in one cache.">
+  <defs>
+    <marker id="09-false-sharing-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="34" font-size="13" font-weight="600">counters next to each other</text>
+  <rect class="fig-box" x="40" y="48" width="260" height="40" rx="6"/>
+  <text x="170.0" y="73.0" text-anchor="middle" font-size="13" font-weight="600">core 0 writes c[0]</text>
+  <rect class="fig-box" x="40" y="104" width="260" height="70" rx="6"/>
+  <text class="fig-muted" x="288" y="122" text-anchor="end" font-size="12">its cache: one 64-byte line</text>
+  <rect class="fig-accent" x="58" y="132" width="28" height="28" rx="6"/>
+  <text class="fig-mono" x="72" y="151" text-anchor="middle" font-size="12">0</text>
+  <rect class="fig-box" x="86" y="132" width="28" height="28" rx="6"/>
+  <text class="fig-mono" x="100" y="151" text-anchor="middle" font-size="12">1</text>
+  <rect class="fig-box" x="114" y="132" width="28" height="28" rx="6"/>
+  <text class="fig-mono" x="128" y="151" text-anchor="middle" font-size="12">2</text>
+  <rect class="fig-box" x="142" y="132" width="28" height="28" rx="6"/>
+  <text class="fig-mono" x="156" y="151" text-anchor="middle" font-size="12">3</text>
+  <rect class="fig-box" x="170" y="132" width="28" height="28" rx="6"/>
+  <text class="fig-mono" x="184" y="151" text-anchor="middle" font-size="12">4</text>
+  <rect class="fig-box" x="198" y="132" width="28" height="28" rx="6"/>
+  <text class="fig-mono" x="212" y="151" text-anchor="middle" font-size="12">5</text>
+  <rect class="fig-box" x="226" y="132" width="28" height="28" rx="6"/>
+  <text class="fig-mono" x="240" y="151" text-anchor="middle" font-size="12">6</text>
+  <rect class="fig-box" x="254" y="132" width="28" height="28" rx="6"/>
+  <text class="fig-mono" x="268" y="151" text-anchor="middle" font-size="12">7</text>
+  <line class="fig-line" x1="72" y1="88" x2="72" y2="130" marker-end="url(#09-false-sharing-arrow)"/>
+  <rect class="fig-box" x="420" y="48" width="260" height="40" rx="6"/>
+  <text x="550.0" y="73.0" text-anchor="middle" font-size="13" font-weight="600">core 1 writes c[1]</text>
+  <rect class="fig-box" x="420" y="104" width="260" height="70" rx="6"/>
+  <text class="fig-muted" x="668" y="122" text-anchor="end" font-size="12">its cache: one 64-byte line</text>
+  <rect class="fig-box" x="438" y="132" width="28" height="28" rx="6"/>
+  <text class="fig-mono" x="452" y="151" text-anchor="middle" font-size="12">0</text>
+  <rect class="fig-accent" x="466" y="132" width="28" height="28" rx="6"/>
+  <text class="fig-mono" x="480" y="151" text-anchor="middle" font-size="12">1</text>
+  <rect class="fig-box" x="494" y="132" width="28" height="28" rx="6"/>
+  <text class="fig-mono" x="508" y="151" text-anchor="middle" font-size="12">2</text>
+  <rect class="fig-box" x="522" y="132" width="28" height="28" rx="6"/>
+  <text class="fig-mono" x="536" y="151" text-anchor="middle" font-size="12">3</text>
+  <rect class="fig-box" x="550" y="132" width="28" height="28" rx="6"/>
+  <text class="fig-mono" x="564" y="151" text-anchor="middle" font-size="12">4</text>
+  <rect class="fig-box" x="578" y="132" width="28" height="28" rx="6"/>
+  <text class="fig-mono" x="592" y="151" text-anchor="middle" font-size="12">5</text>
+  <rect class="fig-box" x="606" y="132" width="28" height="28" rx="6"/>
+  <text class="fig-mono" x="620" y="151" text-anchor="middle" font-size="12">6</text>
+  <rect class="fig-box" x="634" y="132" width="28" height="28" rx="6"/>
+  <text class="fig-mono" x="648" y="151" text-anchor="middle" font-size="12">7</text>
+  <line class="fig-line" x1="480" y1="88" x2="480" y2="130" marker-end="url(#09-false-sharing-arrow)"/>
+  <line class="fig-line" x1="302" y1="140" x2="418" y2="140" marker-end="url(#09-false-sharing-arrow)"/>
+  <line class="fig-line" x1="418" y1="158" x2="302" y2="158" marker-end="url(#09-false-sharing-arrow)"/>
+  <text class="fig-muted" x="360" y="128" text-anchor="middle" font-size="12">line moves</text>
+  <text x="20" y="222" font-size="13" font-weight="600">each counter _Alignas(64)</text>
+  <rect class="fig-box" x="40" y="236" width="260" height="70" rx="6"/>
+  <text class="fig-muted" x="52" y="254" font-size="12">its cache</text>
+  <rect class="fig-accent" x="58" y="264" width="28" height="28" rx="6"/>
+  <text class="fig-mono" x="72" y="283" text-anchor="middle" font-size="12">0</text>
+  <rect class="fig-box" x="86" y="264" width="196" height="28" rx="6"/>
+  <text class="fig-muted" x="184" y="283" text-anchor="middle" font-size="12">padding</text>
+  <rect class="fig-box" x="420" y="236" width="260" height="70" rx="6"/>
+  <text class="fig-muted" x="432" y="254" font-size="12">its cache</text>
+  <rect class="fig-accent" x="438" y="264" width="28" height="28" rx="6"/>
+  <text class="fig-mono" x="452" y="283" text-anchor="middle" font-size="12">1</text>
+  <rect class="fig-box" x="466" y="264" width="196" height="28" rx="6"/>
+  <text class="fig-muted" x="564" y="283" text-anchor="middle" font-size="12">padding</text>
+  <text class="fig-muted" x="360" y="283" text-anchor="middle" font-size="12">lines stay put</text>
+</svg>

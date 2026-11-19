@@ -1,0 +1,54 @@
+<svg viewBox="0 0 720 270" role="img" aria-label="The first write to a fresh page finds no page table entry and traps into the kernel, which takes a free physical page, fills it with zeros, maps it and returns so the write runs again. Later writes to the same page find the entry and go straight to memory">
+  <defs>
+    <marker id="07-page-fault-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <text class="fig-muted" x="20" y="28" font-size="12">first write to a page</text>
+
+  <rect class="fig-box" x="20" y="40" width="110" height="56" rx="6"/>
+  <text x="75" y="62" text-anchor="middle" font-size="13">CPU</text>
+  <text class="fig-mono" x="75" y="82" text-anchor="middle" font-size="12">p[0] = 1</text>
+
+  <rect class="fig-accent" x="190" y="40" width="130" height="56" rx="6"/>
+  <text x="255" y="62" text-anchor="middle" font-size="13">page table</text>
+  <text class="fig-muted" x="255" y="82" text-anchor="middle" font-size="12">no entry: fault</text>
+
+  <rect class="fig-accent" x="380" y="40" width="150" height="56" rx="6"/>
+  <text x="455" y="62" text-anchor="middle" font-size="13">kernel</text>
+  <text class="fig-muted" x="455" y="82" text-anchor="middle" font-size="12">zeroes a free page</text>
+
+  <rect class="fig-box" x="590" y="40" width="110" height="56" rx="6"/>
+  <text x="645" y="62" text-anchor="middle" font-size="13">RAM</text>
+  <text class="fig-muted" x="645" y="82" text-anchor="middle" font-size="12">4096-byte page</text>
+
+  <line class="fig-line" x1="130" y1="68" x2="188" y2="68" marker-end="url(#07-page-fault-arrow)"/>
+  <text class="fig-muted" x="160" y="58" text-anchor="middle" font-size="11">looks up</text>
+  <line class="fig-line" x1="320" y1="68" x2="378" y2="68" marker-end="url(#07-page-fault-arrow)"/>
+  <text class="fig-muted" x="349" y="58" text-anchor="middle" font-size="12">traps</text>
+  <line class="fig-line" x1="530" y1="68" x2="588" y2="68" marker-end="url(#07-page-fault-arrow)"/>
+  <text class="fig-muted" x="559" y="58" text-anchor="middle" font-size="12">maps</text>
+
+  <path class="fig-line" d="M455 96 L455 122 L75 122 L75 98" fill="none" marker-end="url(#07-page-fault-arrow)"/>
+  <text class="fig-muted" x="275" y="140" text-anchor="middle" font-size="12">returns, and the write runs again</text>
+
+  <text class="fig-muted" x="20" y="178" font-size="12">every later write to the same page</text>
+
+  <rect class="fig-box" x="20" y="190" width="110" height="56" rx="6"/>
+  <text x="75" y="212" text-anchor="middle" font-size="13">CPU</text>
+  <text class="fig-mono" x="75" y="232" text-anchor="middle" font-size="12">p[1] = 1</text>
+
+  <rect class="fig-box" x="190" y="190" width="130" height="56" rx="6"/>
+  <text x="255" y="212" text-anchor="middle" font-size="13">page table</text>
+  <text class="fig-muted" x="255" y="232" text-anchor="middle" font-size="12">entry present</text>
+
+  <rect class="fig-box" x="590" y="190" width="110" height="56" rx="6"/>
+  <text x="645" y="212" text-anchor="middle" font-size="13">RAM</text>
+  <text class="fig-muted" x="645" y="232" text-anchor="middle" font-size="12">same page</text>
+
+  <line class="fig-line" x1="130" y1="218" x2="188" y2="218" marker-end="url(#07-page-fault-arrow)"/>
+  <text class="fig-muted" x="160" y="208" text-anchor="middle" font-size="11">looks up</text>
+  <line class="fig-line" x1="320" y1="218" x2="588" y2="218" marker-end="url(#07-page-fault-arrow)"/>
+  <text class="fig-muted" x="460" y="208" text-anchor="middle" font-size="12">no kernel involved</text>
+</svg>

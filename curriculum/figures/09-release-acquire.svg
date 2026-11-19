@@ -1,0 +1,29 @@
+<svg viewBox="0 0 720 350" role="img" aria-label="Thread A writes the payload, then stores 1 to the guard with release. Thread B loads the guard with acquire. When B&#x27;s load reads A&#x27;s 1, the two synchronize, and B&#x27;s later reads see the payload.">
+  <defs>
+    <marker id="09-release-acquire-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="170" y="34" text-anchor="middle" font-size="13" font-weight="600">thread A</text>
+  <text x="550" y="34" text-anchor="middle" font-size="13" font-weight="600">thread B</text>
+  <rect class="fig-box" x="40" y="50" width="260" height="40" rx="6"/>
+  <text class="fig-mono" x="170.0" y="75.0" text-anchor="middle" font-size="13">data.x = 42</text>
+  <rect class="fig-box" x="40" y="100" width="260" height="40" rx="6"/>
+  <text class="fig-mono" x="170.0" y="125.0" text-anchor="middle" font-size="13">data.y = 7</text>
+  <rect class="fig-accent" x="40" y="160" width="260" height="54" rx="6"/>
+  <text class="fig-mono" x="170.0" y="184.0" text-anchor="middle" font-size="13">store ready = 1</text>
+  <text class="fig-muted" x="170.0" y="201.0" text-anchor="middle" font-size="12">release</text>
+  <rect class="fig-accent" x="420" y="210" width="260" height="54" rx="6"/>
+  <text class="fig-mono" x="550.0" y="234.0" text-anchor="middle" font-size="13">load ready: reads 1</text>
+  <text class="fig-muted" x="550.0" y="251.0" text-anchor="middle" font-size="12">acquire</text>
+  <rect class="fig-box" x="420" y="284" width="260" height="40" rx="6"/>
+  <text class="fig-mono" x="550.0" y="309.0" text-anchor="middle" font-size="13">read data.x, data.y: 42, 7</text>
+  <line class="fig-line" x1="170" y1="140" x2="170" y2="158" marker-end="url(#09-release-acquire-arrow)"/>
+  <line class="fig-line" x1="550" y1="264" x2="550" y2="282" marker-end="url(#09-release-acquire-arrow)"/>
+  <line class="fig-line" x1="300" y1="190" x2="418" y2="232" marker-end="url(#09-release-acquire-arrow)"/>
+  <text class="fig-accent-text" x="372" y="194" text-anchor="middle" font-size="12">synchronizes with</text>
+  <text class="fig-muted" x="170" y="240" text-anchor="middle" font-size="12">plain stores above,</text>
+  <text class="fig-muted" x="170" y="256" text-anchor="middle" font-size="12">then the guard</text>
+  <text class="fig-muted" x="550" y="76" text-anchor="middle" font-size="12">spins until the load</text>
+  <text class="fig-muted" x="550" y="92" text-anchor="middle" font-size="12">reads 1</text>
+</svg>

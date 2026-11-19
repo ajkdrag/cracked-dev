@@ -1,0 +1,55 @@
+<svg viewBox="0 0 720 290" role="img" aria-label="A 256-bit ymm register holds four doubles in four lanes. One vaddpd adds the four lanes of ymm1 and ymm2 at once and writes four sums into ymm0. The low two lanes are the 128-bit register xmm0">
+  <defs>
+    <marker id="07-simd-lanes-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="155" y="34" text-anchor="middle" font-size="12">lane 0</text>
+  <text class="fig-muted" x="265" y="34" text-anchor="middle" font-size="12">lane 1</text>
+  <text class="fig-muted" x="375" y="34" text-anchor="middle" font-size="12">lane 2</text>
+  <text class="fig-muted" x="485" y="34" text-anchor="middle" font-size="12">lane 3</text>
+  <text class="fig-mono" x="20" y="70" font-size="14">ymm1</text>
+  <rect class="fig-box" x="100" y="46" width="440" height="36" rx="4"/>
+  <line class="fig-line" x1="210" y1="46" x2="210" y2="82"/>
+  <line class="fig-line" x1="320" y1="46" x2="320" y2="82"/>
+  <line class="fig-line" x1="430" y1="46" x2="430" y2="82"/>
+  <text class="fig-mono" x="155" y="69" text-anchor="middle" font-size="13">a0</text>
+  <text class="fig-mono" x="265" y="69" text-anchor="middle" font-size="13">a1</text>
+  <text class="fig-mono" x="375" y="69" text-anchor="middle" font-size="13">a2</text>
+  <text class="fig-mono" x="485" y="69" text-anchor="middle" font-size="13">a3</text>
+  <text class="fig-mono" x="20" y="124" font-size="14">ymm2</text>
+  <rect class="fig-box" x="100" y="100" width="440" height="36" rx="4"/>
+  <line class="fig-line" x1="210" y1="100" x2="210" y2="136"/>
+  <line class="fig-line" x1="320" y1="100" x2="320" y2="136"/>
+  <line class="fig-line" x1="430" y1="100" x2="430" y2="136"/>
+  <text class="fig-mono" x="155" y="123" text-anchor="middle" font-size="13">b0</text>
+  <text class="fig-mono" x="265" y="123" text-anchor="middle" font-size="13">b1</text>
+  <text class="fig-mono" x="375" y="123" text-anchor="middle" font-size="13">b2</text>
+  <text class="fig-mono" x="485" y="123" text-anchor="middle" font-size="13">b3</text>
+  <text class="fig-mono" x="20" y="220" font-size="14">ymm0</text>
+  <rect class="fig-accent" x="100" y="196" width="440" height="36" rx="4"/>
+  <line class="fig-line" x1="210" y1="196" x2="210" y2="232"/>
+  <line class="fig-line" x1="320" y1="196" x2="320" y2="232"/>
+  <line class="fig-line" x1="430" y1="196" x2="430" y2="232"/>
+  <text class="fig-mono" x="155" y="219" text-anchor="middle" font-size="13">a0+b0</text>
+  <text class="fig-mono" x="265" y="219" text-anchor="middle" font-size="13">a1+b1</text>
+  <text class="fig-mono" x="375" y="219" text-anchor="middle" font-size="13">a2+b2</text>
+  <text class="fig-mono" x="485" y="219" text-anchor="middle" font-size="13">a3+b3</text>
+  <line class="fig-line" x1="155" y1="136" x2="155" y2="194" marker-end="url(#07-simd-lanes-arrow)"/>
+  <text x="165" y="170" font-size="14">+</text>
+  <line class="fig-line" x1="265" y1="136" x2="265" y2="194" marker-end="url(#07-simd-lanes-arrow)"/>
+  <text x="275" y="170" font-size="14">+</text>
+  <line class="fig-line" x1="375" y1="136" x2="375" y2="194" marker-end="url(#07-simd-lanes-arrow)"/>
+  <text x="385" y="170" font-size="14">+</text>
+  <line class="fig-line" x1="485" y1="136" x2="485" y2="194" marker-end="url(#07-simd-lanes-arrow)"/>
+  <text x="495" y="170" font-size="14">+</text>
+  <text class="fig-muted" x="564" y="70" font-size="12">256 bits:</text>
+  <text class="fig-muted" x="564" y="87" font-size="12">4 doubles or 8 floats</text>
+  <text class="fig-mono" x="564" y="164" font-size="13">vaddpd</text>
+  <text class="fig-muted" x="564" y="182" font-size="12">one instruction,</text>
+  <text class="fig-muted" x="564" y="198" font-size="12">four additions</text>
+  <line class="fig-line" x1="100" y1="244" x2="320" y2="244"/>
+  <line class="fig-line" x1="100" y1="238" x2="100" y2="250"/>
+  <line class="fig-line" x1="320" y1="238" x2="320" y2="250"/>
+  <text class="fig-muted" x="210" y="268" text-anchor="middle" font-size="12">xmm0: the low 128 bits</text>
+</svg>

@@ -1,0 +1,64 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="Three equal jobs A, B and C. FIFO runs them one after another and they finish at T, 2T and 3T. Round robin interleaves short slices, all three start at once and all finish near 3T">
+  <defs>
+    <marker id="08-sched-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="76" font-size="13" font-weight="600">FIFO</text>
+  <text x="20" y="156" font-size="13" font-weight="600">round robin</text>
+  <rect class="fig-accent" x="140" y="50" width="180" height="40" rx="6"/>
+  <text x="230.0" y="75.0" text-anchor="middle" font-size="13" font-weight="600">A</text>
+  <text class="fig-muted" x="316" y="108" text-anchor="end" font-size="12">A done</text>
+  <rect class="fig-box" x="320" y="50" width="180" height="40" rx="6"/>
+  <text x="410.0" y="75.0" text-anchor="middle" font-size="13" font-weight="600">B</text>
+  <text class="fig-muted" x="496" y="108" text-anchor="end" font-size="12">B done</text>
+  <rect class="fig-box" x="500" y="50" width="180" height="40" rx="6"/>
+  <text x="590.0" y="75.0" text-anchor="middle" font-size="13" font-weight="600">C</text>
+  <text class="fig-muted" x="676" y="108" text-anchor="end" font-size="12">C done</text>
+  <rect class="fig-accent" x="140" y="130" width="30" height="40" rx="6"/>
+  <text x="155.0" y="155.0" text-anchor="middle" font-size="13" font-weight="600">A</text>
+  <rect class="fig-box" x="170" y="130" width="30" height="40" rx="6"/>
+  <text x="185.0" y="155.0" text-anchor="middle" font-size="13" font-weight="600">B</text>
+  <rect class="fig-box" x="200" y="130" width="30" height="40" rx="6"/>
+  <text x="215.0" y="155.0" text-anchor="middle" font-size="13" font-weight="600">C</text>
+  <rect class="fig-accent" x="230" y="130" width="30" height="40" rx="6"/>
+  <text x="245.0" y="155.0" text-anchor="middle" font-size="13" font-weight="600">A</text>
+  <rect class="fig-box" x="260" y="130" width="30" height="40" rx="6"/>
+  <text x="275.0" y="155.0" text-anchor="middle" font-size="13" font-weight="600">B</text>
+  <rect class="fig-box" x="290" y="130" width="30" height="40" rx="6"/>
+  <text x="305.0" y="155.0" text-anchor="middle" font-size="13" font-weight="600">C</text>
+  <rect class="fig-accent" x="320" y="130" width="30" height="40" rx="6"/>
+  <text x="335.0" y="155.0" text-anchor="middle" font-size="13" font-weight="600">A</text>
+  <rect class="fig-box" x="350" y="130" width="30" height="40" rx="6"/>
+  <text x="365.0" y="155.0" text-anchor="middle" font-size="13" font-weight="600">B</text>
+  <rect class="fig-box" x="380" y="130" width="30" height="40" rx="6"/>
+  <text x="395.0" y="155.0" text-anchor="middle" font-size="13" font-weight="600">C</text>
+  <rect class="fig-accent" x="410" y="130" width="30" height="40" rx="6"/>
+  <text x="425.0" y="155.0" text-anchor="middle" font-size="13" font-weight="600">A</text>
+  <rect class="fig-box" x="440" y="130" width="30" height="40" rx="6"/>
+  <text x="455.0" y="155.0" text-anchor="middle" font-size="13" font-weight="600">B</text>
+  <rect class="fig-box" x="470" y="130" width="30" height="40" rx="6"/>
+  <text x="485.0" y="155.0" text-anchor="middle" font-size="13" font-weight="600">C</text>
+  <rect class="fig-accent" x="500" y="130" width="30" height="40" rx="6"/>
+  <text x="515.0" y="155.0" text-anchor="middle" font-size="13" font-weight="600">A</text>
+  <rect class="fig-box" x="530" y="130" width="30" height="40" rx="6"/>
+  <text x="545.0" y="155.0" text-anchor="middle" font-size="13" font-weight="600">B</text>
+  <rect class="fig-box" x="560" y="130" width="30" height="40" rx="6"/>
+  <text x="575.0" y="155.0" text-anchor="middle" font-size="13" font-weight="600">C</text>
+  <rect class="fig-accent" x="590" y="130" width="30" height="40" rx="6"/>
+  <text x="605.0" y="155.0" text-anchor="middle" font-size="13" font-weight="600">A</text>
+  <rect class="fig-box" x="620" y="130" width="30" height="40" rx="6"/>
+  <text x="635.0" y="155.0" text-anchor="middle" font-size="13" font-weight="600">B</text>
+  <rect class="fig-box" x="650" y="130" width="30" height="40" rx="6"/>
+  <text x="665.0" y="155.0" text-anchor="middle" font-size="13" font-weight="600">C</text>
+  <text class="fig-muted" x="676" y="188" text-anchor="end" font-size="12">A, B, C done near 3T</text>
+  <line class="fig-line" x1="140" y1="214" x2="700" y2="214" marker-end="url(#08-sched-arrow)"/>
+  <line class="fig-line" x1="140" y1="208" x2="140" y2="220"/>
+  <text class="fig-mono" x="140" y="238" text-anchor="middle" font-size="12">0</text>
+  <line class="fig-line" x1="320" y1="208" x2="320" y2="220"/>
+  <text class="fig-mono" x="320" y="238" text-anchor="middle" font-size="12">T</text>
+  <line class="fig-line" x1="500" y1="208" x2="500" y2="220"/>
+  <text class="fig-mono" x="500" y="238" text-anchor="middle" font-size="12">2T</text>
+  <line class="fig-line" x1="680" y1="208" x2="680" y2="220"/>
+  <text class="fig-mono" x="680" y="238" text-anchor="middle" font-size="12">3T</text>
+</svg>

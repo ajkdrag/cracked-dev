@@ -1,0 +1,47 @@
+<svg viewBox="0 0 720 280" role="img" aria-label="The bounded queue holds a ring of slots, a mutex and two condition variables. Producers that find it full wait on not_full, and each pop signals it. Consumers that find it empty wait on not_empty, and each push signals it.">
+  <defs>
+    <marker id="09-bounded-queue-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="60" width="130" height="56" rx="6"/>
+  <text x="85.0" y="85.0" text-anchor="middle" font-size="13" font-weight="600">producers</text>
+  <text class="fig-muted" x="85.0" y="102.0" text-anchor="middle" font-size="12">push at tail</text>
+  <rect class="fig-box" x="570" y="60" width="130" height="56" rx="6"/>
+  <text x="635.0" y="85.0" text-anchor="middle" font-size="13" font-weight="600">consumers</text>
+  <text class="fig-muted" x="635.0" y="102.0" text-anchor="middle" font-size="12">pop at head</text>
+  <rect class="fig-box" x="190" y="30" width="340" height="220" rx="6"/>
+  <text class="fig-muted" x="360" y="52" text-anchor="middle" font-size="12">queue: mutex, count = 4, cap = 8</text>
+  <rect class="fig-box" x="224" y="70" width="34" height="34" rx="6"/>
+  <rect class="fig-box" x="258" y="70" width="34" height="34" rx="6"/>
+  <rect class="fig-accent" x="292" y="70" width="34" height="34" rx="6"/>
+  <text class="fig-mono" x="309" y="92" text-anchor="middle" font-size="13">c</text>
+  <rect class="fig-accent" x="326" y="70" width="34" height="34" rx="6"/>
+  <text class="fig-mono" x="343" y="92" text-anchor="middle" font-size="13">d</text>
+  <rect class="fig-accent" x="360" y="70" width="34" height="34" rx="6"/>
+  <text class="fig-mono" x="377" y="92" text-anchor="middle" font-size="13">e</text>
+  <rect class="fig-accent" x="394" y="70" width="34" height="34" rx="6"/>
+  <text class="fig-mono" x="411" y="92" text-anchor="middle" font-size="13">f</text>
+  <rect class="fig-box" x="428" y="70" width="34" height="34" rx="6"/>
+  <rect class="fig-box" x="462" y="70" width="34" height="34" rx="6"/>
+  <text class="fig-mono" x="309" y="124" text-anchor="middle" font-size="12">head</text>
+  <text class="fig-mono" x="445" y="124" text-anchor="middle" font-size="12">tail</text>
+  <line class="fig-line" x1="150" y1="88" x2="188" y2="88" marker-end="url(#09-bounded-queue-arrow)"/>
+  <text class="fig-muted" x="169" y="80" text-anchor="middle" font-size="12">push</text>
+  <line class="fig-line" x1="530" y1="88" x2="568" y2="88" marker-end="url(#09-bounded-queue-arrow)"/>
+  <text class="fig-muted" x="549" y="80" text-anchor="middle" font-size="12">pop</text>
+  <rect class="fig-accent" x="206" y="180" width="150" height="52" rx="6"/>
+  <text class="fig-mono" x="281.0" y="203.0" text-anchor="middle" font-size="13">not_full</text>
+  <text class="fig-muted" x="281.0" y="220.0" text-anchor="middle" font-size="12">producers sleep here</text>
+  <rect class="fig-accent" x="364" y="180" width="150" height="52" rx="6"/>
+  <text class="fig-mono" x="439.0" y="203.0" text-anchor="middle" font-size="13">not_empty</text>
+  <text class="fig-muted" x="439.0" y="220.0" text-anchor="middle" font-size="12">consumers sleep here</text>
+  <line class="fig-line" x1="300" y1="132" x2="300" y2="178" marker-end="url(#09-bounded-queue-arrow)"/>
+  <text class="fig-muted" x="294" y="160" text-anchor="end" font-size="12">pop signals</text>
+  <line class="fig-line" x1="420" y1="132" x2="420" y2="178" marker-end="url(#09-bounded-queue-arrow)"/>
+  <text class="fig-muted" x="426" y="160" font-size="12">push signals</text>
+  <path class="fig-line" d="M 85 116 L 85 206 L 204 206" marker-end="url(#09-bounded-queue-arrow)"/>
+  <text class="fig-muted" x="93" y="160" font-size="12">wait when full</text>
+  <path class="fig-line" d="M 635 116 L 635 206 L 516 206" marker-end="url(#09-bounded-queue-arrow)"/>
+  <text class="fig-muted" x="627" y="160" text-anchor="end" font-size="12">wait when empty</text>
+</svg>

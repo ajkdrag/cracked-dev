@@ -1,0 +1,26 @@
+<svg viewBox="0 0 720 310" role="img" aria-label="The futex lock&#x27;s word has three states: 0 unlocked, 1 locked with no waiters, 2 locked with possible waiters. Locking a free lock and unlocking from 1 need no system call. Only waiting at 2 and unlocking from 2 enter the kernel.">
+  <defs>
+    <marker id="09-futex-states-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="40" y="120" width="170" height="60" rx="6"/>
+  <text class="fig-mono" x="125.0" y="147.0" text-anchor="middle" font-size="13">0</text>
+  <text class="fig-muted" x="125.0" y="164.0" text-anchor="middle" font-size="12">unlocked</text>
+  <rect class="fig-box" x="275" y="120" width="170" height="60" rx="6"/>
+  <text class="fig-mono" x="360.0" y="147.0" text-anchor="middle" font-size="13">1</text>
+  <text class="fig-muted" x="360.0" y="164.0" text-anchor="middle" font-size="12">locked, no waiters</text>
+  <rect class="fig-accent" x="510" y="120" width="170" height="60" rx="6"/>
+  <text class="fig-mono" x="595.0" y="147.0" text-anchor="middle" font-size="13">2</text>
+  <text class="fig-muted" x="595.0" y="164.0" text-anchor="middle" font-size="12">locked, maybe waiters</text>
+  <path class="fig-line" d="M 150 118 Q 240 60 330 118" marker-end="url(#09-futex-states-arrow)"/>
+  <text class="fig-muted" x="240" y="64" text-anchor="middle" font-size="12">lock: cmpxchg 0 to 1</text>
+  <text class="fig-muted" x="240" y="80" text-anchor="middle" font-size="12">no system call</text>
+  <path class="fig-line" d="M 390 118 Q 480 60 570 118" marker-end="url(#09-futex-states-arrow)"/>
+  <text class="fig-muted" x="480" y="64" text-anchor="middle" font-size="12">lock finds it held: xchg 2</text>
+  <text class="fig-muted" x="480" y="80" text-anchor="middle" font-size="12">then futex_wait sleeps</text>
+  <path class="fig-line" d="M 330 182 Q 240 230 150 182" marker-end="url(#09-futex-states-arrow)"/>
+  <text class="fig-muted" x="240" y="220" text-anchor="middle" font-size="12">unlock: no system call</text>
+  <path class="fig-line" d="M 595 182 L 595 256 L 110 256 L 110 184" marker-end="url(#09-futex-states-arrow)"/>
+  <text class="fig-muted" x="352" y="280" text-anchor="middle" font-size="12">unlock: xchg 0 returned 2, so futex_wake one waiter</text>
+</svg>

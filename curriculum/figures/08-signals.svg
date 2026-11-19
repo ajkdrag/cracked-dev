@@ -1,0 +1,25 @@
+<svg viewBox="0 0 720 270" role="img" aria-label="Ctrl-C makes the terminal send SIGINT to every process in its foreground group, the shell and sleep 100, while sleep 200 &amp;, in a process group of its own, gets nothing">
+  <defs>
+    <marker id="08-signals-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="70" width="150" height="60" rx="6"/>
+  <text x="95.0" y="97.0" text-anchor="middle" font-size="13" font-weight="600">terminal</text>
+  <text class="fig-muted" x="95.0" y="114.0" text-anchor="middle" font-size="12">you press Ctrl-C</text>
+  <rect class="fig-box" x="250" y="30" width="450" height="110" rx="6"/>
+  <text class="fig-muted" x="266" y="50" font-size="12">foreground process group</text>
+  <rect class="fig-accent" x="280" y="62" width="180" height="60" rx="6"/>
+  <text x="370.0" y="89.0" text-anchor="middle" font-size="13" font-weight="600">mysh</text>
+  <text class="fig-muted" x="370.0" y="106.0" text-anchor="middle" font-size="12">ignores SIGINT</text>
+  <rect class="fig-accent" x="490" y="62" width="180" height="60" rx="6"/>
+  <text x="580.0" y="89.0" text-anchor="middle" font-size="13" font-weight="600">sleep 100</text>
+  <text class="fig-muted" x="580.0" y="106.0" text-anchor="middle" font-size="12">default action: dies</text>
+  <line class="fig-accent-line" x1="170" y1="100" x2="248" y2="100" marker-end="url(#08-signals-arrow)"/>
+  <text class="fig-accent-text" x="209" y="92" text-anchor="middle" font-size="12">SIGINT</text>
+  <rect class="fig-box" x="250" y="160" width="450" height="96" rx="6"/>
+  <text class="fig-muted" x="266" y="180" font-size="12">the job's own process group, from setpgid</text>
+  <rect class="fig-box" x="490" y="190" width="180" height="50" rx="6"/>
+  <text x="580.0" y="212.0" text-anchor="middle" font-size="13" font-weight="600">sleep 200 &amp;</text>
+  <text class="fig-muted" x="580.0" y="229.0" text-anchor="middle" font-size="12">gets no signal</text>
+</svg>

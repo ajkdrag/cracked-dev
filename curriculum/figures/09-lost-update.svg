@@ -1,0 +1,37 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="Two threads each load counter as 50, add 1 in a register and store 51, so the memory ends at 51 and one increment is lost.">
+  <defs>
+    <marker id="09-lost-update-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="180" y="40" text-anchor="middle" font-size="13" font-weight="600">thread 1</text>
+  <text x="425" y="40" text-anchor="middle" font-size="13" font-weight="600">thread 2</text>
+  <text x="635" y="40" text-anchor="middle" font-size="13" font-weight="600">counter in memory</text>
+  <rect class="fig-box" x="70" y="56" width="220" height="32" rx="6"/>
+  <text x="180.0" y="77" text-anchor="middle" font-size="13">load counter: 50</text>
+  <rect class="fig-box" x="570" y="56" width="130" height="32" rx="6"/>
+  <text class="fig-mono" x="635" y="77" text-anchor="middle" font-size="13">50</text>
+  <rect class="fig-box" x="315" y="98" width="220" height="32" rx="6"/>
+  <text x="425.0" y="119" text-anchor="middle" font-size="13">load counter: 50</text>
+  <rect class="fig-box" x="570" y="98" width="130" height="32" rx="6"/>
+  <text class="fig-mono" x="635" y="119" text-anchor="middle" font-size="13">50</text>
+  <rect class="fig-box" x="70" y="140" width="220" height="32" rx="6"/>
+  <text x="180.0" y="161" text-anchor="middle" font-size="13">add 1 in register: 51</text>
+  <rect class="fig-box" x="570" y="140" width="130" height="32" rx="6"/>
+  <text class="fig-mono" x="635" y="161" text-anchor="middle" font-size="13">50</text>
+  <rect class="fig-box" x="315" y="182" width="220" height="32" rx="6"/>
+  <text x="425.0" y="203" text-anchor="middle" font-size="13">add 1 in register: 51</text>
+  <rect class="fig-box" x="570" y="182" width="130" height="32" rx="6"/>
+  <text class="fig-mono" x="635" y="203" text-anchor="middle" font-size="13">50</text>
+  <rect class="fig-box" x="70" y="224" width="220" height="32" rx="6"/>
+  <text x="180.0" y="245" text-anchor="middle" font-size="13">store 51</text>
+  <rect class="fig-box" x="570" y="224" width="130" height="32" rx="6"/>
+  <text class="fig-mono" x="635" y="245" text-anchor="middle" font-size="13">51</text>
+  <rect class="fig-box" x="315" y="266" width="220" height="32" rx="6"/>
+  <text x="425.0" y="287" text-anchor="middle" font-size="13">store 51</text>
+  <rect class="fig-accent" x="570" y="266" width="130" height="32" rx="6"/>
+  <text class="fig-mono" x="635" y="287" text-anchor="middle" font-size="13">51</text>
+  <text class="fig-accent-text" x="635" y="322" text-anchor="middle" font-size="12">52 was expected</text>
+  <line class="fig-line" x1="40" y1="56" x2="40" y2="300" marker-end="url(#09-lost-update-arrow)"/>
+  <text class="fig-muted" x="40" y="40" text-anchor="middle" font-size="12">time</text>
+</svg>

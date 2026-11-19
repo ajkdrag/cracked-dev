@@ -1,0 +1,107 @@
+<svg viewBox="0 0 720 250" role="img" aria-label="The five multipliers: waste puts many instructions around each add, instructions per clock runs independent adds in the same cycle, SIMD adds several values with one instruction, caching keeps the data close to the core, and multithreading gives each core its own part of the work">
+  <defs>
+    <marker id="07-multipliers-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <!-- panel 1: waste -->
+  <rect class="fig-box" x="20" y="20" width="128" height="210" rx="6"/>
+  <text x="84" y="44" text-anchor="middle" font-size="14" font-weight="600">Waste</text>
+  <rect class="fig-box" x="44" y="60" width="80" height="14" rx="3"/>
+  <rect class="fig-box" x="44" y="78" width="80" height="14" rx="3"/>
+  <rect class="fig-box" x="44" y="96" width="80" height="14" rx="3"/>
+  <rect class="fig-accent" x="44" y="114" width="80" height="14" rx="3"/>
+  <text class="fig-mono" x="84" y="125" text-anchor="middle" font-size="11">add</text>
+  <rect class="fig-box" x="44" y="132" width="80" height="14" rx="3"/>
+  <rect class="fig-box" x="44" y="150" width="80" height="14" rx="3"/>
+  <text class="fig-muted" x="84" y="194" text-anchor="middle" font-size="12">one useful add,</text>
+  <text class="fig-muted" x="84" y="210" text-anchor="middle" font-size="12">much work around it</text>
+
+  <!-- panel 2: instructions per clock -->
+  <rect class="fig-box" x="158" y="20" width="128" height="210" rx="6"/>
+  <text x="222" y="44" text-anchor="middle" font-size="14" font-weight="600">IPC</text>
+  <text class="fig-muted" x="178" y="91" text-anchor="middle" font-size="11">c1</text>
+  <text class="fig-muted" x="222" y="62" text-anchor="middle" font-size="11">c = cycle</text>
+  <text class="fig-muted" x="178" y="125" text-anchor="middle" font-size="11">c2</text>
+  <text class="fig-muted" x="178" y="159" text-anchor="middle" font-size="11">c3</text>
+  <rect class="fig-accent" x="192" y="74" width="40" height="24" rx="4"/>
+  <text class="fig-mono" x="212" y="91" text-anchor="middle" font-size="11">add</text>
+  <rect class="fig-accent" x="238" y="74" width="40" height="24" rx="4"/>
+  <text class="fig-mono" x="258" y="91" text-anchor="middle" font-size="11">add</text>
+  <rect class="fig-accent" x="192" y="108" width="40" height="24" rx="4"/>
+  <text class="fig-mono" x="212" y="125" text-anchor="middle" font-size="11">add</text>
+  <rect class="fig-accent" x="238" y="108" width="40" height="24" rx="4"/>
+  <text class="fig-mono" x="258" y="125" text-anchor="middle" font-size="11">add</text>
+  <rect class="fig-accent" x="192" y="142" width="40" height="24" rx="4"/>
+  <text class="fig-mono" x="212" y="159" text-anchor="middle" font-size="11">add</text>
+  <rect class="fig-accent" x="238" y="142" width="40" height="24" rx="4"/>
+  <text class="fig-mono" x="258" y="159" text-anchor="middle" font-size="11">add</text>
+  <text class="fig-muted" x="222" y="194" text-anchor="middle" font-size="12">independent adds</text>
+  <text class="fig-muted" x="222" y="210" text-anchor="middle" font-size="12">share a cycle</text>
+
+  <!-- panel 3: SIMD -->
+  <rect class="fig-box" x="296" y="20" width="128" height="210" rx="6"/>
+  <text x="360" y="44" text-anchor="middle" font-size="14" font-weight="600">SIMD</text>
+  <rect class="fig-box" x="312" y="66" width="96" height="24" rx="4"/>
+  <line class="fig-line" x1="336" y1="66" x2="336" y2="90"/>
+  <line class="fig-line" x1="360" y1="66" x2="360" y2="90"/>
+  <line class="fig-line" x1="384" y1="66" x2="384" y2="90"/>
+  <text class="fig-mono" x="324" y="83" text-anchor="middle" font-size="11">a0</text>
+  <text class="fig-mono" x="348" y="83" text-anchor="middle" font-size="11">a1</text>
+  <text class="fig-mono" x="372" y="83" text-anchor="middle" font-size="11">a2</text>
+  <text class="fig-mono" x="396" y="83" text-anchor="middle" font-size="11">a3</text>
+  <text x="360" y="110" text-anchor="middle" font-size="14">+</text>
+  <rect class="fig-box" x="312" y="118" width="96" height="24" rx="4"/>
+  <line class="fig-line" x1="336" y1="118" x2="336" y2="142"/>
+  <line class="fig-line" x1="360" y1="118" x2="360" y2="142"/>
+  <line class="fig-line" x1="384" y1="118" x2="384" y2="142"/>
+  <text class="fig-mono" x="324" y="135" text-anchor="middle" font-size="11">b0</text>
+  <text class="fig-mono" x="348" y="135" text-anchor="middle" font-size="11">b1</text>
+  <text class="fig-mono" x="372" y="135" text-anchor="middle" font-size="11">b2</text>
+  <text class="fig-mono" x="396" y="135" text-anchor="middle" font-size="11">b3</text>
+  <rect class="fig-accent" x="312" y="150" width="96" height="20" rx="4"/>
+  <text class="fig-mono" x="360" y="164" text-anchor="middle" font-size="11">one paddd</text>
+  <text class="fig-muted" x="360" y="194" text-anchor="middle" font-size="12">one instruction,</text>
+  <text class="fig-muted" x="360" y="210" text-anchor="middle" font-size="12">four additions</text>
+
+  <!-- panel 4: caching -->
+  <rect class="fig-box" x="434" y="20" width="128" height="210" rx="6"/>
+  <text x="498" y="44" text-anchor="middle" font-size="14" font-weight="600">Caching</text>
+  <rect class="fig-accent" x="446" y="66" width="44" height="28" rx="4"/>
+  <text x="468" y="85" text-anchor="middle" font-size="12">core</text>
+  <rect class="fig-box" x="510" y="66" width="44" height="28" rx="4"/>
+  <text x="532" y="85" text-anchor="middle" font-size="12">L1</text>
+  <line class="fig-line" x1="510" y1="80" x2="492" y2="80" marker-end="url(#07-multipliers-arrow)"/>
+  <rect class="fig-box" x="446" y="130" width="44" height="28" rx="4"/>
+  <text x="468" y="149" text-anchor="middle" font-size="12">core</text>
+  <rect class="fig-box" x="510" y="130" width="44" height="28" rx="4"/>
+  <text x="532" y="149" text-anchor="middle" font-size="11">DRAM</text>
+  <path class="fig-line" d="M532 158 L532 172 L468 172 L468 162" fill="none" marker-end="url(#07-multipliers-arrow)"/>
+  <text class="fig-muted" x="498" y="118" text-anchor="middle" font-size="11">L1: near, fast</text>
+  <text class="fig-muted" x="498" y="190" text-anchor="middle" font-size="11">DRAM: far, slow</text>
+  <text class="fig-muted" x="498" y="212" text-anchor="middle" font-size="12">data near the core</text>
+
+  <!-- panel 5: multithreading -->
+  <rect class="fig-box" x="572" y="20" width="128" height="210" rx="6"/>
+  <text x="636" y="44" text-anchor="middle" font-size="14" font-weight="600">Threads</text>
+  <rect class="fig-box" x="590" y="60" width="92" height="20" rx="4"/>
+  <line class="fig-line" x1="613" y1="60" x2="613" y2="80"/>
+  <line class="fig-line" x1="636" y1="60" x2="636" y2="80"/>
+  <line class="fig-line" x1="659" y1="60" x2="659" y2="80"/>
+  <line class="fig-line" x1="601.5" y1="80" x2="601.5" y2="118" marker-end="url(#07-multipliers-arrow)"/>
+  <line class="fig-line" x1="624.5" y1="80" x2="624.5" y2="118" marker-end="url(#07-multipliers-arrow)"/>
+  <line class="fig-line" x1="647.5" y1="80" x2="647.5" y2="118" marker-end="url(#07-multipliers-arrow)"/>
+  <line class="fig-line" x1="670.5" y1="80" x2="670.5" y2="118" marker-end="url(#07-multipliers-arrow)"/>
+  <rect class="fig-accent" x="592" y="120" width="19" height="24" rx="4"/>
+  <text x="601.5" y="136" text-anchor="middle" font-size="11">c0</text>
+  <rect class="fig-accent" x="615" y="120" width="19" height="24" rx="4"/>
+  <text x="624.5" y="136" text-anchor="middle" font-size="11">c1</text>
+  <rect class="fig-accent" x="638" y="120" width="19" height="24" rx="4"/>
+  <text x="647.5" y="136" text-anchor="middle" font-size="11">c2</text>
+  <rect class="fig-accent" x="661" y="120" width="19" height="24" rx="4"/>
+  <text x="670.5" y="136" text-anchor="middle" font-size="11">c3</text>
+  <text class="fig-muted" x="636" y="162" text-anchor="middle" font-size="11">c = core</text>
+  <text class="fig-muted" x="636" y="194" text-anchor="middle" font-size="12">each core sums</text>
+  <text class="fig-muted" x="636" y="210" text-anchor="middle" font-size="12">its own part</text>
+</svg>
