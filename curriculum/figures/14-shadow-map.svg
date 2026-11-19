@@ -1,0 +1,35 @@
+<svg viewBox="0 0 720 290" role="img" aria-label="Pass 1 renders the scene from the light into a depth texture. In pass 2 a pixel's world position is moved into the light's clip space, and its depth there is compared with the stored depth. The point behind the box is farther than the stored value, so it is in shadow.">
+  <defs>
+    <marker id="14-shadow-map-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="34" font-size="13" font-weight="600">pass 1: from the light, depth only</text>
+  <text x="380" y="34" font-size="13" font-weight="600">pass 2: from the camera</text>
+  <rect class="fig-box" x="30" y="50" width="90" height="34" rx="6"/>
+  <text x="75.0" y="72.0" text-anchor="middle" font-size="13" font-weight="600">light</text>
+  <rect class="fig-box" x="150" y="150" width="50" height="50" rx="2"/>
+  <text x="175" y="180" text-anchor="middle" font-size="12">box</text>
+  <line class="fig-line" x1="30" y1="240" x2="340" y2="240"/>
+  <text class="fig-muted" x="320" y="258" text-anchor="middle" font-size="12">floor</text>
+  <line class="fig-line" x1="75" y1="84" x2="150" y2="148" stroke-dasharray="4 4" marker-end="url(#14-shadow-map-arrow)"/>
+  <line class="fig-line" x1="75" y1="84" x2="198" y2="148" stroke-dasharray="4 4" marker-end="url(#14-shadow-map-arrow)"/>
+  <line class="fig-line" x1="75" y1="84" x2="118" y2="236" stroke-dasharray="4 4" marker-end="url(#14-shadow-map-arrow)"/>
+  <text class="fig-muted" x="210" y="104" font-size="12">stores the nearest</text>
+  <text class="fig-muted" x="210" y="120" font-size="12">depth per texel</text>
+  <rect class="fig-box" x="600" y="50" width="90" height="34" rx="6"/>
+  <text x="645.0" y="72.0" text-anchor="middle" font-size="13" font-weight="600">camera</text>
+  <rect class="fig-box" x="510" y="150" width="50" height="50" rx="2"/>
+  <text x="530" y="192" text-anchor="middle" font-size="12">box</text>
+  <line class="fig-line" x1="380" y1="240" x2="700" y2="240"/>
+  <line class="fig-line" x1="645" y1="84" x2="622" y2="234" marker-end="url(#14-shadow-map-arrow)"/>
+  <circle class="fig-accent-fill" cx="620" cy="240" r="5"/>
+  <text x="636" y="230" font-size="12" font-weight="600">P</text>
+  <line class="fig-accent-line" x1="616" y1="236" x2="470" y2="112" stroke-dasharray="4 4"/>
+  <text class="fig-accent-text" x="380" y="74" font-size="12">toward the light:</text>
+  <text class="fig-accent-text" x="380" y="90" font-size="12">the box is nearer</text>
+  <text class="fig-muted" x="380" y="214" font-size="12">move P into the</text>
+  <text class="fig-muted" x="380" y="230" font-size="12">light's clip space</text>
+  <text class="fig-accent-text" x="380" y="270" font-size="12">P's depth from the light &gt; stored depth, so P is in shadow</text>
+  <line class="fig-line" x1="360" y1="22" x2="360" y2="280" stroke-dasharray="4 4"/>
+</svg>

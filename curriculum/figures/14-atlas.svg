@@ -1,0 +1,35 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="A 256 by 256 atlas holding sixteen 64 by 64 images. One sprite's image starts at pixel (128, 64), so its rectangle in texture coordinates is u 0.5, v 0.25, width 0.25, height 0.25.">
+  <defs>
+    <marker id="14-atlas-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="60" y="40" width="52" height="52" rx="0"/>
+  <rect class="fig-box" x="112" y="40" width="52" height="52" rx="0"/>
+  <rect class="fig-box" x="164" y="40" width="52" height="52" rx="0"/>
+  <rect class="fig-box" x="216" y="40" width="52" height="52" rx="0"/>
+  <rect class="fig-box" x="60" y="92" width="52" height="52" rx="0"/>
+  <rect class="fig-box" x="112" y="92" width="52" height="52" rx="0"/>
+  <rect class="fig-accent" x="164" y="92" width="52" height="52" rx="0"/>
+  <rect class="fig-box" x="216" y="92" width="52" height="52" rx="0"/>
+  <rect class="fig-box" x="60" y="144" width="52" height="52" rx="0"/>
+  <rect class="fig-box" x="112" y="144" width="52" height="52" rx="0"/>
+  <rect class="fig-box" x="164" y="144" width="52" height="52" rx="0"/>
+  <rect class="fig-box" x="216" y="144" width="52" height="52" rx="0"/>
+  <rect class="fig-box" x="60" y="196" width="52" height="52" rx="0"/>
+  <rect class="fig-box" x="112" y="196" width="52" height="52" rx="0"/>
+  <rect class="fig-box" x="164" y="196" width="52" height="52" rx="0"/>
+  <rect class="fig-box" x="216" y="196" width="52" height="52" rx="0"/>
+  <text class="fig-mono" x="60" y="32" text-anchor="middle" font-size="12">(0, 0)</text>
+  <text class="fig-mono" x="268" y="266" text-anchor="middle" font-size="12">(1, 1)</text>
+  <text class="fig-muted" x="164" y="32" text-anchor="middle" font-size="12">u</text>
+  <text class="fig-muted" x="52" y="148" text-anchor="end" font-size="12">v</text>
+  <text class="fig-muted" x="164" y="288" text-anchor="middle" font-size="12">atlas, 256 x 256 pixels</text>
+  <path class="fig-accent-line" d="M216 118.0 L338 118.0" marker-end="url(#14-atlas-arrow)"/>
+  <rect class="fig-box" x="340" y="60" width="360" height="130" rx="6"/>
+  <text x="360" y="88" font-size="13" font-weight="600">the sprite's rectangle</text>
+  <text class="fig-mono" x="360" y="112" font-size="12">pixels (128, 64) to (192, 128)</text>
+  <text class="fig-mono" x="360" y="134" font-size="12">u = 128 / 256 = 0.5, w = 64 / 256 = 0.25</text>
+  <text class="fig-mono" x="360" y="156" font-size="12">v = 64 / 256 = 0.25, h = 64 / 256 = 0.25</text>
+  <text class="fig-muted" x="360" y="178" font-size="12">TexU, TexV, TexW, TexH of its record</text>
+</svg>

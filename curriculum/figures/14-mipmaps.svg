@@ -1,0 +1,106 @@
+<svg viewBox="0 0 720 230" role="img" aria-label="A mipmap chain for an 8 by 8 texture: levels 0 to 3 at 8, 4, 2 and 1 texels square, each texel the average of four above it. A near pixel samples level 0, and a far pixel that covers many texels samples a smaller level.">
+  <defs>
+    <marker id="14-mipmaps-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-accent" x="20" y="40" width="18" height="18" rx="0"/>
+  <rect class="fig-accent" x="38" y="40" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="56" y="40" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="74" y="40" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="92" y="40" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="110" y="40" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="128" y="40" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="146" y="40" width="18" height="18" rx="0"/>
+  <rect class="fig-accent" x="20" y="58" width="18" height="18" rx="0"/>
+  <rect class="fig-accent" x="38" y="58" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="56" y="58" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="74" y="58" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="92" y="58" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="110" y="58" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="128" y="58" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="146" y="58" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="20" y="76" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="38" y="76" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="56" y="76" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="74" y="76" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="92" y="76" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="110" y="76" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="128" y="76" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="146" y="76" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="20" y="94" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="38" y="94" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="56" y="94" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="74" y="94" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="92" y="94" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="110" y="94" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="128" y="94" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="146" y="94" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="20" y="112" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="38" y="112" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="56" y="112" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="74" y="112" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="92" y="112" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="110" y="112" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="128" y="112" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="146" y="112" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="20" y="130" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="38" y="130" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="56" y="130" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="74" y="130" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="92" y="130" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="110" y="130" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="128" y="130" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="146" y="130" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="20" y="148" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="38" y="148" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="56" y="148" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="74" y="148" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="92" y="148" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="110" y="148" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="128" y="148" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="146" y="148" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="20" y="166" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="38" y="166" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="56" y="166" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="74" y="166" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="92" y="166" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="110" y="166" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="128" y="166" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="146" y="166" width="18" height="18" rx="0"/>
+  <rect class="fig-accent" x="200" y="76" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="218" y="76" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="236" y="76" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="254" y="76" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="200" y="94" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="218" y="94" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="236" y="94" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="254" y="94" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="200" y="112" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="218" y="112" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="236" y="112" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="254" y="112" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="200" y="130" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="218" y="130" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="236" y="130" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="254" y="130" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="300" y="94" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="318" y="94" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="300" y="112" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="318" y="112" width="18" height="18" rx="0"/>
+  <rect class="fig-box" x="360" y="103" width="18" height="18" rx="0"/>
+  <text class="fig-muted" x="92" y="30" text-anchor="middle" font-size="12">level 0: 8 x 8</text>
+  <text class="fig-muted" x="236" y="66" text-anchor="middle" font-size="12">level 1: 4 x 4</text>
+  <text class="fig-muted" x="318" y="84" text-anchor="middle" font-size="12">level 2</text>
+  <text class="fig-muted" x="369" y="196" text-anchor="middle" font-size="12">level 3</text>
+  <line class="fig-line" x1="369" y1="124" x2="369" y2="182" stroke-dasharray="4 4"/>
+  <path class="fig-accent-line" d="M58 58 C110 40 160 60 196 85" marker-end="url(#14-mipmaps-arrow)"/>
+  <text class="fig-accent-text" x="150" y="205" text-anchor="middle" font-size="12">four texels average into one</text>
+  <rect class="fig-box" x="450" y="40" width="250" height="60" rx="6"/>
+  <text x="575.0" y="66.0" text-anchor="middle" font-size="13" font-weight="600">near pixel</text>
+  <text class="fig-muted" x="575.0" y="84.0" text-anchor="middle" font-size="12">about one texel: level 0</text>
+  <rect class="fig-box" x="450" y="120" width="250" height="60" rx="6"/>
+  <text x="575.0" y="146.0" text-anchor="middle" font-size="13" font-weight="600">far pixel</text>
+  <text class="fig-muted" x="575.0" y="164.0" text-anchor="middle" font-size="12">covers many texels: a small level</text>
+  <text class="fig-muted" x="575" y="210" text-anchor="middle" font-size="12">the sampler picks the level by size</text>
+</svg>

@@ -1,0 +1,195 @@
+<svg viewBox="0 0 720 330" role="img" aria-label="The 960 by 540 screen split into 64 by 64 tiles, 15 across and 9 down. A triangle goes into the bin of every tile its bounding box touches, shaded here for one triangle. parallel_for then runs one job per tile, and the workers take tiles as they finish">
+  <defs>
+    <marker id="13-tiles-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-accent" x="122.4" y="75.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="148" y="75.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="173.6" y="75.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="199.2" y="75.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="224.8" y="75.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="122.4" y="101.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="148" y="101.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="173.6" y="101.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="199.2" y="101.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="224.8" y="101.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="122.4" y="126.8" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="148" y="126.8" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="173.6" y="126.8" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="199.2" y="126.8" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="224.8" y="126.8" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="122.4" y="152.4" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="148" y="152.4" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="173.6" y="152.4" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="199.2" y="152.4" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="224.8" y="152.4" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="122.4" y="178" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="148" y="178" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="173.6" y="178" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="199.2" y="178" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-accent" x="224.8" y="178" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="20" y="50" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="45.6" y="50" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="71.2" y="50" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="96.8" y="50" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="122.4" y="50" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="148" y="50" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="173.6" y="50" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="199.2" y="50" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="224.8" y="50" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="250.4" y="50" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="276" y="50" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="301.6" y="50" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="327.2" y="50" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="352.8" y="50" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="378.4" y="50" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="20" y="75.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="45.6" y="75.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="71.2" y="75.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="96.8" y="75.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="122.4" y="75.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="148" y="75.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="173.6" y="75.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="199.2" y="75.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="224.8" y="75.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="250.4" y="75.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="276" y="75.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="301.6" y="75.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="327.2" y="75.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="352.8" y="75.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="378.4" y="75.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="20" y="101.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="45.6" y="101.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="71.2" y="101.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="96.8" y="101.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="122.4" y="101.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="148" y="101.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="173.6" y="101.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="199.2" y="101.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="224.8" y="101.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="250.4" y="101.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="276" y="101.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="301.6" y="101.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="327.2" y="101.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="352.8" y="101.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="378.4" y="101.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="20" y="126.8" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="45.6" y="126.8" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="71.2" y="126.8" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="96.8" y="126.8" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="122.4" y="126.8" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="148" y="126.8" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="173.6" y="126.8" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="199.2" y="126.8" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="224.8" y="126.8" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="250.4" y="126.8" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="276" y="126.8" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="301.6" y="126.8" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="327.2" y="126.8" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="352.8" y="126.8" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="378.4" y="126.8" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="20" y="152.4" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="45.6" y="152.4" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="71.2" y="152.4" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="96.8" y="152.4" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="122.4" y="152.4" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="148" y="152.4" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="173.6" y="152.4" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="199.2" y="152.4" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="224.8" y="152.4" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="250.4" y="152.4" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="276" y="152.4" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="301.6" y="152.4" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="327.2" y="152.4" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="352.8" y="152.4" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="378.4" y="152.4" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="20" y="178" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="45.6" y="178" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="71.2" y="178" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="96.8" y="178" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="122.4" y="178" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="148" y="178" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="173.6" y="178" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="199.2" y="178" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="224.8" y="178" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="250.4" y="178" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="276" y="178" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="301.6" y="178" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="327.2" y="178" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="352.8" y="178" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="378.4" y="178" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="20" y="203.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="45.6" y="203.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="71.2" y="203.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="96.8" y="203.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="122.4" y="203.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="148" y="203.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="173.6" y="203.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="199.2" y="203.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="224.8" y="203.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="250.4" y="203.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="276" y="203.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="301.6" y="203.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="327.2" y="203.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="352.8" y="203.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="378.4" y="203.6" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="20" y="229.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="45.6" y="229.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="71.2" y="229.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="96.8" y="229.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="122.4" y="229.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="148" y="229.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="173.6" y="229.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="199.2" y="229.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="224.8" y="229.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="250.4" y="229.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="276" y="229.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="301.6" y="229.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="327.2" y="229.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="352.8" y="229.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="378.4" y="229.2" width="25.6" height="25.6" rx="0"/>
+  <rect class="fig-line" x="20" y="254.8" width="25.6" height="11.2" rx="0"/>
+  <rect class="fig-line" x="45.6" y="254.8" width="25.6" height="11.2" rx="0"/>
+  <rect class="fig-line" x="71.2" y="254.8" width="25.6" height="11.2" rx="0"/>
+  <rect class="fig-line" x="96.8" y="254.8" width="25.6" height="11.2" rx="0"/>
+  <rect class="fig-line" x="122.4" y="254.8" width="25.6" height="11.2" rx="0"/>
+  <rect class="fig-line" x="148" y="254.8" width="25.6" height="11.2" rx="0"/>
+  <rect class="fig-line" x="173.6" y="254.8" width="25.6" height="11.2" rx="0"/>
+  <rect class="fig-line" x="199.2" y="254.8" width="25.6" height="11.2" rx="0"/>
+  <rect class="fig-line" x="224.8" y="254.8" width="25.6" height="11.2" rx="0"/>
+  <rect class="fig-line" x="250.4" y="254.8" width="25.6" height="11.2" rx="0"/>
+  <rect class="fig-line" x="276" y="254.8" width="25.6" height="11.2" rx="0"/>
+  <rect class="fig-line" x="301.6" y="254.8" width="25.6" height="11.2" rx="0"/>
+  <rect class="fig-line" x="327.2" y="254.8" width="25.6" height="11.2" rx="0"/>
+  <rect class="fig-line" x="352.8" y="254.8" width="25.6" height="11.2" rx="0"/>
+  <rect class="fig-line" x="378.4" y="254.8" width="25.6" height="11.2" rx="0"/>
+  <polygon class="fig-line" points="124.0,94.0 244.0,78.0 188.0,182.0" stroke-width="1.5"/>
+  <polygon class="fig-line" points="276.0,154.0 380.0,182.0 300.0,242.0" stroke-width="1.5"/>
+  <text class="fig-muted" x="212" y="36" text-anchor="middle" font-size="12">960 by 540, tiles of 64 by 64</text>
+  <text class="fig-muted" x="212" y="288" text-anchor="middle" font-size="12">shaded: tiles in the bounding box of one triangle</text>
+  <text x="565" y="36" text-anchor="middle" font-size="13" font-weight="600">parallel_for, one job per tile</text>
+  <rect class="fig-box" x="570" y="60" width="120" height="40" rx="6"/>
+  <text x="630" y="85" text-anchor="middle" font-size="13">worker 0</text>
+  <rect class="fig-box" x="570" y="112" width="120" height="40" rx="6"/>
+  <text x="630" y="137" text-anchor="middle" font-size="13">worker 1</text>
+  <rect class="fig-box" x="570" y="164" width="120" height="40" rx="6"/>
+  <text x="630" y="189" text-anchor="middle" font-size="13">worker 2</text>
+  <rect class="fig-box" x="570" y="216" width="120" height="40" rx="6"/>
+  <text x="630" y="241" text-anchor="middle" font-size="13">worker 3</text>
+  <rect class="fig-box" x="450" y="60" width="80" height="30" rx="4"/>
+  <text class="fig-mono" x="490" y="80" text-anchor="middle" font-size="12">tile 0</text>
+  <rect class="fig-box" x="450" y="100" width="80" height="30" rx="4"/>
+  <text class="fig-mono" x="490" y="120" text-anchor="middle" font-size="12">tile 1</text>
+  <rect class="fig-box" x="450" y="140" width="80" height="30" rx="4"/>
+  <text class="fig-mono" x="490" y="160" text-anchor="middle" font-size="12">tile 2</text>
+  <rect class="fig-box" x="450" y="180" width="80" height="30" rx="4"/>
+  <text class="fig-mono" x="490" y="200" text-anchor="middle" font-size="12">...</text>
+  <rect class="fig-box" x="450" y="220" width="80" height="30" rx="4"/>
+  <text class="fig-mono" x="490" y="240" text-anchor="middle" font-size="12">tile 134</text>
+  <line class="fig-line" x1="532" y1="75" x2="568" y2="80" marker-end="url(#13-tiles-arrow)"/>
+  <line class="fig-line" x1="532" y1="115" x2="568" y2="132" marker-end="url(#13-tiles-arrow)"/>
+  <line class="fig-line" x1="532" y1="155" x2="568" y2="184" marker-end="url(#13-tiles-arrow)"/>
+  <text class="fig-muted" x="565" y="290" text-anchor="middle" font-size="12">each job draws its tile's bin,</text>
+  <text class="fig-muted" x="565" y="307" text-anchor="middle" font-size="12">in submission order, with no locks</text>
+</svg>

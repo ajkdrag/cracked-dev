@@ -1,0 +1,35 @@
+<svg viewBox="0 0 720 230" role="img" aria-label="At build time glslangValidator compiles tri.vert.hlsl into tri.vert.spv. At run time the program reads the file, SDL hands it to the Vulkan driver, and the driver translates it into the GPU's own machine code.">
+  <defs>
+    <marker id="14-shader-toolchain-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="20" width="330" height="190" rx="6"/>
+  <text x="36" y="44" font-size="14" font-weight="600">build time, in WSL</text>
+  <rect class="fig-box" x="370" y="20" width="330" height="190" rx="6"/>
+  <text x="386" y="44" font-size="14" font-weight="600">run time, in the running program</text>
+  <rect class="fig-box" x="40" y="64" width="130" height="48" rx="6"/>
+  <text class="fig-mono" x="105.0" y="84.0" text-anchor="middle" font-size="13" font-weight="600">tri.vert.hlsl</text>
+  <text class="fig-muted" x="105.0" y="102.0" text-anchor="middle" font-size="12">HLSL text</text>
+  <rect class="fig-accent" x="200" y="64" width="130" height="48" rx="6"/>
+  <text x="265.0" y="84.0" text-anchor="middle" font-size="13" font-weight="600">glslangValidator</text>
+  <text class="fig-muted" x="265.0" y="102.0" text-anchor="middle" font-size="12">-V -e main</text>
+  <rect class="fig-box" x="200" y="150" width="130" height="48" rx="6"/>
+  <text class="fig-mono" x="265.0" y="170.0" text-anchor="middle" font-size="13" font-weight="600">tri.vert.spv</text>
+  <text class="fig-muted" x="265.0" y="188.0" text-anchor="middle" font-size="12">SPIR-V binary</text>
+  <line class="fig-line" x1="170" y1="88" x2="198" y2="88" marker-end="url(#14-shader-toolchain-arrow)"/>
+  <line class="fig-line" x1="265" y1="112" x2="265" y2="148" marker-end="url(#14-shader-toolchain-arrow)"/>
+  <rect class="fig-box" x="390" y="150" width="140" height="48" rx="6"/>
+  <text x="460.0" y="170.0" text-anchor="middle" font-size="13" font-weight="600">SDL</text>
+  <text class="fig-muted" x="460.0" y="188.0" text-anchor="middle" font-size="12">creates the shader</text>
+  <rect class="fig-box" x="550" y="150" width="130" height="48" rx="6"/>
+  <text x="615.0" y="170.0" text-anchor="middle" font-size="13" font-weight="600">Vulkan driver</text>
+  <text class="fig-muted" x="615.0" y="188.0" text-anchor="middle" font-size="12">NVIDIA or lavapipe</text>
+  <rect class="fig-box" x="550" y="64" width="130" height="48" rx="6"/>
+  <text x="615.0" y="84.0" text-anchor="middle" font-size="13" font-weight="600">GPU code</text>
+  <text class="fig-muted" x="615.0" y="102.0" text-anchor="middle" font-size="12">the GPU's own ISA</text>
+  <line class="fig-line" x1="330" y1="174" x2="388" y2="174" marker-end="url(#14-shader-toolchain-arrow)"/>
+  <line class="fig-line" x1="530" y1="174" x2="548" y2="174" marker-end="url(#14-shader-toolchain-arrow)"/>
+  <line class="fig-line" x1="615" y1="150" x2="615" y2="114" marker-end="url(#14-shader-toolchain-arrow)"/>
+  <text class="fig-muted" x="607" y="137" text-anchor="end" font-size="12">translates</text>
+</svg>

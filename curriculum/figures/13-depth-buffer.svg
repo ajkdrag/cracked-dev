@@ -1,0 +1,317 @@
+<svg viewBox="0 0 720 290" role="img" aria-label="The depth buffer holds one depth per pixel. It starts at 1.0, the far value. The near triangle, depth 0.3, is drawn first and stores 0.3. The far triangle, depth 0.7, comes second and passes the test only where the stored depth is larger, so on the pixels it shares with the near triangle 0.7 is rejected and 0.3 stays.">
+  <defs>
+    <marker id="13-depth-buffer-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-line" x="20" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="33" y="57" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="46" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="59" y="57" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="72" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="85" y="57" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="98" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="111" y="57" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="124" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="137" y="57" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="150" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="163" y="57" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="176" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="189" y="57" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="202" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="215" y="57" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="20" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="33" y="83" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="46" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="59" y="83" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="72" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="85" y="83" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="98" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="111" y="83" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="124" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="137" y="83" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="150" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="163" y="83" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="176" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="189" y="83" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="202" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="215" y="83" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="20" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="33" y="109" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="46" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="59" y="109" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="72" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="85" y="109" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="98" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="111" y="109" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="124" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="137" y="109" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="150" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="163" y="109" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="176" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="189" y="109" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="202" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="215" y="109" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="20" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="33" y="135" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="46" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="59" y="135" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="72" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="85" y="135" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="98" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="111" y="135" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="124" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="137" y="135" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="150" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="163" y="135" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="176" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="189" y="135" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="202" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="215" y="135" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="20" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="33" y="161" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="46" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="59" y="161" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="72" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="85" y="161" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="98" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="111" y="161" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="124" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="137" y="161" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="150" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="163" y="161" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="176" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="189" y="161" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="202" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="215" y="161" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="20" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="33" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="46" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="59" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="72" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="85" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="98" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="111" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="124" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="137" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="150" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="163" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="176" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="189" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="202" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="215" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <text x="124" y="26" text-anchor="middle" font-size="13" font-weight="600">1. cleared</text>
+  <rect class="fig-accent" x="256" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="269" y="57" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="282" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="295" y="57" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="308" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="321" y="57" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-line" x="334" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="347" y="57" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="360" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="373" y="57" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="386" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="399" y="57" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="412" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="425" y="57" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="438" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="451" y="57" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-accent" x="256" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="269" y="83" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="282" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="295" y="83" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="308" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="321" y="83" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="334" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="347" y="83" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="360" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="373" y="83" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="386" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="399" y="83" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-line" x="412" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="425" y="83" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="438" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="451" y="83" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="256" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="269" y="109" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-accent" x="282" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="295" y="109" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="308" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="321" y="109" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="334" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="347" y="109" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="360" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="373" y="109" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-line" x="386" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="399" y="109" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="412" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="425" y="109" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="438" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="451" y="109" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="256" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="269" y="135" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-accent" x="282" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="295" y="135" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="308" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="321" y="135" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="334" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="347" y="135" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-line" x="360" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="373" y="135" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="386" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="399" y="135" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="412" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="425" y="135" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="438" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="451" y="135" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="256" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="269" y="161" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-accent" x="282" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="295" y="161" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="308" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="321" y="161" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-line" x="334" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="347" y="161" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="360" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="373" y="161" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="386" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="399" y="161" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="412" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="425" y="161" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="438" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="451" y="161" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="256" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="269" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-accent" x="282" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="295" y="187" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-line" x="308" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="321" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="334" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="347" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="360" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="373" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="386" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="399" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="412" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="425" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="438" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="451" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <text x="360" y="26" text-anchor="middle" font-size="13" font-weight="600">2. near triangle, 0.3</text>
+  <rect class="fig-accent" x="492" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="505" y="57" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="518" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="531" y="57" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="544" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="557" y="57" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-line" x="570" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="583" y="57" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="596" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="609" y="57" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="622" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="635" y="57" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="648" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="661" y="57" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="674" y="40" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="687" y="57" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-accent" x="492" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="505" y="83" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="518" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="531" y="83" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="544" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="557" y="83" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-line" x="545.5" y="67.5" width="23" height="23" rx="0" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <rect class="fig-accent" x="570" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="583" y="83" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="596" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="609" y="83" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="622" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="635" y="83" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-line" x="648" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="661" y="83" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="674" y="66" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="687" y="83" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="492" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="505" y="109" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-accent" x="518" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="531" y="109" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="544" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="557" y="109" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-line" x="545.5" y="93.5" width="23" height="23" rx="0" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <rect class="fig-accent" x="570" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="583" y="109" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-line" x="571.5" y="93.5" width="23" height="23" rx="0" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <rect class="fig-accent" x="596" y="92" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="609" y="109" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-line" x="597.5" y="93.5" width="23" height="23" rx="0" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <rect class="fig-box" x="622" y="92" width="26" height="26" rx="0"/>
+  <text x="635" y="109" text-anchor="middle" font-size="11" font-weight="700">0.7</text>
+  <rect class="fig-line" x="623.5" y="93.5" width="23" height="23" rx="0" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <rect class="fig-box" x="648" y="92" width="26" height="26" rx="0"/>
+  <text x="661" y="109" text-anchor="middle" font-size="11" font-weight="700">0.7</text>
+  <rect class="fig-line" x="649.5" y="93.5" width="23" height="23" rx="0" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <rect class="fig-box" x="674" y="92" width="26" height="26" rx="0"/>
+  <text x="687" y="109" text-anchor="middle" font-size="11" font-weight="700">0.7</text>
+  <rect class="fig-line" x="675.5" y="93.5" width="23" height="23" rx="0" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <rect class="fig-line" x="492" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="505" y="135" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-accent" x="518" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="531" y="135" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="544" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="557" y="135" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="570" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="583" y="135" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-line" x="571.5" y="119.5" width="23" height="23" rx="0" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <rect class="fig-box" x="596" y="118" width="26" height="26" rx="0"/>
+  <text x="609" y="135" text-anchor="middle" font-size="11" font-weight="700">0.7</text>
+  <rect class="fig-line" x="597.5" y="119.5" width="23" height="23" rx="0" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <rect class="fig-box" x="622" y="118" width="26" height="26" rx="0"/>
+  <text x="635" y="135" text-anchor="middle" font-size="11" font-weight="700">0.7</text>
+  <rect class="fig-line" x="623.5" y="119.5" width="23" height="23" rx="0" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <rect class="fig-box" x="648" y="118" width="26" height="26" rx="0"/>
+  <text x="661" y="135" text-anchor="middle" font-size="11" font-weight="700">0.7</text>
+  <rect class="fig-line" x="649.5" y="119.5" width="23" height="23" rx="0" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <rect class="fig-line" x="674" y="118" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="687" y="135" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="492" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="505" y="161" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-accent" x="518" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="531" y="161" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-accent" x="544" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="557" y="161" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-line" x="570" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="583" y="161" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-box" x="596" y="144" width="26" height="26" rx="0"/>
+  <text x="609" y="161" text-anchor="middle" font-size="11" font-weight="700">0.7</text>
+  <rect class="fig-line" x="597.5" y="145.5" width="23" height="23" rx="0" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <rect class="fig-box" x="622" y="144" width="26" height="26" rx="0"/>
+  <text x="635" y="161" text-anchor="middle" font-size="11" font-weight="700">0.7</text>
+  <rect class="fig-line" x="623.5" y="145.5" width="23" height="23" rx="0" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <rect class="fig-line" x="648" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="661" y="161" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="674" y="144" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="687" y="161" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="492" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="505" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-accent" x="518" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-accent-text" x="531" y="187" text-anchor="middle" font-size="11">0.3</text>
+  <rect class="fig-line" x="544" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="557" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="570" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="583" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-box" x="596" y="170" width="26" height="26" rx="0"/>
+  <text x="609" y="187" text-anchor="middle" font-size="11" font-weight="700">0.7</text>
+  <rect class="fig-line" x="597.5" y="171.5" width="23" height="23" rx="0" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <rect class="fig-line" x="622" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="635" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="648" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="661" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <rect class="fig-line" x="674" y="170" width="26" height="26" rx="0"/>
+  <text class="fig-muted" x="687" y="187" text-anchor="middle" font-size="11">1.0</text>
+  <text x="596" y="26" text-anchor="middle" font-size="13" font-weight="600">3. far triangle, 0.7</text>
+  <text class="fig-muted" x="124" y="220" text-anchor="middle" font-size="12">every pixel starts at 1.0</text>
+  <text class="fig-muted" x="360" y="220" text-anchor="middle" font-size="12">0.3 &lt; 1.0: drawn, stored</text>
+  <text class="fig-muted" x="596" y="220" text-anchor="middle" font-size="12">dashed: the far triangle's pixels</text>
+  <text class="fig-muted" x="596" y="238" text-anchor="middle" font-size="12">on a 0.3 cell, 0.7 is rejected</text>
+  <text class="fig-muted" x="360" y="270" text-anchor="middle" font-size="12">a pixel is drawn only if its depth is less than the stored one</text>
+</svg>
