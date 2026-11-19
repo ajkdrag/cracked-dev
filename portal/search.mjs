@@ -1,15 +1,19 @@
 // Keyword search over chapters, steps and resources. Every word of the query
 // must appear in a hit. A word found in the title counts more than one found
-// in the body.
+// in the body. The browser imports this file too, so it uses nothing from Node.
 const titleWeight = 10;
 const kindWeight = { chapter: 3, step: 2, resource: 1 };
 const snippetRadius = 70;
 const maximumHits = 40;
 
 export function searchBook(book, query) {
+  return searchEntries(searchableEntries(book), query);
+}
+
+export function searchEntries(entries, query) {
   const words = query.toLowerCase().split(/\s+/).filter(Boolean);
   if (words.length === 0) return [];
-  return searchableEntries(book)
+  return entries
     .map((entry) => ({ entry, score: scoreEntry(entry, words) }))
     .filter(({ score }) => score > 0)
     .sort((a, b) => b.score - a.score)
@@ -25,7 +29,7 @@ export function searchBook(book, query) {
     }));
 }
 
-function searchableEntries(book) {
+export function searchableEntries(book) {
   return book.chapters.flatMap((chapter) => [
     {
       kind: "chapter",

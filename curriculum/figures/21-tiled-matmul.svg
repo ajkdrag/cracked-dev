@@ -1,4 +1,4 @@
-<svg viewBox="0 0 720 460" role="img" aria-label="To compute one tile of C, a block walks along K. At each step its threads load one tile of A and one tile of B into shared memory, wait at a barrier, and every thread adds the tiles' share of its dot product. Each loaded value is used by a whole row or column of threads.">
+<svg viewBox="0 0 720 460" role="img" aria-label="To compute one tile of C, a block walks along K. The tile's rows of A and columns of B, drawn dashed through C, are the only ones it reads. At each step its threads load one tile of A and one tile of B into shared memory, wait at a barrier, and every thread adds the tiles' share of its dot product.">
   <defs>
     <marker id="21-tiled-matmul-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
       <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>

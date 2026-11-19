@@ -3,20 +3,11 @@
 import http from "node:http";
 import fs from "node:fs";
 import { BookError, loadBook } from "./book.mjs";
-import { searchBook } from "./search.mjs";
-import { chapterPage, homePage, messagePage, searchResults } from "./pages.mjs";
+import { searchableEntries } from "./search.mjs";
+import { chapterPage, homePage, messagePage } from "./pages.mjs";
+import { staticFiles } from "./assets.mjs";
 
 const port = Number(process.env.PORT || 8913);
-
-const staticFiles = {
-  "/static/portal.css": ["static/portal.css", "text/css"],
-  "/static/portal.js": ["static/portal.js", "text/javascript"],
-  "/vendor/bulma.css": ["node_modules/bulma/css/bulma.min.css", "text/css"],
-  "/vendor/htmx.js": [
-    "node_modules/htmx.org/dist/htmx.min.js",
-    "text/javascript",
-  ],
-};
 
 function send(response, status, type, body) {
   response.writeHead(status, {
@@ -27,7 +18,7 @@ function send(response, status, type, body) {
 }
 
 function handleRequest(request, response) {
-  const { pathname, searchParams } = new URL(request.url, "http://localhost");
+  const { pathname } = new URL(request.url, "http://localhost");
   if (staticFiles[pathname]) {
     const [file, type] = staticFiles[pathname];
     return send(
@@ -40,15 +31,13 @@ function handleRequest(request, response) {
 
   const book = loadBook();
   if (pathname === "/") return send(response, 200, "text/html", homePage(book));
-  if (pathname === "/search") {
-    const query = searchParams.get("q") ?? "";
+  if (pathname === "/search-index.json")
     return send(
       response,
       200,
-      "text/html",
-      searchResults(searchBook(book, query), query),
+      "application/json",
+      JSON.stringify(searchableEntries(book)),
     );
-  }
   const chapter = book.chapters.find(
     (candidate) => pathname === `/chapter/${candidate.id}`,
   );

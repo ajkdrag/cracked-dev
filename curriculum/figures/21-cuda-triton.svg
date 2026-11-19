@@ -1,4 +1,4 @@
-<svg viewBox="0 0 720 370" role="img" aria-label="Vector add of 13 elements written twice. In CUDA you write the code of one thread, and 16 threads each handle one element, with a bounds check. In Triton you write the code of one program, and two programs each handle a tile of 8 offsets, with a mask. The compiler spreads each tile over threads.">
+<svg viewBox="0 0 720 370" role="img" aria-label="Vector add of 13 elements written twice. In CUDA you write one thread, and 16 threads each take one element behind a bounds check. In Triton you write one program, and two programs each take a tile of 8 elements behind a mask.">
   <defs>
     <marker id="21-cuda-triton-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
       <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>

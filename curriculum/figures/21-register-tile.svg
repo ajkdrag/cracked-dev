@@ -1,4 +1,4 @@
-<svg viewBox="0 0 720 350" role="img" aria-label="One thread with a 4 by 4 register tile. For each k it loads four values of A's column k and four values of B's row k from shared memory into registers, then does 16 multiply-adds into its 16 accumulators. Every loaded value is used four times.">
+<svg viewBox="0 0 720 350" role="img" aria-label="One thread with a 4 by 4 register tile. For each k it loads four values of A's column k and four of B's row k from shared memory into registers, then does 16 multiply-adds into its 16 accumulators.">
   <defs>
     <marker id="21-register-tile-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
       <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>

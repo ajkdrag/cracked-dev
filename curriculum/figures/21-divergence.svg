@@ -1,4 +1,4 @@
-<svg viewBox="0 0 720 300" role="img" aria-label="Eight lanes of a warp, where a real warp has 32, run if (threadIdx.x % 2) A(); else B();. The warp issues A with only the odd lanes active, then B with only the even lanes active, then all lanes go on together. Both paths take time, and each lane idles during one of them.">
+<svg viewBox="0 0 720 300" role="img" aria-label="Eight lanes of a warp, where a real warp has 32, reach an if that calls A on odd lanes and B on even lanes. The warp issues A with only the odd lanes active, then B with only the even lanes active, then all lanes go on together.">
   <defs>
     <marker id="21-divergence-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
       <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>

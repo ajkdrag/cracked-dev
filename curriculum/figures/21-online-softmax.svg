@@ -1,4 +1,4 @@
-<svg viewBox="0 0 720 350" role="img" aria-label="The three-pass softmax reads the row three times: once for the maximum, once for the sum, once to write the output. The online version keeps a running maximum and a running sum together and rescales the sum whenever the maximum grows, so it reads the row twice. Both write it once.">
+<svg viewBox="0 0 720 350" role="img" aria-label="The three-pass softmax reads the row three times and writes it once. The online version keeps the running maximum and sum together and rescales the sum when the maximum grows, so it reads the row twice and writes it once.">
   <defs>
     <marker id="21-online-softmax-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
       <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>

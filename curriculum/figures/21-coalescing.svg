@@ -1,4 +1,4 @@
-<svg viewBox="0 0 720 350" role="img" aria-label="Top: the 32 threads of a warp read 32 neighboring floats, which lie in four 32-byte sectors, so the warp moves 128 bytes and uses all of them. Bottom: thread t reads element 32 * t, so every thread touches its own sector and the warp moves 1024 bytes to use 128.">
+<svg viewBox="0 0 720 350" role="img" aria-label="Top: the 32 threads of a warp read 32 neighboring floats in four 32-byte sectors, so the warp moves 128 bytes and uses all of them. Bottom: thread t reads element 32 * t, every thread touches its own sector, and the warp moves 1024 bytes to use 128.">
   <defs>
     <marker id="21-coalescing-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
       <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>

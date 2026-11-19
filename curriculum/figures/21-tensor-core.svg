@@ -1,4 +1,4 @@
-<svg viewBox="0 0 720 320" role="img" aria-label="One mma_sync: the 32 threads of a warp together multiply a 16 by 16 half tile of A by a 16 by 16 half tile of B and add a 16 by 16 float tile C. Each tile lives in a fragment spread over the warp's registers. The accumulator gives each thread 8 of the 256 floats, and which 8 is not specified.">
+<svg viewBox="0 0 720 320" role="img" aria-label="One mma_sync: the 32 threads of a warp together multiply a 16 by 16 half tile of A by a 16 by 16 half tile of B and add a 16 by 16 float tile. The accumulator fragment gives each thread 8 of the 256 floats, and which 8 is not specified.">
   <defs>
     <marker id="21-tensor-core-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
       <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>

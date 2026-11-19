@@ -17,17 +17,29 @@ Press `Cmd+K` (or `Ctrl+K`) to search chapters, steps and resources. Arrow keys 
 ../curriculum/NN-name.md   one chapter per file, read in order
 ../LEARNING.md             progress, edited by the mentor
 book.mjs                   parses both into the book
-search.mjs                 keyword search over the book
-pages.mjs                  HTML for the pages and the search results
-server.mjs                 routes
+search.mjs                 keyword search over the book, runs in the browser
+pages.mjs                  HTML for the pages
+assets.mjs                 the CSS and JS files the pages load
+server.mjs                 routes for the local reader
+build-site.mjs             writes the same pages as static files
 static/                    portal.css and portal.js
 check-links.mjs            fetches every resource URL and lists dead ones
 tests/                     parser, search and book checks
 ```
 
-The server renders plain HTML. htmx swaps pages without a full reload and Bulma supplies the base styles. The page always uses the light theme.
+The server renders plain HTML. htmx swaps pages without a full reload and Bulma supplies the base styles. The page always uses the light theme. Search runs in the browser on `search-index.json`, which is fetched the first time the search dialog opens.
 
 The server reads the chapter files and `LEARNING.md` on every request. Reload the page after an edit.
+
+## The public site
+
+`.github/workflows/pages.yml` publishes the book to GitHub Pages on every push to `main`. It runs `npm test`, then `build-site.mjs`, and deploys the output. The repository setting Pages > Source has to be "GitHub Actions".
+
+```sh
+BASE_PATH=/cracked-dev npm run build-site    # writes ./site
+```
+
+`BASE_PATH` is the path GitHub Pages serves the site under, which is the repository name. Leave it unset to build a site served from `/`. The checklists from `LEARNING.md` are part of the published pages.
 
 ## Chapter format
 

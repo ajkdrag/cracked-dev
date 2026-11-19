@@ -27,7 +27,7 @@ Each module is its own repository. From module 1 on, each one has a script `sync
 A **virtual environment** is a directory with its own Python interpreter and its own installed packages, so the versions this chapter pins touch nothing else on the machine. MiniTorch's setup page makes one with Python's `venv` module, the same tool chapter 21 used, and this chapter stays with it. Ubuntu 24.04's `python3` is Python 3.12, the newest version that every pin here installs on. Three things go wrong if you follow the module READMEs as they are:
 
 - Modules 1 and 2 pin `numba == 0.56` and `numpy == 1.22`. Neither has a **wheel** for Python 3.12, a ready-built package file that pip installs without compiling anything. Modules 0, 3 and 4 pin `numba == 0.60` and `numpy == 2.0.0`. Install module 0's requirement files once and keep that environment for every module.
-- `requirements.extra.txt` pins `datasets==2.4.0`, which fails on import with any current `pyarrow`. Drop the version from that line.
+- `requirements.extra.txt` pins `datasets==2.4.0`, Hugging Face's library that downloads and caches public datasets by name. That version fails on import with any current `pyarrow`. Drop the version from that line.
 - Some packages in `requirements.extra.txt` pull in newer libraries without a pin, and pip then upgrades numpy past what numba 0.60 accepts, without an error. A **constraints file** lists versions that pip must keep. Passed to pip with `-c`, it makes pip refuse any install that would move them.
 
 `requirements.extra.txt` also lists `torch` without a version. Install PyTorch before the requirement files, from the same index URL that the pytorch.org selector gave you in chapter 21. This environment then holds the CUDA build of PyTorch that matches your toolkit, and the last step of this chapter needs that build.
@@ -78,8 +78,8 @@ Module 0 itself is ordinary Python. Three of its pieces carry through the chapte
       ```
 
 3. Check the pins: `python -c "import numba, numpy; print(numba.__version__, numpy.__version__)"` prints `0.60.0 2.0.0`. Write the `datasets` version you got into the README.
-4. Tasks 0.1, 0.3 and 0.4. `pytest -m task0_1` runs only the tests marked for Task 0.1, so run it, then `-m task0_3` and `-m task0_4`, after each task.
-5. Task 0.2. Hypothesis adds **shrinking** to fuzzing: when it finds an input that breaks a property, it reduces that input to the simplest one that still fails and reports that. Floats break some of the properties you write here, as chapter 04 showed. Sigmoid is strictly increasing on paper and not in double precision. From x of about 37 on, `exp(-x)` is less than half the gap between 1.0 and the next double, so `1 / (1 + exp(-x))` rounds to exactly 1.0. MiniTorch's own `assert_close` uses a tolerance of 1e-2 and hides this.
+4. Tasks 0.1, 0.3 and 0.4. `pytest -m task0_1` runs only the tests marked for Task 0.1. Run it after Task 0.1, and `pytest -m task0_3` and `pytest -m task0_4` after the other two.
+5. Task 0.2. Hypothesis adds **shrinking** to fuzzing: when it finds an input that breaks a property, it reduces that input to the simplest one that still fails and reports that. Sigmoid is strictly increasing on paper and not in double precision. From x of about 37 on, `exp(-x)` is less than half the gap between 1.0 and the next double, so `1 / (1 + exp(-x))` rounds to exactly 1.0. MiniTorch's own `assert_close` uses a tolerance of 1e-2 and hides this.
    1. Write the sigmoid test with all four properties from its docstring, with "strictly increasing" as a check that `a < b` implies `sigmoid(a) < sigmoid(b)`.
    2. Run it and copy Hypothesis's shrunk counterexample into a comment.
    3. Restate the property so that it holds in double precision, and write next to it why the original fails.
@@ -267,11 +267,11 @@ The GPU half of module 3 writes map, zip, reduce and matrix multiply as CUDA ker
 
 `cuda_ops.py` compiles your `to_index`, `index_to_position` and `broadcast_index` as device functions, so your module 2 index code runs on the GPU unchanged.
 
-![Left, the CUDA map: one thread per output element, in blocks of 32, with a bounds check. Right, the reduce for one output position: one block of 1024 threads, each thread sums every 1024th element into a local, then the block halves the shared array until one value is left.](figures/22-cuda-map-reduce.svg)
-
 Map and zip are one thread per output element with a bounds check, the first kernels of chapter 21. `_sum_practice` sums each block of 32 values in shared memory with the tree reduction of chapter 21. The reduce launcher in `cuda_ops.py` needs a fix first. It sizes the reduced dimension of the output as one slot per 1024 input elements, so a reduced dimension longer than 1024 comes back with the wrong shape, and the tests, whose dimensions are at most 3, never see it.
 
 Set that size to 1, launch one block per output position, and have thread t add up the elements at t, t + 1024, t + 2048 and so on before the tree. This is the grid-stride loop of chapter 21's "Reductions" step, inside one block.
+
+![The reduce for one output position over 10 elements, drawn with 4 threads where MiniTorch uses 1024. Thread t adds the elements at t, t + 4 and t + 8 into a register, the partial sums go to shared memory, and the tree reduction of chapter 21 leaves one value that thread 0 writes to out[o].](figures/22-cuda-reduce.svg)
 
 `_mm_practice` multiplies two square matrices smaller than 32 inside one block: load both into shared memory, synchronize, compute, and write each output once. The full `_tensor_matrix_multiply` is Kernel 3 of chapter 21, the shared-memory tile with zero fill, plus a batch dimension on `blockIdx.z`. Give a batch stride of 0 to an input whose batch size is 1, so batches broadcast.
 
@@ -323,7 +323,7 @@ The weight gradient is a convolution of the input with the output gradient, afte
 
 The figure follows one 6 by 4 image with a 3 by 2 kernel through the four moves. Average pooling is then a mean over the last dimension.
 
-![tile on one 6 by 4 image with a 3 by 2 kernel. The image holds four windows a, b, c and d. Four moves turn shape (1, 1, 6, 4) into (1, 1, 2, 2, 6), where the last dimension holds the six values of one window.](figures/22-tile.svg)
+![The tile function on one 6 by 4 image with a 3 by 2 kernel. The image holds four windows a, b, c and d. Four moves turn shape (1, 1, 6, 4) into (1, 1, 2, 2, 6), where the last dimension holds the six values of one window.](figures/22-tile.svg)
 
 ### Study
 
@@ -358,7 +358,7 @@ Built this way, softmax is several MiniTorch operations. Each one allocates a fu
 
 Task 4.5 trains two models. The sentiment model is a 1D convolutional network over word vectors for SST-2, a dataset of movie review sentences labeled positive or negative.
 
-On its first run the script downloads two things. SST-2 comes through the Hugging Face `datasets` library, which downloads and caches public datasets by name. The 50-dimensional GloVe word vectors come through the `embeddings` package, a small library that downloads pretrained word vectors. The GloVe download is `glove.6B.zip`, about 860 MB.
+On its first run the script downloads two things. SST-2 comes through the `datasets` library from the setup step. The 50-dimensional GloVe word vectors come through the `embeddings` package, a small library that downloads pretrained word vectors. The GloVe download is `glove.6B.zip`, about 860 MB.
 
 The image model is a small LeNet-style network on part of MNIST, a dataset of 28 by 28 images of handwritten digits.
 
@@ -413,7 +413,7 @@ Edward Yang, a PyTorch core developer, describes how PyTorch organizes the same 
    4. The CUDA forward kernel and `CudaOps.fused_softmax`.
    5. The CUDA backward kernel and `CudaOps.fused_softmax_back`.
 2. `tests/test_fused.py`: forward and backward against `torch.softmax` in float64, with a random `grad_output`, for shapes (1, 1), (4, 1), (3, 5), (2, 3, 7), (64, 1000) and (8, 50257), on both backends. Add the extreme rows from the previous step. Add a fully `-inf` row too, and check it against the output you chose and wrote down in chapter 21, not against `torch.softmax`, which returns NaN there.
-3. The `gradcheck` wrapper, on the fast CPU backend. Its `forward` and `backward` convert between float64 PyTorch tensors and MiniTorch tensors. From PyTorch to MiniTorch, use your `from_numpy` helper from the tensor autograd step on `t.detach().numpy()`. Back again, `torch.from_numpy(m.to_numpy())` wraps a MiniTorch tensor `m`. Run it for shapes (3, 5) and (2, 3, 7) with float64 inputs.
+3. The `gradcheck` wrapper, on the fast CPU backend. Its `forward` and `backward` convert between float64 PyTorch tensors and MiniTorch tensors. From PyTorch to MiniTorch, use your `from_numpy` helper from the tensor autograd step on `t.detach().numpy()`. Back again, `torch.from_numpy(m.to_numpy())` wraps a MiniTorch tensor `m`. The `forward` calls your `Function` and keeps its output y on `ctx`. The `backward` calls `fused_softmax_back(y, g)` on the backend directly, because `gradcheck` calls `backward` many times for one `forward`, and a MiniTorch `backward()` would add into the same `.grad` each time. Run it for shapes (3, 5) and (2, 3, 7) with float64 inputs.
 4. `bench_fused.py`: your fused operation against the composed `softmax` from Task 4.4, forward plus backward, at (1024, 1024) and (64, 50257), on the CPU and the GPU backend. Before timing anything, check the composed GPU softmax against `torch.softmax` at (64, 50257). Its `max` and `sum` reduce over 50257 elements, so this checks your reduce launcher fix from the CUDA backend step. Count the tensors each version allocates. Every MiniTorch tensor is built through `TensorData.__init__`, so wrap that method to add one to a module-level counter, and read the counter before and after a call. Add `torch.softmax` in float64 on the CPU as a reference.
 5. Replace the composed `logsoftmax` in your MNIST network with `log` of your fused softmax, or with a log-softmax version of your operation. Set `random.seed` and `numpy.random.seed` at the top of the script, then run three epochs with the composed version and three with yours. The two loss curves should agree within rounding. Profile the second epoch of each as in the previous step and report the time spent in the log-softmax call separately, then say from the profile why the total time barely moves.
 6. `notes/runtime.md`: draw the path of one call, `y = fused_softmax(x)`, from the Python call through `Function.apply`, the history record, the backend dispatch, the kernel launch and its argument copies, to the output tensor, and then the backward call back to the accumulated gradient on a leaf. Under the drawing, list five things PyTorch does that MiniTorch does not, each with the place in Yang's essay or in your own earlier chapters where you saw it.
@@ -424,7 +424,7 @@ Every test in `test_fused.py` passes `numpy.testing.assert_allclose` with `rtol=
 
 ## Your own kernels as a MiniTorch backend
 
-Every kernel under MiniTorch so far is Numba code written for MiniTorch. You also have kernels from earlier chapters: the AVX2 array add of chapter 07 and the fused softmax of chapter 21. A backend is the class you hand to `TensorBackend`, so a class whose methods call your own code puts that code under every MiniTorch model. This step builds that class, `NativeOps`, and trains the MNIST network on it.
+Every kernel under MiniTorch so far is Numba code. Your AVX2 array add of chapter 07 and your fused softmax of chapter 21 can run there too. A backend is the class you hand to `TensorBackend`, so a class whose methods call your code puts that code under every MiniTorch model. This step builds that class, `NativeOps`, and trains the MNIST network on it.
 
 ![Your kernels under MiniTorch. NativeOps answers every call the backend makes. An add or multiply of two packed tensors of equal shape goes through ctypes to your AVX2 library. The fused softmax goes through PyTorch to your chapter 21 kernel on the GPU. Everything else falls back to the Numba code of FastOps.](figures/22-native-backend.svg)
 
@@ -447,7 +447,7 @@ void mt_add_f64(double *dst, const double *a, const double *b, ptrdiff_t n) {
 }
 ```
 
-**ctypes** is the module of Python's standard library that loads a shared library and calls its C functions. This chapter uses it over the `cffi` package because it ships with Python and every function here takes only three pointers and a length.
+**ctypes** is the module of Python's standard library that loads a shared library and calls its C functions. This chapter uses it over the `cffi` package because it ships with Python and these functions take only pointers and a length.
 
 `ctypes.CDLL(path)` loads the library. Each function then gets `argtypes`, the C type of each argument, and `restype = None` for a `void` result. Without `argtypes`, ctypes passes a Python integer as a C `int` and cuts a 64-bit address down to 32 bits. For `mt_add_f64` the list is `[c_void_p, c_void_p, c_void_p, c_ssize_t]`: three addresses, then `c_ssize_t`, the signed 64-bit type that matches `ptrdiff_t`. A NumPy array's `.ctypes.data` is the address of its first element as a Python integer.
 
@@ -475,17 +475,15 @@ class NativeOps(FastOps):
         return ret
 ```
 
-`_C_ZIPS.get(fn)` looks the scalar function up by identity, so `operators.add` finds your add and every other function gets `None` and the Numba version. `out` is allocated the way `FastOps` allocates it. Time that allocation on its own before you trust it.
+`_C_ZIPS.get(fn)` looks the scalar function up by identity, so only `operators.add` and `operators.mul` reach C.
 
-The GPU half reuses chapter 21's step "Calling your kernel from PyTorch", where `load_inline` turned your softmax kernel S2 into a Python module that takes float32 CUDA tensors. That kernel takes an M by N matrix and normalizes each row, and a MiniTorch tensor can have any number of dimensions. `NativeOps.fused_softmax` therefore treats the tensor as rows of its last dimension, as your CPU kernel does. It makes the input contiguous, wraps the storage with `torch.from_numpy`, which shares the memory, and views it as (size // n, n) with n the last dimension. Then it:
+The GPU half reuses chapter 21's step "Calling your kernel from PyTorch", where `load_inline` turned your softmax kernel S2 into a Python module that takes float32 CUDA tensors. That kernel normalizes the rows of an M by N matrix. So `NativeOps.fused_softmax` treats a tensor of any shape as rows of its last dimension, as your CPU kernel does. It makes the input contiguous, wraps the storage with `torch.from_numpy`, which shares the memory, and views it as (size // n, n) with n the last dimension. Then it:
 
 1. copies it to the GPU as float32 with `.to("cuda", torch.float32)`,
 2. calls your kernel,
 3. copies the result back with `.to(torch.float64).cpu()`, which waits for the kernel to finish, and makes a MiniTorch tensor of the original shape from it.
 
-This replaces the forward method only. The float32 round trip limits the agreement with float64 to about 1e-7. Your `Function` from the previous step still calls `fused_softmax_back` for the backward pass, and `NativeOps` inherits that CPU kernel from `FastOps`.
-
-The MNIST network runs on `NativeOps` and not on `CudaOps`. A tensor made with `CudaOps` keeps its storage in GPU memory, and the convolutions in `fast_conv.py` are Numba CPU code that cannot read it. On the CUDA simulator the first `conv2d` stops with a `TypeError`. `NativeOps` keeps storage on the host, so the convolutions run.
+The float32 round trip limits the agreement with float64 to about 1e-7. Only the forward pass changes. For the backward pass your `Function` still calls `fused_softmax_back`, the CPU kernel that `NativeOps` inherits from `FastOps`.
 
 ### Study
 
@@ -494,12 +492,12 @@ The MNIST network runs on `NativeOps` and not on `CudaOps`. A tensor made with `
 
 ### Build
 
-1. `native/mtk.c` in your `Module-4` with `mt_add_f64` and `mt_mul_f64`. Test both in `native/test_mtk.c` against a scalar loop for every n from 0 to 33, with guard values after `dst` that must not change, built with `-mavx2 -mfma -fsanitize=address,undefined` as in chapter 07. Then build the library with `clang -std=gnu11 -O2 -Wall -Wextra -mavx2 -mfma -shared -fPIC -o native/libmtk.so native/mtk.c` and check with `objdump -d` that the loop uses `vaddpd` on `ymm` registers. `-shared` makes a shared library, a file of machine code that a running program loads, instead of an executable. `-fPIC` compiles position-independent code, which works at whatever address the library is loaded.
+1. `native/mtk.c` in your `Module-4` with `mt_add_f64` and `mt_mul_f64`. Test both in `native/test_mtk.c` against a scalar loop for every n from 0 to 33, with guard values after `dst` that must not change, built with `-mavx2 -mfma -fsanitize=address,undefined` as in chapter 07. Then build the library. As in chapter 05's `libjson.so`, `-fPIC` compiles position-independent code, which works wherever the loader puts it, and `-shared` links a shared library instead of an executable: `clang -std=gnu11 -O2 -Wall -Wextra -mavx2 -mfma -shared -fPIC -o native/libmtk.so native/mtk.c`. Check with `objdump -d` that the loop uses `vaddpd` on `ymm` registers.
 2. `minitorch/native_ops.py`: load `libmtk.so` with ctypes, set `argtypes` and `restype`, and write `packed` and `NativeOps` with the `zip` override above. Count the calls that reach C and the calls that fall back to Numba.
 3. In the same file, `fused_softmax` for `NativeOps`, calling the module that your chapter 21 `py/softmax_ext.py` builds with `load_inline`. If that script runs its tests when imported, move the `load_inline` call into a function first. Run `pip install -c ~/mt/constraints.txt ninja` in this environment, since `load_inline` needs it.
 4. `tests/test_native.py`: add and multiply on `NativeOps` equal `FastOps` exactly, with `numpy.testing.assert_array_equal`, for shapes (1,), (3,), (4,), (5,), (33,), (7, 9) and (2, 3, 5). A permuted input and a broadcast input give the `FastOps` result and are counted as Numba calls. The gradients of `(a * b + a).sum()` match. `fused_softmax` on `NativeOps` matches `torch.softmax` in float64 within `rtol=1e-5` at (3, 5), (16, 10) and (64, 50257).
-5. `bench_native.py` at 1000 x 1000: `a + b` on `FastOps` and on `NativeOps`, the C function alone on two NumPy arrays and a preallocated output, NumPy's own `+`, and `zeros` alone. Find where the time of the whole call goes. Replace the allocation with `Tensor.make(np.zeros(a.size), a.shape, backend=a.backend)` and time again. Then time `fused_softmax` on `NativeOps` and on `FastOps` at (16, 10) and at (64, 50257).
-6. `project/run_mnist_native.py`: a copy of your MNIST script with the fused log-softmax of the previous step and a `BACKEND` you choose from the command line. With the seeds fixed, run three epochs on `FastOps` and three on `NativeOps`, record the time of epochs 2 and 3, since the first includes Numba's compile time, and count the C and Numba calls of one epoch.
+5. `bench_native.py` at 1000 x 1000. `NativeOps.zip` allocates `out` with `a.zeros`, the way `FastOps` does, so time that allocation too. Measure `a + b` on `FastOps` and on `NativeOps`, the C function alone on two NumPy arrays and a preallocated output, NumPy's own `+`, and `zeros` alone. Find where the time of the whole call goes. Replace the allocation with `Tensor.make(np.zeros(a.size), a.shape, backend=a.backend)` and time again. Then time `fused_softmax` on `NativeOps` and on `FastOps` at (16, 10) and at (64, 50257).
+6. `project/run_mnist_native.py`: a copy of your MNIST script with the fused log-softmax of the previous step and a `BACKEND` you choose from the command line. Offer `FastOps` and `NativeOps` only. A tensor made with `CudaOps` keeps its storage in GPU memory, and the convolutions in `fast_conv.py` are Numba CPU code that cannot read it. On the CUDA simulator the first `conv2d` stops with a `TypeError`. With the seeds fixed, run three epochs on `FastOps` and three on `NativeOps`, record the time of epochs 2 and 3, since the first includes Numba's compile time, and count the C and Numba calls of one epoch.
 7. `project/torch_mnist.py` (the first item to cut if the step runs long): the same network in PyTorch with `F.conv2d` and the right and bottom padding from the convolution step, the same 16-image batches and plain SGD. Time one epoch on the CPU in float64 and on the GPU in float32, with `torch.cuda.synchronize()` before the timer stops.
 
 ### Done when

@@ -1,5 +1,11 @@
-// Search dialog keys and the step highlight in the right rail. htmx swaps the
+// The search dialog and the step highlight in the right rail. htmx swaps the
 // whole body on navigation, so every listener sits on document.
+import { searchEntries } from "./search.mjs";
+
+// "" on localhost and "/cracked-dev" on GitHub Pages.
+const siteRoot = new URL("..", import.meta.url).pathname.replace(/\/$/, "");
+let searchIndex;
+
 function searchModal() {
   return document.getElementById("search-modal");
 }
@@ -13,6 +19,49 @@ function openSearch() {
   const input = document.getElementById("search-input");
   input.focus();
   input.select();
+  showSearchResults(input.value);
+}
+
+async function showSearchResults(query) {
+  searchIndex ??= await fetch(`${siteRoot}/search-index.json`).then(
+    (response) => response.json(),
+  );
+  const results = document.getElementById("search-results");
+  results.innerHTML = searchResultsHtml(
+    searchEntries(searchIndex, query),
+    query,
+  );
+  // Lets htmx swap the page for a clicked hit, as it does for other links.
+  htmx.process(results);
+  searchHits()[0]?.classList.add("is-active");
+}
+
+function searchResultsHtml(hits, query) {
+  if (!query.trim())
+    return `<p class="search-hint">Type a keyword: pointers, LLVM, cache, page table.</p>`;
+  if (hits.length === 0)
+    return `<p class="search-hint">Nothing matches "${escapeHtml(query)}".</p>`;
+  return hits
+    .map(
+      (hit) => `
+      <div class="search-hit">
+        <a class="search-hit-main" href="${siteRoot}${hit.href}" data-search-hit>
+          <span class="search-hit-title">${escapeHtml(hit.title)}</span>
+          <span class="search-hit-context">${escapeHtml(hit.context)}</span>
+          <span class="search-hit-snippet">${escapeHtml(hit.snippet)}</span>
+        </a>
+        ${hit.externalUrl ? `<a class="search-hit-open" href="${escapeHtml(hit.externalUrl)}" target="_blank" rel="noopener noreferrer" hx-boost="false" title="Open the resource">open &nearr;</a>` : ""}
+      </div>`,
+    )
+    .join("");
+}
+
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
 function closeSearch() {
@@ -53,9 +102,8 @@ document.addEventListener("click", (event) => {
   if (event.target.closest("[data-search-hit]")) closeSearch();
 });
 
-document.addEventListener("htmx:afterSwap", (event) => {
-  if (event.target.id === "search-results")
-    searchHits()[0]?.classList.add("is-active");
+document.addEventListener("input", (event) => {
+  if (event.target.id === "search-input") showSearchResults(event.target.value);
 });
 
 let stepObserver;

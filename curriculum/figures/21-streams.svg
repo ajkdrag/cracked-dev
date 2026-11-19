@@ -1,4 +1,4 @@
-<svg viewBox="0 0 720 330" role="img" aria-label="Vector add of one array in one stream: copy in, kernel, copy out, each waiting for the last. Split into four chunks in four streams: the copy of chunk 1 runs while the kernel of chunk 0 runs, and with two copy engines the copies out overlap the copies in, so the whole job ends sooner.">
+<svg viewBox="0 0 720 330" role="img" aria-label="Vector add in one stream: copy in, kernel, copy out, each waiting for the last. Split into four chunks in four streams: the copy of chunk 1 runs while the kernel of chunk 0 runs, and with two copy engines the copies out overlap the copies in, so the whole job ends sooner.">
   <defs>
     <marker id="21-streams-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
       <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>

@@ -1,4 +1,5 @@
-// HTML for every page and fragment the server returns.
+// HTML for every page. The search results are rendered in the browser by
+// static/portal.js.
 import fs from "node:fs";
 import { marked } from "marked";
 import { ChapterFormatError } from "./book.mjs";
@@ -156,26 +157,6 @@ function chapterRail(chapter) {
     </aside>`;
 }
 
-export function searchResults(hits, query) {
-  if (!query.trim())
-    return `<p class="search-hint">Type a keyword: pointers, LLVM, cache, page table.</p>`;
-  if (hits.length === 0)
-    return `<p class="search-hint">Nothing matches "${escapeHtml(query)}".</p>`;
-  return hits
-    .map(
-      (hit) => `
-      <div class="search-hit">
-        <a class="search-hit-main" href="${hit.href}" data-search-hit>
-          <span class="search-hit-title">${escapeHtml(hit.title)}</span>
-          <span class="search-hit-context">${escapeHtml(hit.context)}</span>
-          <span class="search-hit-snippet">${escapeHtml(hit.snippet)}</span>
-        </a>
-        ${hit.externalUrl ? `<a class="search-hit-open" href="${escapeHtml(hit.externalUrl)}" target="_blank" rel="noopener noreferrer" hx-boost="false" title="Open the resource">open &nearr;</a>` : ""}
-      </div>`,
-    )
-    .join("");
-}
-
 export function messagePage(book, title, message) {
   const main = `
     <div class="page">
@@ -199,7 +180,7 @@ function layout(book, { title, activeChapterId, main }) {
   <link rel="stylesheet" href="/vendor/bulma.css">
   <link rel="stylesheet" href="/static/portal.css">
   <script src="/vendor/htmx.js" defer></script>
-  <script src="/static/portal.js" defer></script>
+  <script src="/static/portal.js" type="module"></script>
 </head>
 <body hx-boost="true">
   <div class="shell">
@@ -234,9 +215,8 @@ function layout(book, { title, activeChapterId, main }) {
     <div class="modal-background" data-close-search></div>
     <div class="modal-content">
       <input class="input" id="search-input" type="search" name="q" autocomplete="off"
-        placeholder="Search chapters, steps and resources"
-        hx-get="/search" hx-trigger="input changed delay:80ms" hx-target="#search-results">
-      <div id="search-results">${searchResults([], "")}</div>
+        placeholder="Search chapters, steps and resources">
+      <div id="search-results"></div>
       <p class="search-keys"><kbd>&uarr;</kbd><kbd>&darr;</kbd> move <kbd>Enter</kbd> open <kbd>Esc</kbd> close</p>
     </div>
   </div>
