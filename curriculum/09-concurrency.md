@@ -254,7 +254,7 @@ Each core's cache keeps copies of 64-byte lines, the line size you read from `co
 
 `_Alignas(64)` on a struct member starts it on a 64-byte boundary, so a struct with one counter and that alignment fills a line of its own. Bos notes that some processors need 128 bytes to stop the effect, and the Build checks yours.
 
-If a fraction s of the run cannot be split, T threads finish in at least s + (1 - s)/T of the single-thread time. That is **Amdahl's law**. Your haversine pipeline from chapter 07 reads and parses the JSON on one thread. Splitting only the distance sum leaves the parse untouched, so the end-to-end speedup has a ceiling you can compute from your profile.
+If a fraction s of the run cannot be split, T threads finish in at least s + (1 - s)/T of the single-thread time. That is **Amdahl's law**. Say 40% of a run is serial. Eight threads then need at least 0.4 + 0.6/8 = 0.475 of the time, a speedup of 2.1, and no number of threads gets past 1/0.4 = 2.5. Your haversine pipeline from chapter 07 reads and parses the JSON on one thread. Splitting only the distance sum leaves the parse untouched, so the end-to-end speedup has a ceiling you can compute from your profile.
 
 `nproc` counts logical CPUs, and Windows Task Manager's Performance tab shows how many cores and logical processors the laptop has. Many x86-64 cores run two threads at the same time, which then share that core's execution units, so `nproc` can be twice the number of cores. Many recent Intel laptop chips are also hybrid, with fast performance cores and slower efficiency cores, as chapter 07 said.
 
@@ -291,7 +291,14 @@ Every hand-off so far went through a lock or a join. To hand data from one threa
 
 Within one thread, the compiler and the CPU may reorder loads and stores whenever the thread itself cannot tell. The reordering other cores can see on x86-64 comes from the **store buffer**: a queue in each core where stores wait before they reach the cache. The core goes on with later instructions while a store waits, so a later load from a different address can read the cache before the earlier store has left the buffer. For another core, the load happened first.
 
-The **litmus test** for this, a tiny program whose possible results define what the hardware allows, has two threads that each store 1 to one variable and then load the other. Both loads can return 0:
+A **litmus test** is a tiny program whose possible results show what the hardware allows. The one for the store buffer has two threads that each store 1 to one variable and then load the other. `X` and `Y` start at 0:
+
+```
+  thread 1:   X = 1;   r1 = Y;
+  thread 2:   Y = 1;   r2 = X;
+```
+
+Try every order of those four lines on paper. Whichever store runs first, the other thread's load comes after it, so at least one of `r1` and `r2` ends as 1. On your CPU both can end as 0:
 
 ![Each core's store of 1 waits in its store buffer while its next load reads the other variable from memory, where it is still 0. Both loads return 0.](figures/09-store-buffer.svg)
 
