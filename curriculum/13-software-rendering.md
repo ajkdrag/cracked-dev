@@ -250,7 +250,16 @@ So far every vertex arrived in pixels. A 3D model arrives in its own coordinates
 
 A **vector** here is a point or a direction, written as its coordinates `(x, y, z)`. A **transform** is a function that moves every point of a model the same way: a **rotation** turns it around an axis, a **scaling** makes it larger or smaller, and a **translation** shifts it. Rotation and scaling are each a 3 by 3 matrix times the vector, the matrix-vector product you know from ML code. Translation is an addition, and a 3 by 3 matrix cannot add a constant.
 
-**Homogeneous coordinates** fix that. Give each point a fourth coordinate `w = 1` and use 4 by 4 matrices. The last column of a 4 by 4 matrix then gets multiplied by that 1, so it adds a constant, and translation becomes a matrix too. Every transform is now one kind of object, and transforms compose by matrix multiplication: `M = T * R * S` scales first, then rotates, then translates, because the matrix nearest the vector applies first.
+**Homogeneous coordinates** fix that. Give each point a fourth coordinate `w = 1` and use 4 by 4 matrices. The last column of a 4 by 4 matrix then gets multiplied by that 1, so it adds a constant, and translation becomes a matrix too. This matrix moves a point 5 units along x:
+
+```
+  | 1 0 0 5 |   | x |   | x + 5 |
+  | 0 1 0 0 | * | y | = | y     |
+  | 0 0 1 0 |   | z |   | z     |
+  | 0 0 0 1 |   | 1 |   | 1     |
+```
+
+The first row gives `1*x + 0*y + 0*z + 5*1`, and the last row keeps `w` at 1. Every transform is now one kind of object, and transforms compose by matrix multiplication: `M = T * R * S` scales first, then rotates, then translates, because the matrix nearest the vector applies first.
 
 The chain from a model to the screen has six spaces. A **space** is a choice of origin and axes that coordinates are measured in. This step covers the first two and the last one. The next step adds the camera and perspective in the middle:
 
