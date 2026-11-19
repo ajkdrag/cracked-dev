@@ -6,7 +6,9 @@ weeks: 12
 project: A CUDA matrix multiply taken from a naive kernel through shared-memory and register tiling to tensor cores and measured against cuBLAS, then a fused online-softmax kernel called from PyTorch, with both kernels rewritten in Triton at the end.
 ---
 
-Chapter 20 ended with a fix sent to Valkey and with C++ read from below: constructors, destructors, templates and the code the compiler emits for each. You have also used a GPU every working day for years, from Python: `.cuda()`, a matmul, a softmax, a training loop that runs fast for reasons you took on trust. In this chapter you write that GPU code yourself in **CUDA**, NVIDIA's C++ dialect for its GPUs. A function that runs on the GPU is called a **kernel**. The word has nothing to do with the operating system kernel of chapter 15.
+Chapter 20 left you with a pull request in front of Valkey's maintainers and with C++, Zig and Odin read from below. The C++ is the part this chapter needs: constructors, destructors, templates and the code the compiler emits for each.
+
+You have also used a GPU every working day for years, from Python: `.cuda()`, a matmul, a softmax, a training loop that runs fast for reasons you took on trust. In this chapter you write that GPU code yourself in **CUDA**, NVIDIA's C++ dialect for its GPUs. A function that runs on the GPU is called a **kernel**. The word has nothing to do with the operating system kernel of chapter 15.
 
 Everything runs on your laptop, in Ubuntu under WSL2, and every number you compare comes from that laptop's GPU. The chapter has five parts:
 
@@ -16,7 +18,7 @@ Everything runs on your laptop, in Ubuntu under WSL2, and every number you compa
 - Steps 13 to 15 are the first project: matrix multiply from a naive kernel to the GPU's matrix units, measured against cuBLAS, NVIDIA's own matrix library.
 - Steps 16 to 18 are the second project: a softmax that reads each row once, called from PyTorch, and then both kernels again in Triton, a compiler that makes many of your decisions for you.
 
-The chapter comes this late because it uses almost everything before it. Chapter 07 gave you bandwidth, latency, dependency chains and SIMD lanes with masks. Chapter 09 gave you races and the rule that one thread sees another's write only through a synchronizing operation. Chapter 14 showed you a CPU that records commands for the GPU and moves on before they run, and chapter 20 gave you the C++. Chapter 22, A tensor library, then builds a framework whose GPU backend uses the kernels you write here.
+The chapter comes this late because it uses almost everything before it. Chapter 07 gave you bandwidth, latency, dependency chains and SIMD lanes with masks. Chapter 09 gave you races and the rule that one thread sees another's write only through a synchronizing operation. Chapter 14 showed you a CPU that records commands for the GPU and moves on before they run, and shaders that the GPU runs once for every vertex and every pixel. Chapter 22, A tensor library, then builds a framework and runs your softmax kernel from this chapter under it.
 
 ## The GPU inside WSL2
 
@@ -75,7 +77,7 @@ CUDA calls the CPU and its memory the **host**, and the GPU and its memory the *
 
 ![The host is the CPU with its RAM and the device is the GPU with its own memory. cudaMemcpy copies an array across PCIe into device memory, the kernel reads and writes it there, and a second cudaMemcpy copies the result back.](figures/21-host-device.svg)
 
-A kernel is a C++ function marked `__global__`. The host **launches** it with the number of thread blocks, groups of threads that step 3 explains, and the number of threads per block between triple angle brackets. Every **thread** runs the whole function. Each one finds its own element from built-in variables, which step 3 takes apart:
+A kernel is a C++ function marked `__global__`. The host **launches** it with the number of thread blocks, groups of threads that step 3 explains, and the number of threads per block between triple angle brackets. Every **thread** runs the whole function. Your chapter 14 fragment shader ran the same way, once for every pixel, and a kernel runs once for every thread. Each thread finds its own element from built-in variables, which step 3 takes apart:
 
 ```cpp
 __global__ void vadd(const float *a, const float *b, float *c, int n)
@@ -95,7 +97,7 @@ cudaMemcpy(c, dc, n * sizeof(float), cudaMemcpyDeviceToHost);
 
 The launch returns before the kernel has run. The host only queues the work, as a command buffer submit did in chapter 14. `cudaMemcpy` from the device waits until the kernel has finished, so the result is complete when it returns. This chapter copies explicitly everywhere, so you always know when data crosses the bus. Unified memory would move it for you and hide exactly the costs this chapter measures.
 
-> **Practice:** Build every CUDA program with one script, and with warnings on:
+> **Practice:** Build every CUDA program with one script in the style of chapter 01's, with warnings on:
 >
 > ```sh
 > #!/bin/sh
@@ -146,7 +148,7 @@ Blocks run in any order. CUDA promises nothing about which block runs first or w
 
 Sasha Rush's GPU Puzzles teach this indexing before you debug it in C++. They run in **Google Colab**, Google's hosted Python notebooks with a free GPU, which needs a Google account. The puzzles use **Numba**, a Python library that compiles Python functions to machine code and to CUDA kernels, where `cuda.threadIdx.x` is `threadIdx.x`. Each puzzle draws which thread read and wrote which cell. Chapter 22's GPU backend uses the same Numba syntax.
 
-Your vector add has one operation per element. `saxpy`, `y[i] = a * x[i] + y[i]`, has two, and it shows the fused multiply-add of chapter 07 from the compiler's side. `nvcc` contracts a multiply followed by an add into one **fused multiply-add** by default, which rounds once instead of twice. In the compiled code you would see one `FFMA` instruction, and with the flag `-fmad=false` an `FMUL` and an `FADD`.
+Your vector add has one operation per element. `saxpy`, `y[i] = a * x[i] + y[i]`, has two, and it shows the fused multiply-add of chapter 07 from the compiler's side. `nvcc` contracts a multiply followed by an add into one fused multiply-add by default, which rounds once instead of twice. In the compiled code you would see one `FFMA` instruction, and with the flag `-fmad=false` an `FMUL` and an `FADD`.
 
 ### Study
 
@@ -263,9 +265,11 @@ The GPU runs the threads of a block in groups of 32 consecutive threads, called 
 
 ![Top: the 32 threads of a warp read 32 neighboring floats in four 32-byte sectors, so the warp moves 128 bytes and uses all of them. Bottom: thread t reads element 32 * t, every thread touches its own sector, and the warp moves 1024 bytes to use 128.](figures/21-coalescing.svg)
 
-When thread i reads element 32 * i, the warp moves eight times the bytes it uses, and bandwidth drops to about an eighth. This is the struct-of-arrays argument from chapter 07, applied to the 32 threads of a warp. Neighboring threads should touch neighboring addresses.
+When thread i reads element 32 * i, the warp moves eight times the bytes it uses, and bandwidth drops to about an eighth. This is the structure-of-arrays argument from chapter 07, applied to the 32 threads of a warp. Neighboring threads should touch neighboring addresses.
 
-**Nsight Compute**, the command `ncu`, is NVIDIA's kernel profiler. It replays each kernel it profiles many times with the GPU's hardware counters attached. On `bw`, which launches hundreds of kernels over 256 MiB buffers, a full profile of everything takes tens of minutes. So give `bw` a command-line argument that runs one kernel with one setting, such as `./out/bw stride 32`, and profile one launch of that kernel:
+**Nsight Compute**, the command `ncu`, is NVIDIA's kernel profiler. It replays each kernel it profiles many times with the GPU's hardware counters attached. In chapter 07, `perf stat` may have printed `<not supported>` for `cycles`, because WSL2 often keeps the CPU's counters from Linux. The GPU's counters come through the Windows driver once you allow it, as below.
+
+On `bw`, which launches hundreds of kernels over 256 MiB buffers, a full profile of everything takes tens of minutes. So give `bw` a command-line argument that runs one kernel with one setting, such as `./out/bw stride 32`, and profile one launch of that kernel:
 
 ```sh
 ncu --set full -k regex:strideCopy -c 1 -o stride32 ./out/bw stride 32
@@ -340,13 +344,13 @@ Both versions match the CPU. You have the timelines of both and can say from `cu
 
 The coalescing step named warps for loads. A warp also decides how branches run, and a kernel whose threads take different branches can run at half speed with no visible cause in the source.
 
-A GPU is built from **streaming multiprocessors** (SMs), tens of them on a laptop GPU. Each block runs on one SM from start to finish. The SM splits the block into warps of 32 threads, and a warp executes one instruction at a time for all 32 of them. A warp is like an AVX2 register from chapter 07 with 32 lanes instead of 8.
+A GPU is built from **streaming multiprocessors** (SMs), tens of them on a laptop GPU. Each block runs on one SM from start to finish. The GPU hands each block to an SM with room for it, as your chapter 09 job system handed each job to a free worker, which is why step 3 found no promise about the order of blocks. The SM splits the block into warps of 32 threads, and a warp executes one instruction at a time for all 32 of them. A warp is like an AVX2 register from chapter 07 with 32 lanes instead of 8.
 
 With AVX2 you wrote one instruction for eight floats. In CUDA you write the code for one thread, and the hardware runs 32 of them in step. When threads of a warp take different branches of an `if`, the warp runs both paths one after the other. During each path an **active mask** switches off the lanes that do not belong to it. This is **warp divergence**, and its cost is the time of both paths added.
 
 ![Eight lanes of a warp, where a real warp has 32, reach an if that calls A on odd lanes and B on even lanes. The warp issues A with only the odd lanes active, then B with only the even lanes active, then all lanes go on together.](figures/21-divergence.svg)
 
-You built that mask by hand in chapter 07, with a compare and a blend, and here the hardware builds it. A branch costs nothing extra when all 32 threads of each warp go the same way, even if different warps go different ways. So the question for any `if` in a kernel is whether it splits warps or only splits the block between warps.
+You built that mask by hand in chapter 07, with a compare and a blend, and here the hardware builds it. Your chapter 14 fragment shaders ran in warps too, one pixel per thread, so an `if` in a shader split warps the same way. A branch costs nothing extra when all 32 threads of each warp go the same way, even if different warps go different ways. So the question for any `if` in a kernel is whether it splits warps or only splits the block between warps.
 
 ### Study
 
@@ -545,7 +549,7 @@ With a TM by TN tile of outputs per thread, one step along k loads TM values of 
 
 Boehm continues with one-dimensional and then two-dimensional block tiling, then **vectorized loads** with `float4`, which move four floats in one instruction, then a search over tile sizes, then warp tiling, which adds a level for each warp's share of the block's tile. `float4` loads need 16-byte alignment. That holds when the row length is a multiple of 4 and the base pointer comes from `cudaMalloc`. For irregular shapes, copy A and B into zero-padded buffers whose sizes are multiples of the tile sizes, run the kernel, and copy the M x N part of C back out.
 
-Now read what the compiler made. `cuobjdump -sass out/mm` prints **SASS**, the GPU's own machine code, the way `objdump -d` printed x86-64 in chapter 05. The compiler goes through **PTX**, a virtual instruction set, on the way. These opcodes matter here:
+Now read what the compiler made. `cuobjdump -sass out/mm` prints **SASS**, the GPU's own machine code, the way `objdump -d` printed x86-64 in chapter 05. The driver made the same kind of code from your SPIR-V shaders in chapter 14. The compiler goes through **PTX**, a virtual instruction set, on the way. These opcodes matter here:
 
 - `FFMA` is a fused multiply-add.
 - `LDS` loads from shared memory and `LDG` from global memory. A `.128` suffix loads 16 bytes at once.
@@ -671,7 +675,7 @@ S1, S2 and S3 pass your policy on every shape, and the extreme rows give what yo
 
 Your softmax runs from a C++ harness. You use softmax every day from PyTorch, so the last check is against `torch.softmax` on the same tensors, in the same process.
 
-PyTorch can compile and load a CUDA kernel at run time. `torch.utils.cpp_extension.load_inline` takes your CUDA source as a string and a C++ declaration of the function Python calls. It writes a build file for **Ninja**, a small build tool like `make`, compiles the sources with `nvcc` and gcc, and imports the result as a Python module. Chapter 22 loads this same kernel into its tensor library this way. Here it is for `vadd`:
+PyTorch can compile and load a CUDA kernel at run time. `torch.utils.cpp_extension.load_inline` takes your CUDA source as a string and a C++ declaration of the function Python calls. It writes a build file for Ninja, the build tool that ran under CMake when you built SDL3 in chapter 06, compiles the sources with `nvcc` and gcc, and imports the result as a Python module. Chapter 22 loads this same kernel into its tensor library this way. Here it is for `vadd`:
 
 ```python
 import torch
@@ -720,7 +724,11 @@ The new lines, in order:
 - `C10_CUDA_KERNEL_LAUNCH_CHECK()` is PyTorch's `CHECK_LAUNCH()`.
 - `cpp_sources` declares the function for the C++ half that `load_inline` generates, and `functions` names the functions Python can call, here as `ext.vadd(x, y)`.
 
-`load_inline` sets its own compiler flags, among them `-std=c++20`, which PyTorch's headers require, so do not pass your `build.sh` flags to it. PyTorch's Linux wheels run in Ubuntu under WSL2 and use the `libcuda.so` from `/usr/lib/wsl/lib`. Install them into a virtual environment made with `python3 -m venv`, the tool chapter 22 also uses. The pip command comes from the selector on pytorch.org, because its index URL names a CUDA version, such as `https://download.pytorch.org/whl/cu134`, and that number changes with each release. `torch.utils.cpp_extension` stops with an error when the CUDA major version of PyTorch differs from your `nvcc`, and only warns when the minor version differs.
+`load_inline` sets its own compiler flags, among them `-std=c++20`, which PyTorch's headers require, so do not pass your `build.sh` flags to it.
+
+PyTorch ships as **wheels**, ready-built package files that pip installs without compiling anything. Its Linux wheels run in Ubuntu under WSL2 and use the `libcuda.so` from `/usr/lib/wsl/lib`. Ubuntu 24.04 refuses `pip install` outside a **virtual environment**, as chapter 07 found. A virtual environment is a directory with its own Python interpreter and its own installed packages, made with `python3 -m venv`, the tool chapter 22 also uses.
+
+The pip command comes from the selector on pytorch.org, because its index URL names a CUDA version, such as `https://download.pytorch.org/whl/cu134`, and that number changes with each release. `torch.utils.cpp_extension` stops with an error when the CUDA major version of PyTorch differs from your `nvcc`, and only warns when the minor version differs.
 
 Time your kernel and `torch.softmax` with `torch.cuda.Event(enable_timing=True)`, which wraps the CUDA events from step 5. `torch.compile` is PyTorch's compiler: it turns a Python function into fused GPU kernels, which it writes in Triton. Timing it next to yours shows what a compiler gets on this kernel, and step 18 looks inside.
 
@@ -784,4 +792,6 @@ Your looped Triton softmax passes the step 16 tests and policy. You have one tab
 
 You can now write a CUDA kernel, check it with a CPU oracle under a stated error policy, find its bottleneck with `ncu`, `nsys` and the SASS, and explain its speed from the bandwidth and arithmetic ceilings you measured on your own GPU. You took matrix multiply from a naive kernel far below cuBLAS to a large fraction of it and onto tensor cores. You wrote a softmax that reads each row once, called it from PyTorch, and saw what Triton automates. Each kernel was one operation with a fixed shape, launched from a harness you wrote for that operation.
 
-A deep learning framework needs much more around those kernels: tensors of any shape and stride, broadcasting, a graph that records every operation, and a backward pass that computes gradients through all of it. Chapter 22, A tensor library, builds that from scratch in MiniTorch, a teaching library written in Python. Strides and broadcasting extend the `row * ncols + col` of your 2D kernels to any number of dimensions. Its GPU module asks for map, zip, reduce and matrix multiply kernels in the Numba syntax of GPU Puzzles, and the last step loads your own softmax kernel from this chapter as a backend.
+A deep learning framework needs much more around those kernels: tensors of any shape and stride, broadcasting, a graph that records every operation, and a backward pass that computes gradients through all of it. Chapter 22, A tensor library, builds that from scratch in MiniTorch, a teaching library written in Python. It starts away from the GPU, with one Python environment for MiniTorch's five template repositories and then automatic differentiation on single numbers. Tensors come next, whose strides and broadcasting extend the `row * ncols + col` of your 2D kernels to any number of dimensions.
+
+The GPU returns in MiniTorch's CUDA backend, which asks for map, zip, reduce and matrix multiply kernels in the Numba syntax of GPU Puzzles. The last step of the book loads your own softmax kernel from this chapter, and your AVX2 code from chapter 07, under MiniTorch as a backend.

@@ -12,7 +12,7 @@ The library is MiniTorch, written by Sasha Rush for the Machine Learning Enginee
 
 ![The layers of MiniTorch, top to bottom: your model, autograd, the tensor, the three primitives and the backends that run them.](figures/22-layers.svg)
 
-Much of what you built in this book comes back. A MiniTorch tensor is one flat buffer plus a shape and strides, and a view shares that buffer the way a `str_slice` from chapter 04 points into its string. The CPU backend splits loops across cores as your chapter 09 job system did, and Numba compiles those loops to machine code through LLVM, the compiler library of chapter 12. The CUDA backend needs the map, the shared-memory reduction and the tiled matrix multiply of chapter 21. In the last two steps you design one operation of your own and then put your own C and CUDA code under MiniTorch as a backend: the AVX2 code of chapter 07 and the softmax kernel of chapter 21.
+Much of what you built in this book comes back. A MiniTorch tensor is one flat buffer plus a shape and strides, and a view shares that buffer the way a `str_slice` from chapter 04 points into its string. The CPU backend splits loops across cores with the static split of chapter 09, and Numba compiles those loops to machine code through LLVM, the compiler library of chapter 12. The CUDA backend needs the map, the shared-memory reduction and the tiled matrix multiply of chapter 21. In the last two steps you design one operation of your own and then put your own C and CUDA code under MiniTorch as a backend: the AVX2 code of chapter 07 and the softmax kernel of chapter 21.
 
 Everything runs in Ubuntu under WSL2 on the laptop. The GPU steps use the NVIDIA card through the Windows driver and the CUDA toolkit you set up in chapter 21.
 
@@ -24,9 +24,9 @@ Each module is its own repository. From module 1 on, each one has a script `sync
 
 ![The workspace: five template repositories side by side in ~/mt, one virtual environment and one constraints file for all of them. From module 1 on, sync_previous_module.py copies your finished files from the module before.](figures/22-workspace.svg)
 
-A **virtual environment** is a directory with its own Python interpreter and its own installed packages, so the versions this chapter pins touch nothing else on the machine. MiniTorch's setup page makes one with Python's `venv` module, the same tool chapter 21 used, and this chapter stays with it. Ubuntu 24.04's `python3` is Python 3.12, the newest version that every pin here installs on. Three things go wrong if you follow the module READMEs as they are:
+MiniTorch's setup page makes a virtual environment with Python's `venv` module, the same tool you used for PyTorch in chapter 21, and this chapter stays with it. You make a second one in `~/mt`, so the versions MiniTorch pins touch nothing else, the chapter 21 environment included. Ubuntu 24.04's `python3` is Python 3.12, the newest version that every pin here installs on. Three things go wrong if you follow the module READMEs as they are:
 
-- Modules 1 and 2 pin `numba == 0.56` and `numpy == 1.22`. Neither has a **wheel** for Python 3.12, a ready-built package file that pip installs without compiling anything. Modules 0, 3 and 4 pin `numba == 0.60` and `numpy == 2.0.0`. Install module 0's requirement files once and keep that environment for every module.
+- Modules 1 and 2 pin `numba == 0.56` and `numpy == 1.22`. Neither has a wheel for Python 3.12. Modules 0, 3 and 4 pin `numba == 0.60` and `numpy == 2.0.0`. Install module 0's requirement files once and keep that environment for every module.
 - `requirements.extra.txt` pins `datasets==2.4.0`, Hugging Face's library that downloads and caches public datasets by name. That version fails on import with any current `pyarrow`. Drop the version from that line.
 - Some packages in `requirements.extra.txt` pull in newer libraries without a pin, and pip then upgrades numpy past what numba 0.60 accepts, without an error. A **constraints file** lists versions that pip must keep. Passed to pip with `-c`, it makes pip refuse any install that would move them.
 
@@ -39,8 +39,6 @@ Module 0 itself is ordinary Python. Three of its pieces carry through the chapte
 - The functions in `operators.py` become the scalar functions that every backend applies to tensors. Among them are `sigmoid` and `relu_back`, the derivative of **ReLU**, the function max(0, x) that most networks use between layers.
 - Task 0.4's `Module` class is the parameter tree that every model in module 4 is built from. It overrides `__setattr__` to sort attributes into parameters, child modules and plain values, and it walks the tree to collect named parameters.
 - Task 0.2's tests are **property tests**. A unit test checks one input. A property test states something that must hold for every input, and the Hypothesis library generates hundreds of inputs and looks for one that breaks it. This is the fuzzing of chapter 04, and Build 5 shows the one thing Hypothesis adds.
-
-> **If it fails:** If `python3 -m venv` stops and names a missing package such as `python3.12-venv`, install that package with `sudo apt install` and run the command again.
 
 ### Study
 
@@ -194,7 +192,7 @@ Tensor functions mirror scalar functions. `forward` calls the backend's map, zip
 
 Most tensor gradient bugs come from broadcasting. In `x + b` with `b` of shape (3,) and `x` of shape (4, 3), each element of `b` was used four times. Its gradient is the sum of those four contributions, so the (4, 3) gradient has to be summed over dimension 0 to get back to shape (3,). MiniTorch does this in `Tensor.expand`, which `chain_rule` calls on every gradient. Read that method before Task 2.4, so you know which reductions happen outside your `backward` code.
 
-Autodiff Puzzles, also by Sasha Rush, trains the same reasoning in a notebook. Each puzzle gives a tensor function and asks for its full **Jacobian**, the derivative of every output element with respect to every input element, written as one line of broadcasting code. The notebook checks your answer against JAX, a numerical library with its own autodiff, and shows which index you got wrong. It runs in **Colab**, Google's service that runs Jupyter notebooks in the browser and needs a Google account. These puzzles are the only work in the chapter that runs outside WSL2.
+Autodiff Puzzles, also by Sasha Rush, trains the same reasoning in a notebook. Each puzzle gives a tensor function and asks for its full **Jacobian**, the derivative of every output element with respect to every input element, written as one line of broadcasting code. The notebook checks your answer against JAX, a numerical library with its own autodiff, and shows which index you got wrong. It runs in Colab, as GPU Puzzles did in chapter 21. These puzzles are the only work in the chapter that runs outside WSL2.
 
 ### Study
 
@@ -219,7 +217,7 @@ Autodiff Puzzles, also by Sasha Rush, trains the same reasoning in a notebook. E
 
 ## A parallel CPU backend with Numba
 
-Your tensor code is correct and slow, because every element still passes through the Python interpreter. **Numba** is a **just-in-time (JIT) compiler** for a subset of Python: functions over numbers, NumPy arrays and loops. On the first call with new argument types, it infers the types, generates LLVM IR and compiles that to machine code, the pipeline you drove yourself in chapter 12. Later calls run the machine code. Its `njit` decorator refuses anything it cannot compile instead of falling back to the interpreter, so a successful compile means the loop runs without Python.
+Your tensor code is correct and slow, because every element still passes through the Python interpreter. Numba, the library behind GPU Puzzles in chapter 21, is a **just-in-time (JIT) compiler** for a subset of Python: functions over numbers, NumPy arrays and loops. On the first call with new argument types, it infers the types, generates LLVM IR and compiles that to machine code, the pipeline you drove yourself in chapter 12. Later calls run the machine code. Its `njit` decorator refuses anything it cannot compile instead of falling back to the interpreter, so a successful compile means the loop runs without Python.
 
 `njit(parallel=True)` with `prange` in place of `range` runs the iterations of a loop on a pool of threads. Numba cuts the iterations into roughly equal chunks, one per thread. That is the static split of chapter 09, and it works here because every output element costs about the same. The iterations must not depend on each other or write to the same place.
 
@@ -254,7 +252,7 @@ Numba shows you what it built. `parallel_diagnostics(level=3)` lists the loops i
 
 `pytest -m "task3_1 or task3_2"` passes and the README has the diagnostics output with every main loop parallel. Your benchmark table shows the fast matmul at least 100 times faster than the simple one at n = 64. The CPU run with 100 hidden units takes less than 2 seconds per epoch, the target the assignment gives for Colab. You can explain the shape of your scaling plot.
 
-> **Optional:** Look at the machine code Numba made. `inspect_asm()` on your compiled matmul returns its x86-64 code in the AT&T syntax of chapter 05. Find the inner loop: LLVM keeps a floating-point multiply and add as two instructions, `vmulsd` and `vaddsd`, and does not reorder a sum, because both changes alter the rounding. The option `fastmath=True` allows both, so the pair can become one **fused multiply-add** that rounds once, `vfmadd231sd` on one double or `vfmadd231pd` on the four doubles of a `ymm` register. Compile a copy with `fastmath=True`, look again, and measure the change in time and the largest change in any output element at n = 512.
+> **Optional:** Look at the machine code Numba made. `inspect_asm()` on your compiled matmul returns its x86-64 code in the AT&T syntax of chapter 05. Find the inner loop: LLVM keeps a floating-point multiply and add as two instructions, `vmulsd` and `vaddsd`, and does not reorder a sum, because both changes alter the rounding. The option `fastmath=True` allows both, so the pair can become one fused multiply-add that rounds once, `vfmadd231sd` on one double or `vfmadd231pd` on the four doubles of a `ymm` register. Compile a copy with `fastmath=True`, look again, and measure the change in time and the largest change in any output element at n = 512.
 
 ## A CUDA backend
 
