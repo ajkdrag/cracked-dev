@@ -1,0 +1,57 @@
+<svg viewBox="0 0 720 292" role="img" aria-label="Left, a switch: every opcode&#x27;s code jumps back to one shared indirect jump, so the branch predictor sees one jump with many targets. Right, computed goto: each opcode&#x27;s code ends in its own indirect jump, so there is one jump per opcode to predict.">
+  <defs>
+    <marker id="11-dispatch-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="20" y="32" text-anchor="start" font-size="13" font-weight="600">switch</text>
+  <text x="380" y="32" text-anchor="start" font-size="13" font-weight="600">computed goto</text>
+  <rect class="fig-accent" x="70" y="50" width="230" height="44" rx="6"/>
+  <text class="fig-mono" x="185" y="77" text-anchor="middle" font-size="13">jmp *table[op]</text>
+  <rect class="fig-box" x="50" y="160" width="84" height="50" rx="6"/>
+  <text class="fig-mono" x="92" y="182" text-anchor="middle" font-size="11">OP_ADD</text>
+  <text class="fig-muted" x="92" y="199" text-anchor="middle" font-size="11">code</text>
+  <line class="fig-line" x1="92" y1="96" x2="92" y2="157" marker-end="url(#11-dispatch-arrow)"/>
+  <line class="fig-line" x1="92" y1="210" x2="92" y2="250"/>
+  <rect class="fig-box" x="140" y="160" width="84" height="50" rx="6"/>
+  <text class="fig-mono" x="182" y="182" text-anchor="middle" font-size="11">OP_SUBTRACT</text>
+  <text class="fig-muted" x="182" y="199" text-anchor="middle" font-size="11">code</text>
+  <line class="fig-line" x1="182" y1="96" x2="182" y2="157" marker-end="url(#11-dispatch-arrow)"/>
+  <line class="fig-line" x1="182" y1="210" x2="182" y2="250"/>
+  <rect class="fig-box" x="230" y="160" width="84" height="50" rx="6"/>
+  <text class="fig-mono" x="272" y="182" text-anchor="middle" font-size="11">OP_RETURN</text>
+  <text class="fig-muted" x="272" y="199" text-anchor="middle" font-size="11">code</text>
+  <line class="fig-line" x1="272" y1="96" x2="272" y2="157" marker-end="url(#11-dispatch-arrow)"/>
+  <line class="fig-line" x1="272" y1="210" x2="272" y2="250"/>
+  <path class="fig-line" d="M 92 250 L 272 250" fill="none"/>
+  <path class="fig-line" d="M 92 250 L 30 250 L 30 72 L 67 72" fill="none" marker-end="url(#11-dispatch-arrow)"/>
+  <text class="fig-muted" x="176" y="272" text-anchor="middle" font-size="12">every opcode returns here</text>
+  <rect class="fig-box" x="390" y="60" width="96" height="50" rx="6"/>
+  <text class="fig-mono" x="438" y="82" text-anchor="middle" font-size="11">OP_ADD</text>
+  <text class="fig-muted" x="438" y="99" text-anchor="middle" font-size="11">code</text>
+  <line class="fig-line" x1="438" y1="110" x2="438" y2="147" marker-end="url(#11-dispatch-arrow)"/>
+  <rect class="fig-accent" x="390" y="150" width="96" height="44" rx="6"/>
+  <text class="fig-mono" x="438" y="169" text-anchor="middle" font-size="12">jmp</text>
+  <text class="fig-mono" x="438" y="185" text-anchor="middle" font-size="12">*table[op]</text>
+  <line class="fig-line" x1="438" y1="194" x2="438" y2="232" marker-end="url(#11-dispatch-arrow)"/>
+  <text class="fig-muted" x="438" y="250" text-anchor="middle" font-size="12">next opcode</text>
+  <rect class="fig-box" x="495" y="60" width="96" height="50" rx="6"/>
+  <text class="fig-mono" x="543" y="82" text-anchor="middle" font-size="11">OP_SUBTRACT</text>
+  <text class="fig-muted" x="543" y="99" text-anchor="middle" font-size="11">code</text>
+  <line class="fig-line" x1="543" y1="110" x2="543" y2="147" marker-end="url(#11-dispatch-arrow)"/>
+  <rect class="fig-accent" x="495" y="150" width="96" height="44" rx="6"/>
+  <text class="fig-mono" x="543" y="169" text-anchor="middle" font-size="12">jmp</text>
+  <text class="fig-mono" x="543" y="185" text-anchor="middle" font-size="12">*table[op]</text>
+  <line class="fig-line" x1="543" y1="194" x2="543" y2="232" marker-end="url(#11-dispatch-arrow)"/>
+  <text class="fig-muted" x="543" y="250" text-anchor="middle" font-size="12">next opcode</text>
+  <rect class="fig-box" x="600" y="60" width="96" height="50" rx="6"/>
+  <text class="fig-mono" x="648" y="82" text-anchor="middle" font-size="11">OP_RETURN</text>
+  <text class="fig-muted" x="648" y="99" text-anchor="middle" font-size="11">code</text>
+  <line class="fig-line" x1="648" y1="110" x2="648" y2="147" marker-end="url(#11-dispatch-arrow)"/>
+  <rect class="fig-accent" x="600" y="150" width="96" height="44" rx="6"/>
+  <text class="fig-mono" x="648" y="169" text-anchor="middle" font-size="12">jmp</text>
+  <text class="fig-mono" x="648" y="185" text-anchor="middle" font-size="12">*table[op]</text>
+  <line class="fig-line" x1="648" y1="194" x2="648" y2="232" marker-end="url(#11-dispatch-arrow)"/>
+  <text class="fig-muted" x="648" y="250" text-anchor="middle" font-size="12">next opcode</text>
+  <text class="fig-muted" x="543" y="272" text-anchor="middle" font-size="12">one jump per opcode</text>
+</svg>

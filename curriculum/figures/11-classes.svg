@@ -1,0 +1,30 @@
+<svg viewBox="0 0 720 326" role="img" aria-label="An instance points at its class and holds its own fields. The class holds the methods. Reading p.move without calling it creates a bound method that points at the receiver p and at the method&#x27;s closure.">
+  <defs>
+    <marker id="11-classes-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-mono fig-muted" x="20" y="32" text-anchor="start" font-size="12">var p = Point(); p.x = 1; var m = p.move;</text>
+  <text class="fig-muted" x="110" y="64" text-anchor="middle" font-size="12">ObjInstance p</text>
+  <rect class="fig-box" x="20" y="74" width="180" height="40" rx="6"/>
+  <text class="fig-mono" x="32" y="99" text-anchor="start" font-size="12">klass</text>
+  <rect class="fig-box" x="20" y="114" width="180" height="40" rx="6"/>
+  <text class="fig-mono" x="32" y="139" text-anchor="start" font-size="12">fields  x = 1</text>
+  <text class="fig-muted" x="370" y="64" text-anchor="middle" font-size="12">ObjClass Point</text>
+  <rect class="fig-box" x="280" y="74" width="180" height="40" rx="6"/>
+  <text class="fig-mono" x="292" y="99" text-anchor="start" font-size="12">name  &quot;Point&quot;</text>
+  <rect class="fig-box" x="280" y="114" width="180" height="40" rx="6"/>
+  <text class="fig-mono" x="292" y="139" text-anchor="start" font-size="12">methods  move</text>
+  <text class="fig-muted" x="610" y="64" text-anchor="middle" font-size="12">ObjClosure</text>
+  <rect class="fig-box" x="540" y="94" width="140" height="50" rx="6"/>
+  <text class="fig-mono" x="610" y="124" text-anchor="middle" font-size="13">move</text>
+  <text class="fig-accent-text" x="370" y="214" text-anchor="middle" font-size="12">ObjBoundMethod m</text>
+  <rect class="fig-accent" x="280" y="224" width="180" height="40" rx="6"/>
+  <text class="fig-mono" x="292" y="249" text-anchor="start" font-size="12">receiver</text>
+  <rect class="fig-accent" x="280" y="264" width="180" height="40" rx="6"/>
+  <text class="fig-mono" x="292" y="289" text-anchor="start" font-size="12">method</text>
+  <line class="fig-line" x1="200" y1="94" x2="277" y2="94" marker-end="url(#11-classes-arrow)"/>
+  <line class="fig-line" x1="460" y1="134" x2="537" y2="124" marker-end="url(#11-classes-arrow)"/>
+  <path class="fig-line" d="M 280 244 L 110 244 L 110 157" fill="none" marker-end="url(#11-classes-arrow)"/>
+  <path class="fig-accent-line" d="M 460 284 L 610 284 L 610 147" fill="none" marker-end="url(#11-classes-arrow)"/>
+</svg>

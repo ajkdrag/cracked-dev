@@ -1,0 +1,61 @@
+<svg viewBox="0 0 720 390" role="img" aria-label="The path of a typed line through the JIT. The line bar(2) is parsed into __anon_expr, turned into IR in a new module and optimized. addModule compiles the module into x86-64 code in memory, lookup returns its address, toy calls it through a function pointer and prints the result. Calls to names the module does not define are found in earlier modules or in the running process.">
+  <defs>
+    <marker id="12-jit-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="20" y="34" font-size="12">your code in toy.cpp</text>
+
+  <rect class="fig-box" x="20" y="48" width="150" height="70" rx="6"/>
+  <text x="95" y="76" text-anchor="middle" font-size="13" font-weight="600">typed line</text>
+  <text class="fig-mono" x="95" y="98" text-anchor="middle" font-size="12">bar(2);</text>
+
+  <rect class="fig-box" x="196" y="48" width="150" height="70" rx="6"/>
+  <text x="271" y="76" text-anchor="middle" font-size="13" font-weight="600">parse</text>
+  <text class="fig-mono" x="271" y="98" text-anchor="middle" font-size="12">__anon_expr</text>
+
+  <rect class="fig-box" x="372" y="48" width="150" height="70" rx="6"/>
+  <text x="447" y="76" text-anchor="middle" font-size="13" font-weight="600">codegen</text>
+  <text class="fig-muted" x="447" y="98" text-anchor="middle" font-size="12">IR in a new module</text>
+
+  <rect class="fig-box" x="548" y="48" width="150" height="70" rx="6"/>
+  <text x="623" y="76" text-anchor="middle" font-size="13" font-weight="600">passes</text>
+  <text class="fig-muted" x="623" y="98" text-anchor="middle" font-size="12">optimized IR</text>
+
+  <line class="fig-line" x1="170" y1="83" x2="194" y2="83" marker-end="url(#12-jit-arrow)"/>
+  <line class="fig-line" x1="346" y1="83" x2="370" y2="83" marker-end="url(#12-jit-arrow)"/>
+  <line class="fig-line" x1="522" y1="83" x2="546" y2="83" marker-end="url(#12-jit-arrow)"/>
+  <line class="fig-line" x1="623" y1="118" x2="623" y2="166" marker-end="url(#12-jit-arrow)"/>
+
+  <rect class="fig-accent" x="548" y="168" width="150" height="70" rx="6"/>
+  <text class="fig-mono" x="623" y="196" text-anchor="middle" font-size="12" font-weight="600">addModule</text>
+  <text class="fig-muted" x="623" y="218" text-anchor="middle" font-size="12">x86-64 in memory</text>
+
+  <rect class="fig-accent" x="372" y="168" width="150" height="70" rx="6"/>
+  <text class="fig-mono" x="447" y="196" text-anchor="middle" font-size="12" font-weight="600">lookup</text>
+  <text class="fig-muted" x="447" y="218" text-anchor="middle" font-size="12">its address</text>
+
+  <rect class="fig-box" x="196" y="168" width="150" height="70" rx="6"/>
+  <text x="271" y="196" text-anchor="middle" font-size="13" font-weight="600">call</text>
+  <text class="fig-mono" x="271" y="218" text-anchor="middle" font-size="12">double (*)()</text>
+
+  <rect class="fig-box" x="20" y="168" width="150" height="70" rx="6"/>
+  <text x="95" y="196" text-anchor="middle" font-size="13" font-weight="600">print</text>
+  <text class="fig-mono" x="95" y="218" text-anchor="middle" font-size="11">Evaluated to 5.000000</text>
+
+  <line class="fig-line" x1="548" y1="203" x2="524" y2="203" marker-end="url(#12-jit-arrow)"/>
+  <line class="fig-line" x1="372" y1="203" x2="348" y2="203" marker-end="url(#12-jit-arrow)"/>
+  <line class="fig-line" x1="196" y1="203" x2="172" y2="203" marker-end="url(#12-jit-arrow)"/>
+
+  <text class="fig-accent-text" x="510" y="158" text-anchor="middle" font-size="12">KaleidoscopeJIT, built on ORC</text>
+
+  <line class="fig-line" x1="623" y1="238" x2="623" y2="276" marker-end="url(#12-jit-arrow)"/>
+  <text class="fig-muted" x="631" y="262" font-size="12">finds callees</text>
+  <rect class="fig-box" x="372" y="278" width="326" height="92" rx="6"/>
+  <text class="fig-mono" x="388" y="302" font-size="12">foo</text>
+  <text class="fig-muted" x="474" y="302" font-size="12">an earlier module</text>
+  <text class="fig-mono" x="388" y="326" font-size="12">sin</text>
+  <text class="fig-muted" x="474" y="326" font-size="12">libm, loaded in the process</text>
+  <text class="fig-mono" x="388" y="350" font-size="12">putchard</text>
+  <text class="fig-muted" x="474" y="350" font-size="12">toy itself, with -rdynamic</text>
+</svg>
