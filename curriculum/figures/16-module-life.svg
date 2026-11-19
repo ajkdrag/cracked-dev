@@ -1,0 +1,45 @@
+<svg viewBox="0 0 720 270" role="img" aria-label="insmod hands hello.ko to the kernel's module loader, which copies its sections into kernel memory, links it against the kernel's symbols and calls hello_init. If init returns 0 the module stays loaded until rmmod calls hello_exit and the kernel frees it. If init returns an error the kernel frees it at once.">
+  <defs>
+    <marker id="16-module-life-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="40" width="120" height="70" rx="6"/>
+  <text class="fig-mono" x="80" y="68" text-anchor="middle" font-size="13">hello.ko</text>
+  <text class="fig-muted" x="80" y="88" text-anchor="middle" font-size="12">ELF object file</text>
+
+  <rect class="fig-accent" x="200" y="40" width="150" height="70" rx="6"/>
+  <text x="275" y="62" text-anchor="middle" font-size="13" font-weight="600">module loader</text>
+  <text class="fig-muted" x="275" y="80" text-anchor="middle" font-size="12">copies sections,</text>
+  <text class="fig-muted" x="275" y="97" text-anchor="middle" font-size="12">links, relocates</text>
+
+  <rect class="fig-box" x="410" y="40" width="120" height="70" rx="6"/>
+  <text class="fig-mono" x="470" y="68" text-anchor="middle" font-size="13">hello_init()</text>
+  <text class="fig-muted" x="470" y="88" text-anchor="middle" font-size="12">your code runs</text>
+
+  <rect class="fig-box" x="590" y="40" width="110" height="70" rx="6"/>
+  <text x="645" y="68" text-anchor="middle" font-size="13" font-weight="600">loaded</text>
+  <text class="fig-muted" x="645" y="88" text-anchor="middle" font-size="12">listed by lsmod</text>
+
+  <rect class="fig-box" x="410" y="180" width="120" height="60" rx="6"/>
+  <text x="470" y="206" text-anchor="middle" font-size="13" font-weight="600">freed</text>
+  <text class="fig-muted" x="470" y="224" text-anchor="middle" font-size="12">gone from lsmod</text>
+
+  <rect class="fig-box" x="590" y="180" width="110" height="60" rx="6"/>
+  <text class="fig-mono" x="645" y="206" text-anchor="middle" font-size="13">hello_exit()</text>
+  <text class="fig-muted" x="645" y="224" text-anchor="middle" font-size="12">cleans up</text>
+
+  <line class="fig-line" x1="140" y1="75" x2="198" y2="75" marker-end="url(#16-module-life-arrow)"/>
+  <text class="fig-muted" x="170" y="67" text-anchor="middle" font-size="12">insmod</text>
+  <line class="fig-line" x1="350" y1="75" x2="408" y2="75" marker-end="url(#16-module-life-arrow)"/>
+  <text class="fig-muted" x="380" y="67" text-anchor="middle" font-size="12">calls</text>
+  <line class="fig-line" x1="530" y1="75" x2="588" y2="75" marker-end="url(#16-module-life-arrow)"/>
+  <text class="fig-muted" x="560" y="67" text-anchor="middle" font-size="12">0</text>
+
+  <line class="fig-line" x1="470" y1="110" x2="470" y2="178" marker-end="url(#16-module-life-arrow)"/>
+  <text class="fig-muted" x="480" y="150" font-size="12">-EINVAL</text>
+  <line class="fig-line" x1="645" y1="110" x2="645" y2="178" marker-end="url(#16-module-life-arrow)"/>
+  <text class="fig-muted" x="655" y="150" font-size="12">rmmod</text>
+  <line class="fig-line" x1="590" y1="210" x2="532" y2="210" marker-end="url(#16-module-life-arrow)"/>
+  <text class="fig-muted" x="561" y="202" text-anchor="middle" font-size="12">then</text>
+</svg>

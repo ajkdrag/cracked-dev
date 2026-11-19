@@ -1,0 +1,37 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="The timer and the keyboard raise lines 0 and 1 of the primary PIC, and the secondary PIC&#x27;s lines arrive through line 2. The primary PIC interrupts the CPU with vector 32 plus the line number, and it delivers nothing more from that line until the handler sends an End of Interrupt.">
+  <defs>
+    <marker id="15-pic-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="40" width="170" height="46" rx="6"/>
+  <text x="105.0" y="58.5" text-anchor="middle" font-size="13" font-weight="600">PIT timer</text>
+  <text class="fig-muted" x="105.0" y="76.5" text-anchor="middle" font-size="12">line 0</text>
+  <rect class="fig-box" x="20" y="100" width="170" height="46" rx="6"/>
+  <text x="105.0" y="118.5" text-anchor="middle" font-size="13" font-weight="600">keyboard</text>
+  <text class="fig-muted" x="105.0" y="136.5" text-anchor="middle" font-size="12">line 1, port 0x60</text>
+  <rect class="fig-box" x="20" y="220" width="170" height="46" rx="6"/>
+  <text x="105.0" y="238.5" text-anchor="middle" font-size="13" font-weight="600">other devices</text>
+  <text class="fig-muted" x="105.0" y="256.5" text-anchor="middle" font-size="12">lines 8 to 15</text>
+  <rect class="fig-accent" x="280" y="40" width="160" height="120" rx="6"/>
+  <text x="360" y="70" text-anchor="middle" font-size="13" font-weight="600">primary PIC</text>
+  <text class="fig-muted" x="360" y="90" text-anchor="middle" font-size="12">vectors 32 to 39</text>
+  <text class="fig-mono" x="360" y="108" text-anchor="middle" font-size="12">ports 0x20, 0x21</text>
+  <rect class="fig-box" x="280" y="210" width="160" height="66" rx="6"/>
+  <text x="360.0" y="238.5" text-anchor="middle" font-size="13" font-weight="600">secondary PIC</text>
+  <text class="fig-muted" x="360.0" y="256.5" text-anchor="middle" font-size="12">vectors 40 to 47</text>
+  <line class="fig-line" x1="190" y1="63" x2="278" y2="63" marker-end="url(#15-pic-arrow)"/>
+  <line class="fig-line" x1="190" y1="123" x2="278" y2="123" marker-end="url(#15-pic-arrow)"/>
+  <line class="fig-line" x1="190" y1="243" x2="278" y2="243" marker-end="url(#15-pic-arrow)"/>
+  <line class="fig-line" x1="360" y1="210" x2="360" y2="162" marker-end="url(#15-pic-arrow)"/>
+  <text class="fig-muted" x="368" y="192" text-anchor="start" font-size="12">line 2</text>
+  <rect class="fig-box" x="560" y="40" width="140" height="120" rx="6"/>
+  <text x="630.0" y="105.0" text-anchor="middle" font-size="13" font-weight="600">CPU</text>
+  <line class="fig-line" x1="440" y1="70" x2="558" y2="70" marker-end="url(#15-pic-arrow)"/>
+  <text class="fig-mono" x="499" y="62" text-anchor="middle" font-size="12">32 + line</text>
+  <line class="fig-line" x1="558" y1="130" x2="442" y2="130" marker-end="url(#15-pic-arrow)" stroke-dasharray="4 3"/>
+  <text class="fig-mono" x="499" y="122" text-anchor="middle" font-size="12">EOI</text>
+  <text class="fig-muted" x="499" y="150" text-anchor="middle" font-size="12">out 0x20, 0x20</text>
+  <text class="fig-muted" x="630" y="190" text-anchor="middle" font-size="12">the handler runs,</text>
+  <text class="fig-muted" x="630" y="207" text-anchor="middle" font-size="12">then sends the EOI</text>
+</svg>

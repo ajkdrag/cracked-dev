@@ -1,0 +1,38 @@
+<svg viewBox="0 0 720 360" role="img" aria-label="At power on the BIOS in QEMU&#x27;s PC loads the bootloader from the first sector of the disk image. The bootloader switches to 64-bit long mode, maps the kernel&#x27;s segments, a stack and all of physical memory, writes BootInfo and jumps to _start, your first instruction.">
+  <defs>
+    <marker id="15-boot-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="40" width="170" height="70" rx="6"/>
+  <text x="105.0" y="70.5" text-anchor="middle" font-size="13" font-weight="600">BIOS</text>
+  <text class="fig-muted" x="105.0" y="88.5" text-anchor="middle" font-size="12">firmware of the PC</text>
+  <rect class="fig-box" x="270" y="40" width="200" height="70" rx="6"/>
+  <text x="370.0" y="70.5" text-anchor="middle" font-size="13" font-weight="600">bootloader 0.9</text>
+  <text class="fig-muted" x="370.0" y="88.5" text-anchor="middle" font-size="12">from the disk image</text>
+  <rect class="fig-accent" x="550" y="40" width="150" height="70" rx="6"/>
+  <text x="625.0" y="70.5" text-anchor="middle" font-size="13" font-weight="600">_start</text>
+  <text class="fig-muted" x="625.0" y="88.5" text-anchor="middle" font-size="12">your kernel</text>
+  <line class="fig-line" x1="190" y1="75" x2="268" y2="75" marker-end="url(#15-boot-arrow)"/>
+  <text class="fig-muted" x="229" y="66" text-anchor="middle" font-size="12">loads</text>
+  <line class="fig-line" x1="470" y1="75" x2="548" y2="75" marker-end="url(#15-boot-arrow)"/>
+  <text class="fig-muted" x="509" y="66" text-anchor="middle" font-size="12">jumps</text>
+  <text class="fig-muted" x="105" y="132" text-anchor="middle" font-size="12">power on</text>
+  <text class="fig-muted" x="105" y="150" text-anchor="middle" font-size="12">16-bit real mode</text>
+  <rect class="fig-box" x="270" y="130" width="200" height="150" rx="6"/>
+  <text x="286" y="156" text-anchor="start" font-size="12">1. switches to long mode</text>
+  <text x="286" y="178" text-anchor="start" font-size="12">2. maps the LOAD segments</text>
+  <text x="286" y="200" text-anchor="start" font-size="12">3. zeroes .bss</text>
+  <text x="286" y="222" text-anchor="start" font-size="12">4. maps a stack, guard below</text>
+  <text x="286" y="244" text-anchor="start" font-size="12">5. maps physical memory</text>
+  <text x="286" y="266" text-anchor="start" font-size="12">6. writes BootInfo</text>
+  <text class="fig-muted" x="625" y="132" text-anchor="middle" font-size="12">gets BootInfo</text>
+  <text class="fig-muted" x="625" y="150" text-anchor="middle" font-size="12">64-bit, paging on</text>
+  <rect class="fig-box" x="20" y="300" width="250" height="34" rx="0"/>
+  <text class="fig-mono" x="145" y="322" text-anchor="middle" font-size="13">bootloader</text>
+  <rect class="fig-accent" x="270" y="300" width="200" height="34" rx="0"/>
+  <text class="fig-mono" x="370" y="322" text-anchor="middle" font-size="13">kernel ELF file</text>
+  <text class="fig-muted" x="485" y="322" text-anchor="start" font-size="12">bootimage-blog_os.bin</text>
+  <line class="fig-line" x1="370" y1="298" x2="370" y2="282" marker-end="url(#15-boot-arrow)"/>
+  <text class="fig-muted" x="378" y="293" text-anchor="start" font-size="12">reads</text>
+</svg>

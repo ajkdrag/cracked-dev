@@ -1,0 +1,53 @@
+<svg viewBox="0 0 720 290" role="img" aria-label="Top row: edu_irq appends each record to pending under the spinlock and calls schedule_work. Later edu_work in a kworker drains pending into a local array and adds the records to the statistics under the mutex. Bottom row: remove calls free_irq, then cancel_work_sync, then frees the state.">
+  <defs>
+    <marker id="16-deferred-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <path class="fig-accent-line" d="M70 56 V38 H360 V54" fill="none" marker-end="url(#16-deferred-arrow)"/>
+  <text class="fig-accent-text" x="215" y="30" text-anchor="middle" font-size="12">schedule_work</text>
+
+  <rect class="fig-accent" x="20" y="56" width="100" height="64" rx="6"/>
+  <text class="fig-mono" x="70" y="82" text-anchor="middle" font-size="13">edu_irq()</text>
+  <text class="fig-muted" x="70" y="102" text-anchor="middle" font-size="12">top half</text>
+  <rect class="fig-box" x="165" y="56" width="100" height="64" rx="6"/>
+  <text class="fig-mono" x="215" y="82" text-anchor="middle" font-size="12">pending[16]</text>
+  <text class="fig-muted" x="215" y="102" text-anchor="middle" font-size="12">spinlock</text>
+  <rect class="fig-accent" x="310" y="56" width="100" height="64" rx="6"/>
+  <text class="fig-mono" x="360" y="82" text-anchor="middle" font-size="13">edu_work()</text>
+  <text class="fig-muted" x="360" y="102" text-anchor="middle" font-size="12">kworker</text>
+  <rect class="fig-box" x="455" y="56" width="100" height="64" rx="6"/>
+  <text x="505" y="82" text-anchor="middle" font-size="13" font-weight="600">local array</text>
+  <text class="fig-muted" x="505" y="102" text-anchor="middle" font-size="12">no lock held</text>
+  <rect class="fig-box" x="600" y="56" width="100" height="64" rx="6"/>
+  <text x="650" y="82" text-anchor="middle" font-size="13" font-weight="600">statistics</text>
+  <text class="fig-muted" x="650" y="102" text-anchor="middle" font-size="12">mutex</text>
+
+  <line class="fig-line" x1="120" y1="88" x2="163" y2="88" marker-end="url(#16-deferred-arrow)"/>
+  <text class="fig-muted" x="142" y="80" text-anchor="middle" font-size="12">adds</text>
+  <line class="fig-line" x1="265" y1="88" x2="308" y2="88" marker-end="url(#16-deferred-arrow)"/>
+  <text class="fig-muted" x="287" y="80" text-anchor="middle" font-size="12">drains</text>
+  <line class="fig-line" x1="410" y1="88" x2="453" y2="88" marker-end="url(#16-deferred-arrow)"/>
+  <text class="fig-muted" x="432" y="80" text-anchor="middle" font-size="12">into</text>
+  <line class="fig-line" x1="555" y1="88" x2="598" y2="88" marker-end="url(#16-deferred-arrow)"/>
+  <text class="fig-muted" x="577" y="80" text-anchor="middle" font-size="12">adds</text>
+
+  <text class="fig-muted" x="20" y="144" font-size="12">hard interrupt context</text>
+  <text class="fig-muted" x="310" y="144" font-size="12">process context, may sleep</text>
+
+  <line class="fig-line" x1="20" y1="166" x2="700" y2="166" stroke-dasharray="6 4"/>
+  <text class="fig-muted" x="20" y="194" font-size="12">remove(), in this order</text>
+  <rect class="fig-box" x="20" y="206" width="200" height="60" rx="6"/>
+  <text class="fig-mono" x="120" y="231" text-anchor="middle" font-size="13">1. free_irq()</text>
+  <text class="fig-muted" x="120" y="251" text-anchor="middle" font-size="12">no handler, no new work</text>
+  <rect class="fig-box" x="260" y="206" width="200" height="60" rx="6"/>
+  <text class="fig-mono" x="360" y="231" text-anchor="middle" font-size="13">2. cancel_work_sync()</text>
+  <text class="fig-muted" x="360" y="251" text-anchor="middle" font-size="12">queued work finished</text>
+  <rect class="fig-box" x="500" y="206" width="200" height="60" rx="6"/>
+  <text class="fig-mono" x="600" y="231" text-anchor="middle" font-size="13">3. kfree(e)</text>
+  <text class="fig-muted" x="600" y="251" text-anchor="middle" font-size="12">nothing uses it now</text>
+  <line class="fig-line" x1="220" y1="236" x2="258" y2="236" marker-end="url(#16-deferred-arrow)"/>
+  <text class="fig-muted" x="239" y="228" text-anchor="middle" font-size="12">then</text>
+  <line class="fig-line" x1="460" y1="236" x2="498" y2="236" marker-end="url(#16-deferred-arrow)"/>
+  <text class="fig-muted" x="479" y="228" text-anchor="middle" font-size="12">then</text>
+</svg>

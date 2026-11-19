@@ -1,0 +1,43 @@
+<svg viewBox="0 0 720 290" role="img" aria-label="The edu device sends an MSI to the local APIC, which interrupts the CPU. The kernel's entry code calls edu_irq, the top half, in hard interrupt context. edu_irq sets the done flag under the spinlock and wakes the process waiting in read, and calls schedule_work, and later a kworker thread runs edu_work in process context, where it may sleep.">
+  <defs>
+    <marker id="16-irq-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="20" y="32" font-size="12">hardware</text>
+  <text class="fig-muted" x="340" y="32" font-size="12">hard interrupt context: must not sleep</text>
+  <rect class="fig-box" x="20" y="44" width="120" height="64" rx="6"/>
+  <text x="80" y="70" text-anchor="middle" font-size="13" font-weight="600">edu device</text>
+  <text class="fig-muted" x="80" y="90" text-anchor="middle" font-size="12">factorial done</text>
+  <rect class="fig-box" x="180" y="44" width="120" height="64" rx="6"/>
+  <text x="240" y="70" text-anchor="middle" font-size="13" font-weight="600">local APIC</text>
+  <text class="fig-muted" x="240" y="90" text-anchor="middle" font-size="12">picks a vector</text>
+  <rect class="fig-box" x="340" y="44" width="130" height="64" rx="6"/>
+  <text x="405" y="70" text-anchor="middle" font-size="13" font-weight="600">kernel entry</text>
+  <text class="fig-muted" x="405" y="90" text-anchor="middle" font-size="12">saves registers</text>
+  <rect class="fig-accent" x="510" y="44" width="130" height="64" rx="6"/>
+  <text class="fig-mono" x="575" y="70" text-anchor="middle" font-size="13">edu_irq()</text>
+  <text class="fig-muted" x="575" y="90" text-anchor="middle" font-size="12">top half: ack, store</text>
+  <line class="fig-line" x1="140" y1="76" x2="178" y2="76" marker-end="url(#16-irq-arrow)"/>
+  <text class="fig-muted" x="160" y="68" text-anchor="middle" font-size="12">MSI</text>
+  <line class="fig-line" x1="300" y1="76" x2="338" y2="76" marker-end="url(#16-irq-arrow)"/>
+  <text class="fig-muted" x="320" y="68" text-anchor="middle" font-size="12">IRQ</text>
+  <line class="fig-line" x1="470" y1="76" x2="508" y2="76" marker-end="url(#16-irq-arrow)"/>
+  <text class="fig-muted" x="490" y="68" text-anchor="middle" font-size="12">calls</text>
+
+  <line class="fig-line" x1="20" y1="140" x2="700" y2="140" stroke-dasharray="6 4"/>
+  <text class="fig-muted" x="20" y="166" font-size="12">process context: may sleep</text>
+
+  <rect class="fig-box" x="300" y="200" width="160" height="64" rx="6"/>
+  <text class="fig-mono" x="380" y="226" text-anchor="middle" font-size="13">read() in edutest</text>
+  <text class="fig-muted" x="380" y="246" text-anchor="middle" font-size="12">wakes, returns n!</text>
+  <rect class="fig-accent" x="510" y="200" width="130" height="64" rx="6"/>
+  <text class="fig-mono" x="575" y="226" text-anchor="middle" font-size="13">edu_work()</text>
+  <text class="fig-muted" x="575" y="246" text-anchor="middle" font-size="12">kworker thread</text>
+
+  <path class="fig-line" d="M530 108 V170 H380 V198" fill="none" marker-end="url(#16-irq-arrow)"/>
+  <text class="fig-muted" x="390" y="190" font-size="12">wake_up</text>
+  <text class="fig-muted" x="455" y="162" text-anchor="middle" font-size="12">done flag, spinlock</text>
+  <line class="fig-accent-line" x1="600" y1="108" x2="600" y2="198" marker-end="url(#16-irq-arrow)"/>
+  <text class="fig-accent-text" x="610" y="166" font-size="12">schedule_work</text>
+</svg>

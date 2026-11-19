@@ -1,0 +1,34 @@
+<svg viewBox="0 0 720 290" role="img" aria-label="Process A calls read on an empty pipe, releases the mutex and sleeps on the wait queue readq, using no CPU. Later process B writes five bytes under the mutex and calls wake_up on readq. A wakes, takes the mutex, finds data, copies it out and returns 5.">
+  <defs>
+    <marker id="16-wait-queue-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="20" y="32" font-size="12">process A, reader</text>
+  <rect class="fig-box" x="20" y="44" width="130" height="56" rx="6"/>
+  <text class="fig-mono" x="85" y="67" text-anchor="middle" font-size="13">read()</text>
+  <text class="fig-muted" x="85" y="86" text-anchor="middle" font-size="12">lock, len is 0</text>
+  <rect class="fig-accent" x="180" y="44" width="150" height="56" rx="6"/>
+  <text x="255" y="67" text-anchor="middle" font-size="13" font-weight="600">unlock, sleep</text>
+  <text class="fig-mono" x="255" y="86" text-anchor="middle" font-size="12">on readq</text>
+  <line class="fig-line" x1="330" y1="72" x2="468" y2="72" stroke-dasharray="4 4"/>
+  <text class="fig-muted" x="399" y="62" text-anchor="middle" font-size="12">asleep, no CPU</text>
+  <rect class="fig-box" x="470" y="44" width="120" height="56" rx="6"/>
+  <text x="530" y="67" text-anchor="middle" font-size="13" font-weight="600">wakes up</text>
+  <text class="fig-muted" x="530" y="86" text-anchor="middle" font-size="12">lock, len is 5</text>
+  <rect class="fig-box" x="610" y="44" width="90" height="56" rx="6"/>
+  <text x="655" y="67" text-anchor="middle" font-size="13" font-weight="600">copy out</text>
+  <text class="fig-muted" x="655" y="86" text-anchor="middle" font-size="12">returns 5</text>
+  <line class="fig-line" x1="150" y1="72" x2="178" y2="72" marker-end="url(#16-wait-queue-arrow)"/>
+  <line class="fig-line" x1="590" y1="72" x2="608" y2="72" marker-end="url(#16-wait-queue-arrow)"/>
+
+  <text class="fig-muted" x="20" y="208" font-size="12">process B, writer</text>
+  <rect class="fig-box" x="250" y="170" width="170" height="56" rx="6"/>
+  <text class="fig-mono" x="335" y="193" text-anchor="middle" font-size="13">write()</text>
+  <text class="fig-muted" x="335" y="212" text-anchor="middle" font-size="12">lock, add 5 bytes, unlock</text>
+  <path class="fig-accent-line" d="M420 198 H530 V102" fill="none" marker-end="url(#16-wait-queue-arrow)"/>
+  <text class="fig-accent-text" x="540" y="150" font-size="12">wake_up(readq)</text>
+
+  <line class="fig-line" x1="20" y1="256" x2="698" y2="256" marker-end="url(#16-wait-queue-arrow)"/>
+  <text class="fig-muted" x="700" y="276" text-anchor="end" font-size="12">time</text>
+</svg>

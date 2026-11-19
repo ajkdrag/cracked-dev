@@ -1,0 +1,44 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="BAR 0 in the edu device's configuration space holds the physical address 0xfea00000. pci_iomap reads it and adds a kernel page table entry from the virtual address bar to that physical address. The driver's ioread32 at bar plus 0x08 goes through that entry to the factorial register.">
+  <defs>
+    <marker id="16-pci-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text class="fig-muted" x="20" y="36" font-size="12">configuration space</text>
+  <rect class="fig-box" x="20" y="50" width="220" height="32" rx="6"/>
+  <text class="fig-mono" x="32" y="71" font-size="12">0x00</text>
+  <text x="74" y="71" font-size="12">vendor 1234, device 11e8</text>
+  <rect class="fig-box" x="20" y="88" width="220" height="32" rx="6"/>
+  <text class="fig-mono" x="32" y="109" font-size="12">0x04</text>
+  <text x="74" y="109" font-size="12">command register</text>
+  <rect class="fig-accent" x="20" y="126" width="220" height="32" rx="6"/>
+  <text class="fig-mono" x="32" y="147" font-size="12">0x10</text>
+  <text x="74" y="147" font-size="12">BAR 0: 0xfea00000</text>
+  <rect class="fig-box" x="20" y="164" width="220" height="32" rx="6"/>
+  <text class="fig-mono" x="32" y="185" font-size="12">0x3c</text>
+  <text x="74" y="185" font-size="12">interrupt line and pin</text>
+
+  <text class="fig-muted" x="20" y="232" font-size="12">your driver</text>
+  <rect class="fig-box" x="20" y="242" width="220" height="40" rx="6"/>
+  <text class="fig-mono" x="130" y="267" text-anchor="middle" font-size="12">ioread32(bar + 0x08)</text>
+
+  <rect class="fig-accent" x="290" y="150" width="150" height="64" rx="6"/>
+  <text x="365" y="176" text-anchor="middle" font-size="13" font-weight="600">kernel page table</text>
+  <text class="fig-mono" x="365" y="196" text-anchor="middle" font-size="12">bar → 0xfea00000</text>
+
+  <text class="fig-muted" x="510" y="36" font-size="12">physical addresses</text>
+  <rect class="fig-box" x="510" y="50" width="190" height="164" rx="6"/>
+  <text x="605" y="74" text-anchor="middle" font-size="13" font-weight="600">edu registers</text>
+  <text class="fig-mono" x="605" y="94" text-anchor="middle" font-size="12">0xfea00000</text>
+  <text class="fig-mono" x="528" y="124" font-size="12">+0x00 ident</text>
+  <text class="fig-mono" x="528" y="144" font-size="12">+0x04 liveness</text>
+  <text class="fig-mono fig-accent-text" x="528" y="164" font-size="12">+0x08 factorial</text>
+  <text class="fig-mono" x="528" y="184" font-size="12">+0x20 status</text>
+
+  <path class="fig-line" d="M240 142 H365 V148" fill="none" marker-end="url(#16-pci-arrow)"/>
+  <text class="fig-muted" x="300" y="134" text-anchor="middle" font-size="12">pci_iomap</text>
+  <path class="fig-accent-line" d="M240 262 H365 V216" fill="none" marker-end="url(#16-pci-arrow)"/>
+  <text class="fig-accent-text" x="300" y="254" text-anchor="middle" font-size="12">virtual</text>
+  <line class="fig-accent-line" x1="440" y1="160" x2="508" y2="160" marker-end="url(#16-pci-arrow)"/>
+  <text class="fig-accent-text" x="474" y="152" text-anchor="middle" font-size="12">physical</text>
+</svg>

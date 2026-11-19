@@ -1,0 +1,46 @@
+<svg viewBox="0 0 720 300" role="img" aria-label="The chip boots on the ring oscillator. You start the 12 MHz crystal oscillator and select it for clk_ref, then select clk_ref for clk_sys, which runs the cores and the bus. clk_ref also feeds the TIMER0 tick generator, which divides by 12 to make a 1 MHz tick for TIMER0. The crystal also feeds clk_peri, which clocks UART0.">
+  <defs>
+    <marker id="17-clocks-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect class="fig-box" x="20" y="30" width="130" height="50" rx="6"/>
+  <text x="85" y="52" text-anchor="middle" font-size="13" font-weight="600">ROSC</text>
+  <text class="fig-muted" x="85" y="70" text-anchor="middle" font-size="12">at boot, inexact</text>
+  <rect class="fig-accent" x="20" y="120" width="130" height="50" rx="6"/>
+  <text x="85" y="142" text-anchor="middle" font-size="13" font-weight="600">XOSC</text>
+  <text class="fig-muted" x="85" y="160" text-anchor="middle" font-size="12">12 MHz crystal</text>
+
+  <rect class="fig-accent" x="220" y="70" width="140" height="56" rx="6"/>
+  <text x="290" y="93" text-anchor="middle" font-size="13" font-weight="600">clk_ref</text>
+  <text class="fig-mono" x="290" y="112" text-anchor="middle" font-size="12">SRC = 2: XOSC</text>
+  <path class="fig-line" d="M150 55 H185 V86 H218" fill="none" stroke-dasharray="4 4" marker-end="url(#17-clocks-arrow)"/>
+  <path class="fig-accent-line" d="M150 145 H185 V112 H218" fill="none" marker-end="url(#17-clocks-arrow)"/>
+
+  <rect class="fig-accent" x="420" y="70" width="140" height="56" rx="6"/>
+  <text x="490" y="93" text-anchor="middle" font-size="13" font-weight="600">clk_sys</text>
+  <text class="fig-mono" x="490" y="112" text-anchor="middle" font-size="12">SRC = 0: clk_ref</text>
+  <line class="fig-accent-line" x1="360" y1="98" x2="418" y2="98" marker-end="url(#17-clocks-arrow)"/>
+  <rect class="fig-box" x="600" y="70" width="100" height="56" rx="6"/>
+  <text x="650" y="93" text-anchor="middle" font-size="13">cores</text>
+  <text x="650" y="112" text-anchor="middle" font-size="13">and bus</text>
+  <line class="fig-line" x1="560" y1="98" x2="598" y2="98" marker-end="url(#17-clocks-arrow)"/>
+
+  <rect class="fig-box" x="420" y="150" width="140" height="56" rx="6"/>
+  <text x="490" y="173" text-anchor="middle" font-size="13" font-weight="600">TICKS TIMER0</text>
+  <text class="fig-mono" x="490" y="192" text-anchor="middle" font-size="12">CYCLES = 12</text>
+  <path class="fig-line" d="M290 126 V178 H418" fill="none" marker-end="url(#17-clocks-arrow)"/>
+  <rect class="fig-box" x="600" y="150" width="100" height="56" rx="6"/>
+  <text x="650" y="173" text-anchor="middle" font-size="13">TIMER0</text>
+  <text class="fig-muted" x="650" y="192" text-anchor="middle" font-size="12">counts at 1 MHz</text>
+  <line class="fig-line" x1="560" y1="178" x2="598" y2="178" marker-end="url(#17-clocks-arrow)"/>
+
+  <rect class="fig-box" x="420" y="226" width="140" height="56" rx="6"/>
+  <text x="490" y="249" text-anchor="middle" font-size="13" font-weight="600">clk_peri</text>
+  <text class="fig-mono" x="490" y="268" text-anchor="middle" font-size="12">AUXSRC = 4</text>
+  <path class="fig-line" d="M85 170 V254 H418" fill="none" marker-end="url(#17-clocks-arrow)"/>
+  <rect class="fig-box" x="600" y="226" width="100" height="56" rx="6"/>
+  <text x="650" y="249" text-anchor="middle" font-size="13">UART0</text>
+  <text class="fig-muted" x="650" y="268" text-anchor="middle" font-size="12">baud divisor</text>
+  <line class="fig-line" x1="560" y1="254" x2="598" y2="254" marker-end="url(#17-clocks-arrow)"/>
+</svg>
